@@ -9,7 +9,6 @@ const cors = require("cors");
 app.set('port',process.env.PORT || 3001);
 //starting the server
 
-
 app.listen(app.get('port'),()=>{
     console.log('Server on port', app.get('port'));
 });
