@@ -4,10 +4,10 @@ import Axios from "../axios";
 class UserService {
 
     getAll(){
-        return Axios.get("/users")
+        return Axios.get("/user/grupo/3")
     }
 
-    insert(data){
+   /* insert(data){
         return Axios.post("/users",data);
     }
 
@@ -17,7 +17,7 @@ class UserService {
 
     delete(id){
         return Axios.delete(`/users/${id}`)
-    }
+    }*/
 
 }
 
