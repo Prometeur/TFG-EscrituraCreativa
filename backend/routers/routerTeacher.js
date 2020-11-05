@@ -1,6 +1,6 @@
 /*
-* Name_file : routerAdmin
-* Descripcion: Contiene los prototipos de todas las funciones que son exclusivas a los administradores.
+* Name_file : routerTeacher
+* Descripcion: Contiene los prototipos de todas las funciones que son exclusivas a los profesores.
 * parameters:
     @mysql
     @express
@@ -16,7 +16,7 @@
 "use strict"
 
 const config = require("../BBDD/config");
-const controller = require("../controllers/controllerAdmin");
+const controller = require("../controllers/controllerTeacher");
 const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -25,17 +25,20 @@ const app = express();
 
 const router = express.Router();
 
+
 /*--------------------------------------------------*/
 // Functionality systems
 
-//Devuelve una lista con todos los usuarios confirmados.
-router.get("/todos", controller.showAll);
+//Crea un nuevo grupo
+router.post("/crearGrupo/:id", controller.createGroup);
 
-//Devuelve una lista con todos los administradores.
-router.get("/administradores", controller.showAdmins);
+//Añade el estudiante seleccionado al grupo seleccionado directamente, priemro verificando que no lo esté
+router.post("/invitarAGrupo/:id", controller.inviteToGroup); 
 
-//Esta función devuelve todos los profesores que se acaban de apuntar y tienen que ser aceptados por un ADMIN.
-router.get("/solicitudes", controller.showRequests); 
+//Pone el campo activo a 0, no leimina de la base de datos directamente.
+router.get("/eliminarGrupo/:id", controller.deleteGroup);
+
+
 
 /*---------------------------------------------------------*/
 //Data export

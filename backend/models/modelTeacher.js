@@ -1,22 +1,42 @@
+/*
+* Name_file : modelTeacher
+* Descripcion: Archivo de operaciones de la base de datos para las funciones que son exclusivas a los profesores.
+* parameters:
+    @pool
+*/
+
+
+/*--------------------------------------------------*/
+// Dependencies
 "use strict";
 
-class modelProfesor {
+
+/*--------------------------------------------------*/
+// Functionality systems
+
+class modelTeacher {
     constructor(pool) {
         this.pool = pool;
     }
 
-    crearGrupo(idProfesor, nombre, callback) {
+    createGroup(idProfesor, nombre, callback) {
         this.pool.getConnection(function(err, connection) {
-            if (err) {
+            if (err) 
+            {
                 callback(new Error("No se puede conectar a la base de datos."))
-            } else {
+            } 
+            else 
+            {
                 const sql = "INSERT INTO grupo (idprofesor, nombre, activo) VALUES (?, ?, 1);";
                 const valores = [idProfesor, nombre];
                 connection.query(sql, valores, function(err, idProfesor) {
                     connection.release();
-                    if (err) {
+                    if (err) 
+                    {
                         callback(new Error("Error al crear el grupo."));
-                    } else {
+                    } 
+                    else 
+                    {
                         callback(null, idProfesor.insertId);
                     }
                 })
@@ -24,18 +44,24 @@ class modelProfesor {
         });
     }
 
-    verificarInvitacion(idGrupo,idEstudiante, callback) {
+    verifyInvitationToGroup(idGrupo,idEstudiante, callback) {
         this.pool.getConnection(function(err, connection) {
-            if (err) {
+            if (err) 
+            {
                 callback(new Error("No se puede conectar a la base de datos."))
-            } else {
+            } 
+            else 
+            {
                 const sql = "SELECT * FROM grupoestudiante  WHERE idGrupo = ? AND idEstudiante = ?;";
                 const valores = [idGrupo, idEstudiante];
                 connection.query(sql, valores, function(err, res) {
                     connection.release();
-                    if (err) {
+                    if (err) 
+                    {
                         callback(new Error("Error al verificar la invitación."));
-                    } else {
+                    } 
+                    else 
+                    {
                         callback(null, res);
                     }
                 })
@@ -43,11 +69,14 @@ class modelProfesor {
         });
     }
 
-    invitarAGrupo(idGrupo,idEstudiante, callback) {
+    inviteToGroup(idGrupo,idEstudiante, callback) {
         this.pool.getConnection(function(err, connection) {
-            if (err) {
+            if (err) 
+            {
                 callback(new Error("No se puede conectar a la base de datos."))
-            } else {
+            } 
+            else 
+            {
                 const sql = "INSERT INTO grupoestudiante (idGrupo, idEstudiante) VALUES (?, ?);";
                 const valores = [idGrupo,idEstudiante];
                 connection.query(sql, valores, function(err, idProfesor) {
@@ -62,18 +91,24 @@ class modelProfesor {
         });
     }
 
-    eliminarGrupo(id, callback) {
+    deleteGroup(id, callback) {
         this.pool.getConnection(function(err, connection) {
-            if (err) {
+            if (err) 
+            {
                 callback(new Error("No se puede conectar a la base de datos."))
-            } else {
+            } 
+            else 
+            {
                 const sql = "UPDATE grupo SET activo = 0 WHERE id = ?;"; //No borra el grupo, pone el activo a 0
                 const valores = [id];
                 connection.query(sql, valores, function(err) {
                     connection.release();
-                    if (err) {
+                    if (err) 
+                    {
                         callback(new Error("Error al eliminar el grupo."));
-                    } else {
+                    } 
+                    else 
+                    {
                         callback(null);
                     }
                 })
@@ -83,4 +118,7 @@ class modelProfesor {
 
 }
 
-module.exports =modelProfesor;
+
+/*---------------------------------------------------------*/
+//Data export
+module.exports =modelTeacher;

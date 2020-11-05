@@ -1,8 +1,27 @@
+/*
+* Name_file : app.js
+* Descripcion: Parte central del servidor. Responde a peticiones y emplea los middlewares necesarios para tratar la información.
+* parameters:
+    @cors
+    @express
+    @path
+    @bodyParser
+    @app
+    @config
+    @routerUser
+    @routerTeacher
+    @routerAdmin
+    @routerStudent
+*/
+
+/*--------------------------------------------------*/
+// Dependencies
 "use strict";
 
-
-
-const routerUsuario = require("./routers/routerUsuario");
+const routerUser = require("./routers/routerUser");
+const routerProfesor = require("./routers/routerTeacher");
+const routerAdmin = require("./routers/routerAdmin");
+const routerStudent = require("./routers/routerStudent");
 const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -14,12 +33,19 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(cors());
 
 // Rutas para usar los router
-app.use("/usuario", routerUsuario);
+app.use("/user", routerUser);
+app.use("/profesor", routerProfesor);
+app.use("/admin", routerAdmin);
+app.use("/student", routerStudent);
 
 
 app.use(middlewareNotFoundError);
 app.use(middlewareServerError);
 
+/*--------------------------------------------------*/
+// Functionality systems
+
+//Evalúa errores de páginas no encotnradas y muestra el error.
 function middlewareNotFoundError(request, response) {
     // Código 404: User error
     response.status(404);
@@ -30,6 +56,7 @@ function middlewareNotFoundError(request, response) {
 */
 }
 
+//Evalúa errores del servidor y muestra el error.
 function middlewareServerError(error, request, response, next) {
     // Código 500: Internal server error
     response.status(500);
@@ -43,7 +70,7 @@ function middlewareServerError(error, request, response, next) {
 */
 }
 
-
+//Comienza el funcionamiento del servidor
 app.listen(4000, function(err) {
     if (err) {
         console.error("No se pudo inicializar el servidor: "

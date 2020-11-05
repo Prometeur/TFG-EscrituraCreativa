@@ -1,7 +1,22 @@
+/*
+* Name_file : controllerTeacher
+* Descripcion: Contiene la funcionalidad de negocio de todas las funciones que son exclusivas a los profesores.
+* parameters:
+    @mysql
+    @express
+    @path
+    @bodyParser
+    @modelo
+    @app
+    @config
+*/
+
+/*--------------------------------------------------*/
+// Dependencies
 "use strict"
 
 const config = require("../BBDD/config");
-const modelo = require("../models/modelProfesor");
+const modelo = require("../models/modelTeacher");
 const path = require("path");
 const mysql = require("mysql");
 const express = require("express");
@@ -10,23 +25,30 @@ const app = express();
 
 
 const pool = mysql.createPool(config.mysqlConfig);
-const modelProfesor = new modelo(pool);
+const modelTeacher = new modelo(pool);
 
 app.use(bodyParser.urlencoded({extended:true}));
 
-function crearGrupo(request, response) {
+/*--------------------------------------------------*/
+// Functionality systems
+
+//Crea un grupo con los datos introducidos en el formulario y el profesor de la sesión como vreador.
+function createGroup(request, response) {
     let idProfesor = 1; // SUSTITUIR POR LA LINEA DE ABAJO CUANDO LAS SESIONES ESTEN DISPONIBLES AÑADIR CONTROL DE QUE SEA PROFESOR
     //let idProfesor: request.session.usuario.id; 
     let nombre = request.body.nombreGrupo; // REVISAR CLIENTE 
 
 
-    modelProfesor.crearGrupo(idProfesor,nombre, function(err, idGrupoNuevo) {
-                if (err) {
+    modelTeacher.createGroup(idProfesor,nombre, function(err, idGrupoNuevo) {
+                if (err) 
+                {
                     response.status(500);
                     /*response.render("preguntas", {
                         error: err.message
                     });*/
-                } else {
+                } 
+                else 
+                {
                     response.status(200);
                     //response.redirect("/pregunta/preguntas");
                     //REDIRECCIONAR A LA VENTANA DEL GRUPO RECIEN CREADO
@@ -35,30 +57,39 @@ function crearGrupo(request, response) {
 
 }
 
-function invitarAGrupo(request, response) {
+//Añade a un estudiante a un grupo si no lo estaba ya.
+function inviteToGroup(request, response) {
     let idGrupo = request.body.idGrupo; //  AÑADIR CONTROL DE QUE SEA PROFESOR
     let idEstudiante = request.body.idEstudiante; // REVISAR CLIENTE 
 
 
-    modelProfesor.verificarInvitacion(idGrupo,idEstudiante, function(err, rel) {
-                if (err) {
+    modelTeacher.verifyInvitationToGroup(idGrupo,idEstudiante, function(err, rel) {
+                if (err) 
+                {
                     response.status(500);
                     /*response.render("preguntas", {
                         error: err.message
                     });*/
-                } else {
-                    if(rel != undefined){//Ya estaba el estudiante en el grupo
+                } 
+                else 
+                {
+                    if(rel != undefined) //Ya estaba el estudiante en el grupo
+                    {
                         response.status(500);
                         //MOSTRAR QUE EL ESTUDIANTE YA ESTABA EN EL GRUPO
                     }
-                    else{//Invitación nueva, metemos al estudiante en el grupo
-                        modelProfesor.invitarAGrupo(idGrupo,idEstudiante, function(err) {
-                            if (err) {
+                    else //Invitación nueva, metemos al estudiante en el grupo
+                    {
+                        modelTeacher.inviteToGroup(idGrupo,idEstudiante, function(err) {
+                            if (err) 
+                            {
                                 response.status(500);
                                 /*response.render("preguntas", {
                                     error: err.message
                                 });*/
-                            } else {
+                            } 
+                            else 
+                            {
                                 response.status(200);
                                 //response.redirect("/pregunta/preguntas");
                                 //MOSTRAT QUE SE HA AÑADIDO AL ESTUDIANTE DE FORMA SATISFACTORIA
@@ -73,17 +104,20 @@ function invitarAGrupo(request, response) {
 
 }
 
-function eliminarGrupo(request, response) {
+//Elimina un grupo (coloca el activo a 0)
+function deleteGroup(request, response) {
     let id = request.params.id;
 
-
-    modelProfesor.eliminarGrupo(id, function(err) {
-                if (err) {
+    modelTeacher.deleteGroup(id, function(err) {
+                if (err) 
+                {
                     response.status(500);
                     /*response.render("preguntas", {
                         error: err.message
                     });*/
-                } else {
+                } 
+                else 
+                {
                     response.status(200);
                     //response.redirect("/pregunta/preguntas");
                     //MOSTRAR MENSAJE DE GRUPO BORRADO
@@ -94,8 +128,10 @@ function eliminarGrupo(request, response) {
 
 
 
+/*---------------------------------------------------------*/
+//Data export
 module.exports = {
-    crearGrupo:crearGrupo,
-    invitarAGrupo:invitarAGrupo,
-    eliminarGrupo:eliminarGrupo
+    createGroup:createGroup,
+    inviteToGroup:inviteToGroup,
+    deleteGroup:deleteGroup
 };

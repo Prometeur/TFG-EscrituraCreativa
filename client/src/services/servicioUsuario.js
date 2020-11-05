@@ -4,7 +4,7 @@ import Axios from "../axios";
 class servicioUsuario {
 
     getAll(){
-        return Axios.get("/usuario/grupo/3")
+        return Axios.get("/user/group/3")
     }
 
 }
