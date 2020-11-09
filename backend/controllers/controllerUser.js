@@ -133,7 +133,7 @@ function team(request, response, next){
     }
 }
 
-//Mustra todos lso estudiantes activos que existen.
+//Mustra todos los estudiantes activos que existen.
 function showStudents(request, response, next){
     
     modelUsuario.getStudents(function(err, listaUsuarios) {
