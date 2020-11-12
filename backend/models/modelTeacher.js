@@ -189,7 +189,7 @@ class modelTeacher {
     }
 
     //Obtiene a todos los desafíos del grupo indicado.
-    getStudentRequests(callback) {
+    getStudentRequests(idGrupo, callback) {
         this.pool.getConnection(function(err, connection) {
             if (err) 
             {
@@ -211,7 +211,7 @@ class modelTeacher {
     }
 
     //Obtiene a todos los escritos para el desafío indicado.
-    showPapersOfChallenge(callback) {
+    showPapersOfChallenge(idDesafio, callback) {
         this.pool.getConnection(function(err, connection) {
             if (err) 
             {
@@ -219,11 +219,33 @@ class modelTeacher {
             } else 
             {
                 const sql = 'SELECT * FROM escrito WHERE activo = 1 AND idDesafio = ?;';
-                const valores = [idGrupo];
+                const valores = [idDesafio];
                 connection.query(sql, valores, function(err, res) {
                     connection.release();
                     if (err) {
                         callback(new Error("Error al buscar los escritos del desafío."));
+                    } else {
+                        callback(null, res);
+                    }
+                })
+            }
+        });
+    }
+
+    //Crea un desafío con los datos provistos
+    createChallenge(idGrupo, fechaIni, fechaFin, descripcion, titulo, imagen, callback) {
+        this.pool.getConnection(function(err, connection) {
+            if (err) 
+            {
+                callback(new Error("No se puede conectar a la base de datos."))
+            } else 
+            {
+                const sql = 'INSTERT INTO desafio (idGrupo, fechainicio, fechafin, descripcion, titulo, imagen) VALUES (?,?,?,?,?,?) ;';
+                const valores = [idGrupo, fechaIni, fechaFin, descripcion, titulo, imagen];
+                connection.query(sql, valores, function(err, res) {
+                    connection.release();
+                    if (err) {
+                        callback(new Error("Error al crear el desafío."));
                     } else {
                         callback(null, res);
                     }

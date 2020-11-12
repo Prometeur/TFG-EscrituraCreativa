@@ -320,6 +320,36 @@ function showPapersOfChallenge(request, response, next){
     });
 }
 
+//Crea un desafío nuevo.
+function createChallengue(request, response) {
+    let idGrupo = request.body.idGrupo; //  AÑADIR CONTROL DE QUE SEA PROFESOR
+    let fechaIni = request.body.fechaIni; // REVISAR CLIENTE 
+    let fechaFin = request.body.fechaFin; 
+    let descripcion = request.body.descripcion;
+    let titulo = request.body.titulo;
+    let imagen = request.body.imagen;    
+
+
+    modelTeacher.createChallenge(idGrupo, fechaIni, fechaFin, descripcion, titulo, imagen, function(err, rel) {
+                if (err) 
+                {
+                    response.status(500);
+                    /*response.render("profesor", {
+                        error: err.message
+                    });*/
+                } 
+                else 
+                {
+                    response.status(200);
+                    //response.redirect("/pregunta/preguntas");
+                    //MOSTRAR QUE SE HA CREADO EL DESAFIO
+                }
+
+            });
+
+}
+
+
 
 /*---------------------------------------------------------*/
 //Data export
@@ -331,5 +361,6 @@ module.exports = {
     showStudentRequests:showStudentRequests,
     acceptStudent:acceptStudent,
     showChallengesOfGroup:showChallengesOfGroup,
-    showPapersOfChallenge:showPapersOfChallenge
+    showPapersOfChallenge:showPapersOfChallenge,
+    createChallengue:createChallengue
 };

@@ -40,6 +40,16 @@ router.get("/students", controller.showStudents);
 //Muestra a todos los profesores.
 router.get("/teachers", controller.showTeachers);
 
+//Muestra todos los estudiantes que contienen cierta clave ya sea en nombre o en su email.
+router.post("/searchStudent", controller.searchStudent);
+
+//Muestra todos los profesores que contienen cierta clave ya sea en nombre o en su email.
+router.post("/searchTeacher", controller.searchTeacher);
+
+// Busca y devuelve los datos de un usuario según su ID.
+router.get("/getUser/:id", controller.getUser);
+
+
 
 /*---------------------------------------------------------*/
 //Data export

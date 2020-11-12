@@ -29,10 +29,10 @@ const router = express.Router();
 /*--------------------------------------------------*/
 // Functionality systems
 
-//Crea un nuevo grupo
+//Crea un nuevo grupo.
 router.post("/createGroup", controller.createGroup);
 
-//Añade el estudiante seleccionado al grupo seleccionado directamente, priemro verificando que no lo esté
+//Añade el estudiante seleccionado al grupo seleccionado directamente, priemro verificando que no lo esté.
 router.post("/inviteToGroup", controller.inviteToGroup); 
 
 //Pone el campo activo a 0 del grupo seleccionado, no elimina de la base de datos directamente.
@@ -41,7 +41,7 @@ router.get("/deleteGroup/:id", controller.deleteGroup);
 //Elimina al estudiante seleccionado del grupo elegido.
 router.post("/kickFromGroup", controller.kickFromGroup); 
 
-//Muestra todos los estudiantes que aún no han sido aprobados (activo a 0)
+//Muestra todos los estudiantes que aún no han sido aprobados. (activo a 0)
 router.get("/showStudentRequests", controller.showStudentRequests);
 
 //Acepta la petición de un estudiante para que pueda usar la plataforma. (Cambia su activo a 1)
@@ -52,6 +52,9 @@ router.get("/showChallengesOfGroup/:id", controller.showChallengesOfGroup);
 
 //Muestra los escritos del desafío indicado.
 router.get("/showPapersOfChallenge/:id", controller.showPapersOfChallenge);
+
+//Crea un desafío nuevo con los datos provistos.
+router.post("/createChallengue", controller.createChallengue); 
 
 
 

@@ -212,11 +212,130 @@ function showTeachers(request, response, next){
     });
 }
 
+//Busca estudiantes según una clave dada.
+function searchStudent(request, response, next){
+    let clave = request.body.busqueda;
+    let tipo = "nombre";
+    if(request.body.tipo == "Email"){
+        tipo = "email";
+    }
+
+    modelUsuario.searchStudent(clave, tipo, function(err, studentList) {
+        if(err) 
+        {
+            if (err.message == "No se puede conectar a la base de datos.") 
+            {
+                //next(err);
+                console.log("No se puede conectar a la base de datos");
+            }
+            response.status(500);
+            /*response.render("perfil", {
+                error: err.message
+            });*/
+            console.log(err.message);
+        }
+        else if (studentList == null) 
+        {
+            response.status(200);
+            /*response.render("perfil", {
+                error: "No hay estudiantes con los parámetros escogidos."
+            });*/
+            console.log("No hay estudiantes con los parámetros escogidos.");
+        } 
+        else 
+        {
+            response.status(200);
+           console.log(studentList)
+           response.send(JSON.stringify(studentList));
+        }
+    });
+
+}
+
+//Busca profesores según una clave dada.
+function searchTeacher(request, response, next){
+    let clave = request.body.busqueda;
+    let tipo = "nombre";
+    if(request.body.tipo == "Email"){
+        tipo = "email";
+    }
+
+    modelUsuario.searchTeacher(clave, tipo, function(err, teacherList) {
+        if(err) 
+        {
+            if (err.message == "No se puede conectar a la base de datos.") 
+            {
+                //next(err);
+                console.log("No se puede conectar a la base de datos");
+            }
+            response.status(500);
+            /*response.render("perfil", {
+                error: err.message
+            });*/
+            console.log(err.message);
+        }
+        else if (teacherList == null) 
+        {
+            response.status(200);
+            /*response.render("perfil", {
+                error: "No hay profesores con los parámetros escogidos."
+            });*/
+            console.log("No hay Profesores con los parámetros escogidos.");
+        } 
+        else 
+        {
+            response.status(200);
+           console.log(teacherList)
+           response.send(JSON.stringify(teacherList));
+        }
+    });
+
+}
+
+//Busca profesores según una clave dada.
+function getUser(request, response, next){
+
+    modelUsuario.getUser(id, function(err, userResult) {
+        if(err) 
+        {
+            if (err.message == "No se puede conectar a la base de datos.") 
+            {
+                //next(err);
+                console.log("No se puede conectar a la base de datos");
+            }
+            response.status(500);
+            /*response.render("perfil", {
+                error: err.message
+            });*/
+            console.log(err.message);
+        }
+        else if (userResult == null) 
+        {
+            response.status(200);
+            /*response.render("perfil", {
+                error: "No hay un usuario activo con ese identificador."
+            });*/
+            console.log("No hay un usuario activo con ese identificador.");
+        } 
+        else 
+        {
+            response.status(200);
+           console.log(userResult)
+           response.send(JSON.stringify(userResult));
+        }
+    });
+
+}
+
+
 /*---------------------------------------------------------*/
 //Data export
 module.exports = {
     group:group,
     team:team,
     showStudents:showStudents,
-    showTeachers:showTeachers
+    showTeachers:showTeachers,
+    searchStudent:searchStudent,
+    searchTeacher:searchTeacher,
+    getUser:getUser
 };
