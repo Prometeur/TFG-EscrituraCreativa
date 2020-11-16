@@ -32,7 +32,7 @@ pool.getConnection((err,connection) =>{
     // console.log('DB is Connected');
 return;
 
-});//uso la conexion
+});
 
 
 //al hacer la consulta de la bd, puedo usar 'promesas'

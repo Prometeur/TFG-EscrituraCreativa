@@ -4,16 +4,10 @@ const express = require('express');//voy a usar el modulo express
 const router =express.Router();
 
 //importar la conexion
-const pool = require('../database');
+const pool = require('../db/database');
 
 
-router.get("/api/get",(req,res)=>{
 
-    const sqlSelect = "SELECT * FROM usuario";
-    pool.query(sqlSelect,(err,result) => {
-        res.send(result);
-    });
-});
 
 router.post("/api/insert",(req,res)=>{
     const movieName = req.body.movieName;
@@ -49,5 +43,79 @@ router.put("/api/update",(req,res)=>{
         console.log(err);
     });
 });
+
+
+
+
+
+
+// router.get("/api/login",(req,res)=>{
+//     const sqlSelect = "SELECT * FROM usuario where nombre = ? AND password = ? ";
+//     const usuario=req.query.nombre;
+//     const password=req.query.password;
+//     // console.log(usuario);
+//     // console.log(password);
+//     console.log(usuario);
+//     pool.query(sqlSelect, [usuario,usuario] ,(err,result) => {
+//         res.send(result);
+//     });
+// });
+
+
+/*--------------------------------------------ADMIN----------------------------------------------------------------------------- */
+// router.get("/api/get",(req,res)=>{
+
+//     const sqlSelect = "SELECT * FROM usuario";
+//     pool.query(sqlSelect,(err,result) => {
+//         res.send(result);
+//     });
+// });
+/*--------------------------------------------PROFESOR----------------------------------------------------------------------------- */
+/*Obtiene los datos del grupo del profesor */
+// router.get("/api/getGroup",(req,res)=>{
+
+//     const sqlSelect = "SELECT * FROM grupo where idprofesor= ?";
+//     const student=req.query.idEstudiante;
+//     pool.query(sqlSelect,student,(err,result) => {
+//         res.send(result);
+//     });
+// });
+
+/*--------------------------------------------STUDENT----------------------------------------------------------------------------- */
+/*Obtiene los datos del grupoEstudiante del estudiante */
+// router.get("/api/getGroupStudent",(req,res)=>{
+
+//     const sqlSelect = "SELECT * FROM grupoestudiante where idEstudiante= ?";
+//     const student=req.query.idEstudiante;
+//     pool.query(sqlSelect,student,(err,result) => {
+//         res.send(result);
+//     });
+// });
+
+
+// /*Obtiene la tabla desafios del grupo */
+// router.get("/api/getChallenges",(req,res)=>{
+
+//     const sqlSelect = "SELECT * FROM desafio where idGrupo= ?";
+//     const group=req.query.idGroup;
+//     pool.query(sqlSelect,group,(err,result) => {
+//         res.send(result);
+//     });
+// });
+
+
+
+
+// router.post("/api/postWriting",(req,res)=>{
+    
+//     const desafio = req.body.idChallenge;
+//     const escritor = req.body.idEscritor;
+//     const texto =req.body.escrito;
+//     const sqlInsert = "INSERT INTO escrito (idDesafio,idEscritor,texto) VALUES (?,?,?)";
+//     pool.query(sqlInsert,[desafio,escritor,texto],(err,result) => {
+//         console.log(result);
+//     });
+// });
+
 
 module.exports = router;
