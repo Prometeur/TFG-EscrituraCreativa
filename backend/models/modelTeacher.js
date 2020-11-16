@@ -189,7 +189,7 @@ class modelTeacher {
     }
 
     //Obtiene a todos los desafíos del grupo indicado.
-    getStudentRequests(idGrupo, callback) {
+    getChallengesOfGroup(idGrupo, callback) {
         this.pool.getConnection(function(err, connection) {
             if (err) 
             {
@@ -233,15 +233,15 @@ class modelTeacher {
     }
 
     //Crea un desafío con los datos provistos
-    createChallenge(idGrupo, fechaIni, fechaFin, descripcion, titulo, imagen, callback) {
+    createChallenge(idGrupo, fechaIni, fechaFin, descripcion, titulo, imagen, tipoCalificacion, colaborativo, callback) {
         this.pool.getConnection(function(err, connection) {
             if (err) 
             {
                 callback(new Error("No se puede conectar a la base de datos."))
             } else 
             {
-                const sql = 'INSTERT INTO desafio (idGrupo, fechainicio, fechafin, descripcion, titulo, imagen) VALUES (?,?,?,?,?,?) ;';
-                const valores = [idGrupo, fechaIni, fechaFin, descripcion, titulo, imagen];
+                const sql = 'INSTERT INTO desafio (idGrupo, fechainicio, fechafin, descripcion, titulo, imagen, calificacion, colaborativo) VALUES (?,?,?,?,?,?,?,?) ;';
+                const valores = [idGrupo, fechaIni, fechaFin, descripcion, titulo, imagen, tipoCalificacion, colaborativo];
                 connection.query(sql, valores, function(err, res) {
                     connection.release();
                     if (err) {

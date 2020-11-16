@@ -241,7 +241,7 @@ function acceptStudent(request, response) {
 function showChallengesOfGroup(request, response, next){
     let id = request.params.id;
     
-    modelTeacher.getChallengesOfTeacher(id, function(err, challengeList) {
+    modelTeacher.getChallengesOfGroup(id, function(err, challengeList) {
         if(err)
         {
             if (err.message == "No se puede conectar a la base de datos.") 
@@ -315,7 +315,7 @@ function showPapersOfChallenge(request, response, next){
             });
             */
            console.log(paperList)
-           response.send(JSON.stringify(paperList));
+           response.send(JSON.stringify(paperList)); //En el futuro es posible que esta función sea más elaborada si queremos mostrar los nombres del escritor.
         }
     });
 }
@@ -327,10 +327,22 @@ function createChallengue(request, response) {
     let fechaFin = request.body.fechaFin; 
     let descripcion = request.body.descripcion;
     let titulo = request.body.titulo;
-    let imagen = request.body.imagen;    
+    let imagen = request.body.imagen;
+
+    let tipoCalificacion = 0; // Se puede cambiar a string si cambiamos la BBDD
+    if(request.body.tipoCalificacion == 1){
+        tipoCalificacion = 1;
+    }
+    if(request.body.tipoCalificacion == 2){
+        tipoCalificacion = 2;
+    }
+    let colaborativo = 0;
+    if(request.body.colaborativo == 1){
+        colaborativo = 1;
+    }
 
 
-    modelTeacher.createChallenge(idGrupo, fechaIni, fechaFin, descripcion, titulo, imagen, function(err, rel) {
+    modelTeacher.createChallenge(idGrupo, fechaIni, fechaFin, descripcion, titulo, imagen,tipoCalificacion, colaborativo, function(err, rel) {
                 if (err) 
                 {
                     response.status(500);
