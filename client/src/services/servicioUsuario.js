@@ -1,24 +1,23 @@
-import Axios from "../axios";
-
+import axios from '../axios';
+import authHeader from './authenticity/auth-header';
 
 class UserService {
+ 
+  getPublicContent() {
+    return axios.get('all');
+  }
 
-    getAll(){
-        return Axios.get("/user/grupo/3")
-    }
+  getUserBoard() {
+    return axios.get('user', { headers: authHeader() });
+  }
 
-   /* insert(data){
-        return Axios.post("/users",data);
-    }
+  getModeratorBoard() {
+    return axios.get('mod', { headers: authHeader() });
+  }
 
-    update(data){
-        return Axios.put("/users",data)
-    }
-
-    delete(id){
-        return Axios.delete(`/users/${id}`)
-    }*/
-
+  getAdminBoard() {
+    return axios.get('admin', { headers: authHeader() });
+  }
 }
 
 export default new UserService();

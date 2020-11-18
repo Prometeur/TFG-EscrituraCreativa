@@ -13,6 +13,7 @@
 /*--------------------------------------------------*/
 // Dependencies
 "use strict";
+const routerAuth = require("./routers/routerAuth");
 const routerUser = require("./routers/routerUser");
 const path = require("path");
 const express = require("express");
@@ -22,6 +23,7 @@ const app = express();
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(cors());
+app.use("/auth", routerAuth);
 app.use("/user", routerUser);
 app.use(middlewareNotFoundError);
 app.use(middlewareServerError);

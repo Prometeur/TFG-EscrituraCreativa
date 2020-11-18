@@ -1,23 +1,18 @@
+/*
+*  Name_file :App.js
+*  Description: redirije a routes.js
+*/
 import React from 'react';
 import './App.css';
-import { Switch, Route,Link} from "react-router-dom";
+import Routes from './routes/Routes';
 
-
-import Users from './components/Users';
-
-function App() {
-    return (
-         <div>
-            <Link to={"/user"} className="nav-link">
-              Usuarios
-            </Link>
-            <div className="container mt-3">
-              <Switch>
-                <Route exact path={["/", "/user"]} component={Users} />
-              </Switch>
-            </div>
-        </div>
-    );
+function App() 
+{
+  return (
+    <div className="App">
+      <Routes />
+    </div>
+  );
 }
 
 export default App;

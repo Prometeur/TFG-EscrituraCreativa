@@ -1,8 +1,40 @@
 "use strict";
 
 class modelUsuario {
+  
     constructor(pool) {
         this.pool = pool;
+    }
+
+    findOneEmail (correo, password, callback) {
+       
+        this.pool.getConnection(function(err, connection) {
+           
+            if(err)
+            {
+                callback(new Error("No se puede conectar a la base de datos."))
+            }
+            else
+            {
+
+                const sql = "SELECT * FROM usuario where correo = ? and password = ?;";
+                const valores = [correo,password];
+                connection.query(sql, valores, function(err, res) {
+                    connection.release();
+                    if (err) 
+                    {
+                        callback(new Error("Error al buscar usuarios en el grupo " + correo + "."));
+                    } 
+                    else 
+                    {
+                        
+                        callback(null, res);
+                      
+                    }
+                })
+            }
+
+        });
     }
 
     getUsuariosByGrupo(idGrupo, callback) {
@@ -140,4 +172,4 @@ class modelUsuario {
 
 }
 
-module.exports =modelUsuario;
+module.exports = modelUsuario;
