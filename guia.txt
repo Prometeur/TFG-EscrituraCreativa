@@ -1,0 +1,39 @@
+https://www.youtube.com/watch?v=T8mqZZ0r-RA&ab_channel=PedroTech
+
+https://www.youtube.com/watch?v=3YrOOia3-mo&ab_channel=PedroTech
+
+https://www.youtube.com/watch?v=_S2GKnFpdtE&ab_channel=PedroTech
+
+-crear carpetas client y server
+borrar dentro client/src
+	-app.test.js
+	-index.css
+	-logo.svg
+	-serviceWorker.js
+	-setupTest.js
+
+
+
+-----------------------------------------------------------------------
+Client
+
+cd client
+npx create-react-app .
+npm install react-router-dom//para poder crear las rutas 
+npm i axios
+npm i universal-cookie//guardar la sesion
+npm start
+-----------------------------------------------------------------------------------------
+
+Server
+
+cd server
+npm init --yes
+npm i express body-parser mysql
+npm i nodemon
+npm i cors
+
+npm run devStart
+
+ 
+{/* Un comentario JSX */}
