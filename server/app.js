@@ -21,7 +21,8 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 
-app.use(bodyParser.urlencoded({extended:true}));
+//app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json());
 app.use(cors());
 app.use("/auth", routerAuth);
 app.use("/user", routerUser);
@@ -68,6 +69,6 @@ app.listen(3001, function(err) {
  });
 
 //var http = require('http');
-//module.exports = app;
+//module.exports = app;y
 //var server = http.createServer(app);
 //server.listen(3001);

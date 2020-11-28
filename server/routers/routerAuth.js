@@ -1,6 +1,6 @@
 "use strict"
 
-//const { verifySignUp } = require("../middleware");
+const { verifySignUp } = require("../middlware");
 const controller_auth = require("../controllers/controllerAuth");
 const express = require("express");
 const router = express.Router();
@@ -12,6 +12,8 @@ router.use(function(request, response,next) {
     );
     next();
 });
+
+router.post("/signup", [ verifySignUp.checkDuplicateUsernameOrEmail, controller_auth.signUp ]);
 
 router.post("/signin", controller_auth.signIn);
 

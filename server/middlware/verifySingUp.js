@@ -1,59 +1,44 @@
+/*
+* Name_file : ControllerAuth.justify
+* Descripcion: Autenticación y autorizacion de datos para el acceso y registro de cuentas.
+* parameters:
+
+*/
+/*--------------------------------------------------*/
+// Dependencies
+"use strict"
+const config = require("../BBDD/config");
 const model = require("../models/modelUsuarios");
 const mysql = require("mysql");
 const pool = mysql.createPool(config.mysqlConfig);
 const model_user = new model(pool);
-//const ROLES = db.ROLES;
+const express = require("express");
+const app = express();
+const bodyParser = require("body-parser");
+app.use(bodyParser.json());
 
+/*--------------------------------------------------*/
+// Functionality system
+
+//Check that an email is not duplicated in the database
 function checkDuplicateUsernameOrEmail(request, response, next) {
-  // Username
-  model_user.findOneUsername({
-    where: {
-      username: request.body.username
-    }
-  }).then(user => {
-    if (user) {
-      res.status(400).send({
-        message: "Failed! Username is already in use!"
-      });
-      return;
-    }
 
-    // Email
-    model_user.findOneEmail({
-      where: {
-        email: req.body.email
+  model_user.findOneEmail(request.body.email,function(err, rel) {
+      if(err)
+      {
+        response.status(500);
       }
-    }).then(user => {
-      if (user) {
-        res.status(400).send({
-          message: "Failed! Email is already in use!"
-        });
-        return;
+      else
+      {
+        if(rel)
+          response.status(400).send({ message: "Failed! Email is already in use!" });
       }
-
       next();
-    });
   });
 };
-/*
-function checkRolesExisted(request, response, next) {
-  if (request.body.roles) {
-    for (let i = 0; i < req.body.roles.length; i++) {
-      if (!ROLES.includes(req.body.roles[i])) {
-        res.status(400).send({
-          message: "Failed! Role does not exist = " + req.body.roles[i]
-        });
-        return;
-      }
-    }
-  }
-  
-  next();
-};
-*/
+
 const verifySignUp = {
-  checkDuplicateUsernameOrEmail: checkDuplicateUsernameOrEmail,
-  /*checkRolesExisted: checkRolesExisted*/
+  checkDuplicateUsernameOrEmail: checkDuplicateUsernameOrEmail
 };
 
 module.exports = verifySignUp;

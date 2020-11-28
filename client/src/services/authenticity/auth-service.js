@@ -3,19 +3,21 @@ import axios from "../../axios";
 class AuthService {
  
     login(username, password) {
-        
-       return axios.post("/auth/signin", { username, password })
-        .then(response => {
-               
+      
+        return axios.post("/auth/signin", { username: username, password: password }, { 
+           headers: {
+               'Content-Type': 'application/x-www-form-urlencoded'
+            } 
+        })
+        .then(response =>{
+            console.log(response.data);
             if (response.data.accessToken) 
             {
                 // Obtenemos los datos desde el servidor y almacenamos los datos del usuario
                 localStorage.setItem("user", JSON.stringify(response.data));
-            
-             
             }
         
-             return response.data;
+            return response.data;
       
          });
     }
@@ -25,12 +27,16 @@ class AuthService {
         localStorage.removeItem("user");
     }
 
-    register(username, email, password) {
+    register(username, surname, email, password) {
        
         return axios.post("/auth/signup", {
-            username,
-            email,
-            password,
+            username: username,
+            surname: surname,
+            email: email,
+            password: password,
+        }, { headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+         } 
         });
     }
 

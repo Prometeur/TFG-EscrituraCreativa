@@ -63,32 +63,23 @@ class Login extends Component {
     this.form.validateAll();
 
     if (this.checkBtn.context._errors.length === 0) {
-        AuthService.login(this.state.username, this.state.password).then(
-          response => {
-            console.log(response.data);
+    
+        AuthService.login(this.state.username, this.state.password)
+        .then( ()=> {
+          console.log("hola");
             this.props.history.push("/profile");
             window.location.reload();
-          },
-          error => {
-            const resMessage =
-              (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-              error.message ||
-              error.toString();
-
-            this.setState({
-              loading: false,
-              message: resMessage
-            });
-          }
-        );
+          })
+        .catch(e => {
+          console.log(e);
+        });
       } 
       else 
       {
         this.setState({
           loading: false
         });
+        console.log("error");
       }
   }
 

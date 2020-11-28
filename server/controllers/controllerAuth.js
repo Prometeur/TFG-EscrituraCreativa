@@ -1,13 +1,17 @@
 /*
-* Name_file : 
-* Descripcion:
+* Name_file : ControllerAuth.justify
+* Descripcion: Autenticación y autorizacion de datos para el acceso y registro de cuentas.
 * parameters:
-    @routerUSer
     @express
     @path
     @bodyParser
-    @cors
     @app
+    @config
+    @config_auth
+    @model
+    @model_user
+    @jwt
+    @bcrypt
 */
 /*--------------------------------------------------*/
 // Dependencies
@@ -25,68 +29,71 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 app.use(bodyParser.urlencoded({extended:true}));
-
+app.use(bodyParser.json());
 
 /*--------------------------------------------------*/
 // Functionality systems
 
+ // Save user in the database after this has been verified.
 function signUp(request, response) {
-  
-    // Save User to Database
- /* model_user.create({
-    username: request.body.username,
-    email: request.body.email,
-    password: bcrypt.hashSync(request.body.password, 8)
-  })
-    .then(user => {
-        console.log(user.body);
-    })
-    .catch(err => {
-      response.status(500).send({ message: err.message });
-    });*/
-}
-
-// 
-function signIn(request, response) {
-  
-
  
-  let username = request.body.username;
-  let password =  request.body.password;
- 
-  model_user.findOneEmail(username,password, function(err, rel) {
-    
-    if(err)
-    {
-        response.status(500);
-    }
-    else
-    {
-      if(rel != undefined)
+ model_user.create(request.body.username,request.body.surname,
+  request.body.email, bcrypt.hashSync(request.body.password, 8), function(err, rel){
+       
+      if(err)
       {
-        response.status(500);
+         response.status(500);
       }
       else
       {
-          response.status(200);
-          console.log(rel);
-         /*
+          response.status(200).send({ message: "Hola nuevo usuario!" });
+      }
+  });
+}
+
+// log in
+function signIn(request, response) {
+ 
+  let username = request.body.username;
+ 
+  model_user.findOneEmail(username, function(err, rel) {
+    if(err)
+    {
+        response.status(500).send({message:"Internal server error"});
+    }
+    else
+    {
+      if(!rel)
+      {
+           response.status(404).send({ message: "User Not found." });
+      }
+      else
+      {  
+        
           var passwordIsValid = bcrypt.compareSync(
             request.body.password,
-            user.password
+            rel.password
           );
-      
-          if (!passwordIsValid) {
+          
+         if (!passwordIsValid) {
             return response.status(401).send({
               accessToken: null,
               message: "Invalid Password!"
             });
           }
-      
-            var token = jwt.sign({ id: user.id }, config.secret, {
+    
+        var token = jwt.sign({ id: rel.id }, config_auth.secret, {
               expiresIn: 86400 // 24 hours
-            });
-            */
+         });
+        
+         response.status(200).send({
+          id: rel.id,
+          username: rel.nombre,
+          email: rel.correo,
+          activo: rel.activo,
+          rol: rel.rol,
+          accessToken: token
+        });
       }
     }
   });
@@ -94,6 +101,6 @@ function signIn(request, response) {
 }
 
 module.exports = {
-   singUp: signUp,
+   signUp: signUp,
    signIn: signIn
 } 

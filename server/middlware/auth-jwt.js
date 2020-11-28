@@ -1,13 +1,8 @@
 /*
-* Name_file : 
-* Descripcion:
+* Name_file : auth-jwt.js
+* Descripcion: 
 * parameters:
-    @routerUSer
-    @express
-    @path
-    @bodyParser
-    @cors
-    @app
+   
 */
 
 /*--------------------------------------------------*/
@@ -42,7 +37,6 @@ function verifyToken (request, response, next) {
       }
       //request.UserId cambiado por .correo
       request.correo = decoded.correo;
-      next();
     });
 }
 

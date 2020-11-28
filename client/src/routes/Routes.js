@@ -7,7 +7,8 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 import AuthService from "../services/authenticity/auth-service";
 import Login from '../components/login/login';
-import Profile from "../components/profile"
+import Profile from '../components/login/profile';
+import Register from "../components/login/register";
 
 
 /*defino las rutas de los componentes
@@ -111,7 +112,11 @@ class Routes extends Component {
                     Login
                   </Link>
                 </li>
-
+                <li className="nav-item">
+                <Link to={"/register"} className="nav-link">
+                  Sign Up
+                </Link>
+              </li>
               </div>
             )}
           </nav>
@@ -119,6 +124,7 @@ class Routes extends Component {
           <div className="container mt-3">
             <Switch>  
               <Route exact path="/login" component={Login} />
+              <Route exact path="/register" component={Register} />
               <Route exact path="/profile" component={Profile} />
             </Switch>
           </div>

@@ -6,8 +6,8 @@ class modelUsuario {
         this.pool = pool;
     }
 
-    findOneEmail (correo, password, callback) {
-       
+    create(username, surname, email, password, callback) {
+
         this.pool.getConnection(function(err, connection) {
            
             if(err)
@@ -16,19 +16,46 @@ class modelUsuario {
             }
             else
             {
-
-                const sql = "SELECT * FROM usuario where correo = ? and password = ?;";
-                const valores = [correo,password];
+                const sql = "INSERT INTO usuario (correo, password,nombre,apellidos,activo,rol) values (?,?,?,?,?,?)";
+                const valores = [email,password,username,surname,1,"E"];
                 connection.query(sql, valores, function(err, res) {
                     connection.release();
                     if (err) 
                     {
-                        callback(new Error("Error al buscar usuarios en el grupo " + correo + "."));
+                        callback(new Error("Error al crear el desafío."));
+                    } 
+                    else
+                    {
+                        return callback(null, res[0]);
+                    }
+                })
+            }
+        });
+    }
+
+    findOneEmail (username, callback) {
+       
+        this.pool.getConnection(function(err, connection) {
+           
+            if(err)
+            {
+                callback(new Error("No se puede conectar a la base de datos."))
+            }
+            else
+            {  
+               
+                const sql = "SELECT * FROM usuario where correo = ?;";
+                const valores = [username];
+                connection.query(sql, valores, function(err, res) {
+                    connection.release();
+                    if (err) 
+                    {
+                        callback(new Error("Error al buscar usuarios en el grupo " + username + "."));
                     } 
                     else 
                     {
-                        
-                        callback(null, res);
+                      console.log(res);
+                      return callback(null,res[0]);
                       
                     }
                 })
@@ -49,7 +76,7 @@ class modelUsuario {
                     if (err) {
                         callback(new Error("Error al buscar usuarios en el grupo " + idGrupo + "."));
                     } else {
-                        callback(null, res);
+                        callback(null,res);
                     }
                 })
             }
