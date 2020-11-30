@@ -67,8 +67,8 @@ class Login extends Component {
         AuthService.login(this.state.username, this.state.password)
         .then( ()=> {
           console.log("hola");
-            this.props.history.push("/profile");
-            window.location.reload();
+             this.props.history.push("/profile");
+             window.location.reload();
           })
         .catch(e => {
           console.log(e);
@@ -114,7 +114,7 @@ class Login extends Component {
                       onChange={this.onChangePassword}
                       validations={[required]}
                   />
-                  <br />
+                <br />
                 <button className="btn btn-info btn-block login" > Login </button>
                 <CheckButton
                 text='Log In' 

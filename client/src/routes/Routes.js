@@ -32,13 +32,12 @@ class Routes extends Component {
       
       //Take info about server
       const user = AuthService.getCurrentUser();
-  
-      if (user) {
+      if(user) {
         this.setState({
           currentUser:user,
-          showStudent: user.includes("E"),
-          showTeacher: user.includes("T"),
-          showAdmin: user.includes("A"),
+          showStudent: user["rol"].includes("E"),
+          showTeacher: user["rol"].includes("T"),
+          showAdmin: user["rol"].includes("A"),
         });
       }
     }
@@ -96,7 +95,6 @@ class Routes extends Component {
                 <li className="nav-item">
                   <Link to={"/profile"} className="nav-link">
                     {currentUser.username}
-                    {console.log(currentUser.username)}
                   </Link>
                 </li>
                 <li className="nav-item">
