@@ -9,10 +9,12 @@ import AuthService from "../services/authenticity/auth-service";
 import Login from '../components/login/login';
 import Profile from '../components/login/profile';
 import Register from "../components/login/register";
+import Home from '../components/pages/home/Home';
 
 
 /*defino las rutas de los componentes
 ejemplo ruta o url del login donde estara alojado/relacionado el componente Login*/
+
 class Routes extends Component {
 
     constructor(props) {
@@ -143,4 +145,5 @@ function Routes() {
   );
 }
 */
+
 export default Routes;
