@@ -23,6 +23,5 @@
     "qs": "^6.9.4",
     "serve-favicon": "^2.5.0"
   },
-  "devDependencies": {},
-  "description": ""
+  "devDependencies": {}
 }

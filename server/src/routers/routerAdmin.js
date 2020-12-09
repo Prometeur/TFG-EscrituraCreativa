@@ -4,7 +4,7 @@ const express = require('express');//voy a usar el modulo express
 const router =express.Router();
 
 //importar la conexion
-const pool = require('../db/database');
+const pool = require('../db/config');
 
 router.get("/getUsers",(req,res)=>{
 
