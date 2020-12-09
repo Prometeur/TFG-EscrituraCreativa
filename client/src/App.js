@@ -4,7 +4,6 @@
 */
 import React from 'react';
 import './App.css';
-import Routes from './routes/Routes';
 import RoutesLogin from './routes/routesLogin';
 import RoutesAdmin from './routes/routesAdmin';
 import RoutesTeacher from './routes/routesTeacher';
@@ -15,7 +14,6 @@ function App()
 {
   return (
     <div className="App">
-      <Routes />
       <RoutesLogin />
       <RoutesAdmin />
       <RoutesTeacher />

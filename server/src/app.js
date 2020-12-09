@@ -26,17 +26,46 @@ app.listen(app.get('port'),()=>{
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.json());
 app.use(cors());
-
+app.use(bodyParser.json());
 /*--------------------------------------------ROUTES----------------------------------------------------------------------------- */
 
 //Routes  url del servidor
-
-app.use('/login',require('./routers/routerLogin'));
 app.use('/admin',require('./routers/routerAdmin'));
 app.use('/teacher',require('./routers/routerTeacher'));
 app.use('/student',require('./routers/routerStudent'));
 app.use('/user',require('./routers/routerUser'));
+app.use('/auth',require('./routers/routerAuth'));
+app.use(middlewareNotFoundError);
+app.use(middlewareServerError);
 
+/*--------------------------------------------------*/
+// Functionality systems
+
+/* Código 404: User error */
+function middlewareNotFoundError(request, response) {
+   
+    response.status(404);
+    /*
+    response.render("404", {
+            mensaje: "La pagina " + request.url + " no existe..."
+    });
+    */
+   
+}
+
+/* Código 500: Internal server error */
+function middlewareServerError(error, request, response, next) {
+
+    response.status(500);
+    console.log(error.message);
+    console.log(error.stack);
+    /*
+    response.render("500", {
+            mensaje: error.message,
+            pila: error.stack
+    });
+    */
+}
 
 
 
