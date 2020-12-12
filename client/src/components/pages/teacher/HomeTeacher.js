@@ -16,6 +16,8 @@ class HomeTeacher extends Component {
 
     state = {
         data: [],
+        searchStudent: '',
+        searchType: 'nombre'
 
     }
 
@@ -48,6 +50,14 @@ class HomeTeacher extends Component {
         window.location.href = './groupTeacher';
     }
 
+     /*cambia la vista a la vista de los estudiantes buscados*/
+     changeViewStudents = () => 
+     {
+         cookies.set('searchStudent', this.state.searchStudent, { path: "/", sameSite: 'lax' });
+         cookies.set('searchType', this.state.searchType, { path: "/", sameSite: 'lax' });
+         window.location.href = './StudentList';
+     }
+
     /*si vuelvo a la pagina de login, comprueba si el usuario ya inicio sension anteriomente
     si es el caso lo redirige a la home segun su rol*/
     componentDidMount() {
@@ -70,6 +80,7 @@ class HomeTeacher extends Component {
             <h2>  Soy Home del Profesor</h2>
             <nav>
                 <button onClick={() => this.cerrarSesion()}>Cerrar Sesión</button>
+                <button text='Estudiantes' onClick={() => this.changeViewStudents()}>Estudiantes  </button>
             </nav>
             <div>
 

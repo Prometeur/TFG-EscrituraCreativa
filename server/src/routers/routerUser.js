@@ -10,6 +10,8 @@ router.get("/getGroups",controller.getGroups);
 // /*Obtiene los desafios del grupo del profesor*/
 //router.get("/getChallenges",controller.getChallenges);
 
+//Muestra todos los estudiantes que contienen cierta clave ya sea en nombre o en su email.
+router.post("/searchStudent", controller.searchStudent);
 
 //router.post("/postChallenge",controller.postChallenge);
 

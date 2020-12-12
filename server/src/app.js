@@ -10,15 +10,6 @@ const app = express();
 const bodyParser = require ('body-parser');
 const cors = require("cors");
 
-/*-------------------------------------------SETTING SERVER--------------------------------------------------------------------- */
-//configuracion del servidor express
-app.set('port',process.env.PORT || 3001);// defino el puerto
-
-//starting the server
-app.listen(app.get('port'),()=>{
-    console.log('Server on port', app.get('port'));
-});
-
 /*-------------------------------------------MIDDLEWARE-------------------------------------------------------------------------- */
 
 //middleware funciones app cliente envia peticion al servidor
@@ -36,6 +27,17 @@ app.use('/admin',require('./routers/routerAdmin'));
 app.use('/teacher',require('./routers/routerTeacher'));
 app.use('/student',require('./routers/routerStudent'));
 app.use('/user',require('./routers/routerUser'));
+
+/*-------------------------------------------SETTING SERVER--------------------------------------------------------------------- */
+//configuracion del servidor express
+app.set('port',process.env.PORT || 3001);// defino el puerto
+
+//starting the server
+app.listen(app.get('port'),()=>{
+    console.log('Server on port', app.get('port'));
+});
+
+
 
 
 
