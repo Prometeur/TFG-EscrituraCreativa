@@ -51,6 +51,28 @@ class modelUser {
             }
         });
     }
+
+    getStudentOfGroup(idGrupo, callback) {
+        this.pool.getConnection(function(err, connection) {
+            if (err) 
+            {
+                callback(new Error("No se puede conectar a la base de datos."))
+            } 
+            else 
+            {
+                const sql = 'SELECT id, nombre, apellidos, foto, correo FROM usuario INNER JOIN grupoestudiante ON usuario.id = grupoestudiante.idEstudiante WHERE usuario.rol = "S" AND grupoestudiante.idGrupo = ?;';
+                const valores = [idGrupo];
+                connection.query(sql, valores, function(err, res) {
+                    connection.release();
+                    if (err) {
+                        callback(new Error("Error al buscar usuarios en el grupo " + idGrupo + "."));
+                    } else {
+                        callback(null, res);
+                    }
+                })
+            }
+        });
+    }
     
 }
 

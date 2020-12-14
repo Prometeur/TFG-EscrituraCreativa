@@ -13,6 +13,9 @@ router.get("/getGroups",controller.getGroups);
 //Muestra todos los estudiantes que contienen cierta clave ya sea en nombre o en su email.
 router.post("/searchStudent", controller.searchStudent);
 
+//Muestra todos los estudiantes que contienen cierta clave ya sea en nombre o en su email.
+router.post("/searchStudentOfGroup", controller.searchStudentOfGroup);
+
 //router.post("/postChallenge",controller.postChallenge);
 
 module.exports = router;

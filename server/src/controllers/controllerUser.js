@@ -107,9 +107,45 @@ function searchStudent(request, response, next){
 
 }
 
+//Busca estudiantes según  el grupo dado.
+function searchStudentOfGroup(request, response, next){
+    let grupo = request.body.grupo;
+
+    modelUser.getStudentOfGroup(grupo, function(err, studentList) {
+        if(err) 
+        {
+            if (err.message == "No se puede conectar a la base de datos.") 
+            {
+                //next(err);
+                console.log("No se puede conectar a la base de datos");
+            }
+            response.status(500);
+            /*response.render("perfil", {
+                error: err.message
+            });*/
+            console.log(err.message);
+        }
+        else if (studentList == null) 
+        {
+            response.status(200);
+            /*response.render("perfil", {
+                error: "No hay estudiantes con los parámetros escogidos."
+            });*/
+            console.log("No hay estudiantes con los parámetros escogidos.");
+        } 
+        else 
+        {
+            response.status(200);
+           response.send(JSON.stringify(studentList));
+        }
+    });
+
+}
+
 
 module.exports = {
     getGroups:getGroups,
-    searchStudent:searchStudent
+    searchStudent:searchStudent,
+    searchStudentOfGroup:searchStudentOfGroup
  
 };
