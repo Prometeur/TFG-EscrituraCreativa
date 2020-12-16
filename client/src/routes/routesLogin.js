@@ -6,7 +6,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 import AuthService from "../services/authenticity/auth-service";
-import Login from '../components/pages/login/login';
+import Login from '../components/pages/login/Login';
 import Profile from '../components/pages/login/profile';
 import Register from "../components/pages/login/register";
 
