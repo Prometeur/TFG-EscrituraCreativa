@@ -4,7 +4,7 @@
 */
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import HomeStudent from '../components/pages/student/HomeStudent';
+import StudentBoard from '../components/pages/student/StudentBoard';
 import GroupStudent from '../components/pages/student/GroupStudent';
 import Writing from '../components/pages/student/Writing';
 
@@ -14,7 +14,7 @@ function Routes() {
     return (
         <BrowserRouter>
             <Switch>
-                <Route exact path="/homeStudent" component={HomeStudent} />
+                <Route exact path="/student" component={StudentBoard} />
                 <Route exact path="/groupStudent" component={GroupStudent} />
                 <Route exact path="/writing" component={Writing} />
             </Switch>

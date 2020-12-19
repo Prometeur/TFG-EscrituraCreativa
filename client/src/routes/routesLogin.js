@@ -6,9 +6,12 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 import AuthService from "../services/authenticity/auth-service";
-import Login from '../components/pages/login/login';
+import Login from '../components/pages/login/Login';
 import Profile from '../components/pages/login/profile';
+import Home from '../components/pages/home/Home';
 import Register from "../components/pages/login/register";
+import BoardTeacher from "../components/pages/teacher/TeacherBoard";
+import BoardStudent from "../components/pages/student/StudentBoard";
 
 
 /*defino las rutas de los componentes
@@ -55,10 +58,14 @@ class Routes extends Component {
           <nav className="navbar navbar-expand navbar-dark bg-dark">
            
             <div className="navbar-nav mr-auto">
-        
+              <li className="nav-item">
+                <Link to={"/home"} className="nav-link">
+                  Home
+                </Link>
+              </li>
               {showTeacher && (
                 <li className="nav-item">
-                  <Link to={"/loign"} className="nav-link">
+                  <Link to={"/teacher"} className="nav-link">
                     Moderator Board
                   </Link>
                 </li>
@@ -66,7 +73,7 @@ class Routes extends Component {
   
               {showAdmin && (
                 <li className="nav-item">
-                  <Link to={"/loign"} className="nav-link">
+                  <Link to={"/admin"} className="nav-link">
                     Admin Board
                   </Link>
                 </li>
@@ -74,8 +81,8 @@ class Routes extends Component {
 
               {showStudent && (
                 <li className="nav-item">
-                  <Link to={"/loign"} className="nav-link">
-                    Admin Board
+                  <Link to={"/student"} className="nav-link">
+                    Student Board
                   </Link>
                 </li>
               )}
@@ -89,7 +96,6 @@ class Routes extends Component {
               )}
               
             </div>
-
             {currentUser ? (
               <div className="navbar-nav ml-auto">
                 <li className="nav-item">
@@ -120,10 +126,13 @@ class Routes extends Component {
           </nav>
   
           <div className="container mt-3">
-            <Switch>  
+            <Switch>
+              <Route exact path={["/", "/home"]} component={Home} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/profile" component={Profile} />
+              <Route exact path='/student' component={BoardStudent}></Route>
+              <Route exact path='/teacher' component={BoardTeacher}></Route>
             </Switch>
           </div>
         </div>

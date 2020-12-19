@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import AuthService from "../../../services/authenticity/auth-service";
 
+
 export default class Profile extends Component {
   
   constructor(props) {
@@ -16,8 +17,8 @@ export default class Profile extends Component {
 
   componentDidMount() {
     const currentUser = AuthService.getCurrentUser();
-
-   if (!currentUser) this.setState({ redirect: "/login" });
+    if (!currentUser) this.setState({ redirect: "/home" });
+   
     this.setState({ currentUser: currentUser, userReady: true })
   }
 
@@ -42,18 +43,6 @@ export default class Profile extends Component {
           <strong>Token:</strong>{" "}
          {console.log(currentUser.accessToken.substring(0, 20))} ...{" "}
           {console.log(currentUser.accessToken.substr(currentUser.accessToken.length - 20))}
-        </p>
-        <p>
-          <strong>Id:</strong>{" "}
-          {currentUser.id}
-        </p>
-        <p>
-          <strong>Email:</strong>{" "}
-          {currentUser.correo}
-        </p>
-        <strong>Authorities:</strong>
-        <p>
-          {currentUser.rol}
         </p>
       </div>: null}
       </div>

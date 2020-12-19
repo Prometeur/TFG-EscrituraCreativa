@@ -7,11 +7,11 @@ class UserService {
     return axios.get('all');
   }
 
-  getUserBoard() {
-    return axios.get('user', { headers: authHeader() });
+  getStudentBoard() {
+    return axios.get('student', { headers: authHeader() });
   }
 
-  getModeratorBoard() {
+  getTeacherBoard() {
     return axios.get('teacher', { headers: authHeader() });
   }
 
