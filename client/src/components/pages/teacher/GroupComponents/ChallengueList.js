@@ -35,6 +35,19 @@ class GroupTeacher extends Component {
         window.location.href = './challenge';
     }
 
+    //Acepta al estudiante como usuario de la aplicación.
+    deleteChallenge = (idApplicant) => 
+     {
+         let targetUrl = "http://localhost:3001/User/" + 'deleteChallenge';
+         let newUrl = "http://localhost:3000/groupTeacher"
+         axios.get(targetUrl, { params: { id: idApplicant } }).then(response => {
+            window.location.href = newUrl;
+        }).catch(error => {
+            console.log(error.message);
+        })
+        
+     }
+
     /*Si vuelvo a la pagina de login, comprueba si el usuario ya inicio sesion anteriomente
    si es el caso lo redirige a la home segun su rol*/
     componentDidMount() {
@@ -78,7 +91,7 @@ class GroupTeacher extends Component {
                                         <td>{challenge.fechaFin}</td>
                                         <td>{challenge.activo}</td>
                                         <td>{challenge.idGrupo}</td>
-                                        <button onClick={() => this.changeView(challenge.id)}>Crear Desafio</button>
+                                        <div><button text='Eliminar desafío' onClick={() => this.deleteChallenge(challenge.id)}>Eliminar desafío</button></div>
                                     </tr>
                                 )
                             })}

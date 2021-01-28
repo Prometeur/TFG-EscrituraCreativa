@@ -58,6 +58,14 @@ class HomeTeacher extends Component {
          window.location.href = './StudentList';
      }
 
+     /*cambia la vista a la vista de los estudiantes solicitando un nuevo ingreso*/
+     changeViewApplicants = () => 
+     {
+         cookies.set('searchStudent', this.state.searchStudent, { path: "/", sameSite: 'lax' });
+         cookies.set('searchType', this.state.searchType, { path: "/", sameSite: 'lax' });
+         window.location.href = './ApplicantList';
+     }
+
     /*si vuelvo a la pagina de login, comprueba si el usuario ya inicio sension anteriomente
     si es el caso lo redirige a la home segun su rol*/
     componentDidMount() {
@@ -81,6 +89,7 @@ class HomeTeacher extends Component {
             <nav>
                 <button onClick={() => this.cerrarSesion()}>Cerrar Sesión</button>
                 <button text='Estudiantes' onClick={() => this.changeViewStudents()}>Estudiantes  </button>
+                <button text='Solicitudes de ingreso' onClick={() => this.changeViewApplicants()}>Solicitantes  </button>
             </nav>
             <div>
 

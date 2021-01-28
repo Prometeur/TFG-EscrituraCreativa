@@ -13,8 +13,20 @@ router.get("/getGroups",controller.getGroups);
 //Muestra todos los estudiantes que contienen cierta clave ya sea en nombre o en su email.
 router.post("/searchStudent", controller.searchStudent);
 
-//Muestra todos los estudiantes que contienen cierta clave ya sea en nombre o en su email.
+//Muestra todos los estudiantes aún no aceptados (solicitantes) que contienen cierta clave ya sea en nombre o en su email.
+router.post("/searchApplicant", controller.searchApplicant);
+
+/*Acepta al estudiante solicitante en la aplicación cambiando su campo activo a 1 */
+router.get("/acceptApplicant",controller.acceptApplicant);
+
+//Muestra todos los estudiantes que pertenezcan a un grupo dado.
 router.post("/searchStudentOfGroup", controller.searchStudentOfGroup);
+
+/*Obtiene los los grupos del profesor */
+router.get("/getProfile",controller.getProfile);
+
+/*Deactiva un desafío (pone su activo a 0) */
+router.get("/deleteChallenge",controller.deleteChallenge);
 
 //router.post("/postChallenge",controller.postChallenge);
 

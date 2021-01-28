@@ -9,6 +9,8 @@ import HomeTeacher from '../components/pages/teacher/HomeTeacher';
 import GroupTeacher from '../components/pages/teacher/GroupTeacher';
 import Challenge from '../components/pages/teacher/Challenge';
 import SearchStudentRes from '../components/pages/teacher/StudentList';
+import SearchApplicantRes from '../components/pages/teacher/ApplicantList';
+import Profile from '../components/pages/teacher/Profile';
 
 /*defino las rutas de los componentes
 Rutas o urls del Teacher asociado a la componente pages/teacher*/
@@ -20,6 +22,8 @@ function Routes() {
         <Route exact path="/groupTeacher" component={GroupTeacher} />
         <Route exact path="/challenge" component={Challenge} />
         <Route exact path="/StudentList" component={SearchStudentRes} />
+        <Route exact path="/ApplicantList" component={SearchApplicantRes} />
+        <Route exact path="/Profile" component={Profile} />
         </Switch>
       </BrowserRouter>
     );
