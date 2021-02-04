@@ -1,0 +1,51 @@
+/* Luis */
+
+
+@import url('https://fonts.googleapis.com/css2?family=Alice&display=swap');
+
+.app{
+    min-height: 100vh;/*vh viewport height altura ventana grafica*/
+    max-height: auto;
+    /* background-color: #1e1e1e; */
+}
+
+.heading{
+    text-align: center;
+    font-family: 'Alice', serif;
+    font-size: 2rem;/*REM Relative to the root element*/
+    font-weight: bold;
+    color: #1e1e1e;
+    padding-top: 2rem;
+  }
+
+
+  /*id*/
+#file[type="file"] {
+	display: none;
+}
+
+/* clase, posicionamiento del label del boton */
+.label-holder {
+	width: 100%;
+	height: 50px;
+    margin-top: 3em;
+    display: grid;
+    place-items: center;
+}
+
+/* .label{
+  height: 50px;
+  width: 200px;
+  background-color:#2a3eb1;
+  color: white;
+  display: grid;
+  place-items: center;
+  font-size: 2.5rem ;
+  cursor: pointer;
+} */
+
+/* .media {
+    margin-top: 2em;
+    display: grid;
+    place-items: center;
+} */
