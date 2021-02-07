@@ -6,6 +6,9 @@
 import React, { Component } from 'react';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
+import datos from "./ProfileComponents/ProfileInfo";
+import escritos from "./ProfileComponents/ProfileScripts";
+
 
 //const baseUrl = "http://localhost:3001/teacher/getGroups";
 const baseUrl = "http://localhost:3001/user/getProfile";
@@ -16,17 +19,9 @@ const cookies = new Cookies();
 class Profile extends Component {
 
     state = {
-        data: [],
+        data:[],
+        ventana: 1,
 
-    }
-
-    /*Se hacen peticiones al servidor para que me devuelva todos los estudiantes buscados*/
-    peticionGet = () => {
-        axios.get(baseUrl, { params: { idUser: cookies.get('idRequestedUser') } }).then(response => {
-            this.setState({ data: response.data });
-        }).catch(error => {
-            console.log(error.message);
-        })
     }
 
     /*Elimina los datos de sesion almacenada por las cookies*/
@@ -44,69 +39,60 @@ class Profile extends Component {
     /*Si vuelvo a la pagina de login, comprueba si el usuario ya inicio sesion anteriomente
    si es el caso lo redirige a la home segun su rol*/
    componentDidMount() {
-    this.peticionGet();
+        this.peticionGet();
         if (!cookies.get('correo')) {
             window.location.href = "./";
         }
     }
 
-    //Acepta al estudiante como usuario de la aplicación.
-    acceptApplicant = (idApplicant) => 
-     {
-         //window.location.href = './acceptApplicant/'+ idApplicant;
-         let targetUrl = "http://localhost:3001/User/" + 'acceptApplicant';
-         let newUrl = "http://localhost:3000/Profile"
-         axios.get(targetUrl, { params: { idUser: idApplicant } }).then(response => {
+    /*Se hacen peticiones al servidor para que me devuelva lso datos del estudiante*/
+    peticionGet = () => {
+        axios.get(baseUrl, { params: { idUser: cookies.get('idRequestedUser') } }).then(response => {
             this.setState({ data: response.data });
-            window.location.href = newUrl;
         }).catch(error => {
             console.log(error.message);
         })
-        
-     }
+    }
+
+
+    cambiaVentana = (opcion) =>{
+        this.setState({ventana : opcion});
+    }
 
     /*Dibuja la pagina  */
     render() {
-        let cartel =<div> </div>;
-        let contenido = <div>
-                        <h3>ID: {this.state.data.id}</h3>
-                        <h3>Nombre: {this.state.data.nombre}</h3>
-                        <h3>Apellidos: {this.state.data.apellidos}</h3>
-                        <h3>Correo: {this.state.data.correo}</h3>
-                    </div>;
+        
+        let componente = datos;
+        if(this.state.ventana == 2)
+        {
+            componente = escritos;
+        }
+
+        let botones = <nav>
+            <button onClick={() => this.cambiaVentana(1)}>Datos</button>
+            <button onClick={() => this.cambiaVentana(2)}>Escritos</button>
+        </nav>;
 
         if(this.state.data.activo === 0)
         {
-            cartel = <nav>
-                        <h2> Este estudiante aún no ha sido aceptado por un profesor.</h2>
-                    </nav>;
-            contenido = <div>
-                        <h3>ID: {this.state.data.id}</h3>
-                        <h3>Nombre: {this.state.data.nombre}</h3>
-                        <h3>Apellidos: {this.state.data.apellidos}</h3>
-                        <h3>Correo: {this.state.data.correo}</h3>
-                        <div><button text='Aceptar solicitud' onClick={() => this.acceptApplicant(this.state.data.id)}>Aceptar solicitud</button></div>
-            </div>;
+            botones = <div></div>;
         }
 
-
         return (
-            <>
-                <h1>Perfil:</h1>
+            <div>
+                <h2> {this.state.data.nombre} {this.state.data.apellidos}</h2>
                 <nav>
                     <button onClick={() => this.cerrarSesion()}>Cerrar Sesión</button>
                 </nav>
+                {botones}
                 <div>
-                
-                    {cartel}
-                
-
-                    {contenido}
-
+                    
+                    {React.createElement(componente)}
 
                 </div>
-            </>
+            </div>
         );
+
     }
 
 

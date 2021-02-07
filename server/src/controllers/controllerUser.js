@@ -284,6 +284,41 @@ function deleteChallenge(request, response, next){
 
 }
 
+//Busca escritos no colaborativos según el id estudiante dado.
+function getScriptsByStudent(request, response, next){
+    let id = request.query.id;
+
+    modelUser.getScriptsByStudent(id, function(err, scriptList) {
+        if(err) 
+        {
+            if (err.message == "No se puede conectar a la base de datos.") 
+            {
+                //next(err);
+                console.log("No se puede conectar a la base de datos");
+            }
+            response.status(500);
+            /*response.render("perfil", {
+                error: err.message
+            });*/
+            console.log(err.message);
+        }
+        else if (scriptList == null) 
+        {
+            response.status(200);
+            /*response.render("perfil", {
+                error: "No hay estudiantes con los parámetros escogidos."
+            });*/
+            console.log("No escritos disponibles.");
+        } 
+        else 
+        {
+            response.status(200);
+           response.send(JSON.stringify(scriptList));
+        }
+    });
+
+}
+
 
 
 module.exports = {
@@ -293,6 +328,7 @@ module.exports = {
     searchStudentOfGroup:searchStudentOfGroup,
     getProfile:getProfile,
     acceptApplicant:acceptApplicant,
-    deleteChallenge:deleteChallenge
+    deleteChallenge:deleteChallenge,
+    getScriptsByStudent:getScriptsByStudent
  
 };

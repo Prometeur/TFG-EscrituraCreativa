@@ -1,51 +1,53 @@
 /*
-*  Name_file :StudentList.js
-*  Description: Contiene una lista de estudiantes que pertenecen a un grupo.
-*    
+*  Name_file :ProfileScripts.js
+*  Description: Componente que contiene la lista de escritos del estudiante
 */
 import React, { Component } from 'react';
-import Cookies from 'universal-cookie';
 import axios from 'axios';
+import Cookies from 'universal-cookie';
 
-const cookies = new Cookies();
+const baseUrl = "http://localhost:3001/User/getScriptsByStudent";
+const cookies = new Cookies();//cokies guarda la informacion de la sesion del usuario
 
-const baseUrl = "http://localhost:3001/user/searchStudentOfGroup";
 
-class StudentList extends Component {
+class GroupTeacher extends Component {
 
     state = {
         data: [],
         filteredData:[],
-        searchStudent: '',
+        searchKey: '',
         searchType: 'nombre'
 
     }
 
-    /*Se hacen peticiones al servidor para que me devuelva todos los estudiantes buscados*/
-    peticionPost = () => {
-        axios.post(baseUrl, { grupo: cookies.get('groupSelect')  }).then(response => {
+    /*Se hacen peticiones al servidor para que me devuelva la tabla desafios, me muestra todos los desafios del grupo seleccioando 
+    por el profesor*/
+    peticionGet = () => {
+        axios.get(baseUrl, { params: { id: cookies.get('idRequestedUser') } }).then(response => {
+            console.log(response.data);//muestra consola navegador
             this.setState({ data: response.data });
+            console.log(response.data);
             this.setState({ filteredData: response.data });
         }).catch(error => {
             console.log(error.message);
         })
     }
 
-    //Filtra los datos de los estudiantes buscados para solo buscar en la base de datos una vez
+    //Filtra los datos de los escritos buscados para solo buscar en la base de datos una vez
     filterData = () =>{
         let auxArray = [];
         this.state.filteredData = [];
         for(let i = 0; i < this.state.data.length; i++){
-            if(this.state.searchType == "email")
+            if(this.state.searchType == "titulo")
             {
-                if(new RegExp( this.state.searchStudent, 'i'  ).test(this.state.data[i].correo))
+                if(new RegExp( this.state.searchKey, 'i'  ).test(this.state.data[i].titulo))
                 {
                     auxArray.push(this.state.data[i]);
                 }
             }
             else
             {
-                if((new RegExp(this.state.searchStudent, 'i' ).test(this.state.data[i].nombre)) || (new RegExp( this.state.searchStudent, 'i' ).test(this.state.data[i].apellidos)) )
+                if((new RegExp(this.state.searchKey, 'i' ).test(this.state.data[i].nombre)) )
                 {
                     auxArray.push(this.state.data[i]);
                 }
@@ -70,17 +72,11 @@ class StudentList extends Component {
         this.filterData();
     }
 
-    changeViewStudentProfile = (idApplicant) => 
-     {
-         cookies.set('idRequestedUser', idApplicant, { path: "/", sameSite: 'lax' });
-         window.location.href = './Profile';
-         console.log(idApplicant);
-     }
 
     /*Si vuelvo a la pagina de login, comprueba si el usuario ya inicio sesion anteriomente
    si es el caso lo redirige a la home segun su rol*/
-   componentDidMount() {
-    this.peticionPost();
+    componentDidMount() {
+        this.peticionGet();
     }
 
     /*Dibuja la pagina  */
@@ -89,23 +85,22 @@ class StudentList extends Component {
         let tabla = <table>
         <thead>
             <tr>
-                <th>idEstudiante</th>
-                <th>Nombre</th>
-                <th>Apellidos</th>
-                <th>email</th>
+                <th>idEscritor</th>
+                <th>IdDesafio</th>
+                <th>Nombre del escrito</th>
+                <th>Título del desafío</th>
 
             </tr>
         </thead>
 
         <tbody>
-            {this.state.filteredData.map(student => {
+            {this.state.filteredData.map(script => {
                 return (
                     <tr>
-                        <td>{student.id}</td>
-                        <td>{student.nombre}</td>
-                        <td>{student.apellidos}</td>
-                        <td>{student.correo}</td>
-                        <td><button text='Ver Perfil' onClick={() => this.changeViewStudentProfile(student.id)}>Ver perfil</button></td>
+                        <td>{script.idEscritor}</td>
+                        <td>{script.idDesafio}</td>
+                        <td>{script.nombre}</td>
+                        <td>{script.titulo}</td>
                     </tr>
                 )
             })}
@@ -122,19 +117,19 @@ class StudentList extends Component {
 
         return (
             <>
-                <h1>Estudiantes del grupo:</h1>
+                <h1>Escritos del estudiante:</h1>
 
                 <div>
-                <h2> Resultados de buscar estudiantes con {cookies.get('searchType')} similar a: {cookies.get('searchStudent')}</h2>
+                <h2> Resultados de buscar escritos con {cookies.get('searchType')} similar a: {cookies.get('searchStudent')}</h2>
                 <h1></h1>
                         <label>Buscar estudiante: </label>
                         <br />
-                        <input type="text" name="searchStudent" onChange={this.handleChangeSearch} />
+                        <input type="text" name="searchKey" onChange={this.handleChangeSearch} />
                         <br />
                         <label for="searchType">Escoja cómo buscar:</label>
                         <select name="searchType" id="searchType" onChange={this.handleChangeSearchType}>
                             <option value="nombre">Nombre</option>
-                            <option value="email">Email</option>
+                            <option value="titulo">Título</option>
                         </select> 
                 </div>
                 <div>
@@ -150,7 +145,6 @@ class StudentList extends Component {
         );
     }
 
-
 }
 
-export default StudentList;
+export default GroupTeacher;

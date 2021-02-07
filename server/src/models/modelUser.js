@@ -190,6 +190,28 @@ class modelUser {
         });
     }
     
+     /*Obtiene los escritos no colaborativos del alumno*/
+     getScriptsByStudent(idUser, callback) {
+        this.pool.getConnection(function(err, connection) {
+            if (err) 
+            {
+                callback(new Error("No se puede conectar a la base de datos."))
+            } 
+            else 
+            {
+                const sql = "SELECT idEscritor, idDesafio, nombre, titulo FROM escrito INNER JOIN desafio ON escrito.idDesafio = desafio.id  WHERE idEscritor =  ? AND escrito.colaborativo = 0 AND escrito.activo = 1";
+                const valores = [idUser];
+                connection.query(sql, valores, function(err, res) {
+                    connection.release();
+                    if (err) {
+                        callback(new Error("Error al buscar los escritos."));
+                    } else {
+                        callback(null, res);
+                    }
+                })
+            }
+        });
+    }
 }
 
 //Data export

@@ -28,6 +28,9 @@ router.get("/getProfile",controller.getProfile);
 /*Deactiva un desafío (pone su activo a 0) */
 router.get("/deleteChallenge",controller.deleteChallenge);
 
+/*BUsca todos los escritos no colaborativos del usuario */
+router.get("/getScriptsByStudent",controller.getScriptsByStudent);
+
 //router.post("/postChallenge",controller.postChallenge);
 
 module.exports = router;

@@ -92,6 +92,13 @@ class SearchStudentRes extends Component {
         }
     }
 
+    changeViewStudentProfile = (idApplicant) => 
+    {
+        cookies.set('idRequestedUser', idApplicant, { path: "/", sameSite: 'lax' });
+        window.location.href = './Profile';
+        console.log(idApplicant);
+    }
+
     /*Dibuja la pagina  */
     render() {
         let cartel =<div> </div>;
@@ -114,6 +121,7 @@ class SearchStudentRes extends Component {
                         <td>{student.nombre}</td>
                         <td>{student.apellidos}</td>
                         <td>{student.correo}</td>
+                        <td><button text='Ver Perfil' onClick={() => this.changeViewStudentProfile(student.id)}>Ver perfil</button></td>
                     </tr>
                 )
             })}
