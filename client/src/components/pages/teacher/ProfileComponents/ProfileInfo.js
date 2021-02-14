@@ -163,6 +163,9 @@ class ProfileInfo extends Component {
                         <h3>Correo: {this.state.data.correo}</h3>
                         <div><button text='Aceptar solicitud' onClick={() => this.acceptApplicant(this.state.data.id)}>Aceptar solicitud</button></div>
             </div>;
+
+            invitaGrupo = <nav></nav>;
+            botonInvitaGrupo = <nav></nav>;
         }
 
 
