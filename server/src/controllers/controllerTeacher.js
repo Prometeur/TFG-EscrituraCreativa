@@ -9,7 +9,11 @@ const router = express.Router();
 const mysql = require("mysql");
 const config = require("../db/config");
 const pool = mysql.createPool(config.database);
+const bodyParser = require('body-parser');
 
+
+router.use(bodyParser.urlencoded({extended:true}));
+router.use(bodyParser.json());
 
 const modelTeacher = new modelo(pool);
 
@@ -97,11 +101,48 @@ function createChallenge(req, res) {
     });
 }
 
+//Busca estudiantes según el grupo dado.
+function inviteStudentToGroup(request, response, next){
+    let grupo = request.body.grupo;
+    let id = request.body.idEstudiante;
+
+    modelTeacher.inviteStudentToGroup(grupo, id, function(err, res) {
+        if(err) 
+        {
+            if (err.message == "No se puede conectar a la base de datos.") 
+            {
+                //next(err);
+                console.log("No se puede conectar a la base de datos");
+            }
+            response.status(500);
+            /*response.render("perfil", {
+                error: err.message
+            });*/
+            console.log(err.message);
+        }
+        else if (res == null) 
+        {
+            response.status(200);
+            /*response.render("perfil", {
+                error: "No hay estudiantes con los parámetros escogidos."
+            });*/
+            console.log("No se ha podido invitar el estudiante al grupo.");
+        } 
+        else 
+        {
+            response.status(200);
+           response.send(JSON.stringify(res));
+        }
+    });
+
+}
+
 
 module.exports = {
     //getGroups:getGroups,
     getChallenges: getChallenges,
     createChallenge: createChallenge,
+    inviteStudentToGroup:inviteStudentToGroup
 };
 
 

@@ -19,7 +19,30 @@ class modelUser {
                 connection.query(sql, valores, function(err, res) {
                     connection.release();
                     if (err) {
-                        callback(new Error("Error al buscar usuarios en el grupo " + group + "."));
+                        callback(new Error("Error al buscar los grupos del profesor."));
+                    } else {
+                        callback(null, res);
+                    }
+                })
+            }
+        });
+    }
+
+    /*Obtiene todos los grupos del alumno*/
+    getStudentGroups(group, callback) {
+        this.pool.getConnection(function(err, connection) {
+            if (err) 
+            {
+                callback(new Error("No se puede conectar a la base de datos."))
+            } 
+            else 
+            {
+                const sql = "SELECT grupo.id, grupo.nombre FROM grupoestudiante  INNER JOIN grupo  ON grupoestudiante.idGrupo = grupo.id WHERE grupoestudiante.idEstudiante = ? AND grupo.activo = 1";
+                const valores = [group];
+                connection.query(sql, valores, function(err, res) {
+                    connection.release();
+                    if (err) {
+                        callback(new Error("Error al buscar los grupos del alumno."));
                     } else {
                         callback(null, res);
                     }

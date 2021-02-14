@@ -67,6 +67,53 @@ function getGroups(req, res) {
     }
 }
 
+/*Obtiene todos los grupos del profesor*/
+function getStudentGroups(req, res) {
+    
+    let grupo = req.query.idEstudiante;
+    if (grupo != null) {
+        modelUser.getStudentGroups(grupo, function(err, result) {
+            if(err) 
+            {
+                if (err.message == "No se puede conectar a la base de datos.") 
+                {
+                    //next(err);
+                    console.log("No se puede conectar a la base de datos");
+                }
+                res.status(200);
+                /*response.render("perfil", {
+                    error: err.message
+                });*/
+                console.log(err.message);
+            } 
+            else if (result == null) 
+            {
+                res.status(200);
+                /*response.render("perfil", {
+                    error: "El usuario no existe."
+                });*/
+                console.log("El consjunto de grupos es nulo");
+            } 
+            else
+            {
+                res.status(200);
+                /*
+                response.render("perfil", {
+                    error: null,
+                    usuarioPerfil: usuarioPerfil
+                });
+                */
+               res.send(JSON.stringify(result));
+            }
+        });
+    }
+    else 
+    {
+        res.status(200);
+        console.log("El id es nulo");
+    }
+}
+
 
 //Busca estudiantes según una clave dada.
 function searchStudent(request, response, next){
@@ -323,6 +370,7 @@ function getScriptsByStudent(request, response, next){
 
 module.exports = {
     getGroups:getGroups,
+    getStudentGroups:getStudentGroups,
     searchStudent:searchStudent,
     searchApplicant:searchApplicant,
     searchStudentOfGroup:searchStudentOfGroup,

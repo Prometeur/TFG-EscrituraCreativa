@@ -17,16 +17,65 @@ class ProfileInfo extends Component {
 
     state = {
         data: [],
+        teacherGroupData: [],
+        studentGroupData: [],
+        finalGroupData:[],
+        groupSelect: "-1"
 
     }
 
-    /*Se hacen peticiones al servidor para que me devuelva lso datos del estudiante*/
+    /*Se hacen peticiones al servidor para que me devuelva los datos del estudiante*/
     peticionGet = () => {
         axios.get(baseUrl, { params: { idUser: cookies.get('idRequestedUser') } }).then(response => {
             this.setState({ data: response.data });
+            this.peticionGetGruposTeacher();
         }).catch(error => {
             console.log(error.message);
         })
+    }
+
+    /*Se hacen peticiones al servidor para que me devuelva todos los grupos del profesor*/
+    peticionGetGruposTeacher = () => {
+        axios.get("http://localhost:3001/user/getGroups", { params: { idEstudiante: cookies.get('id') } }).then(response => {
+            this.setState({ teacherGroupData: response.data });
+            this.peticionGetGruposStudent();
+        }).catch(error => {
+            console.log(error.message);
+        })
+    }
+
+    /*Se hacen peticiones al servidor para que me devuelva todos los grupos del profesor*/
+    peticionGetGruposStudent = () => {
+        axios.get("http://localhost:3001/user/getStudentGroups", { params: { idEstudiante: this.state.data.id } }).then(response => {
+            this.setState({ studentGroupData: response.data });
+            this.filterGroupData();
+        }).catch(error => {
+            console.log(error.message);
+        })
+    }
+
+    filterGroupData = () =>{
+        let finalGroups = [];
+
+        for(let i = 0; i < this.state.teacherGroupData.length; i++){
+            let unico = true;
+            for(let j = 0; j < this.state.studentGroupData.length; j++){
+                if(this.state.teacherGroupData[i].id == this.state.studentGroupData[j].id){
+                    unico = false;
+                }
+            }
+            if(unico){
+                finalGroups.push(this.state.teacherGroupData[i]);
+            }
+        }
+        this.setState({finalGroupData: finalGroups})
+    }
+
+    /*Detecta un cambio en el valor del grupo a escoger */
+    handleChangegroupSelect = async e => {
+        await this.setState({
+                [e.target.name]: e.target.value
+        });
     }
 
     /*Elimina los datos de sesion almacenada por las cookies*/
@@ -65,6 +114,15 @@ class ProfileInfo extends Component {
         
      }
 
+     /*Se hacen peticiones al servidor para invitar al estudiante al grupo*/
+     inviteToGroup = (id) => {
+        axios.post("http://localhost:3001/teacher/inviteStudentToGroup", { grupo: id, idEstudiante: this.state.data.id  }).then(response => {
+            window.location.href = "http://localhost:3000/Profile";
+        }).catch(error => {
+            console.log(error.message);
+        })
+    }
+
     /*Dibuja la pagina  */
     render() {
         let cartel =<div> </div>;
@@ -74,6 +132,24 @@ class ProfileInfo extends Component {
                         <h3>Apellidos: {this.state.data.apellidos}</h3>
                         <h3>Correo: {this.state.data.correo}</h3>
                     </div>;
+
+        let invitaGrupo = 
+        <div>
+            <label for="groupSelect">Invitar a un grupo:</label>
+            <select name="groupSelect" id="groupSelect" onChange={this.handleChangegroupSelect}>
+                <option value= "-1" >Elija un grupo</option>
+                {this.state.finalGroupData.map(group => {
+                    return (
+                            <option value={group.id}>{group.nombre}</option>
+                    )
+                })}
+            </select> 
+        </div>;
+        let botonInvitaGrupo =  <div><button text='Invitar a grupo' onClick={() => this.inviteToGroup(this.state.groupSelect)}>Invitar a grupo</button></div>;
+
+        if(this.state.groupSelect === "-1"){
+            botonInvitaGrupo= <div><button disabled text='Invitar a grupo' onClick={() => this.inviteToGroup(this.state.groupSelect)}>Invitar a grupo</button></div>;
+        }
 
         if(this.state.data.activo === 0)
         {
@@ -103,6 +179,9 @@ class ProfileInfo extends Component {
 
                     {contenido}
 
+
+                    {invitaGrupo}
+                    {botonInvitaGrupo}
 
                 </div>
             </>

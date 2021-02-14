@@ -7,6 +7,9 @@ const router =express.Router();
 /*Obtiene los los grupos del profesor */
 router.get("/getGroups",controller.getGroups);
 
+/*Obtiene los los grupos del alumno */
+router.get("/getStudentGroups",controller.getStudentGroups);
+
 // /*Obtiene los desafios del grupo del profesor*/
 //router.get("/getChallenges",controller.getChallenges);
 

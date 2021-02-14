@@ -7,4 +7,7 @@ const router =express.Router();
 router.get("/getChallenges",controller.getChallenges);
 router.post("/createChallenge",controller.createChallenge);
 
+//Muestra todos los estudiantes que pertenezcan a un grupo dado.
+router.post("/inviteStudentToGroup", controller.inviteStudentToGroup);
+
 module.exports = router;

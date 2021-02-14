@@ -44,7 +44,30 @@ class modelTeacher {
             }
         });
     }
+
+    //Busca todos los estudiantes que contengan "clave" bien en su nombre o en su correo. Esta elección está pensada para elegirse desde un combobox.
+    inviteStudentToGroup(grupo, id, callback) {
+        this.pool.getConnection(function(err, connection) {
+            if (err) {
+                callback(new Error("No se puede conectar a la base de datos."))
+            } else {
+                const sql = 'INSERT INTO grupoestudiante (idGrupo,idEstudiante) VALUES (?,?);'; 
+                const valores = [grupo, id];
+                connection.query(sql, valores, function(err, res) {
+                    connection.release();
+                    if (err) {
+                        callback(new Error("Error al invitar al estudiante al grupo."));
+                    } else {
+                        callback(null, res);
+                    }
+                })
+            }
+        });
+    }
+
 }
+
+
 
 //Data export
 module.exports = modelTeacher;  
