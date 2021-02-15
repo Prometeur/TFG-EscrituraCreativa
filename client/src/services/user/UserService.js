@@ -8,15 +8,17 @@ class UserService {
   }
 
   getStudentBoard() {
-    return axios.get('student', { headers: authHeader() });
+   
+    return axios.get('/student', { headers: authHeader()});
   }
 
   getTeacherBoard() {
-    return axios.get('teacher', { headers: authHeader() });
+
+    return axios.get('/teacher', { headers: authHeader() });
   }
 
   getAdminBoard() {
-    return axios.get('admin', { headers: authHeader() });
+    return axios.get('/admin', { headers: authHeader() });
   }
 }
 

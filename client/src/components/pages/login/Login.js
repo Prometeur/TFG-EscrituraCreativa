@@ -38,6 +38,12 @@ class Login extends Component {
         };
     }
 
+    componentDidMount(){
+       if(AuthService.getCurrentUser()){
+         this.props.history.push("/profile");
+         window.location.reload();
+       }
+    }
 
     onChangeUsername(e) {
         this.setState({
@@ -63,7 +69,6 @@ class Login extends Component {
     this.form.validateAll();
 
     if (this.checkBtn.context._errors.length === 0) {
-    
         AuthService.login(this.state.username, this.state.password)
         .then( ()=> {
              this.props.history.push("/profile");
@@ -84,7 +89,7 @@ class Login extends Component {
     
   render() {
       return (
-          <div className='container'>
+          <div>
               <h1>Login</h1>
               <Form  
                 onSubmit={this.handleLogin}
@@ -113,7 +118,7 @@ class Login extends Component {
                       validations={[required]}
                   />
                 <br />
-                <button className="btn btn-info btn-block login" > Login </button>
+                <button > Login </button>
                 <CheckButton
                 text='Log In' 
                 style={{ display: "none" }}

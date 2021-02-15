@@ -83,8 +83,7 @@ function signIn(request, response) {
           }
     
         var token = jwt.sign({ id: rel.id }, config_auth.secret, {
-              expiresIn: 86400 // 24 hours
-         });
+              expiresIn: 60});
         
          response.status(200).send({
           id: rel.id,

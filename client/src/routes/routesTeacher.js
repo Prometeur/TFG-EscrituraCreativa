@@ -1,25 +1,25 @@
-/*
-*  Name_file :routesTeacher.js
-*  Description: contiene rutas asociadas a componentes del Teacher
-*/
-
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import TeacherBoard from '../components/pages/teacher/TeacherBoard';
-import GroupTeacher from '../components/pages/teacher/GroupTeacher';
-import Challenge from '../components/pages/teacher/Challenge';
-
+import { BrowserRouter, Switch, Route, useRouteMatch } from 'react-router-dom';
+import Group from '../components/pages/teacher/GroupTeacher.js';
+import Sidebar from '../components/sidebar/Sidebar';
+import CreateChallenge from '../components/pages/teacher/CreateChallenge.js';
+import EditChallenge from '../components/pages/teacher/EditChallenge.js';
+import LinksTeacher from '../links/links-Teacher.js';
 /*defino las rutas de los componentes
 Rutas o urls del Teacher asociado a la componente pages/teacher*/
 function Routes() {
+  let {url} = useRouteMatch();
     return (
-      <BrowserRouter>
-        <Switch>
-        <Route exact path="/teacher" component={TeacherBoard} />
-        <Route exact path="/groupTeacher" component={GroupTeacher} />
-        <Route exact path="/challenge" component={Challenge} />
-        </Switch>
-      </BrowserRouter>
+      <>
+        <BrowserRouter>
+          <Sidebar links={LinksTeacher} url={url} />
+            <Switch>
+              <Route exact path="/teacher/getGroups" component={Group} />
+              <Route exact path="/teacher/getGroups/createChallenge/:id" component={CreateChallenge} />
+              <Route exact path="/teacher/getGroups/:id/editChallenge/:idChallenge" component={EditChallenge} />
+            </Switch>
+        </BrowserRouter>
+      </>  
     );
   }
 

@@ -10,7 +10,6 @@ class AuthService {
             } 
         })
         .then(response =>{
-            console.log(response.data);
             if (response.data.accessToken) 
             {
                 // Obtenemos los datos desde el servidor y almacenamos los datos del usuario

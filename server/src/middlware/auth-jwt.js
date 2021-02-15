@@ -58,7 +58,7 @@ function isAdmin(request, response, next) {
 function isTeacher(request, response, next) {
   model_user.findOneEmail(request.correo)
   .then(user => {
-      if (user.data === "P") {
+      if (user.data === "T") {
         //cambiar a T luego 
         next();
         return;
