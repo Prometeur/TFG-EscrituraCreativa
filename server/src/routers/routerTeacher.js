@@ -33,5 +33,7 @@ router.post("getGroups/createChallenge",uploader.single('file'),controller.creat
 /*modifica los datos del desafio de la bd*/
 router.post("getGroups/editChallenge",uploader.single('file'),controller.editChallenge);
 
+//Muestra todos los estudiantes que pertenezcan a un grupo dado.
+//router.post("/inviteStudentToGroup", controller.inviteStudentToGroup);
 
 module.exports = router;

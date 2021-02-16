@@ -27,6 +27,7 @@ function getCategories(req, res) {
 
 //envia los desafios
 function createChallenge(req, res) {
+   
     const group = req.body.idGroup;
     const title = req.body.title;
     const description = req.body.description;
@@ -61,6 +62,7 @@ function editChallenge(req, res) {
 
 function getChallenges(req, res) {
     const group = req.query.idGroup;
+   
     modelTeacher.getChallenges(group, function (err, result) {
         res.send(result);
     });
@@ -69,12 +71,51 @@ function getChallenges(req, res) {
 function getChallenge(req, res) {
     
     const idChallenge = req.query.idChallenge;
+    
     modelTeacher.getChallenge(idChallenge, function (err, result) {
         res.send(result);
 
     });
 }
 
+
+
+//Busca estudiantes según el grupo dado.
+function inviteStudentToGroup(request, response, next){
+    
+    const grupo = request.body.grupo;
+    const id = request.body.idEstudiante;
+
+    modelTeacher.inviteStudentToGroup(grupo, id, function(err, res) {
+        if(err) 
+        {
+            if (err.message == "No se puede conectar a la base de datos.") 
+            {
+                //next(err);
+                console.log("No se puede conectar a la base de datos");
+            }
+            response.status(500);
+            /*response.render("perfil", {
+                error: err.message
+            });*/
+            console.log(err.message);
+        }
+        else if (res == null) 
+        {
+            response.status(200);
+            /*response.render("perfil", {
+                error: "No hay estudiantes con los parámetros escogidos."
+            });*/
+            console.log("No se ha podido invitar el estudiante al grupo.");
+        } 
+        else 
+        {
+            response.status(200);
+           response.send(JSON.stringify(res));
+        }
+    });
+
+}
 
 module.exports = {
     getGroups:getGroups,
@@ -83,4 +124,5 @@ module.exports = {
     createChallenge:createChallenge,
     getCategories: getCategories,
     editChallenge: editChallenge,
+    inviteStudentToGroup: inviteStudentToGroup,
 };
