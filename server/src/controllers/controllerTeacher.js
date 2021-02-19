@@ -48,7 +48,6 @@ function getChallenges(req, res) {
                 usuarioPerfil: usuarioPerfil
             });
             */
-            console.log(result)
             res.send(JSON.stringify(result)); //En el futuro es posible que esta función sea más elaborada si queremos mostrar los nombres del escritor.
         }
     });
@@ -101,7 +100,7 @@ function createChallenge(req, res) {
     });
 }
 
-//Busca estudiantes según el grupo dado.
+//Invita a un estudiante a un grupo.
 function inviteStudentToGroup(request, response, next){
     let grupo = request.body.grupo;
     let id = request.body.idEstudiante;
@@ -137,12 +136,86 @@ function inviteStudentToGroup(request, response, next){
 
 }
 
+//Echa a un estudiante de un grupo.
+function kickStudentFromGroup(request, response, next){
+    let grupo = request.body.grupo;
+    let id = request.body.idEstudiante;
+
+    modelTeacher.kickStudentFromGroup(grupo, id, function(err, res) {
+        if(err) 
+        {
+            if (err.message == "No se puede conectar a la base de datos.") 
+            {
+                //next(err);
+                console.log("No se puede conectar a la base de datos");
+            }
+            response.status(500);
+            /*response.render("perfil", {
+                error: err.message
+            });*/
+            console.log(err.message);
+        }
+        else if (res == null) 
+        {
+            response.status(200);
+            /*response.render("perfil", {
+                error: "No hay estudiantes con los parámetros escogidos."
+            });*/
+            console.log("No se ha podido expulsar el estudiante del grupo.");
+        } 
+        else 
+        {
+            response.status(200);
+           response.send(JSON.stringify(res));
+        }
+    });
+
+}
+
+//Crea un grupo nuevo.
+function createGroup(request, response, next){
+    let nombre = request.body.nombre;
+    let idTeacher = request.body.idTeacher;
+
+    modelTeacher.createGroup(nombre, idTeacher, function(err, res) {
+        if(err) 
+        {
+            if (err.message == "No se puede conectar a la base de datos.") 
+            {
+                //next(err);
+                console.log("No se puede conectar a la base de datos");
+            }
+            response.status(500);
+            /*response.render("perfil", {
+                error: err.message
+            });*/
+            console.log(err.message);
+        }
+        else if (res == null) 
+        {
+            response.status(200);
+            /*response.render("perfil", {
+                error: "No hay estudiantes con los parámetros escogidos."
+            });*/
+            console.log("No se ha podido expulsar el estudiante del grupo.");
+        } 
+        else 
+        {
+            response.status(200);
+           response.send(JSON.stringify(res));
+        }
+    });
+
+}
+
 
 module.exports = {
     //getGroups:getGroups,
     getChallenges: getChallenges,
     createChallenge: createChallenge,
-    inviteStudentToGroup:inviteStudentToGroup
+    inviteStudentToGroup:inviteStudentToGroup,
+    kickStudentFromGroup: kickStudentFromGroup,
+    createGroup: createGroup
 };
 
 

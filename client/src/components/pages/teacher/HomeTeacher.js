@@ -6,6 +6,7 @@
 import React, { Component } from 'react';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
+import crear from './GroupComponents/CreateGroup';
 
 //const baseUrl = "http://localhost:3001/teacher/getGroups";
 const baseUrl = "http://localhost:3001/user/getGroups";
@@ -91,6 +92,9 @@ class HomeTeacher extends Component {
                 <button text='Estudiantes' onClick={() => this.changeViewStudents()}>Estudiantes  </button>
                 <button text='Solicitudes de ingreso' onClick={() => this.changeViewApplicants()}>Solicitantes  </button>
             </nav>
+
+            {React.createElement(crear)}
+
             <div>
 
                 <table>
