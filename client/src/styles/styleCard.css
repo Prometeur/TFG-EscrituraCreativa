@@ -1,0 +1,12 @@
+.form-group {
+    flex-basis: 100%;
+    margin: .5em;
+    text-align: center;
+}
+
+
+input[type="text"],
+input[type="password"] {
+    margin-right:auto;
+    margin-left:auto;
+}

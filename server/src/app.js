@@ -34,6 +34,7 @@ app.use('/admin',require('./routers/routerAdmin'));
 app.use('/teacher',require('./routers/routerTeacher'));
 app.use('/student',require('./routers/routerStudent'));
 app.use('/auth',require('./routers/routerAuth'));
+app.use('/user',require('./routers/routerUser'));
 app.use(middlewareNotFoundError);
 app.use(middlewareServerError);
 

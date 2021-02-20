@@ -6,6 +6,27 @@
     -moz-box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    background-color: #F5F5F5;
+    background-color:white;
+}
+
+header {
+    grid-area: header;
+    width: 100%;
+    background:#ffffff;
+    position: sticky;
+    z-index: 100;
+    padding: .75em;
+    top: 0;
+    box-shadow: 0 0.8px 6px #ffffff;
+}
+
 .container {
     grid-area: main;
     /*margin: 0 2em 1em;*/
@@ -17,15 +38,15 @@
 .full-wrapper {
     display: grid;
     grid-template-columns: repeat(16, 1fr);
-    grid-template-rows: 1fr 5fr 2fr;
+    grid-template-rows: 1fr 3.5fr;
     grid-row-gap: .75em;
     height: 100%;
 }
 
 .main-wrapper {
     grid-template-areas:
-        "main main main main main main main main main main main main main main main"
-        " . main main main main main main main main main main main main main main main "
+        "header header header header header header header header header header header header header header header header"
+        "main main main main main main main main main main main main main main main main"
         "footer footer footer footer footer footer footer footer footer footer footer footer footer footer footer footer";
 }
 
@@ -34,4 +55,43 @@
         "header header header header header header header header header header header header header header header header"
         "sbleft sbleft main main main main main main main main main main main main main main"
         "footer footer footer footer footer footer footer footer footer footer footer footer footer footer footer footer";
+}
+
+h1.main-title {
+    flex-basis: 100%;
+    text-align: center;
+}
+
+/* Contenedores */
+.container,
+.profile-content,
+.description-field,
+.row {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+
+.row,
+.description-field {
+    justify-content: space-between;
+    margin-bottom: .75em;
+}
+
+.full-container {
+    margin: 0;
+    padding: 0;
+}
+
+.full-container .content {
+    flex-basis: 70%;
+}
+
+.form-content {
+    flex-basis: 70%;
 }

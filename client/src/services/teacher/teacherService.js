@@ -50,6 +50,20 @@ class TeacherService {
               return response.data;
         })
     }
+
+    
+  searchStudent(searchStudent, searchType) {
+
+        return axios.post("/teacher/searchStudent", { searchStudent: searchStudent, type :searchType},{ headers: {"Authorization" : `Bearer ${authHeader()}`}
+    })
+        .then(response => {
+            return response.data;
+        }).catch(error => {
+            console.log(error.message);
+        })
+
+    }
+
 }
 
 export default new TeacherService();

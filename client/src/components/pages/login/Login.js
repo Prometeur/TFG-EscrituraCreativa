@@ -8,7 +8,10 @@ import AuthService  from "../../../services/authenticity/auth-service";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
-
+import '../../../styles/styleGeneral.css';
+import '../../../styles/styleButton.css';
+import '../../../styles/styleCard.css';
+import Card from "react-bootstrap/Card";
 
 const required = value => {
     if (!value) {
@@ -89,44 +92,48 @@ class Login extends Component {
     
   render() {
       return (
-          <div>
-              <h1>Login</h1>
-              <Form  
-                onSubmit={this.handleLogin}
-                 ref= {c => {
-                this.form = c;
-                }}
-               >
-                  <label >Usuario: </label>
-                  <br />
-                  <Input 
-                      type="text" 
-                      name="username" 
-                      value={this.state.username}
-                      onChange={this.onChangeUsername} 
-                      validations={[required]}
+          <>
+            <Card style={{ width: '20rem', height:'20rem' }}>
+              <Card.Body>
+                <Card.Title>Sign In</Card.Title>
+                  <Form  
+                    onSubmit={this.handleLogin}
+                    ref= {c => {
+                    this.form = c;
+                    }}
+                  >
+                  <div className="form-group">
+                        <Card.Subtitle> Usuario:</Card.Subtitle>
+                        <Input 
+                            type="text" 
+                            name="username" 
+                            value={this.state.username}
+                            onChange={this.onChangeUsername} 
+                            validations={[required]}
 
-                  />
-                  <br />
-                  <label> Password: </label>
-                  <br />
-                  <Input 
-                      type="text" 
-                      name="password"
-                      value={this.state.password} 
-                      onChange={this.onChangePassword}
-                      validations={[required]}
-                  />
-                <br />
-                <button > Login </button>
-                <CheckButton
-                text='Log In' 
-                style={{ display: "none" }}
-                ref={c => {
-                  this.checkBtn = c}}
-               />
-              </Form>
-          </div>
+                        />
+                        <Card.Subtitle> Password:</Card.Subtitle>
+                        <Input
+                            type="text" 
+                            name="password"
+                            value={this.state.password} 
+                            onChange={this.onChangePassword}
+                            validations={[required]}
+                        />
+                    </div>
+                    <div class="box">
+                      <button className="btn btn-white btn-animation-1" > Login </button>
+                    </div>
+                    <CheckButton
+                      text='Log In' 
+                      style={{ display: "none" }}
+                      ref={c => {
+                        this.checkBtn = c}}
+                    />
+                    </Form>
+                  </Card.Body>
+              </Card>
+          </>
       );
   }
 }

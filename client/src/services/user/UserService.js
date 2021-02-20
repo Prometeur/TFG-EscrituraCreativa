@@ -3,23 +3,17 @@ import authHeader from '../authenticity/auth-header';
 
 class UserService {
  
-  getPublicContent() {
-    return axios.get('all');
-  }
+  searchStudent(searchStudent, searchType , url) {
 
-  getStudentBoard() {
-   
-    return axios.get('/student', { headers: authHeader()});
-  }
+      return axios.post("teacher/searchStudent", { searchStudent: searchStudent, type :searchType},{ headers: {"Authorization" : `Bearer ${authHeader()}`}
+     })
+      .then(response => {
+            return response.data;
+      }).catch(error => {
+          console.log(error.message);
+      })
 
-  getTeacherBoard() {
-
-    return axios.get('/teacher', { headers: authHeader() });
-  }
-
-  getAdminBoard() {
-    return axios.get('/admin', { headers: authHeader() });
-  }
+   }
 }
 
 export default new UserService();

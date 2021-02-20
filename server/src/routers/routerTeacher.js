@@ -1,5 +1,6 @@
 //ruta para almacenar los enlaces
 const controller = require("../controllers/controllerTeacher");
+const controller_user = require("../controllers/controllerUser");
 const express = require('express');//voy a usar el modulo express
 const router =express.Router();
 const multer = require('multer');
@@ -35,5 +36,5 @@ router.post("getGroups/editChallenge",uploader.single('file'),controller.editCha
 
 //Muestra todos los estudiantes que pertenezcan a un grupo dado.
 //router.post("/inviteStudentToGroup", controller.inviteStudentToGroup);
-
+router.post("/searchStudent", controller_user.searchStudent);
 module.exports = router;

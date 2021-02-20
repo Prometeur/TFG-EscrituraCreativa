@@ -1,0 +1,94 @@
+.menuBar {
+    margin: 0;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.menuLogo {
+    flex-basis: auto;
+}
+
+.menuCompanyText {
+    color: #898282;
+    font-size:  6em;
+    text-decoration: none;
+    font-weight: bold;
+    font-family: cinematografia, serif;
+    letter-spacing: 4px;
+    line-height: 0;
+    margin: 0;/*span*/
+}
+
+/*
+.menuCompanyText::before {
+    content: url('../img/logo/logoMenu.png');
+    display: inline-block;
+    vertical-align: middle;
+}
+*/
+
+nav {
+    flex-basis: 100%; /* Default value */
+    background: #ffffff;
+    text-align: right;
+}
+
+nav ul li {
+    /*display: inline;*/
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+nav ul li a {
+    color: #898282;
+    font-size: 13px;
+    text-decoration: none;
+    text-transform: uppercase;
+    padding-left: 15px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-family: sans-serif, serif;
+}
+
+nav ul li a.active {
+   color: beige;
+}
+
+nav ul li a:hover {
+    color: #fdea8d;
+    transition: all 0.4s ease-in;
+}
+
+/* Media Queries */
+
+@media screen and (min-width: 768px) {
+    .menuCompanyText {
+        font-size: 4em;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .menuBar {
+        margin: 0 .75em;
+        flex-wrap: nowrap;
+    }
+
+    .menuCompanyText {
+        font-size: 4.1em;
+    }
+
+    nav {
+        flex-basis: auto;
+    }
+
+    nav ul li {
+        display: inline;
+    }
+}

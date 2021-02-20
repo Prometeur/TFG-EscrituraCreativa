@@ -1,6 +1,5 @@
 const modelo = require("../models/modelUser");
 const express = require('express');//voy a usar el modulo express
-const router = express.Router();
 
 //constantes para la conexion
 const mysql = require("mysql");
@@ -110,10 +109,10 @@ function getStudentGroups(req, res) {
 //Busca estudiantes según una clave dada.
 function searchStudent(request, response, next){
     
-    let clave = request.body.clave;
+    let clave = request.body.searchStudent;
     let tipo = "nombre";
     
-    if(request.body.tipo == "email"){
+    if(request.body.type == "email"){
         tipo = "email";
     }
     

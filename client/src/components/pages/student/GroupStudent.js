@@ -95,7 +95,7 @@ class GroupStudent extends Component {
                          ))}  
                      </DropdownMenu>
               </Dropdown>
-              {/*<Challenges key={groupSelect} groupSelect={groupSelect} />*/}
+              <Challenges key={groupSelect} groupSelect={groupSelect} />
               <Writings key={groupSelect}  idUser={currentUser} groupSelect={groupSelect} />     
             </div>
          );
