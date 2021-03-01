@@ -176,7 +176,7 @@ class modelUser {
             } 
             else 
             {
-                const sql = "SELECT id, nombre, apellidos, foto, correo, activo FROM usuario where id =  ?";
+                const sql = "SELECT id, nombre, apellidos, foto, rol, correo, activo FROM usuario where id =  ?";
                 const valores = [idUser];
                 connection.query(sql, valores, function(err, res) {
                     connection.release();
@@ -235,6 +235,55 @@ class modelUser {
             }
         });
     }
+
+    //Busca todos los usuarios activos con ciertos parámetros.
+    searchUsers(clave, tipo, callback) {
+        this.pool.getConnection(function(err, connection) {
+            if (err) {
+                callback(new Error("No se puede conectar a la base de datos."))
+            } else {
+                let consulta = 'SELECT id, nombre, apellidos, foto, rol, correo FROM usuario WHERE (nombre LIKE ? OR apellidos LIKE ?) AND activo = 1;';
+                if(tipo == "email"){
+                    consulta = 'SELECT id, nombre, apellidos, foto, rol, correo FROM usuario WHERE correo LIKE ? AND activo = 1;';
+                }
+                const sql = consulta; 
+                const valores = [ "%" + clave + "%", "%" + clave + "%"];
+                connection.query(sql, valores, function(err, res) {
+                    connection.release();
+                    if (err) {
+                        callback(new Error("Error al buscar usuarios con " + tipo + " similar a " + clave + "."));
+                    } else {
+                        callback(null, res);
+                    }
+                })
+            }
+        });
+    }
+
+    /*Obtiene todos los grupos*/
+    getAllGroups(callback) {
+        this.pool.getConnection(function(err, connection) {
+            if (err) 
+            {
+                callback(new Error("No se puede conectar a la base de datos."))
+            } 
+            else 
+            {
+                const sql = "SELECT * FROM grupo";
+                const valores = [];
+                connection.query(sql, valores, function(err, res) {
+                    connection.release();
+                    if (err) {
+                        callback(new Error("Error al buscar los grupos."));
+                    } else {
+                        callback(null, res);
+                    }
+                })
+            }
+        });
+    }
+
+
 }
 
 //Data export

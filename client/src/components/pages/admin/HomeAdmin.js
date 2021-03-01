@@ -55,62 +55,27 @@ class HomeAdmin extends Component {
     /*Si vuelvo a la pagina de login, comprueba si el usuario ya inicio sension anteriomente
     si es el caso lo redirige a la home segun su rol*/
     componentDidMount() {
-        this.peticionGet();
         if (!cookies.get('correo')) {
             window.location.href = "./";
         }
     }
 
+    linkUsers = () => 
+     {
+         window.location.href = './UserList';
+     }
+
     /*Dibuja la pagina */
     render() {
-        // console.log('id: ' + cookies.get('id'));
-        // console.log('correo: ' + cookies.get('correo'));
-        // console.log('nombre: ' + cookies.get('nombre'));
-        // console.log('apellidos: ' + cookies.get('apellidos'));
-        // console.log('foto: ' + cookies.get('foto'));
-        // console.log('activo: ' + cookies.get('activo'));
-        // console.log('rol: ' + cookies.get('rol'));
         return (<>
             <h2> Soy Home del Admin</h2>
             <nav>
                 <button onClick={() => this.cerrarSesion()}>Cerrar Sesión</button>
             </nav>
-            <div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>id</th>
-                            <th>correo</th>
-                            <th>password</th>
-                            <th>nombre</th>
-                            <th>apellidos</th>
-                            <th>activo</th>
-                            <th>rol</th>
-                        </tr>
-                    </thead>
+            <nav>
+                <button onClick={() => this.linkUsers()}>Usuarios</button>
+            </nav>
 
-                    <tbody>
-                        {
-                            this.state.data.map(usuario => {
-                                return (
-                                    <tr>
-                                        <td>{usuario.id}</td>
-                                        <td>{usuario.correo}</td>
-                                        <td>{usuario.password}</td>
-                                        <td>{usuario.nombre}</td>
-                                        <td>{usuario.apellidos}</td>
-                                        <td>{usuario.activo}</td>
-                                        <td>{usuario.rol}</td>
-                                    </tr>
-                                )
-                            })}
-
-                    </tbody>
-
-                </table>
-
-
-            </div>
         </>);
     }
 
