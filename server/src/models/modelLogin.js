@@ -8,12 +8,8 @@ class modelLogin {
     getUser(usuario,password,callback) {
         const sqlSelect = "SELECT * FROM usuario where nombre = ? AND password = ? ";
         this.pool.query(sqlSelect, [usuario, password], (err, result) => {
-            if(err){
-                callback(new Error("Error model Login getUser"));     
-            }
-            else{
-                callback(null, result);
-            }   
+           console.log(err);
+           callback(null,result);
         });
      
     }

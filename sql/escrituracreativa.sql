@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-02-2021 a las 16:38:10
+-- Tiempo de generación: 01-03-2021 a las 13:41:01
 -- Versión del servidor: 10.4.14-MariaDB
 -- Versión de PHP: 7.4.11
 
@@ -53,7 +53,6 @@ CREATE TABLE `desafio` (
   `idGrupo` int(9) NOT NULL,
   `titulo` varchar(250) NOT NULL,
   `descripcion` mediumtext NOT NULL,
-  `imagen` text DEFAULT NULL,
   `tipoCalificacion` int(11) NOT NULL,
   `idCategoria` int(9) NOT NULL,
   `colaborativo` tinyint(1) NOT NULL,
@@ -66,15 +65,15 @@ CREATE TABLE `desafio` (
 -- Volcado de datos para la tabla `desafio`
 --
 
-INSERT INTO `desafio` (`id`, `idGrupo`, `titulo`, `descripcion`, `imagen`, `tipoCalificacion`, `idCategoria`, `colaborativo`, `fechaIni`, `fechaFin`, `activo`) VALUES
-(80, 3, 'Desafio1', '<p><strong>Descripcíon</strong></p>\n<p>Desafio1</p>\n', 'http://localhost:3001/images/Captura.JPG', 0, 2, 2, '2021-01-20 22:09:33', '2021-02-25 18:38:03', 1),
-(81, 3, 'Desafio2', '<p><strong>descripción del desafío 2</strong></p>\n<p>me parece genial</p>\n', 'http://localhost:3001/images/1540-1.jpg', 0, 2, 1, '2021-01-21 09:07:53', '2021-02-17 09:05:00', 1),
-(83, 3, 'Gonzálo', '<p><strong>Hola gonzalo como estas?</strong></p>\n<p><em>-bien</em></p>\n', '', 0, 4, 2, '2021-01-21 13:47:35', '2021-02-24 11:57:25', 1),
-(84, 3, 'singapur', '<p><strong>singapur</strong></p>\n<p>hhaaaaa</p>\n', '', 0, 2, 2, '2021-01-25 13:01:18', '2021-01-30 17:30:00', 1),
-(85, 3, 'dsdsd', '<p>dsdsds</p>\n', 'undefined', 0, 1, 1, '2021-02-02 19:57:04', '2021-02-24 19:56:00', 1),
-(86, 3, 'fdfdfdfererre', '<p>rerererere</p>\n', 'http://localhost:3001/images/seo2019.jpg', 0, 4, 2, '2021-02-02 19:58:03', '2021-02-24 19:57:00', 1),
-(87, 3, 'Desafio10', '<p>Descripcion del desafio 10</p>\n', 'http://localhost:3001/images/Captura.JPG', 0, 4, 2, '2021-02-04 11:54:53', '2021-02-25 06:50:00', 1),
-(88, 3, 'Desafio15', '<p><strong>Hoal desafio 15</strong></p>\n', 'http://localhost:3001/images/whatsapp.jpg', 0, 4, 2, '2021-02-04 13:52:05', '2021-02-28 17:51:00', 1);
+INSERT INTO `desafio` (`id`, `idGrupo`, `titulo`, `descripcion`, `tipoCalificacion`, `idCategoria`, `colaborativo`, `fechaIni`, `fechaFin`, `activo`) VALUES
+(157, 3, 'fdafdafda', '<p>fdafadf</p>\n', 0, 1, 1, '2021-02-25 11:58:19', '2021-02-25 11:58:06', 1),
+(164, 3, 'fdafdadfas', '<p>dfafaddfas</p>\n', 0, 1, 1, '2021-02-25 16:24:06', '2021-02-25 16:23:54', 1),
+(165, 3, 'fdafafda', '<p>fdafa</p>\n', 0, 1, 1, '2021-02-25 16:24:29', '2021-02-25 16:24:16', 1),
+(166, 3, 'dfaasdds', '<p>dfafad</p>\n', 0, 1, 1, '2021-02-25 16:25:55', '2021-02-25 16:25:40', 1),
+(167, 3, 'fdasfas', '<p>fdafafa</p>\n', 0, 1, 1, '2021-02-25 16:46:21', '2021-02-25 16:46:07', 1),
+(168, 3, 'fdasfas', '<p>adfdaf</p>\n', 0, 1, 1, '2021-02-25 16:47:49', '2021-02-25 16:47:31', 1),
+(169, 3, 'rerreerer', '<p>rearara</p>\n', 0, 1, 1, '2021-02-27 18:44:52', '2021-02-27 18:44:36', 1),
+(170, 3, 'Desafio170', '<p>Hacia un dia lluvioso</p>\n', 2, 2, 2, '2021-02-27 19:08:30', '2021-03-20 19:08:00', 1);
 
 -- --------------------------------------------------------
 
@@ -147,13 +146,6 @@ CREATE TABLE `escrito` (
   `activo` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Volcado de datos para la tabla `escrito`
---
-
-INSERT INTO `escrito` (`id`, `idGrupo`, `idDesafio`, `idEscritor`, `nombre`, `texto`, `puntuacion`, `colaborativo`, `finalizado`, `fecha`, `activo`) VALUES
-(1, 3, 83, 9, 'fdf', 'dfdf', 2, 0, 0, '2021-01-26 14:46:47', 1);
-
 -- --------------------------------------------------------
 
 --
@@ -191,8 +183,8 @@ CREATE TABLE `grupo` (
 --
 
 INSERT INTO `grupo` (`id`, `idprofesor`, `nombre`, `activo`) VALUES
-(3, 4, 'Grupo de Novela Negra', 1),
-(4, 4, 'Grupo de Poesia', 1);
+(3, 4, 'Software', 1),
+(4, 4, 'Informática', 1);
 
 -- --------------------------------------------------------
 
@@ -201,6 +193,7 @@ INSERT INTO `grupo` (`id`, `idprofesor`, `nombre`, `activo`) VALUES
 --
 
 CREATE TABLE `grupoestudiante` (
+  `id` int(9) NOT NULL,
   `idGrupo` int(9) NOT NULL,
   `idEstudiante` int(9) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -209,34 +202,51 @@ CREATE TABLE `grupoestudiante` (
 -- Volcado de datos para la tabla `grupoestudiante`
 --
 
-INSERT INTO `grupoestudiante` (`idGrupo`, `idEstudiante`) VALUES
-(3, 6),
-(3, 7),
-(4, 9),
-(3, 9);
+INSERT INTO `grupoestudiante` (`id`, `idGrupo`, `idEstudiante`) VALUES
+(1, 3, 6),
+(2, 3, 7),
+(3, 4, 9),
+(4, 3, 9);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `media_desafio`
+-- Estructura de tabla para la tabla `multimediadesafio`
 --
 
-CREATE TABLE `media_desafio` (
+CREATE TABLE `multimediadesafio` (
   `id` int(11) NOT NULL,
-  `url` text NOT NULL,
-  `tipo` int(1) NOT NULL
+  `idDesafio` int(9) NOT NULL,
+  `ruta` text NOT NULL,
+  `fecha` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Volcado de datos para la tabla `multimediadesafio`
+--
+
+INSERT INTO `multimediadesafio` (`id`, `idDesafio`, `ruta`, `fecha`) VALUES
+(29, 157, 'http://localhost:3001/multimedia/4/image/google.jpg', '2021-02-25 16:24:06'),
+(30, 157, 'http://localhost:3001/multimedia/4/image/google.jpg', '2021-02-25 16:24:29'),
+(31, 157, 'http://localhost:3001/multimedia/4/image/1540-1.jpg', '2021-02-25 16:25:55'),
+(32, 157, 'http://localhost:3001/multimedia/4/audio/Rae Sremmurd - Black Beatles ft. Gucci Mane (256  kbps).mp3', '2021-02-25 16:31:25'),
+(33, 157, 'http://localhost:3001/multimedia/4/video/diamantes.mp4', '2021-02-25 16:46:21'),
+(34, 157, 'http://localhost:3001/multimedia/4/audio/Rae Sremmurd - Black Beatles ft. Gucci Mane (256  kbps).mp3', '2021-02-25 16:47:49'),
+(35, 169, 'http://localhost:3001/multimedia/4/video/diamantes.mp4', '2021-02-27 18:44:52'),
+(36, 170, 'http://localhost:3001/multimedia/4/audio/Rae Sremmurd - Black Beatles ft. Gucci Mane (256  kbps).mp3', '2021-02-27 19:08:30');
+
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `media_escrito`
+-- Estructura de tabla para la tabla `multimediaescrito`
 --
 
-CREATE TABLE `media_escrito` (
+CREATE TABLE `multimediaescrito` (
+  `id` int(9) NOT NULL,
   `idEscritor` int(11) NOT NULL,
-  `isDesafio` int(11) NOT NULL,
-  `imagen` longblob NOT NULL,
+  `idDesafio` int(11) NOT NULL,
+  `ruta` text CHARACTER SET utf8 DEFAULT NULL,
+  `fecha` datetime NOT NULL DEFAULT current_timestamp(),
   `orden` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -262,14 +272,12 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id`, `correo`, `password`, `nombre`, `apellidos`, `foto`, `activo`, `rol`) VALUES
-(4, 'cora@ucm.es', 'cora', 'cora', 'cora2', '', 1, 'T'),
+(4, 'cora@ucm.es', '$2a$08$yobEY52jl8G2FpN6Nhd7nOLVjNdn96A1GWGQwHuJFREpmMcsUye9G', 'cora', 'cora2', '', 1, 'T'),
 (6, 'genesis@ucm.es', 'genesis', 'genesis', 'genesis2', '', 1, 'S'),
 (7, 'gonzalo@ucm.es', 'gonzalo', 'gonzalo', 'gonzalo2', '', 1, 'S'),
 (8, 'adrian@ucm.es', 'adrian', 'adrian', 'riesco', '', 1, 'A'),
-(9, 'luis@ucm.es', 'luis', 'luis', 'jaramillo', '', 1, 'S'),
-(10, 'stefano@ucm.es', 'stefano', 'stefano', 'stefano2', '', 1, 'S'),
-(12, 'pepito@ucm.es', '$2a$08$jjDVnTfJtCipUd/FhwKD4eC4ayGkyK8ZOipJFJf0bBzsd76MHWuFi', 'pepito', 'peperoni', '', 1, 'E'),
-(14, 'rosa@ucm.es', '$2a$08$yobEY52jl8G2FpN6Nhd7nOLVjNdn96A1GWGQwHuJFREpmMcsUye9G', 'rosa', 'rosa', '', 1, 'E');
+(9, 'luis@ucm.es', '$2a$08$yobEY52jl8G2FpN6Nhd7nOLVjNdn96A1GWGQwHuJFREpmMcsUye9G', 'luis', 'jaramillo', '', 1, 'S'),
+(10, 'stefano@ucm.es', 'stefano', 'stefano', 'stefano2', '', 1, 'S');
 
 --
 -- Índices para tablas volcadas
@@ -336,14 +344,23 @@ ALTER TABLE `grupo`
 -- Indices de la tabla `grupoestudiante`
 --
 ALTER TABLE `grupoestudiante`
+  ADD PRIMARY KEY (`id`),
   ADD KEY `idEstudiante` (`idEstudiante`),
   ADD KEY `idGrupo` (`idGrupo`);
 
 --
--- Indices de la tabla `media_desafio`
+-- Indices de la tabla `multimediadesafio`
 --
-ALTER TABLE `media_desafio`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `multimediadesafio`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `indexDesafio` (`idDesafio`);
+
+--
+-- Indices de la tabla `multimediaescrito`
+--
+ALTER TABLE `multimediaescrito`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `indexDesafio` (`idDesafio`) USING BTREE;
 
 --
 -- Indices de la tabla `usuario`
@@ -366,7 +383,7 @@ ALTER TABLE `categoria`
 -- AUTO_INCREMENT de la tabla `desafio`
 --
 ALTER TABLE `desafio`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=171;
 
 --
 -- AUTO_INCREMENT de la tabla `equipo`
@@ -378,7 +395,7 @@ ALTER TABLE `equipo`
 -- AUTO_INCREMENT de la tabla `escrito`
 --
 ALTER TABLE `escrito`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
 
 --
 -- AUTO_INCREMENT de la tabla `grupo`
@@ -387,10 +404,22 @@ ALTER TABLE `grupo`
   MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT de la tabla `media_desafio`
+-- AUTO_INCREMENT de la tabla `grupoestudiante`
 --
-ALTER TABLE `media_desafio`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `grupoestudiante`
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `multimediadesafio`
+--
+ALTER TABLE `multimediadesafio`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+
+--
+-- AUTO_INCREMENT de la tabla `multimediaescrito`
+--
+ALTER TABLE `multimediaescrito`
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
@@ -454,6 +483,18 @@ ALTER TABLE `grupo`
 ALTER TABLE `grupoestudiante`
   ADD CONSTRAINT `grupoestudiante_ibfk_1` FOREIGN KEY (`idEstudiante`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `grupoestudiante_ibfk_2` FOREIGN KEY (`idGrupo`) REFERENCES `grupo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `multimediadesafio`
+--
+ALTER TABLE `multimediadesafio`
+  ADD CONSTRAINT `multimediadesafio_ibfk_1` FOREIGN KEY (`idDesafio`) REFERENCES `desafio` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `multimediaescrito`
+--
+ALTER TABLE `multimediaescrito`
+  ADD CONSTRAINT `multimediaescrito_ibfk_1` FOREIGN KEY (`idDesafio`) REFERENCES `desafio` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

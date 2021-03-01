@@ -1,30 +1,28 @@
-/*
-*  Name_file :routesTeacher.js
-*  Description: contiene rutas asociadas a componentes del Teacher
-*/
-
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import Home from '../components/pages/teacher/Home';
-import Challenges from '../components/pages/teacher/Challenges';
-import Challenge from '../components/pages/teacher/Challenge/Challenge';
-import EditChallenge from '../components/pages/teacher/Challenge/EditChallenge';
-import Group from '../components/pages/teacher/Group';
-
+import { BrowserRouter, Switch, Route, useRouteMatch } from 'react-router-dom';
+import Groups from '../components/pages/teacher/GroupTeacher.js';
+import Sidebar from '../components/sidebar/Sidebar';
+import CreateChallenge from '../components/pages/teacher/CreateChallenge.js';
+import EditChallenge from '../components/pages/teacher/EditChallenge.js';
+import LinksTeacher from '../links/links-Teacher.js';
 
 /*defino las rutas de los componentes
 Rutas o urls del Teacher asociado a la componente pages/teacher*/
 function Routes() {
+  let {url} = useRouteMatch();
     return (
-      <BrowserRouter>
-        <Switch>
-        <Route exact path="/teacher/home" component={Home} />
-        <Route exact path="/teacher/group" component={Group} />
-        <Route exact path="/teacher/challenges" component={Challenges} />
-        <Route exact path="/teacher/challenge" component={Challenge} />
-        <Route exact path="/teacher/editChallenge" component={EditChallenge} />
-        </Switch>
-      </BrowserRouter>
+      <>
+        <BrowserRouter>
+          <Sidebar links={LinksTeacher} url={url} />
+            <Switch>
+              <Route exact path="/teacher/groups" component={Groups} />
+              {/* <Route exact path="/teacher/getGroups/createChallenge/:id" component={CreateChallenge} /> */}
+              <Route exact path="/teacher/createChallenge/:idGroup" component={CreateChallenge} />
+              {/* <Route exact path="/teacher/getGroups/:id/editChallenge/:idChallenge" component={EditChallenge} /> */}
+              <Route exact path="/teacher/editChallenge/:idGroup/:idChallenge" component={EditChallenge} />
+            </Switch>
+        </BrowserRouter>
+      </>  
     );
   }
 

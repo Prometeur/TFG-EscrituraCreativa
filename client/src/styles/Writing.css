@@ -1,0 +1,49 @@
+.writing-container{
+    margin: 100px auto;
+    width: 1000px;
+    
+}
+
+.writing-content{
+   
+    border: 1px solid rgb(0, 0, 0);
+
+}
+
+.challenge-card{
+    border: 1px solid rgb(0, 0, 0);
+}
+
+
+/* .form-inputs{
+    border: 1px solid rgb(62, 161, 84);
+    height: 800px;
+} */
+
+/* .editorClassName{
+    border: 1px solid rgb(62, 161, 84);
+    height: 75vh;
+    width:45vw;
+} */
+
+/* .wrapperClassName{
+    border: 1px solid rgb(141, 62, 161);
+    width:800px;
+    height: 500px;
+}
+.toolbarClassName{
+    border: 1px solid rgb(161, 62, 62);
+    width:800px;
+
+} */
+
+.challenge-card h2 {
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.challenge-card p {
+    /* font-size: 1.5rem; */
+    text-indent: 1em;
+    text-align: left;
+  }

@@ -1,59 +1,160 @@
 const modelo = require("../models/modelStudent");
 
-const express = require('express');//voy a usar el modulo express
-const router = express.Router();
-
 //importar la conexion
-const pool = require('../db/database');
+const mysql = require("mysql");
+const config = require('../db/config');
+const pool = mysql.createPool(config.database);
 
 const modelStudent = new modelo(pool);
 
+/*Obtiene los grupos del estudiante*/
+function getGroups(req, res) {
+    const student = req.body.idStudent;
+    modelStudent.getGroups(student, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
+        res.send(JSON.stringify(result));
+    });
+}
 
-function getGroupStudent(req, res) {
-    const student = req.query.idEstudiante;
-    modelStudent.getGroupStudent(student, function (err, result) {
+/*Obtiene el equipo del estudiante*/
+function getTeam(req, res) {
+    const idStudent = req.query.idStudent;
+    modelStudent.getTeam(idStudent, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
         res.send(result);
     });
 }
 
-function getChallenges(req, res) {
-    const group=req.query.idGroup;
-    modelStudent.getChallenges(group, function (err, result) {
-        res.send(result);
-    });
- 
-}
-
+/*Obtiene el desafio del estudiante segun su grupo*/
 function getChallenge(req, res) {
-    const challenge=req.query.idChallenge;
-    modelStudent.getChallenge(challenge, function (err, result) {
+    const idChallenge = req.query.idChallenge;
+    modelStudent.getChallenge(idChallenge, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
         res.send(result);
     });
-   
 }
 
+/*Obtiene los desafios del estudiante segun su grupo*/
+function getChallenges(req, res) {
+    const idGroup = req.query.idGroup;
+    modelStudent.getChallenges(idGroup, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
+        res.send(result);
+    });
+}
+
+/*Envio el escrito del estudiante */
+function sendWriting(req, res) {
+    const idGroup = req.body.idGroup;
+    const desafio = req.body.idChallenge;
+    const idWriter = req.body.idWriter;
+    const texto = req.body.escrito;
+    const type = req.body.type;
+    modelStudent.sendWriting(idGroup, desafio, idWriter, texto, type, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
+        res.send(result);
+    });
+}
+
+/*Obtiene el escrito del estudiante segun su grupo*/
+function getWriting(req, res) {
+    const idChallenge = req.query.idChallenge;
+    const idWriter = req.query.idWriter;
+    modelStudent.getWriting(idChallenge, idWriter, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
+        res.send(result);
+    });
+}
+
+/*Obtiene los escritos del estudiante segun su grupo*/
 function getWritings(req, res) {
     const idUser=req.query.idUser;
     const idGroup=req.query.idGroup;
     modelStudent.getWritings(idUser, idGroup,function (err, result) {
+        if(err){
+            console.log(err.message);
+        }
         res.send(result);
     });
-   
 }
 
-function postWriting(req, res) {
-    const desafio = req.body.idChallenge;
-    const escritor = req.body.idEscritor;
-    const texto =req.body.escrito;
-    modelStudent.postWriting(desafio,escritor,texto, function (err, result) {
+/*Edita el escrito del estudiante */
+function editWriting(req, res) {
+    const idWriting = req.body.idWriting;
+    const idGroup = req.body.idGroup;
+    const idChallenge = req.body.idChallenge;
+    const idWriter = req.body.idWriter;
+    const text = req.body.escrito;
+    const type = req.body.type;
+    modelStudent.editWriting(idWriting, idGroup, idChallenge, idWriter, text, type, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
         res.send(result);
-    });   
+    });
+}
+
+/*Obtiene los ficheros multimedia del escrito del estudiante*/
+function getMultimedia(req, res) {
+    const idChallenge = req.query.idChallenge;
+    const idWriter = req.query.idWriter;
+    modelStudent.getMultimedia(idChallenge, idWriter, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
+        res.send(result);
+    });
+}
+
+/*Envia los ficheros multimedia del escrito del estudiante*/
+function sendMultimedia(req, res) {
+    const idWriter = req.body.idWriter;
+    const idChallenge = req.body.idChallenge;
+    const path = req.body.path;
+    modelStudent.sendMultimedia(idWriter, idChallenge, path, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
+        res.send(result);
+    });
+}
+
+/*Edita los ficheros multimedia del escrito del estudiante*/
+function editMultimedia(req, res) {
+    const idMultimedia = req.body.idMultimedia;
+    const idWriter = req.body.idWriter;
+    const path=req.body.path;
+    modelStudent.editMultimedia(idMultimedia,idWriter,path,function (err, result) {
+        if(err){
+            console.log(err.message);
+        }
+        res.send(result);
+    }); 
 }
 
 module.exports = {
-    getGroupStudent: getGroupStudent,
-    getChallenges:getChallenges,
-    getChallenge:getChallenge,
-    postWriting:postWriting,
+    getGroups: getGroups,
+    getTeam: getTeam,
+    getChallenges: getChallenges,
+    getChallenge: getChallenge,
+    getWriting: getWriting,
     getWritings:getWritings,
+    sendWriting: sendWriting,
+    sendMultimedia: sendMultimedia,
+    editWriting: editWriting,
+    getMultimedia: getMultimedia,
+    editMultimedia:editMultimedia,
+
 };
