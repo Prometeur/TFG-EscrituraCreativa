@@ -65,6 +65,11 @@ class HomeAdmin extends Component {
          window.location.href = './UserList';
      }
 
+     linkGroups = () => 
+     {
+         window.location.href = './GroupList';
+     }
+
     /*Dibuja la pagina */
     render() {
         return (<>
@@ -74,7 +79,9 @@ class HomeAdmin extends Component {
             </nav>
             <nav>
                 <button onClick={() => this.linkUsers()}>Usuarios</button>
+                <button onClick={() => this.linkGroups()}>Grupos</button>
             </nav>
+            
 
         </>);
     }

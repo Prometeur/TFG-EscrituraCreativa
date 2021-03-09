@@ -14,7 +14,7 @@ class modelUser {
             } 
             else 
             {
-                const sql = "SELECT * FROM grupo where idprofesor= ?";
+                const sql = "SELECT * FROM grupo WHERE idprofesor= ? AND activo = 1";
                 const valores = [group];
                 connection.query(sql, valores, function(err, res) {
                     connection.release();
@@ -269,12 +269,35 @@ class modelUser {
             } 
             else 
             {
-                const sql = "SELECT * FROM grupo";
+                const sql = "SELECT * FROM grupo WHERE activo = 1";
                 const valores = [];
                 connection.query(sql, valores, function(err, res) {
                     connection.release();
                     if (err) {
                         callback(new Error("Error al buscar los grupos."));
+                    } else {
+                        callback(null, res);
+                    }
+                })
+            }
+        });
+    }
+
+    /*Obtiene los datos de grupo del elegido*/
+    getGroupData(id, callback) {
+        this.pool.getConnection(function(err, connection) {
+            if (err) 
+            {
+                callback(new Error("No se puede conectar a la base de datos."))
+            } 
+            else 
+            {
+                const sql = "SELECT id, nombre, idprofesor FROM grupo WHERE id = ? AND activo = 1";
+                const valores = [id];
+                connection.query(sql, valores, function(err, res) {
+                    connection.release();
+                    if (err) {
+                        callback(new Error("Error al buscar al grupo."));
                     } else {
                         callback(null, res);
                     }

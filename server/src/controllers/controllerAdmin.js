@@ -72,10 +72,65 @@ function deleteUser(request, response, next){
 
 }
 
+//Cambia el nobre de un grupo.
+function renameGroup(request, response, next){
+    let id = request.body.id;
+    let name = request.body.name;
+    modelAdmin.renameGroup(id, name, function(err, res) {
+        if(err) 
+        {
+            if (err.message == "No se puede conectar a la base de datos.") 
+            {
+                //next(err);
+                console.log("No se puede conectar a la base de datos");
+            }
+            response.status(500);
+            /*response.render("perfil", {
+                error: err.message
+            });*/
+            console.log(err.message);
+        }
+        else 
+        {
+            response.status(200);
+           response.send(JSON.stringify(res));
+        }
+    });
+
+}
+
+//Desactiva un grupo.
+function deactivateGroup(request, response, next){
+    let id = request.body.id;
+    modelAdmin.deactivateGroup(id, function(err, res) {
+        if(err) 
+        {
+            if (err.message == "No se puede conectar a la base de datos.") 
+            {
+                //next(err);
+                console.log("No se puede conectar a la base de datos");
+            }
+            response.status(500);
+            /*response.render("perfil", {
+                error: err.message
+            });*/
+            console.log(err.message);
+        }
+        else 
+        {
+            response.status(200);
+           response.send(JSON.stringify(res));
+        }
+    });
+
+}
+
 
 
 module.exports = {
     deactivateUser:deactivateUser,
-    deleteUser:deleteUser
+    deleteUser:deleteUser,
+    renameGroup:renameGroup,
+    deactivateGroup:deactivateGroup
  
 };

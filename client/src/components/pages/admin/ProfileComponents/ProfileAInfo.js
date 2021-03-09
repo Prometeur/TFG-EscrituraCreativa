@@ -249,7 +249,7 @@ class ProfileAInfo extends Component {
 
         let botonDesactivar = <div><button text='Desactivar usuario' onClick={() => this.deactivateUser(this.state.groupKickSelect)}>Desactivar usuario</button></div>;
         let botonEliminar = <div><button text='Eliminar usuario' onClick={() => 
-            {if(window.confirm('El usuario'+ this.state.data.nombre + ' '+ this.state.data.apellidos +' y todos sus grupos, escritos, equipos y desafíos se eliminarán de forma permanente de la base de datos. ESTA ACCIÓN ES IRREVERSIBLE. ¿Eliminar usuario?'))
+            {if(window.confirm('El usuario '+ this.state.data.nombre + ' '+ this.state.data.apellidos +' y todos sus grupos, escritos, equipos y desafíos se eliminarán de forma permanente de la base de datos. ESTA ACCIÓN ES IRREVERSIBLE. ¿Eliminar usuario?'))
             {this.deleteUser(this.state.groupKickSelect)};}}>Eliminar usuario</button></div>;
 
             if(this.state.data.activo === 0)

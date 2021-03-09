@@ -7,11 +7,12 @@ import React, { Component } from 'react';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
 import datos from "./ProfileComponents/ProfileAInfo";
-//import escritos from "./ProfileComponents/ProfileScripts";
+import escritos from "./ProfileComponents/ProfileAScripts";
+import grupos from "./ProfileComponents/ProfileAGroups";
 
 
 //const baseUrl = "http://localhost:3001/teacher/getGroups";
-const baseUrl = "http://localhost:3001/user/getProfile";
+const baseUrl = "http://localhost:3001/admin/getProfile";
 
 const cookies = new Cookies();
 
@@ -70,13 +71,32 @@ class ProfileA extends Component {
         let componente = datos;
         if(this.state.ventana == 2)
         {
-           // componente = escritos;
+           componente = escritos;
+        }
+        if(this.state.ventana == 4)
+        {
+           componente = grupos;
         }
 
         let botones = <nav>
             <button onClick={() => this.cambiaVentana(1)}>Datos</button>
             <button onClick={() => this.cambiaVentana(2)}>Escritos</button>
+            <button onClick={() => this.cambiaVentana(2)}>Equipos</button>
         </nav>;
+
+        if(this.state.data.rol === "T")
+        {
+            botones = <nav>
+            <button onClick={() => this.cambiaVentana(1)}>Datos</button>
+            <button onClick={() => this.cambiaVentana(4)}>Grupos</button>
+            </nav>;
+        }
+
+        if(this.state.data.rol === "A")
+        {
+            botones = <nav>
+            </nav>;
+        }
 
         if(this.state.data.activo === 0)
         {

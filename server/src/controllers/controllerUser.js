@@ -437,6 +437,53 @@ function searchUsers(request, response, next){
 
 }
 
+ /*Obtiene los datos del grupo escogido*/
+ function getGroupData(req, res) {
+    
+    let id = req.query.idGroup;
+    if (id != null) {
+        modelUser.getGroupData(id, function(err, result) {
+            if(err) 
+            {
+                if (err.message == "No se puede conectar a la base de datos.") 
+                {
+                    //next(err);
+                    console.log("No se puede conectar a la base de datos");
+                }
+                res.status(200);
+                /*response.render("perfil", {
+                    error: err.message
+                });*/
+                console.log(err.message);
+            } 
+            else if (result == null) 
+            {
+                res.status(200);
+                /*response.render("perfil", {
+                    error: "El usuario no existe."
+                });*/
+                console.log("El grupo no existe");
+            } 
+            else
+            {
+                res.status(200);
+                /*
+                response.render("perfil", {
+                    error: null,
+                    usuarioPerfil: usuarioPerfil
+                });
+                */
+               res.send(JSON.stringify(result[0]));
+            }
+        });
+    }
+    else 
+    {
+        res.status(200);
+        console.log("El id es nulo");
+    }
+}
+
 
 
 module.exports = {
@@ -450,6 +497,7 @@ module.exports = {
     deleteChallenge:deleteChallenge,
     getScriptsByStudent:getScriptsByStudent,
     searchUsers:searchUsers,
-    getAllGroups:getAllGroups
+    getAllGroups:getAllGroups,
+    getGroupData:getGroupData
  
 };

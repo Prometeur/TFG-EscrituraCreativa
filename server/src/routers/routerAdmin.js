@@ -27,6 +27,30 @@ router.post("/deactivateUser", controllerAdmin.deactivateUser);
 //Expulsa a un estudiante de un grupo dado.
 router.post("/deleteUser", controllerAdmin.deleteUser);
 
+//Renombra al grupo dado.
+router.post("/renameGroup", controllerAdmin.renameGroup);
+
+//Expulsa a un estudiante de un grupo dado.
+router.post("/deactivateGroup", controllerAdmin.deactivateGroup);
+
+//Muestra los estudiantes de un grupo.
+router.post("/getStudentsOfGroup", controllerUser.searchStudentOfGroup);
+
+//Muestra todos los grupos.
+router.get("/getScriptsByStudent", controllerUser.getScriptsByStudent);
+
+//Muestra todos los grupos.
+router.get("/getGroupsOfTeacher", controllerUser.getGroups);
+
+//Muestra todos los grupos.
+router.get("/getGroupData", controllerUser.getGroupData);
+
+//Accede a los datos de un usuario.
+router.get("/getProfile", controllerUser.getProfile);
+
+//Muestra los estudiantes de un grupo.
+router.get("/getChallenges", controllerTeacher.getChallenges);
+
 router.get("/getUsers",(req,res)=>{
 
     const sqlSelect = "SELECT * FROM usuario";
