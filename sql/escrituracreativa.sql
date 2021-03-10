@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-03-2021 a las 13:41:01
+-- Tiempo de generación: 10-03-2021 a las 15:43:25
 -- Versión del servidor: 10.4.14-MariaDB
 -- Versión de PHP: 7.4.11
 
@@ -37,10 +37,30 @@ CREATE TABLE `categoria` (
 --
 
 INSERT INTO `categoria` (`id`, `nombre`) VALUES
-(1, 'fantásticos-maravilloso'),
-(2, 'realismo mágico'),
-(3, 'fantásticos'),
-(4, 'policíacos-detectivesco');
+(1, 'fantástico maravilloso'),
+(2, 'fantástico realismo mágico'),
+(3, 'fantástico'),
+(4, 'policíaco detectivesco'),
+(5, ' policiaco negro'),
+(6, ' policiaco thriller'),
+(7, ' policiaco espionaje'),
+(8, ' memoria autobiografía'),
+(9, 'memoria'),
+(10, 'memoria confesión'),
+(11, 'memoria diario'),
+(12, 'carnavelescos parodia '),
+(13, 'carnavelescos humor'),
+(14, 'carnavelescos sátira'),
+(15, 'testimoniales crónica literaria'),
+(16, 'testimoniales diario'),
+(17, 'históricos'),
+(18, 'bildungsroman'),
+(19, 'literatura infantil'),
+(20, 'ensayo creativo'),
+(21, 'literaturas digitales literaturas expandidas'),
+(22, 'literaturas digitales cibernarrativa'),
+(23, 'literaturas digitales ciberpoesía'),
+(24, 'literaturas transmediales');
 
 -- --------------------------------------------------------
 
@@ -60,20 +80,6 @@ CREATE TABLE `desafio` (
   `fechaFin` datetime NOT NULL,
   `activo` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Volcado de datos para la tabla `desafio`
---
-
-INSERT INTO `desafio` (`id`, `idGrupo`, `titulo`, `descripcion`, `tipoCalificacion`, `idCategoria`, `colaborativo`, `fechaIni`, `fechaFin`, `activo`) VALUES
-(157, 3, 'fdafdafda', '<p>fdafadf</p>\n', 0, 1, 1, '2021-02-25 11:58:19', '2021-02-25 11:58:06', 1),
-(164, 3, 'fdafdadfas', '<p>dfafaddfas</p>\n', 0, 1, 1, '2021-02-25 16:24:06', '2021-02-25 16:23:54', 1),
-(165, 3, 'fdafafda', '<p>fdafa</p>\n', 0, 1, 1, '2021-02-25 16:24:29', '2021-02-25 16:24:16', 1),
-(166, 3, 'dfaasdds', '<p>dfafad</p>\n', 0, 1, 1, '2021-02-25 16:25:55', '2021-02-25 16:25:40', 1),
-(167, 3, 'fdasfas', '<p>fdafafa</p>\n', 0, 1, 1, '2021-02-25 16:46:21', '2021-02-25 16:46:07', 1),
-(168, 3, 'fdasfas', '<p>adfdaf</p>\n', 0, 1, 1, '2021-02-25 16:47:49', '2021-02-25 16:47:31', 1),
-(169, 3, 'rerreerer', '<p>rearara</p>\n', 0, 1, 1, '2021-02-27 18:44:52', '2021-02-27 18:44:36', 1),
-(170, 3, 'Desafio170', '<p>Hacia un dia lluvioso</p>\n', 2, 2, 2, '2021-02-27 19:08:30', '2021-03-20 19:08:00', 1);
 
 -- --------------------------------------------------------
 
@@ -183,8 +189,8 @@ CREATE TABLE `grupo` (
 --
 
 INSERT INTO `grupo` (`id`, `idprofesor`, `nombre`, `activo`) VALUES
-(3, 4, 'Software', 1),
-(4, 4, 'Informática', 1);
+(3, 4, 'Historia', 1),
+(4, 4, 'Lengua', 1);
 
 -- --------------------------------------------------------
 
@@ -220,20 +226,6 @@ CREATE TABLE `multimediadesafio` (
   `ruta` text NOT NULL,
   `fecha` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `multimediadesafio`
---
-
-INSERT INTO `multimediadesafio` (`id`, `idDesafio`, `ruta`, `fecha`) VALUES
-(29, 157, 'http://localhost:3001/multimedia/4/image/google.jpg', '2021-02-25 16:24:06'),
-(30, 157, 'http://localhost:3001/multimedia/4/image/google.jpg', '2021-02-25 16:24:29'),
-(31, 157, 'http://localhost:3001/multimedia/4/image/1540-1.jpg', '2021-02-25 16:25:55'),
-(32, 157, 'http://localhost:3001/multimedia/4/audio/Rae Sremmurd - Black Beatles ft. Gucci Mane (256  kbps).mp3', '2021-02-25 16:31:25'),
-(33, 157, 'http://localhost:3001/multimedia/4/video/diamantes.mp4', '2021-02-25 16:46:21'),
-(34, 157, 'http://localhost:3001/multimedia/4/audio/Rae Sremmurd - Black Beatles ft. Gucci Mane (256  kbps).mp3', '2021-02-25 16:47:49'),
-(35, 169, 'http://localhost:3001/multimedia/4/video/diamantes.mp4', '2021-02-27 18:44:52'),
-(36, 170, 'http://localhost:3001/multimedia/4/audio/Rae Sremmurd - Black Beatles ft. Gucci Mane (256  kbps).mp3', '2021-02-27 19:08:30');
 
 -- --------------------------------------------------------
 
@@ -377,13 +369,13 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de la tabla `desafio`
 --
 ALTER TABLE `desafio`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=171;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=238;
 
 --
 -- AUTO_INCREMENT de la tabla `equipo`
@@ -395,7 +387,7 @@ ALTER TABLE `equipo`
 -- AUTO_INCREMENT de la tabla `escrito`
 --
 ALTER TABLE `escrito`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
 
 --
 -- AUTO_INCREMENT de la tabla `grupo`
@@ -413,13 +405,13 @@ ALTER TABLE `grupoestudiante`
 -- AUTO_INCREMENT de la tabla `multimediadesafio`
 --
 ALTER TABLE `multimediadesafio`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=192;
 
 --
 -- AUTO_INCREMENT de la tabla `multimediaescrito`
 --
 ALTER TABLE `multimediaescrito`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`

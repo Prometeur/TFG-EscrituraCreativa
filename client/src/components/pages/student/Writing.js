@@ -26,9 +26,12 @@ class Writing extends Component {
     constructor(props) {
         super(props);
         const dataUser = AuthUser.getCurrentUser();
+        this.onFileChange = this.onFileChange.bind(this);
         this.state = {
+            imgCollection: '',
             editorState: EditorState.createEmpty(),
-            data: [],
+            challenge: '',
+            dataMediaChallenge: [],//array de multimedia del desafio
             form: {
                 idWriter: dataUser.id,
                 escrito: '',
@@ -40,46 +43,69 @@ class Writing extends Component {
     }
 
     componentDidMount() {
-        /*Obtiene el desafio del estudiante seleccionado*/
+        /*Obtiene el desafio seleccionado por el estudiante*/
         StudentService.getChallenge(this.props.match.params.idChallenge).then(response => {
             this.setState({
-                data: response
+                challenge: response[0]
             });
+
         }).catch(error => {
             console.log(error.message);
         });
-    }
 
-    //Previsualización del fichero(image, video o audio)
-    onFileChange = (e) => {
-        if (e.target.files && e.target.files.length > 0) {
-            const file = e.target.files[0]
-            if (file.type.includes("image") || file.type.includes("video") || file.type.includes("audio")) {
-                const reader = new FileReader()
-                reader.readAsDataURL(file)
-                reader.onload = () => {
-                    this.setState({
-                        form: {
-                            ...this.state.form,
-                            reader: reader.result
-                        }
-                    });
-                }
-                var str = file.type;
-                var res = str.split("/");
-                const dir = this.state.form.idWriter + "/" + res[0] + "/";
+        /*Obtiene multimedia del desafio*/
+        StudentService.getMultimediaChallenge(this.props.match.params.idChallenge)
+            .then(response => {
+                var respuesta = response.data[0];//hay que cambiar
+
                 this.setState({
+                    dataMediaChallenge: response.data,
                     form: {
                         ...this.state.form,
-                        file: file,
-                        path: "http://localhost:3001/multimedia/" + dir + file.name
+                        idMultimedia: respuesta.id,
+                        path: respuesta.ruta
                     }
                 });
-            }
-            else {
-                console.log("there was an error")
-            }
-        }
+            }).catch(error => {
+                console.log(error.message);
+            });
+    }
+
+    // //Previsualización del fichero(image, video o audio)
+    // onFileChange = (e) => {
+    //     debugger;
+    //     if (e.target.files && e.target.files.length > 0) {
+    //         const file = e.target.files[0]
+    //         if (file.type.includes("image") || file.type.includes("video") || file.type.includes("audio")) {
+    //             const reader = new FileReader()
+    //             reader.readAsDataURL(file)
+    //             reader.onload = () => {
+    //                 this.setState({
+    //                     form: {
+    //                         ...this.state.form,
+    //                         reader: reader.result
+    //                     }
+    //                 });
+    //             }
+    //             var str = file.type;
+    //             var res = str.split("/");
+    //             const dir = this.state.form.idWriter + "/" + res[0] + "/";
+    //             this.setState({
+    //                 form: {
+    //                     ...this.state.form,
+    //                     file: file,
+    //                     path: "http://localhost:3001/multimedia/" + dir + file.name
+    //                 }
+    //             });
+    //         }
+    //         else {
+    //             console.log("there was an error")
+    //         }
+    //     }
+    // }
+
+    onFileChange(e) {
+        this.setState({ imgCollection: e.target.files })
     }
 
     editorChange = () => {
@@ -89,7 +115,7 @@ class Writing extends Component {
                 escrito: draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))
             }
         });
-    }; 
+    };
 
     onEditorStateChange = (editorState) => {
         this.setState({
@@ -97,33 +123,52 @@ class Writing extends Component {
         });
     };
 
-    /*Envia al servidor el escrito y multimedia del estudiante*/
+    /*Envia el escrito y multimedia del estudiante*/
     send = () => {
         if (this.state.form.escrito !== '') {
             /*Envia el escrito del estudiante*/
-            StudentService.sendWriting(this.props.match.params.idGroup, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.escrito, this.state.data[0].colaborativo)
+            StudentService.sendWriting(this.props.match.params.idGroup, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.escrito, this.state.challenge.colaborativo)
                 .then(response => {
+                    if (this.state.imgCollection.length > 0) {
+                        /*Envia los archivos multimedia del estudiante*/
+                        StudentService.sendMultimedia(this.state.imgCollection, this.state.form.idWriter, this.props.match.params.idChallenge)
+                            .then(response => {
+                                window.location.href = '/student/groups';
+                            }).catch(error => {
+                                console.log(error.message);
+                            });
+                    }
+                    else{
+                        window.location.href = '/student/groups';
+                    }
                 })
                 .catch(error => {
                     console.log(error.message);
                 });
-            if (this.state.form.file !== "") {
-                /*Envia los archivos multimedia del estudiante*/
-                StudentService.sendMultimedia(this.state.form.file, this.state.form.idWriter, this.props.match.params.idChallenge, this.state.form.path);
-            }
+
+
         }
-        window.location.href = '/student/groups';
+        
+    }
+
+    //Obtiene el nombre del desafio
+    showTitle = (challenge) => {
+        var str = challenge.ruta;
+        var res = str.split("/");
+        return res[7];
+
     }
 
     /*Dibuja la pagina */
     render() {
+        const { dataMediaChallenge } = this.state;
         const { editorState } = this.state;
-        const { formErrors } = this.state;
-        let mediaWriting = <img className="image" src="http://localhost:3001/images/drop-files.jpg" />;
+        // const { formErrors } = this.state;
+        let mediaWriting = <img className="image" src="http://localhost:3001/images/drop-files.jpg" alt="" />;
         //Si cargamos una imagen
-        if (this.state.form.file.type !== undefined)  {
+        if (this.state.form.file.type !== undefined) {
             if (this.state.form.file.type.includes("image"))
-                mediaWriting = <img className="image" src={this.state.form.reader} />;
+                mediaWriting = <img className="image" src={this.state.form.reader} alt="" />;
             else//video o audio
                 mediaWriting = <ReactPlayer className="video" url={this.state.form.reader} controls={true} />;
         }
@@ -131,26 +176,35 @@ class Writing extends Component {
             <>
                 <div className="writing-container">
                     <div className="writing-content">
+
                         <div className="challenge-card">
-                            {this.state.data.map(challenge => {
-                                let mediaChallenge = "";
-                                if (challenge.imagen !== null || challenge.imagen !== "")
-                                    mediaChallenge = <img className="image" src={challenge.imagen} />;//si contine una ruta
-                                return (
-                                    <div>
-                                        <h2>{challenge.titulo}  </h2>
-                                        <h4>Descripción  </h4>
-                                        <div className="content" dangerouslySetInnerHTML={{ __html: challenge.descripcion }}></div>
-                                        <h4>Categoria </h4>
-                                        <label className='form-label'>{this.state.data[0].nombre}</label>
-                                        <h4>Multimedia </h4>
-                                        {mediaChallenge}
-                                    </div>
-                                )
-                            })}
+                            <div class="challenge-inputs">
+                                {/* <label className='form-label'>{this.state.challenge.titulo}</label> */}
+                                <h2 > {this.state.challenge.titulo} </h2>
+                            </div>
+                            <div class="challenge-inputs">
+                                <label className='form-label'>{this.state.challenge.nombre}</label>
+                            </div>
+                            <div className="challenge-inputs" dangerouslySetInnerHTML={{ __html: this.state.challenge.descripcion }}></div>
+                            <div class="challenge-inputs">
+                                <label className='form-label'>Ficheros Multimedia: </label>
+                                <table>
+                                    <tbody>
+                                        {dataMediaChallenge.map((challenge) => (
+                                            <tr key={challenge.id}>
+                                                <td>{this.showTitle(challenge)}</td>
+                                                <td><a href={challenge.ruta}>Ver</a></td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+
+                                </table>
+                            </div>
                         </div>
+
                         <div className="writing-card">
-                            <div class="form-inputs">
+
+                            <div class="writing-inputs">
                                 <label className='form-label'>Escribe una Descripción </label>
                                 <Editor
                                     editorState={editorState}
@@ -161,13 +215,16 @@ class Writing extends Component {
                                     onChange={this.editorChange}
                                 />
                             </div>
-                            <div class="form-inputs">
+
+                            <div class="writing-inputs">
                                 <label className='form-label'>Puedes agregar un fichero multimedia si lo deseas (imagen,video o audio): </label>
                                 <div className="form-media">
-                                    {mediaWriting}
-                                    <input type="file" id="file" name="imagen" onChange={this.onFileChange} />
+                                    {/* {mediaWriting}
+                                    <input type="file" id="file" name="imagen" onChange={this.onFileChange} /> */}
+                                    <input type="file" name="imgCollection" onChange={this.onFileChange} multiple />
                                 </div>
                             </div>
+
                             <button text='enviar' onClick={() => this.send()}> enviar  </button>
                             <button onClick={() => window.location.href = '/student/groups'}>Cancelar</button>
                         </div>

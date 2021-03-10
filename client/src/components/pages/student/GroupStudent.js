@@ -79,7 +79,7 @@ class GroupStudent extends Component {
     }
 
      render() {
-        const {dataGroup, currentUser,groupSelect}= this.state;
+        const {dataGroup,groupSelect}= this.state;
          return (
             <div>
                <Dropdown>

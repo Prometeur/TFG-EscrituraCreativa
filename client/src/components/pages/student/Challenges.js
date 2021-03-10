@@ -39,44 +39,69 @@ class Challenges extends Component {
         })
     }
 
+    prueba = (item,p) => {
+
+        debugger;
+        console.log(item);
+    };
+
+     //Obtiene el nombre del desafio/escrito
+     showCollaborative = (challenge) => {
+        if (challenge.colaborativo === 1){
+            return "individual"
+        }
+        else{
+            return "equipo"
+        }
+    }
+
     /*Dibuja la pagina  */
     render() {
         let formatedDate;
         const { data } = this.state;
-        let e=false;
-        let n=false;
+        let e = false;
+        let n = false;
+        let idWriting = '';
         return (
             <div>
                 <table>
                     <thead>
                         <tr>
-                            <th>idDesafio</th>
-                            <th>Desafio</th>
-                            <th>categoria</th>
-                            <th>colaborativo</th>
-                            <th>fecha</th>
-                            <th>Hora</th>
-                            <th>activo</th>
-                            <th>acciones</th>
+                            {/* <th className ="challenge-th">idDesafio</th> */}
+                            <th className ="challenge-th">Desafio</th>
+                            <th className ="challenge-th">categoria</th>
+                            <th className ="challenge-th">tipo</th>
+                            <th className ="challenge-th">fecha</th>
+                            <th className ="challenge-th">Hora</th>
+                            {/* <th>activo</th> */}
+                            <th className ="challenge-th">acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         {data.map((challenge) => (
                             <tr key={challenge.id}>
-                                <td>{challenge.id}</td>
-                                <td>{challenge.titulo}</td>
+                                {/* <td className ="challenge-td">{challenge.id}</td> */}
+                                <td className ="challenge-td">{challenge.titulo}</td>
                                 {/* <td>{challenge.tipoCalificacion}</td> */}
-                                <td>{challenge.nombre}</td>
-                                <td>{challenge.colaborativo}</td>
-                                <td>{formatedDate = moment(challenge.fechaFin).format('DD/MM/YYYY')}</td>
-                                <td>{formatedDate = moment(challenge.fechaFin).format('LT')}</td>
-                                <td>{challenge.activo}</td>
-                                {e=true}{n=false}
-                                {this.state.dataWriting.filter(writing => writing.idDesafio === challenge.id).map((item, index) =>
-                                    {n=true;e=false}
+                                <td className ="challenge-td">{challenge.nombre}</td>
+                                {/* <td className ="challenge-td">{challenge.colaborativo}</td> */}
+                                <td className ="challenge-td">{this.showCollaborative(challenge)}</td>
+                                <td className ="challenge-td">{formatedDate = moment(challenge.fechaFin).format('DD/MM/YYYY')}</td>
+                                <td className ="challenge-td">{formatedDate = moment(challenge.fechaFin).format('LT')}</td>
+                                {/* <td>{challenge.activo}</td> */}
+
+                                {e = true}{n = false}
+                                {this.state.dataWriting.filter(writing => writing.idDesafio === challenge.id)
+                                    .map((item, index) =>{
+                                        n=true;
+                                        e=false;
+                                        idWriting=item.id;
+                                    } 
                                 )}
-                                <td><Link to={`/student/writing/${this.props.groupSelect}/${challenge.id}`}><button disabled={n}>Nuevo Escrito</button></Link></td>
-                                <td><Link to={`/student/editWriting/${this.props.groupSelect}/${challenge.id}`}><button disabled={e}>Editar Escrito</button></Link></td>
+
+                                <td className ="challenge-td"><Link to={`/student/writing/${this.props.groupSelect}/${challenge.id}`}><button disabled={n}>Nuevo Escrito</button></Link></td>
+                                {/* <td><Link to={`/student/editWriting/${this.props.groupSelect}/${challenge.id}`}><button disabled={e}>Editar Escrito</button></Link></td> */}
+                                <td className ="challenge-td"><Link to={`/student/editWriting/${this.props.groupSelect}/${challenge.id}/${idWriting}`}><button disabled={e}>Editar Escrito</button></Link></td>
                             </tr>
                         ))}
                     </tbody>

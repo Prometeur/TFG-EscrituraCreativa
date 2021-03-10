@@ -92,15 +92,37 @@ class TeacherService {
             })
     }
 
+    // /*Envia los archivos multimedia del profesor*/
+    // sendMultimedia(file, idTeacher, idChallenge, path) {
+
+    //     const form = new FormData();
+    //     form.append("file", file);
+    //     form.append("idTeacher", idTeacher);
+    //     form.append("idChallenge", idChallenge);
+    //     form.append("path", path);
+
+    //     return axios.post("/teacher/sendMultimedia", form, { params: { idUser: idTeacher,idFolder:idChallenge } }, {
+    //         headers: { "Authorization": `Bearer ${authHeader()}` }
+    //     }).then(response => {
+    //         return response.data;
+    //     }).catch(error => {
+    //         console.log(error.message);
+    //     })
+    // }
+
+
     /*Envia los archivos multimedia del profesor*/
-    sendMultimedia(file, idTeacher, idChallenge, path) {
+    sendMultimedia(imgCollection, idTeacher, idChallenge) {
         const form = new FormData();
-        form.append("file", file);
+
+        for (const key of Object.keys(imgCollection)) {
+            form.append('imgCollection', imgCollection[key])
+        }
+        
         form.append("idTeacher", idTeacher);
         form.append("idChallenge", idChallenge);
-        form.append("path", path);
 
-        return axios.post("/teacher/sendMultimedia", form, { params: { idUser: idTeacher } }, {
+        return axios.post("/teacher/sendMultimedia", form, { params: { idUser: idTeacher, idFolder: idChallenge } }, {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
             return response.data;
@@ -109,24 +131,23 @@ class TeacherService {
         })
     }
 
-     /*Edita los archivos multimedia del estudiante*/
-     editMultimedia(file,idMultimedia,idTeacher, idChallenge, path) {
-        const form = new FormData();
-        form.append("file", file);
-        form.append("idMultimedia", idMultimedia);
-        form.append("idTeacher", idTeacher);
-        form.append("idChallenge", idChallenge);
-        form.append("path", path);
-
-        return axios.post("/teacher/editMultimedia", form,{ params: { idUser: idTeacher } }, {
+    /*Elimina los archivos multimedia del profesor*/
+    deleteMultimedia(idMultimedia, path) {
+        return axios.post("/teacher/deleteFile", { idMultimedia: idMultimedia, path: path }, {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
             return response.data;
-        }).catch(error => {
-            console.log(error.message);
         })
     }
 
+    /*Elimina desafio*/
+    deleteChallenge(idChallenge) {
+        return axios.post("/teacher/deleteChallenge", { idChallenge: idChallenge}, {
+            headers: { "Authorization": `Bearer ${authHeader()}` }
+        }).then(response => {
+            return response.data;
+        })
+    }
 
 }
 

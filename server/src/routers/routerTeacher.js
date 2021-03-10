@@ -37,10 +37,16 @@ router.post("/editChallenge",controller.editChallenge);
 router.get("/getMultimedia",controller.getMultimedia);
 
 /*Envia los ficheros multimedia del desafio del profesor*/
-router.post("/sendMultimedia",uploader.single('file'),controller.sendMultimedia);
+// router.post("/sendMultimedia",uploader.single('file'),controller.sendMultimedia);
 
-/*Edita los ficheros multimedia del escrito del estudiante*/
-router.post("/editMultimedia",uploader.single('file'),controller.editMultimedia);
+router.post("/sendMultimedia",uploader.array('imgCollection', 20),controller.sendMultimedia);
+
+/*Elimina el fichero multimedia del desafio*/
+router.post("/deleteFile",controller.deleteFile); 
+
+/*Elimina desafio*/
+router.post("/deleteChallenge",controller.deleteChallenge); 
+
 
 //Muestra todos los estudiantes que pertenezcan a un grupo dado.
 //router.post("/inviteStudentToGroup", controller.inviteStudentToGroup);

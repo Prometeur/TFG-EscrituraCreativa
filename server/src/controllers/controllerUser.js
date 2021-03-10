@@ -138,6 +138,7 @@ function searchStudent(request, response, next){
                 error: "No hay estudiantes con los parámetros escogidos."
             });*/
             console.log("No hay estudiantes con los parámetros escogidos.");
+        
         } 
         else 
         {

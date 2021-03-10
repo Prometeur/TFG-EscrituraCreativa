@@ -37,16 +37,20 @@ router.get("/getWritings",controller.getWritings);
 router.post("/sendWriting",controller.sendWriting);
 
 /*Edito el escrito del estudiante */
-router.post("/editWriting",controller.editWriting);
+router.post("/editWriting",controller.editWriting); 
 
 /*Obtiene los ficheros multimedia del escrito del estudiante*/
-router.get("/getMultimedia",controller.getMultimedia);
+router.get("/getMultimediaWriting",controller.getMultimediaWriting);
+
+/*Obtiene los ficheros multimedia del desafio */
+router.get("/getMultimediaChallenge",controller.getMultimediaChallenge);
 
 /*Envia los ficheros multimedia del escrito del estudiante*/
-router.post("/sendMultimedia",uploader.single('file'),controller.sendMultimedia);
+router.post("/sendMultimedia",uploader.array('imgCollection', 20),controller.sendMultimedia);
 
-/*Edita los ficheros multimedia del escrito del estudiante*/
-router.post("/editMultimedia",uploader.single('file'),controller.editMultimedia);
+/*Elimina fichero multimedia del escrito*/
+router.post("/deleteFile",controller.deleteFile); 
+
 
 
 module.exports = router;

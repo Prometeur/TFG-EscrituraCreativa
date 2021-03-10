@@ -23,7 +23,8 @@ function Routes() {
                 {/* <Route exact path="/student/challenges/:id/viewChallenge/:idChallenge" component={Writing} />
                 <Route exact path="/student/challenges/:id/writings/:idChallenge" component={Writings} /> */}
                 <Route exact path="/student/writing/:idGroup/:idChallenge" component={Writing} />
-                <Route exact path="/student/editWriting/:idGroup/:idChallenge" component={EditWriting} />
+                {/* <Route exact path="/student/editWriting/:idGroup/:idChallenge" component={EditWriting} /> */}
+                <Route exact path="/student/editWriting/:idGroup/:idChallenge/:idWriting" component={EditWriting} />
 
             </Switch>
         </BrowserRouter>

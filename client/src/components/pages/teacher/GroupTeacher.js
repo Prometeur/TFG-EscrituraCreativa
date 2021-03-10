@@ -86,7 +86,7 @@ class GroupTeacher extends Component {
   /*Dibuja la pagina  */
   render() {
 
-    const { dataGroup, currentUser, groupSelect } = this.state;
+    const { dataGroup, groupSelect } = this.state;
 
     return (
       <div>

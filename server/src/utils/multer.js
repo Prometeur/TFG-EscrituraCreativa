@@ -10,8 +10,8 @@ const storage = multer.diskStorage({
         
         var str = file.mimetype;//
         var res = str.split("/");//
-        //obtengo la ruta -> multimedia/idWriter/tipo
-        const dir=  prueba + req.query.idUser + "/"+ res[0];
+        //obtengo la ruta -> multimedia/idUser/idfolder/tipo
+        const dir=  prueba + req.query.idUser + "/"+ req.query.idFolder +"/"+res[0];
 
         console.log("----->Carpeta------>", dir);
         //crea la carpeta en la ruta
@@ -24,9 +24,6 @@ const storage = multer.diskStorage({
 })
 
 module.exports = storage
-
-
-
 
 // const storage = multer.diskStorage({
 //     destination:path.join(__dirname, '../../public/multimedia'),filename:function(req,file,cb){ 

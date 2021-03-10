@@ -1,5 +1,8 @@
 const modelo = require("../models/modelTeacher");
 
+const fs = require('fs')
+
+
 //importar la conexion
 const mysql = require("mysql");
 const config = require("../db/config");
@@ -71,13 +74,13 @@ function getChallenges(req, res) {
 function createChallenge(req, res) {
     const idGroup = req.body.idGroup;
     const title = req.body.title;
-    const description = req.body.description; 
+    const description = req.body.description;
     const type = req.body.type;
     const category = req.body.category;
-    const qualification= req.body.qualification;
+    const qualification = req.body.qualification;
     const fechaFin = req.body.endDate;
     const date = new Date(fechaFin);
-    modelTeacher.createChallenge(idGroup, title, description, qualification,category, type, date,function (err, result) {
+    modelTeacher.createChallenge(idGroup, title, description, qualification, category, type, date, function (err, result) {
         if (err) {
             console.log(err.message);
         }
@@ -94,11 +97,11 @@ function editChallenge(req, res) {
     const description = req.body.description;
     const type = req.body.type;
     const category = req.body.category;
-    const qualification= req.body.qualification;
+    const qualification = req.body.qualification;
     const fechaFin = req.body.endDate;
     const date = new Date(fechaFin);
 
-    modelTeacher.editChallenge(idChallenge, idGroup, title, description,qualification,category, type, date, function (err, result) {
+    modelTeacher.editChallenge(idChallenge, idGroup, title, description, qualification, category, type, date, function (err, result) {
         if (err) {
             console.log(err.message);
         }
@@ -117,13 +120,24 @@ function getMultimedia(req, res) {
     });
 }
 
-
 /*Envia los ficheros multimedia del desafio del profesor*/
 function sendMultimedia(req, res) {
     const idTeacher = req.body.idTeacher;
     const idChallenge = req.body.idChallenge;
-    const path = req.body.path;
-    modelTeacher.sendMultimedia( idChallenge, path, function (err, result) {
+    const reqFiles = [];
+
+    for (var i = 0; i < req.files.length; i++) {
+        var str = req.files[i].mimetype;
+        var type = str.split("/");
+        //dir->idteacher/idChallenge/tipo/
+        const dir = idTeacher + "/" + idChallenge + "/" + type[0] + "/";
+        let path = "http://localhost:3001/multimedia/" + dir + req.files[i].filename;
+        reqFiles.push([idChallenge, path])
+    }
+
+    console.log(reqFiles);
+
+    modelTeacher.sendMultimedia(reqFiles, function (err, result) {
         if (err) {
             console.log(err.message);
         }
@@ -131,17 +145,37 @@ function sendMultimedia(req, res) {
     });
 }
 
-/*Edita los ficheros multimedia del desafio del profesor*/
-function editMultimedia(req, res) {
+/*Elimina el fichero multimedia del desafio*/
+function deleteFile(req, res) {
     const idMultimedia = req.body.idMultimedia;
-    // const idWriter = req.body.idWriter;
-    const path=req.body.path;
-    modelTeacher.editMultimedia(idMultimedia,path,function (err, result) {
-        if(err){
+    const path = req.body.path;
+    console.log("Eliminando file--------->", idMultimedia);
+    var filePath = "public/" + path.replace('http://localhost:3001/', '');
+    fs.unlink(filePath, (err) => {
+        if (err) {
+            console.error(err)
+            return
+        }
+    });
+    modelTeacher.deleteFile(idMultimedia, function (err, result) {
+        if (err) {
             console.log(err.message);
         }
         res.send(result);
-    }); 
+    });
+}
+
+
+/*Elimina el fichero multimedia del desafio*/
+function deleteChallenge(req, res) {
+    const idChallenge = req.body.idChallenge;
+
+    modelTeacher.deleteChallenge(idChallenge, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
+        res.send(result);
+    });
 }
 
 //Busca estudiantes según el grupo dado.
@@ -172,7 +206,6 @@ function inviteStudentToGroup(request, response, next) {
             response.send(JSON.stringify(res));
         }
     });
-
 }
 
 module.exports = {
@@ -182,8 +215,9 @@ module.exports = {
     createChallenge: createChallenge,
     getCategories: getCategories,
     editChallenge: editChallenge,
-    getMultimedia:getMultimedia,
-    sendMultimedia:sendMultimedia,
-    editMultimedia:editMultimedia,
+    getMultimedia: getMultimedia,
+    sendMultimedia: sendMultimedia,
+    deleteFile: deleteFile,
     inviteStudentToGroup: inviteStudentToGroup,
+    deleteChallenge: deleteChallenge,
 };

@@ -103,10 +103,45 @@ class modelTeacher {
         });
     }
 
+    // /*Envia los ficheros multimedia del desafio del profesor*/
+    // sendMultimedia(idChallenge, path, callback) {
+    //     const sqlInsert = "INSERT INTO multimediadesafio (idDesafio,ruta) VALUES (?,?)";
+    //     this.pool.query(sqlInsert, [idChallenge, path], (err, result) => {
+    //         if (err) {
+    //             callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+    //         }
+    //         else {
+    //             callback(null, result);
+    //         }
+    //     });
+    // }
+
     /*Envia los ficheros multimedia del desafio del profesor*/
-    sendMultimedia(idChallenge, path, callback) {
-        const sqlInsert = "INSERT INTO multimediadesafio (idDesafio,ruta) VALUES (?,?)";
-        this.pool.query(sqlInsert, [idChallenge, path], (err, result) => {
+    sendMultimedia(values, callback) {
+
+        // var pars = [
+        //     ['211', 'hola1'], 
+        //     ['211', 'hola2'], 
+        //     ['211', 'hola3']
+        // ];
+
+        // console.log("por favor funciona--->",pars);
+
+        const sqlInsert = "INSERT INTO multimediadesafio (idDesafio,ruta) VALUES ?";
+        this.pool.query(sqlInsert, [values], (err, result) => {
+            if (err) {
+                callback(new Error("----------------ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+            }
+        });
+    }
+
+    /*Elimina el fichero multimedia del desafio*/
+    deleteFile(idMultimedia, callback) {
+        const sqlDelete = "DELETE FROM multimediadesafio WHERE id=?";
+        this.pool.query(sqlDelete, idMultimedia, (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }
@@ -116,10 +151,13 @@ class modelTeacher {
         });
     }
 
-    /*Edita los ficheros multimedia del escrito del estudiante*/
-    editMultimedia(idMultimedia, path, callback) {
-        const sqlUpdate = "UPDATE multimediadesafio SET ruta = ? WHERE id=?";
-        this.pool.query(sqlUpdate, [path, idMultimedia], (err, result) => {
+
+    /*Elimina el fichero multimedia del desafio*/
+    deleteChallenge(idChallenge, callback) {
+        const sqlUpdate = "UPDATE desafio SET activo =? WHERE id=?";
+
+       
+        this.pool.query(sqlUpdate, [0,idChallenge], (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }

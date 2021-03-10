@@ -1,5 +1,7 @@
 const modelo = require("../models/modelStudent");
 
+const fs = require('fs')
+
 //importar la conexion
 const mysql = require("mysql");
 const config = require('../db/config');
@@ -68,9 +70,9 @@ function sendWriting(req, res) {
 
 /*Obtiene el escrito del estudiante segun su grupo*/
 function getWriting(req, res) {
-    const idChallenge = req.query.idChallenge;
-    const idWriter = req.query.idWriter;
-    modelStudent.getWriting(idChallenge, idWriter, function (err, result) {
+    const idWriting= req.query.idWriting;
+  
+    modelStudent.getWriting(idWriting, function (err, result) {
         if (err) {
             console.log(err.message);
         }
@@ -107,10 +109,22 @@ function editWriting(req, res) {
 }
 
 /*Obtiene los ficheros multimedia del escrito del estudiante*/
-function getMultimedia(req, res) {
+function getMultimediaWriting(req, res) {
     const idChallenge = req.query.idChallenge;
     const idWriter = req.query.idWriter;
     modelStudent.getMultimedia(idChallenge, idWriter, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
+        res.send(result);
+    });
+}
+
+
+/*Obtiene los ficheros multimedia del desafio*/
+function getMultimediaChallenge(req, res) {
+    const idChallenge = req.query.idChallenge;
+    modelStudent.getMultimediaChallenge(idChallenge, function (err, result) {
         if (err) {
             console.log(err.message);
         }
@@ -122,26 +136,46 @@ function getMultimedia(req, res) {
 function sendMultimedia(req, res) {
     const idWriter = req.body.idWriter;
     const idChallenge = req.body.idChallenge;
+    const reqFiles = [];
+
+    for (var i = 0; i < req.files.length; i++) {
+        var str = req.files[i].mimetype;
+        var type = str.split("/");
+        //dir->idWriter/idChallenge/tipo/
+        const dir = idWriter + "/" + idChallenge + "/" + type[0] + "/";
+        let path = "http://localhost:3001/multimedia/" + dir + req.files[i].filename;
+        reqFiles.push([idWriter,idChallenge,path]) 
+    }
+    console.log(reqFiles);
+
+    modelStudent.sendMultimedia(reqFiles, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
+        res.send(result);
+        
+    });
+}
+
+
+/*Elimina  fichero multimedia del escrito*/
+function deleteFile(req, res) {
+    const idMultimedia = req.body.idMultimedia;
     const path = req.body.path;
-    modelStudent.sendMultimedia(idWriter, idChallenge, path, function (err, result) {
+    console.log("Eliminando file--------->", idMultimedia);
+    var filePath = "public/" + path.replace('http://localhost:3001/', '');
+    fs.unlink(filePath, (err) => {
+        if (err) {
+            console.error(err)
+            return
+        }
+    });
+    modelStudent.deleteFile(idMultimedia, function (err, result) {
         if (err) {
             console.log(err.message);
         }
         res.send(result);
     });
-}
-
-/*Edita los ficheros multimedia del escrito del estudiante*/
-function editMultimedia(req, res) {
-    const idMultimedia = req.body.idMultimedia;
-    const idWriter = req.body.idWriter;
-    const path=req.body.path;
-    modelStudent.editMultimedia(idMultimedia,idWriter,path,function (err, result) {
-        if(err){
-            console.log(err.message);
-        }
-        res.send(result);
-    }); 
 }
 
 module.exports = {
@@ -154,7 +188,8 @@ module.exports = {
     sendWriting: sendWriting,
     sendMultimedia: sendMultimedia,
     editWriting: editWriting,
-    getMultimedia: getMultimedia,
-    editMultimedia:editMultimedia,
+    getMultimediaWriting: getMultimediaWriting,
+    getMultimediaChallenge: getMultimediaChallenge,
+    deleteFile: deleteFile,
 
 };
