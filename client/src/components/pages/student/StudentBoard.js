@@ -10,9 +10,9 @@ function StudentBoard(){
 
     /*Dibuja la pagina  del estudiante*/
     return (
-        <div>
+    
             <RouteStudent />
-        </div>
+
     );
    
 }

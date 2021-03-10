@@ -13,12 +13,15 @@ import '../../../styles/styleButton.css';
 import '../../../styles/styleCard.css';
 import Card from "react-bootstrap/Card";
 
+import Alert from "react-bootstrap/Alert";
+
+
 const required = value => {
     if (!value) {
       return (
-        <div className="alert alert-danger" role="alert">
-          This field is required!
-        </div>
+          <Alert variant="danger" bsPrefix="alert-heading">
+              ¡Todos los campos son obligatorios!
+          </Alert>
       );
     }
   };
@@ -93,7 +96,8 @@ class Login extends Component {
   render() {
       return (
           <>
-            <Card style={{ width: '20rem', height:'20rem' }}>
+          <div className="container">
+            <Card className="card-login">
               <Card.Body>
                 <Card.Title>Sign In</Card.Title>
                   <Form  
@@ -103,23 +107,27 @@ class Login extends Component {
                     }}
                   >
                   <div className="form-group">
-                        <Card.Subtitle> Usuario:</Card.Subtitle>
+                      <div className="section-column">
                         <Input 
                             type="text" 
                             name="username" 
+                            placeholder="Usuario"
                             value={this.state.username}
                             onChange={this.onChangeUsername} 
                             validations={[required]}
 
                         />
-                        <Card.Subtitle> Password:</Card.Subtitle>
+                      </div>
+                      <div className="section-column">
                         <Input
                             type="text" 
                             name="password"
+                            placeholder="Contraseña"
                             value={this.state.password} 
                             onChange={this.onChangePassword}
                             validations={[required]}
                         />
+                      </div>
                     </div>
                     <div class="box">
                       <button className="btn btn-white btn-animation-1" > Login </button>
@@ -133,6 +141,7 @@ class Login extends Component {
                     </Form>
                   </Card.Body>
               </Card>
+            </div>
           </>
       );
   }

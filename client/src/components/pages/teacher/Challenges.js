@@ -6,8 +6,10 @@
 import React, { Component } from 'react';
 import TeacherService from '../../../services/teacher/teacherService';
 import moment from 'moment';
-//import CreateChallenge from './CreateChallenge.js';
 import { Link} from "react-router-dom";
+import Table from "react-bootstrap/Table";
+import Button from "react-bootstrap/Button";
+import '../../../styles/styleGeneral.css';
 
 class Challenges extends Component {
    
@@ -53,29 +55,23 @@ class Challenges extends Component {
         const {categories,data} = this.state;
     
         return (
-         <div>    
-            <div>
-                <table>
+         <>
+            <div className="table-margin">
+                <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th>idDesafio</th>
-                            <th>idGrupo</th>
-                            <th>Titulo</th>
-                            <th>categoria</th>
-                            <th>colaborativo</th>
-                            <th>fecha</th>
+                            <th>Nombre</th>
+                            <th>Categoria</th>
+                            <th>Colaborativo</th>
+                            <th>Fecha</th>
                             <th>Hora</th>
-                            <th>activo</th>
-                            <th>acciones</th>
+                            <th>Activo</th>
                         </tr>
                     </thead>
                     <tbody>
                     {data.map((challenge) => (
                                 <tr key={challenge.id}>
-                                    <td>{challenge.id}</td>
-                                    <td>{challenge.idGrupo}</td>
                                     <td>{challenge.titulo}</td>
-
                                     {categories.filter(category => category.id === challenge.idCategoria).map((item, index) =>
                                         <td>{item.nombre}</td>
                                     )}
@@ -84,15 +80,14 @@ class Challenges extends Component {
                                     <td>{formatedDate = moment(challenge.fechaFin).format('LT')}</td>
                                     <td>{challenge.activo}</td>
                                     
-                                    <td><Link to={`/teacher/getGroups/${this.props.groupSelect}/editChallenge/${challenge.id}`}><button>Editar</button></Link></td>
-                                    <td><Link to={`/teacher/getGroups/${this.props.groupSelect}/editChallenge/${challenge.id}`}><button>Borrar</button></Link></td>
+                                    <td><Link to={`/teacher/getGroups/${this.props.groupSelect}/editChallenge/${challenge.id}`}><Button variant="outline-primary" size="sm">Editar</Button></Link></td>
+                                    <td><Link to={`/teacher/getGroups/${this.props.groupSelect}/editChallenge/${challenge.id}`}><Button variant="outline-primary" size="sm">Eliminar</Button></Link></td>
                                 </tr>
                         ))}
                     </tbody>
-                 </table>
+                 </Table>
                </div>
-                <Link to= {`/teacher/getGroups/createChallenge/${this.props.groupSelect}`}><button>Crear Desafio</button></Link>
-            </div>
+            </>
         );
     }
 }

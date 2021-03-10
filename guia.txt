@@ -23,6 +23,8 @@ npm install react-router-dom//para poder crear las rutas
 npm i axios
 npm i universal-cookie//guardar la sesion
 npm start
+
+
 -----------------------------------------------------------------------------------------
 
 Server
@@ -37,7 +39,6 @@ npm run devStart
 
  
 {/* Un comentario JSX */}
-
 
 
 ----------------------------------------
@@ -57,3 +58,8 @@ si hay cambios -> si esos cambios se quieren guardar -> git add, git commit -m (
 3. git checkout <rama>
 4. git merge <rama> master
 5. git push [origin <rama>]
+
+---------------------------------------------------------------------------------------------
+
+Actualizar package.json con nuesvas blibliotecas 
+$npm install

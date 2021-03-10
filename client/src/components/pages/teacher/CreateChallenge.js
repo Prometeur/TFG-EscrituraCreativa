@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import TeacherService from '../../../services/teacher/teacherService';
 import '../../../styles/Challenge.css';
-
+import '../../../styles/styleGeneral.css';
+import '../../../styles/styleCard.css';
+import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
+import Button  from 'react-bootstrap/Button';
 /*Importaciones del Video*/
 import ReactPlayer from "react-player";
 
@@ -10,7 +16,8 @@ import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
-import Dates from '../../dates/dates.js';
+import Dates from '../../dates/Dates.js';
+
 
 class CreateChallenge extends Component {
 
@@ -22,6 +29,7 @@ class CreateChallenge extends Component {
             editorState: EditorState.createEmpty(),
             data: [],
             categories: [],
+            stateModal:false,
 
             formErrors: {
                 title: '',
@@ -103,6 +111,12 @@ class CreateChallenge extends Component {
         window.location.href = "/teacher/group/";
     }
 
+    onModal(modal) {
+        this.setState({
+            stateModal:modal
+        });
+    }
+
     handleDateChange = (date) => {
         this.setState({
             form: {
@@ -175,7 +189,7 @@ class CreateChallenge extends Component {
 
         TeacherService.createChallenge(form);
 
-        window.location.href = '/teacher/group/';
+        window.location.href = '/teacher';
     };
 
 
@@ -184,121 +198,149 @@ class CreateChallenge extends Component {
         let media = "";
         if (this.state.form.file.type !== undefined) {
             if (this.state.form.file.type.includes("image"))
-                media = <img className="image" src={this.state.form.reader} />;
+             
+                media = <div className="image"><img src={this.state.form.reader} /></div>;
+           
             else
+              
                 media = <ReactPlayer className="video" url={this.state.form.reader} controls={true} />;
         }
         else {
-            media = <img className="image" src="http://localhost:3001/images/drop-files.jpg" />;
+            media =  <div className="image"><p>Selecciona tu multimedia </p></div>;
         }
 
         const { editorState } = this.state;
         const { formErrors } = this.state;
-        //console.log(draftToHtml(convertToRaw(editorState.getCurrentContent())));
 
         return (
-            <>
-                <div className="form-container">
-                    <div className='form-content'>
-                        <form className='form'>
-
-                            <div class="form-inputs">
-                                <h2>Crea tu propio desafio completando la información de abajo</h2>
-                            </div>
-
-                            <div class="form-inputs">
-                                <label className='form-label'>Escribe un Titulo </label>
-                                <input
-                                    // className='form-input'
-                                    className={formErrors.title.length > 0 ? "error" : "form-input"}
-                                    type="text"
-                                    name="title"
-                                    placeholder="escribe el título"
-                                    // onChange={this.handleChange}
-                                    onChange={this.handleErrors}
-                                />
-                                {formErrors.title.length > 0 && (
-                                    <span className="errorMessage">{formErrors.title}</span>
-                                )}
-                            </div>
-
-                            <div class="form-inputs">
-                                <label className='form-label'>Puedes agregar un fichero multimedia si lo deseas (imagen,video o audio): </label>
-                                <div className="form-media">
-                                    {media}
+            <div className="container">
+                <label className='form-label'>Crear desafio</label>
+                    <Card className="card-edit">
+                        <Card.Body>
+                            <div className="row-edit">
+                                <div className="form-inputs">
+                                    <label className='form-label'>Titulo</label>
                                     <input
-                                        type="file"
-                                        id="file" name="imagen"
-                                        onChange={this.onFileChange}
+                                        // className='form-input'
+                                        className={formErrors.title.length > 0 ? "error" : "form-input"}
+                                        type="text"
+                                        name="title"
+                                        placeholder="Escribe el título"
+                                        // onChange={this.handleChange}
+                                        onChange={this.handleErrors}
                                     />
-                                    <label htmlFor="file" className="label">
-                                        <i className="material-icons">add_a_photo</i>
-                                    </label>
+                                    {formErrors.title.length > 0 && (
+                                        <span className="errorMessage">{formErrors.title}</span>
+                                    )}
                                 </div>
                             </div>
-                            <div class="form-inputs">
-                                <label className='form-label'>Escribe una Descripción </label>
-                                <Editor
-                                    editorState={editorState}
-                                    toolbarClassName="toolbarClassName"
-                                    wrapperClassName="wrapperClassName"
-                                    editorClassName="editorClassName"
-                                    onEditorStateChange={this.onEditorStateChange}
-                                    
-                                    onChange={this.handleEditorChange}
+                            <div className="row-edit">
+                                <div className="form-inputs">
+                                    <label className='form-label'>Descripción</label>
+                                    <Editor
+                                        editorState={editorState}
+                                        toolbarClassName="toolbarClassName"
+                                        wrapperClassName="demo-wrapper"
+                                        editorClassName="border-edit"
+                                        onEditorStateChange={this.onEditorStateChange}
 
-                                    onChange={(event, editor) => {
-                                        this.setState({
-                                            form: {
-                                                ...this.state.form,
-                                                descripcion: draftToHtml(convertToRaw(editorState.getCurrentContent()))
-                                            }
-                                        });
-                                    }}
-                                />
+                                        onChange={this.handleEditorChange}
 
+                                        onChange={(event, editor) => {
+                                            this.setState({
+                                                form: {
+                                                    ...this.state.form,
+                                                    descripcion: draftToHtml(convertToRaw(editorState.getCurrentContent()))
+                                                }
+                                            });
+                                        }}
+                                    />
+
+                                </div>
                             </div>
-                            <div class="form-inputs">
-                                <label className='form-label'>Selecciona la categoría del desafio </label>
-                                <select onChange={this.handleSelectionCategory}>
-                                    <option value="" selected disabled hidden>Choose here</option>
-                                    {this.state.categories.map(elemento => (
-                                        <option key={elemento.id} value={elemento.id}>{elemento.nombre}</option>
-                                    ))}
+                            <div className="row-edit">
+                                <div className="form-select">
+                                    <label className='form-label'>Selecciona la categoría</label>
+                                    <select value={this.state.form.category} onChange={this.handleSelectionCategory}>
+                                        {this.state.categories.map(elemento => (
+                                            <option key={elemento.id} value={elemento.id}>{elemento.nombre}</option>
+                                        ))}
 
-                                </select>
+                                    </select>
+                                </div>
+                                <Form className="form-select">
+                                     <Form.Group as={Col}>
+                                        <Form.Label>Tipo de evalución</Form.Label>
+                                        <Col sm={1}>
+                                            <Form.Check
+                                            type="radio"
+                                            label="Individual"
+                                            name="formHorizontalRadios"
+                                            id="formHorizontalRadios1"
+                                            />
+                                            <Form.Check
+                                            type="radio"
+                                            label="Equipo"
+                                            name="formHorizontalRadios"
+                                            id="formHorizontalRadios2"
+                                            />
+                                        </Col>
+                                     </Form.Group>
+                                 </Form>
                             </div>
-
-                            <div class="form-inputs">
-                                <label className='form-label'>Selecciona si el desafio es individual o en equipo  </label>
-                                <select onChange={this.handleSelectionChange}>
-                                    <option value="" selected disabled hidden>Choose here</option>
-                                    <option value="1">Individual</option>
-                                    <option value="2">Equipo</option>
-                                </select>
+                            <div className="row-edit">
+                               <div className="form-select">
+                                   <label className='form-label'>Selecciona la fecha y hora final </label>
+                                   <Dates
+                                       handleDateChange={this.handleDateChange}
+                                       param={this.state.form.date}
+                                   />
+                               </div>
                             </div>
-
-                            <div class="form-inputs">
-                                <label className='form-label'>Selecciona la duración del desafio </label>
-                                <Dates
-                                    handleDateChange={this.handleDateChange}
-                                    param={this.state.form.date}
-                                />
+                            <div className="row-edit">
+                               <div className="form">
+                                   {media}
+                                   <input
+                                       type="file"
+                                       id="file"
+                                       onChange={this.onFileChange}
+                                   />
+                                   <label htmlFor="file" className="btn-1">upload file</label>
+                               </div>
                             </div>
-                        </form>
-
-                        <div className="form-btn">
-                            <button className="form-btn-send" onClick={() => this.sendChallenge()}>
-                                Enviar
-                                </button>
-                            <button className="form-btn-cancel" onClick={() => this.changeView()}>
-                                Cancelar
-                                </button>
-                        </div>
-                    </div>
-
-                </div>
-            </>
+                            <div className="form-btn">
+                                <div className="form-select">
+                                    <Button  onClick={() => this.onModal(true)}>Guardar</Button>
+                                </div>
+                                <div className="form-select">
+                                    <Button  onClick={() => this.changeView()}>Cancelar</Button>
+                                </div>
+                            </div>
+                            <Modal
+                                size="lg"
+                                aria-labelledby="contained-modal-title-vcenter"
+                                centered
+                                show={this.state.stateModal}
+                                onHide={this.state.stateModal}
+                            >
+                                <Modal.Header >
+                                    <Modal.Title id="contained-modal-title-vcenter">
+                                       Aviso
+                                    </Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                    <h5>
+                                       ¿ Esta seguro de salvar este desafio ?
+                                    </h5>
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button onClick={()=> this.onModal(false)}>No</Button>
+                                    <Button onClick={() => this.sendChallenge()}>Si</Button>
+                                </Modal.Footer>
+                            </Modal>
+                       </Card.Body>
+                   </Card>
+               </div>
         );
     }
 }

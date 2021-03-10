@@ -4,7 +4,12 @@
 *    
 */
 import React, { Component } from 'react';
+import { Link} from "react-router-dom";
 import TeacherService from '../../../services/teacher/teacherService.js';
+import '../../../styles/styleGeneral.css';
+import '../../../styles/styleCard.css';
+import Card from 'react-bootstrap/Card';
+import Button  from 'react-bootstrap/Button';
 
 class SearchStudentRes extends Component {
 
@@ -26,6 +31,7 @@ class SearchStudentRes extends Component {
        TeacherService.searchStudent(this.state.searchStudent, this.state.searchType).then(response =>{
             this.setState({data:response});
             this.setState({filterData:response});
+            this.filterData();
             console.log(this.state.data);
        })
     }
@@ -81,6 +87,7 @@ class SearchStudentRes extends Component {
         
     }
 
+
     /*Dibuja la pagina  */
     render() {
         let cartel =<div> </div>;
@@ -103,7 +110,7 @@ class SearchStudentRes extends Component {
                         <td>{student.nombre}</td>
                         <td>{student.apellidos}</td>
                         <td>{student.correo}</td>
-                        <td><button text='Ver Perfil' onClick={() => this.changeViewStudentProfile(student.id)}>Ver perfil</button></td>
+                        <td><Link key={student.id} to={`/teacher/students/viewProfile/${student.id}`}><button text='Ver Perfil'> Ver perfil </button></Link></td>
                     </tr>
                 )
             })}
@@ -120,31 +127,36 @@ class SearchStudentRes extends Component {
 
         return (
             <>
-                <h1>Estudiantes:</h1>
+            <div className="container">
+                <Card className="card-edit">
+                    <Card.Body>
+                    <h1>Estudiantes:</h1>
 
-                <div>
-                <h2> Resultados de buscar estudiantes con  similar a:</h2>
-                <h1></h1>
-                        <label>Buscar estudiante: </label>
-                        <br />
-                        <input type="text" name="searchStudent" onChange={this.handleChangeSearch} />
-                        <br />
-                        <label for="searchType">Escoja cómo buscar:</label>
-                        <select name="searchType" id="searchType" onChange={this.handleChangeSearchType}>
-                            <option value="nombre">Nombre</option>
-                            <option value="email">Email</option>
-                        </select> 
-                </div>
-                <div>
-                
-                    {cartel}
-                
+                    <div>
+                    <h2> Resultados de buscar estudiantes con  similar a:</h2>
+                            <label>Buscar estudiante: </label>
+                            <br />
+                            <input type="text" name="searchStudent" onChange={this.handleChangeSearch} />
+                            <br />
+                            <label for="searchType">Escoja cómo buscar:</label>
+                            <select name="searchType" id="searchType" onChange={this.handleChangeSearchType}>
+                                <option value="nombre">Nombre</option>
+                                <option value="email">Email</option>
+                            </select>
+                    </div>
+                    <div>
 
-                    {tabla}
+                        {cartel}
 
 
-                </div>
-            </>
+                        {tabla}
+
+
+                    </div>
+                    </Card.Body>
+                </Card>
+            </div>
+          </>
         );
     }
 

@@ -54,34 +54,36 @@ class App extends Component {
        const { currentUser,showStudent, showTeacher, showAdmin } = this.state;
         return (
           <Router>
-            <div className="main-wrapper">
+            <div className="full-wrapper">
               <header>
+                <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald&family=Oswald&display=swap"></link>
                 <div className ="menuBar">
-                    <nav>
+                  <nav>
+                     <ul>
                         { showAdmin && (
                         <li>
                           <Link to={"/admin"} >
-                              Adim dashboard
+                             Dashboard
                           </Link>
                         </li>
                         )}
                         {showStudent && (
                         <li>
                           <Link to={"/student"}>
-                            Student dashboard
+                            Dashboard
                           </Link>
                         </li>
                       )}
                       {showTeacher && (
                         <li>
                           <Link to={"/teacher"}>
-                              dashboard
+                              Dashboard
                           </Link> 
                       </li>
                       )}
                     
                       { currentUser ? ( 
-                        <ul>
+                        <>
                             <li>
                               <Link to={"/profile"}>
                                 {currentUser.username}
@@ -89,33 +91,33 @@ class App extends Component {
                             </li>
                             <li>
                               <a href="/login" onClick={this.logOut}>
-                                LogOut
+                                Cerrar sesión
                               </a>
                             </li>
-                            </ul>
+                            </>
                             ):(
-                            <ul>
-                              <li>
-                                <Link to={"/home"}>
-                                  Home
-                                </Link>
-                              </li> 
-                              <li>
-                                <Link to={"/login"} >
-                                  Login
-                                </Link>
+                              <>
+                                <li>
+                                  <Link to={"/home"}>
+                                    Home
+                                  </Link>
+                                </li> 
+                                <li>
+                                  <Link to={"/login"} >
+                                    Iniciar
+                                  </Link>
+                                </li>
+                                <li>
+                                  <Link to={"/register"}>
+                                    Registarse
+                                  </Link>
                               </li>
-                              <li>
-                                <Link to={"/register"}>
-                                  Sign Up
-                                </Link>
-                             </li>
-                            </ul>
+                             </>
                           )}
+                       </ul>
                     </nav>
                   </div>
                 </header>
-                <div className = "container">
                   <Switch>
                     <Route exact path={["/", "/home"]} component={Home} />
                     <Route exact path='/login' component={Login} />
@@ -125,7 +127,6 @@ class App extends Component {
                     <Route exact path='/teacher' component={TeacherBoard} />
                     <Route exact path='/student' component={StudentBoard} />
                   </Switch>
-                </div>
               </div>
             </Router> 
         );

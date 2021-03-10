@@ -8,6 +8,7 @@ import DropdownToggle from 'react-bootstrap/DropdownToggle';
 import FormControl from 'react-bootstrap/FormControl';
 import Challenges from './Challenges.js';
 import Writings from './Writings.js';
+import '../../../styles/styleGeneral.css';
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
     <a
@@ -84,7 +85,8 @@ class GroupStudent extends Component {
     
         const {dataGroup, currentUser,groupSelect}= this.state;
          return (
-            <div>
+            <div className="container">
+              <div className="section-container">
                <Dropdown>
                      <DropdownToggle as={CustomToggle} id="dropdown-custom-components">
                          Selecciona grupo
@@ -96,7 +98,10 @@ class GroupStudent extends Component {
                      </DropdownMenu>
               </Dropdown>
               <Challenges key={groupSelect} groupSelect={groupSelect} />
-              <Writings key={groupSelect}  idUser={currentUser} groupSelect={groupSelect} />     
+              <Writings key={groupSelect}  idUser={currentUser} groupSelect={groupSelect} />
+              {/*<Challenges key={groupSelect} groupSelect={groupSelect} />*/}
+              <Writings key={groupSelect}  idUser={currentUser} groupSelect={groupSelect} />
+              </div>
             </div>
          );
      }

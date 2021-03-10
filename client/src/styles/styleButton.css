@@ -1,11 +1,19 @@
 
-.box{
-  position:absolute;
-  left:50%;
-  transform : translate(-50% ,-50%);
-  flex-basis: 100%;
-  margin: .5em;
-  text-align: center;
+.box {
+    position: absolute;
+    left: 50%;
+}
+.box {
+    position: absolute;
+    left: 47%;
+
+    transform: translate(-50%, -50%);
+    flex-basis: 100%;
+    margin: .5em;
+    text-align: center;
+
+    bottom: 1.1em;
+    font-family: "Pavanam", sans-serif;
 }
 
 .btn,

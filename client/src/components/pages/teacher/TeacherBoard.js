@@ -10,9 +10,9 @@ function TeacherBoard() {
 
      /*Dibuja la pagina  del profesor */
      return (
-      <div>
+     
         <RoutesTeacher />
-      </div>
+     
      );
 }
 

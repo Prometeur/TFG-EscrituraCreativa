@@ -6,12 +6,16 @@
 import React,{ Component, useState } from 'react';
 import TeacherService from '../../../services/teacher/teacherService.js';
 import AuthUser from '../../../services/authenticity/auth-service.js';
+import SplitButtom from 'react-bootstrap/Spinner';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownMenu from 'react-bootstrap/DropdownMenu';
 import DropdownItem from 'react-bootstrap/DropdownItem';
 import DropdownToggle from 'react-bootstrap/DropdownToggle';
 import FormControl from 'react-bootstrap/FormControl';
 import Challenges from './Challenges.js';
+import { Link} from "react-router-dom";
+import Button from "react-bootstrap/Button";
+import Card from 'react-bootstrap/Card';
 
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
@@ -93,18 +97,31 @@ class GroupTeacher extends Component {
        const {dataGroup, currentUser,groupSelect}= this.state;
     
         return (
-           <div>
-              <Dropdown>
-                    <DropdownToggle as={CustomToggle} id="dropdown-custom-components">
-                        Selecciona grupo
-                    </DropdownToggle>
-                    <DropdownMenu as={CustomMenu}>
-                        {dataGroup.map((row)=>(
-                            <DropdownItem eventKey={row.id} onClick= {() => this.handleSelect(row.id)}>{row.nombre}</DropdownItem>
-                        ))}  
-                    </DropdownMenu>
-             </Dropdown>
-             <Challenges key={groupSelect} groupSelect={groupSelect} />
+          <div className="container">
+             <Card className="card-long">
+                 <Card.Body>
+                     <div className="row">
+                        <div className="column column-left">
+                          <Dropdown className="drop-down">
+                                <DropdownToggle as={CustomToggle}  id="dropdown-custom-components">
+                                    Selecciona grupo
+                                </DropdownToggle>
+                                <DropdownMenu as={CustomMenu}>
+                                    {dataGroup.map((row)=>(
+                                        <DropdownItem eventKey={row.id} onClick= {() => this.handleSelect(row.id)}>{row.nombre}</DropdownItem>
+                                    ))}
+                                </DropdownMenu>
+                          </Dropdown>
+                        </div>
+                        <div className="column column-rigth">
+                            <Link to= {`/teacher/getGroups/createChallenge/${groupSelect}`}><Button variant="primary">Crear desafio</Button></Link>
+                        </div>
+                     </div>
+                     <div className="row">
+                      <Challenges key={groupSelect} groupSelect={groupSelect} />
+                    </div>
+                 </Card.Body>
+             </Card>
            </div>
         );
     }
