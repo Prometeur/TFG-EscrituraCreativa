@@ -27,7 +27,11 @@ class HomeAdmin extends Component {
     /*Se hacen peticiones al servidor para que me devuelva la tabla entera usuarios*/
     peticionGet = () => {
         axios.get(baseUrl).then(response => {
+<<<<<<< HEAD
             console.log(response.data);
+=======
+ 
+>>>>>>> luis
             this.setState({ data: response.data });
         }).catch(error => {
             console.log(error.message);

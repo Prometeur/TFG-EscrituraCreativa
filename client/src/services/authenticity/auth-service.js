@@ -3,13 +3,21 @@ import axios from "../../axios";
 class AuthService {
  
     login(username, password) {
+<<<<<<< HEAD
       
+=======
+   
+>>>>>>> luis
         return axios.post("/auth/signin", { username: username, password: password }, { 
            headers: {
                'Content-Type': 'application/x-www-form-urlencoded'
             } 
         })
         .then(response =>{
+<<<<<<< HEAD
+=======
+            
+>>>>>>> luis
             if (response.data.accessToken) 
             {
                 // Obtenemos los datos desde el servidor y almacenamos los datos del usuario
@@ -40,7 +48,11 @@ class AuthService {
     }
 
     getCurrentUser() {
+<<<<<<< HEAD
         return JSON.parse(localStorage.getItem('user'));;
+=======
+        return JSON.parse(localStorage.getItem('user'));
+>>>>>>> luis
     }
 }
 

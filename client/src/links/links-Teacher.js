@@ -1,4 +1,5 @@
 const linksTeacher = [
+<<<<<<< HEAD
 
      {
          path:"/getGroups",
@@ -9,6 +10,12 @@ const linksTeacher = [
         path:"/students",
         name:"Estudiantes",
         id:"Estudiantes"
+=======
+    {
+        path: "/groups",
+        name: "Grupos",
+        id: "groups"
+>>>>>>> luis
     }
 ];
 

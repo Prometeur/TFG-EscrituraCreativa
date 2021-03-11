@@ -10,9 +10,15 @@ function TeacherBoard() {
 
      /*Dibuja la pagina  del profesor */
      return (
+<<<<<<< HEAD
      
         <RoutesTeacher />
      
+=======
+      <div>
+        <RoutesTeacher />
+      </div>
+>>>>>>> luis
      );
 }
 

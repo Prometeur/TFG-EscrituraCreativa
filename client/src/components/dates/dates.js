@@ -1,6 +1,7 @@
 import React from 'react';
-import "../../styles/styleGeneral.css";
+
 /*Importaciones del time*/
+import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
 import {
     MuiPickersUtilsProvider,
@@ -10,11 +11,10 @@ import {
 
 const Dates = ({ handleDateChange,param}) => {
     return (
-        <div className='section-container'>
+        <div className='dateContainer'>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <div className="container-date">
+                <Grid container justify="space-around">
                     <KeyboardDatePicker
-
                         disableToolbar
                         variant="inline"
                         format="dd/MM/yyyy"
@@ -27,11 +27,8 @@ const Dates = ({ handleDateChange,param}) => {
                             'aria-label': 'change date',
                         }}
                     />
-                </div>
-                <div className="container-date">
                     <KeyboardTimePicker
                         margin="normal"
-                        variant="inline"
                         id="time-picker"
                        // label="Time picker"
                         value={param}
@@ -40,7 +37,7 @@ const Dates = ({ handleDateChange,param}) => {
                             'aria-label': 'change time',
                         }}
                     />
-                </div>
+                </Grid>
             </MuiPickersUtilsProvider>
         </div>
     )
