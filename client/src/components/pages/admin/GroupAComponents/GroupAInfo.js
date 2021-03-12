@@ -30,7 +30,7 @@ class GroupAInfo extends Component {
 
     /*Se hacen peticiones al servidor para que me devuelva lso datos del prodesor del grupo*/
     peticionGetTeacher = () => {
-        axios.get("http://localhost:3001/admin/getProfile", { params: { idUser: cookies.get('idRequestedUser') } }).then(response => {
+        axios.get("http://localhost:3001/admin/getProfile", { params: { idUser: this.state.data.idprofesor } }).then(response => {
             this.setState({ teacher: response.data });
         }).catch(error => {
             console.log(error.message);
@@ -87,6 +87,15 @@ class GroupAInfo extends Component {
             botonCambiarNombre= <div><button disabled text='Cambiar' onClick={() => this.rename()}>Cambiar</button></div>;
         }
         let botonDesactivar =  <div><button text='Desactivar grupo' onClick={() => this.deactivateGroup()}>Desactivar grupo</button></div>;
+
+        let fotoSource = "";
+        let imagenProfe = <div></div>
+
+        if(this.state.teacher.foto != undefined)
+        {
+            fotoSource = "data:image/png;base64," + btoa(String.fromCharCode.apply(null, this.state.teacher.foto.data));
+            imagenProfe = <img src={fotoSource} alt="" style={{width: '100px'}}></img>
+        }
      
         return (
             <div>
@@ -102,6 +111,8 @@ class GroupAInfo extends Component {
                 </div>
                 <div>
                     <h3>Este grupo pertenece a:</h3>
+                    {imagenProfe}
+
                     <h4>{this.state.teacher.nombre} {this.state.teacher.apellidos}</h4>
                     <td><button text='Ver Perfil' onClick={() => this.changeViewUserProfile(this.state.teacher.id)}>Ver perfil</button></td>
                 </div>

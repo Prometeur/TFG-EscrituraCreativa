@@ -294,6 +294,15 @@ class ProfileAInfo extends Component {
             botonEchaGrupo = <nav></nav>;
         }
 
+        let fotoSource = "";
+        let imagenUser = <div></div>
+
+        if(this.state.data.foto != undefined)
+        {
+            fotoSource = "data:image/png;base64," + btoa(String.fromCharCode.apply(null, this.state.data.foto.data));
+            imagenUser = <img src={fotoSource} alt="" style={{width: '100px'}}  ></img>
+        }
+
         
 
 
@@ -306,7 +315,8 @@ class ProfileAInfo extends Component {
                 <div>
                 
                     {cartel}
-                
+
+                    {imagenUser}
 
                     {contenido}
 
