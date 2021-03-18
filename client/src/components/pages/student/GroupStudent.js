@@ -1,119 +1,113 @@
-/*
-*  Name_file :GroupStudent.js
-*  Description: Pagina del grupo seleccionado por estudiante, contiene la vista de los desafios  
-*  que tiene el grupo seleccionado por el estudiante
-*    
-*/
-import React, { Component } from 'react';
-import axios from 'axios';
-import Cookies from 'universal-cookie';
+import React,{Component, useState} from "react";
+import StudentService from '../../../services/student/student-service.js';
+import AuthUser from '../../../services/authenticity/auth-service.js';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownMenu from 'react-bootstrap/DropdownMenu';
+import DropdownItem from 'react-bootstrap/DropdownItem';
+import DropdownToggle from 'react-bootstrap/DropdownToggle';
+import FormControl from 'react-bootstrap/FormControl';
+import Challenges from './Challenges.js';
+import Writings from './Writings.js';
+import '../../../styles/styleGeneral.css';
 
+const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
+    <a
+      href=""
+      ref={ref}
+      onClick={(e) => {
+        e.preventDefault();
+        onClick(e);
+      }}
+    >
+      {children}
+      &#x25bc;
+    </a>
+  ));
 
-const baseUrl = "http://localhost:3001/student/getChallenges";
-const cookies = new Cookies();//cokies guarda la informacion de la sesion del usuario
+  const CustomMenu = React.forwardRef(
+    ({ children, style, className, 'aria-labelledby': labeledBy }, ref) => {
+      const [value, setValue] = useState('');
+  
+      return (
+        <div
+          ref={ref}
+          style={style}
+          className={className}
+          aria-labelledby={labeledBy}
+        >
+          <FormControl
+            autoFocus
+            className="mx-3 my-2 w-auto"
+            placeholder="Type to filter..."
+            onChange={(e) => setValue(e.target.value)}
+            value={value}
+          />
+          <ul className="list-unstyled">
+            {React.Children.toArray(children).filter(
+              (child) =>
+                !value || child.props.children.toLowerCase().startsWith(value) || child.props.children.toUpperCase().startsWith(value),
+            )}
+          </ul>
+        </div>
+      );
+    },
+  );
+
 
 class GroupStudent extends Component {
-    
-    state = {
-        data: [],
+
+    constructor(props) {
+        super(props);
+        
+        this.state = {
+             dataGroup: [],
+             currentUser: {id: ""},
+             groupSelect:"",
+        };
     }
+  
+    componentDidMount() {
 
-    /*Se hacen peticiones al servidor para que me devuelva la tabla desafios, me muestra todos los desafios del grupo seleccioando 
-    por el estudiante*/
-    peticionGet = () => 
-    {
-        axios.get(baseUrl, { params: { idGroup: cookies.get('groupSelect') } }).then(response => {
-            console.log(response.data);//muestra consola navegador
-            this.setState({ data: response.data });
-        }).catch(error => {
-            console.log(error.message);
-        })
-    }
+        const dataUser = AuthUser.getCurrentUser();
+        this.setState({currentUser:dataUser.id});
 
+        /**Obtiene todos los grupos del estudiante */
+        StudentService.getGroups(dataUser.id).then( response => {
 
-     /*Elimina los datos de sesion almacenada por las cookies*/
-     cerrarSesion = () => 
-     {
-         cookies.remove('id', { path: "/" });
-         cookies.remove('correo', { path: "/" });
-         cookies.remove('nombre', { path: "/" });
-         cookies.remove('apellidos', { path: "/" });
-         cookies.remove('foto', { path: "/" });
-         cookies.remove('activo', { path: "/" });
-         cookies.remove('rol', { path: "/" });
-         window.location.href = './';
+             this.setState({dataGroup:response});
+         })
      }
 
-      /*cambia la vista a la vista de crear Escritos*/
-     changeView = (idChallenge) => 
-    {
-        cookies.set('challengeSelect', idChallenge, { path: "/" });
-        window.location.href = './writing';
+     handleSelect(groupId){
+      this.setState({groupSelect:groupId});
     }
 
-     /*Si vuelvo a la pagina de login, comprueba si el usuario ya inicio sesion anteriomente
-    si es el caso lo redirige a la home segun su rol*/
-    componentDidMount() 
-    {
-        this.peticionGet();
-        if (!cookies.get('correo'))
-        {
-            window.location.href = "./";
-        }
-    }
 
-    /*Dibuja la pagina  */
-    render() {
-        return (
-            <>
-                <h2> Group Student</h2>
-                <nav>
-                    <button onClick={() => this.cerrarSesion()}>Cerrar Sesión</button>
-                </nav>
-                <div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>idDesafio</th>
-                                <th>titulo</th>
-                                <th>descripcion</th>
-                                <th>categoria</th>
-                                <th>colaborativo</th>
-                                <th>calificacion</th>
-                                <th>fechaIni</th>
-                                <th>fechaFin</th>
-                                <th>activo</th>
-                                <th>idGrupo</th>
+     render() {
+    
+        const {dataGroup, currentUser,groupSelect}= this.state;
+         return (
+            <div className="container">
+              <div className="section-container">
+               <Dropdown>
+                     <DropdownToggle as={CustomToggle} id="dropdown-custom-components">
+                         Selecciona grupo
+                     </DropdownToggle>
+                     <DropdownMenu as={CustomMenu}>
+                         {dataGroup.map((row)=>(
+                             <DropdownItem eventKey={row.idGrupo} onClick= {() => this.handleSelect(row.idGrupo)}>{row.idGrupo}</DropdownItem>
+                         ))}  
+                     </DropdownMenu>
+              </Dropdown>
 
-                            </tr>
-                        </thead>
+                <Challenges key={groupSelect} groupSelect={groupSelect} />
+              </div>
+            </div>
 
-                        <tbody>
-                            {this.state.data.map(challenge => {
-                                return (
-                                    <tr>
-                                        <td>{challenge.id}</td>
-                                        <td>{challenge.titulo}</td>
-                                        <td>{challenge.descripcion}</td>
-                                        <td>{challenge.categoria}</td>
-                                        <td>{challenge.colaborativo}</td>
-                                        <td>{challenge.calificacion}</td>
-                                        <td>{challenge.fechaInicial}</td>
-                                        <td>{challenge.fechaFin}</td>
-                                        <td>{challenge.activo}</td>
-                                        <td>{challenge.idGrupo}</td>
-                                        <button onClick={() => this.changeView(challenge.id)}>Crear Escrito</button>
-                                    </tr>
-                                )
-                            })}
-                        </tbody>
-                    </table>
-                  
-                    
-                </div>
-            </>
-        );
-    }
+         );
+     }
+
+
 }
 
 export default GroupStudent;

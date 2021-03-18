@@ -3,40 +3,16 @@
 *  Description: Pagina home del estudiante,contiene la vista del home del estudiante
 *    
 */
-import React, { Component } from 'react';
-import UserService from "../../../services/user/UserService"
+import React from 'react';
+import RouteStudent from '../../../routes/routesStudent.js';
 
-class StudentBoard extends Component 
-{
+function StudentBoard(){
 
-    constructor(props){
-        super(props)
-
-        this.state = {
-            data:"",
-        }    
-    }
-
-    
-    componentDidMount() 
-    {
-        UserService.getStudentBoard().then(
-            response => {
-                this.setState({
-                    data: response.data
-                });
-            });
-    }
-
-    /*Dibuja la pagina */
-    render() 
-    {
-        return (
-            <div>
-                Hello I m Student;
-            </div>
-        );
-    }
+    /*Dibuja la pagina  del estudiante*/
+    return (
+        <RouteStudent />
+    );
+   
 }
 
 export default StudentBoard;

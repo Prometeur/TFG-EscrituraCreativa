@@ -9,6 +9,8 @@ const express = require("express");
 const app = express();
 const bodyParser = require ('body-parser');
 const cors = require("cors");
+const path = require('path');
+
 
 /*-------------------------------------------SETTING SERVER--------------------------------------------------------------------- */
 //configuracion del servidor express
@@ -19,22 +21,24 @@ app.listen(app.get('port'),()=>{
     console.log('Server on port', app.get('port'));
 });
 
+//Es necesario indicar las rutas de las imagenes
+app.use(express.static(path.join(__dirname,'../public')));
 /*-------------------------------------------MIDDLEWARE-------------------------------------------------------------------------- */
 
 //middleware funciones app cliente envia peticion al servidor
 //app.use(express.urlencoded({extended:true}));
-app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json());
+
 /*--------------------------------------------ROUTES----------------------------------------------------------------------------- */
 
 //Routes  url del servidor
 app.use('/admin',require('./routers/routerAdmin'));
 app.use('/teacher',require('./routers/routerTeacher'));
 app.use('/student',require('./routers/routerStudent'));
-app.use('/user',require('./routers/routerUser'));
 app.use('/auth',require('./routers/routerAuth'));
+app.use('/user',require('./routers/routerUser'));
 app.use(middlewareNotFoundError);
 app.use(middlewareServerError);
 

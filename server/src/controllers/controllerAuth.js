@@ -55,7 +55,7 @@ function signUp(request, response) {
 function signIn(request, response) {
  
   let username = request.body.username;
- 
+
   model_user.findOneEmail(username, function(err, rel) {
     if(err)
     {
@@ -64,12 +64,14 @@ function signIn(request, response) {
     else
     {
       if(!rel)
-      {
-           response.status(404).send({ message: "User Not found." });
+
+      {   
+        // console.log("ERROR---> user not found");
+        response.status(404).send({ message: "User Not found." });
       }
       else
       {  
-        
+        // console.log("Correct---> user found");
           var passwordIsValid = bcrypt.compareSync(
             request.body.password,
             rel.password
@@ -83,8 +85,7 @@ function signIn(request, response) {
           }
     
         var token = jwt.sign({ id: rel.id }, config_auth.secret, {
-              expiresIn: 86400 // 24 hours
-         });
+              expiresIn: 60});
         
          response.status(200).send({
           id: rel.id,

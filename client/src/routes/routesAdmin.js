@@ -5,7 +5,7 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
-import HomeAdmin from '../components/pages/admin/HomeAdmin';
+import HomeAdmin from '../components/pages/admin/AdminBoard';
 
 /*defino las rutas de los componentes
 Rutas o urls del Admin asociado a la componente pages/admin*/

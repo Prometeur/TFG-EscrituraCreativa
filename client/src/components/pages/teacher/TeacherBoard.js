@@ -3,39 +3,15 @@
 *  Description: Página home del profesor, contiene la vista del profesor
 *    
 */
-import React, { Component } from 'react';
-import UserService from "../../../services/user/UserService"
+import React from 'react';
+import RoutesTeacher from '../../../routes/routesTeacher';
 
-class TeacherBoard extends Component {
+function TeacherBoard() {
 
-    constructor(props) {
-        super(props)
-    
-        this.state = {
-            data: "",
-        }; 
-    }
-
-
-    componentDidMount() {
-        UserService.getTeacherBoard().then(
-            response => {
-                this.setState(
-                    {
-                       data: response.data
-                    } );
-            });
-    }
-
-    /*Dibuja la pagina */
-    render() {
-        return (
-           <div>
-                hello I am teacher.
-           </div> 
-        );
-    }
-
+     /*Dibuja la pagina  del profesor */
+     return (
+        <RoutesTeacher />
+     );
 }
 
 export default TeacherBoard;
