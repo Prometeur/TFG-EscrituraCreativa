@@ -7,11 +7,8 @@ import DropdownItem from 'react-bootstrap/DropdownItem';
 import DropdownToggle from 'react-bootstrap/DropdownToggle';
 import FormControl from 'react-bootstrap/FormControl';
 import Challenges from './Challenges.js';
-<<<<<<< HEAD
 import Writings from './Writings.js';
 import '../../../styles/styleGeneral.css';
-=======
->>>>>>> luis
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
     <a
@@ -70,19 +67,13 @@ class GroupStudent extends Component {
     }
   
     componentDidMount() {
-<<<<<<< HEAD
 
-        const dataUser = AuthUser.getCurrentUser();
-        this.setState({currentUser:dataUser.id});
- 
-        StudentService.allGroups(dataUser.id).then( response => {
-=======
         const dataUser = AuthUser.getCurrentUser();
         this.setState({currentUser:dataUser.id});
 
         /**Obtiene todos los grupos del estudiante */
         StudentService.getGroups(dataUser.id).then( response => {
->>>>>>> luis
+
              this.setState({dataGroup:response});
          })
      }
@@ -91,7 +82,6 @@ class GroupStudent extends Component {
       this.setState({groupSelect:groupId});
     }
 
-<<<<<<< HEAD
 
      render() {
     
@@ -99,39 +89,21 @@ class GroupStudent extends Component {
          return (
             <div className="container">
               <div className="section-container">
-=======
-     render() {
-        const {dataGroup,groupSelect}= this.state;
-         return (
-            <div>
->>>>>>> luis
                <Dropdown>
                      <DropdownToggle as={CustomToggle} id="dropdown-custom-components">
                          Selecciona grupo
                      </DropdownToggle>
                      <DropdownMenu as={CustomMenu}>
                          {dataGroup.map((row)=>(
-<<<<<<< HEAD
                              <DropdownItem eventKey={row.idGrupo} onClick= {() => this.handleSelect(row.idGrupo)}>{row.idGrupo}</DropdownItem>
                          ))}  
                      </DropdownMenu>
               </Dropdown>
-              <Challenges key={groupSelect} groupSelect={groupSelect} />
-              <Writings key={groupSelect}  idUser={currentUser} groupSelect={groupSelect} />
-              {/*<Challenges key={groupSelect} groupSelect={groupSelect} />*/}
-              <Writings key={groupSelect}  idUser={currentUser} groupSelect={groupSelect} />
-              </div>
-=======
-                           
-                             <DropdownItem eventKey={row.idGrupo} onClick= {() => this.handleSelect(row.idGrupo)}>{row.nombre}</DropdownItem>
-                         ))}  
-                     </DropdownMenu>
-              </Dropdown>
 
-              <Challenges key={groupSelect} groupSelect={groupSelect} />
-              {/* <Writings key={groupSelect}  idUser={currentUser} groupSelect={groupSelect} />      */}
->>>>>>> luis
+                <Challenges key={groupSelect} groupSelect={groupSelect} />
+              </div>
             </div>
+
          );
      }
 

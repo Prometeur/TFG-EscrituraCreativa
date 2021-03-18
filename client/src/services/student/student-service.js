@@ -3,15 +3,6 @@ import authHeader from '../authenticity/auth-header';
 
 class StudentService {
 
-<<<<<<< HEAD
-    
-    getWriting(idChallenge, idWriter,writingForm){
-      
-        return  axios.post("/student/getWriting", {params:{ idChallenge:idChallenge , idWriter: idWriter, writingForm: writingForm}},
-        { headers: {"Authorization" : `Bearer ${authHeader()}`}
-        }).then(response => {
-                return response;
-=======
     /**Obtiene los grupos del estudiante */
     getGroups(idStudent) {
         return axios.post("/student/getGroups", { idStudent: idStudent }, { headers: { "Authorization": `Bearer ${authHeader()}` } })
@@ -39,19 +30,10 @@ class StudentService {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
             return response.data;
->>>>>>> luis
         }).catch(error => {
             console.log(error.message);
         })
     }
-
-<<<<<<< HEAD
-    getWritings(idUser,idGroup) {
-
-       return  axios.get("student/getWritings", { params: { idUser: idUser,idGroup:idGroup}},{ headers: {"Authorization" : `Bearer ${authHeader()}`}
-       }).then(response => {
-             return response.data;
-=======
     
     /*Obtiene el escrito del estudiante */
     getWriting(idWriting) {
@@ -71,23 +53,11 @@ class StudentService {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
             return response.data;
->>>>>>> luis
         }).catch(error => {
             console.log(error.message);
         })
     }
 
-<<<<<<< HEAD
-    getChallenge(){
-        
-    }
-
-    getChallenges(idGroup) {
-        console.log(idGroup);
-        return axios.get("/student/getChallenges",{params:{ idGroup: idGroup }},{ headers: {"Authorization" : `Bearer ${authHeader()}`}
-        }).then(response => {
-             return response.data;
-=======
     /*Edito el escrito del estudiante */
     editWriting(idWriting, idGroup, idChallenge, idWriter, escrito, type) {
         return axios.post("/student/editWriting", { idWriting: idWriting, idGroup: idGroup, idChallenge: idChallenge, idWriter: idWriter, escrito: escrito, type: type }, {
@@ -105,20 +75,11 @@ class StudentService {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
             return response.data;
->>>>>>> luis
         }).catch(error => {
             console.log(error.message);
         })
     }
 
-<<<<<<< HEAD
-
-    allGroups(idStudent){
-       
-        return axios.post("/student/challenges", {idStudent:idStudent},{headers: {"Authorization" : `Bearer ${authHeader()}`}})
-        .then( response => {
-                return response.data;
-=======
     /*Obtiene multimedia del escrito del estudiante */
     getMultimediaWriting(idChallenge, idWriter) {
         return axios.get("/student/getMultimediaWriting", { params: { idChallenge: idChallenge, idWriter: idWriter } },
@@ -159,15 +120,12 @@ class StudentService {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
             return response.data;
->>>>>>> luis
         }).catch(error => {
             console.log(error.message);
         })
     }
 
-<<<<<<< HEAD
 
-=======
     /*Edita los archivos multimedia del estudiante*/
     editMultimedia(idMultimedia,idWriter, idChallenge, path) {
         const form = new FormData();
@@ -194,7 +152,6 @@ class StudentService {
             return response.data;
         })
     }
->>>>>>> luis
 }
 
-export default new StudentService();
+export default new StudentService;

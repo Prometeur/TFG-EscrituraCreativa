@@ -1,9 +1,6 @@
 const modelo = require("../models/modelUser");
 const express = require('express');//voy a usar el modulo express
-<<<<<<< HEAD
-=======
 const router = express.Router();
->>>>>>> luis
 
 //constantes para la conexion
 const mysql = require("mysql");
@@ -112,18 +109,10 @@ function getStudentGroups(req, res) {
 
 //Busca estudiantes según una clave dada.
 function searchStudent(request, response, next){
-    
-<<<<<<< HEAD
-    let clave = request.body.searchStudent;
+    let clave ="";
     let tipo = "nombre";
-    
-    if(request.body.type == "email"){
-=======
-    let clave = request.body.clave;
-    let tipo = "nombre";
-    
+
     if(request.body.tipo == "email"){
->>>>>>> luis
         tipo = "email";
     }
     
@@ -148,15 +137,12 @@ function searchStudent(request, response, next){
                 error: "No hay estudiantes con los parámetros escogidos."
             });*/
             console.log("No hay estudiantes con los parámetros escogidos.");
-<<<<<<< HEAD
-=======
-        
->>>>>>> luis
         } 
         else 
         {
             response.status(200);
-           response.send(JSON.stringify(studentList));
+            console.log(studentList);
+            response.send(JSON.stringify(studentList));
         }
     });
 

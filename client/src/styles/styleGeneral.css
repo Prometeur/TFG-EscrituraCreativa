@@ -1,16 +1,9 @@
 * {
     margin: 0;
     padding: 0;
-<<<<<<< HEAD
     font-family: "NewsCycle", sans-serif;
-=======
-    font-family: nunito-regular, serif;
->>>>>>> luis
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
 }
 
-<<<<<<< HEAD
 html, body {
     height: 100%;
     margin: 0;
@@ -29,18 +22,19 @@ header {
     z-index: 100;
     padding: .75em;
     top: 0;
-    box-shadow: 0 0.8px 6px #ffffff;
+    box-shadow: 0 0.8px 6px #ededed
 }
 
-=======
->>>>>>> luis
+i{
+    font-size: 13px;
+}
+
 .container {
     grid-area: main;
     /*margin: 0 2em 1em;*/
     padding: .75em 1em;
 }
 
-<<<<<<< HEAD
 .container-margin {
     margin: 1em 3em;
 }
@@ -56,33 +50,21 @@ header {
     /*margin: 0 2em 1em;*/
     padding: .75em 1em;
 }
-=======
->>>>>>> luis
 
 .main-wrapper,
 .full-wrapper {
     display: grid;
     grid-template-columns: repeat(16, 1fr);
-<<<<<<< HEAD
-    grid-template-rows: 1fr 3.5fr;
-    grid-template-rows: 0.1fr 3.5fr;
-
-=======
-    grid-template-rows: 1fr 5fr 2fr;
->>>>>>> luis
+    grid-template-rows: 0fr 3.5fr;
+    /*grid-template-rows: 0.1fr 3.5fr;*/
     grid-row-gap: .75em;
     height: 100%;
 }
 
 .main-wrapper {
     grid-template-areas:
-<<<<<<< HEAD
         "header header header header header header header header header header header header header header header header"
         "main main main main main main main main main main main main main main main main"
-=======
-        "main main main main main main main main main main main main main main main"
-        " . main main main main main main main main main main main main main main main "
->>>>>>> luis
         "footer footer footer footer footer footer footer footer footer footer footer footer footer footer footer footer";
 }
 
@@ -90,7 +72,6 @@ header {
     grid-template-areas:
         "header header header header header header header header header header header header header header header header"
         "sbleft sbleft main main main main main main main main main main main main main main"
-<<<<<<< HEAD
         "sbleft sbleft main main main main main main main main main main main main main main";
 }
 
@@ -259,6 +240,7 @@ select {
 
 .drop-down {
     margin: 1rem 2.5em;
+    font-size: 20px;
 }
 
 .border-edit {
@@ -276,6 +258,10 @@ select {
     border: 1px solid #ff7e7b;
 }
 
+.rdw-emoji-wrapper {
+    left: 0;
+    right: 5px;
+}
 
 @media screen and (max-width: 700px) {
     .sidebar-left {
@@ -291,7 +277,5 @@ select {
         text-align: center;
         float: none;
     }
-=======
-        "footer footer footer footer footer footer footer footer footer footer footer footer footer footer footer footer";
->>>>>>> luis
 }
+

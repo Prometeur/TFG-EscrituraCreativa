@@ -40,15 +40,12 @@ class Home extends Component {
     render() 
     {
         return (
-<<<<<<< HEAD
+
         
                 <div>
                    hola
-=======
-                <div>
-                   Home
->>>>>>> luis
                 </div>
+
         );
     }
 }

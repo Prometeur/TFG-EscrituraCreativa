@@ -19,22 +19,12 @@ class SearchStudentRes extends Component {
         this.state = {
             data: [],
             filteredData:[],
-            searchStudent: '',
+            searchStudent: ' ',
             searchType: 'nombre'
     
         };
     }
- 
 
-    /*Se hacen peticiones al servidor para que me devuelva todos los estudiantes buscados*/
-    peticionPost() {
-       TeacherService.searchStudent(this.state.searchStudent, this.state.searchType).then(response =>{
-            this.setState({data:response});
-            this.setState({filterData:response});
-            this.filterData();
-            console.log(this.state.data);
-       })
-    }
 
     //Filtra los datos de los estudiantes buscados para solo buscar en la base de datos una vez
     filterData = () =>{
@@ -77,14 +67,13 @@ class SearchStudentRes extends Component {
     
 
     componentDidMount() {
-        
-        this.peticionPost();
-            
-    }
 
-    changeViewStudentProfile = (idApplicant) => 
-    {
-        
+        TeacherService.searchStudent(this.state.searchStudent, this.state.searchType).then(response =>{
+            this.setState({data:response});
+            this.setState({filterData:response});
+            this.filterData();
+        })
+
     }
 
 

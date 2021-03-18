@@ -3,53 +3,16 @@ import authHeader from '../authenticity/auth-header';
 
 class TeacherService {
 
-<<<<<<< HEAD
-    createChallenge(form) {
-        
-         return axios.post("/teacher/getGroups/createChallenge",{form: form},{ headers: {"Authorization" : `Bearer ${authHeader()}`}
-         }).then( response => {
-                return response.data;
-         })
-    }
 
-    editChallenge(form) {
-        return  axios.post("/teacher/getGroups/editChallenge",{params:{form:form}},{ headers: {"Authorization" : `Bearer ${authHeader()}`}
-        }).then( response => {
-=======
     /*Obtiene los  grupos del profesor */
     getGroups(idTeacher) {
-        return axios.post("/teacher/getGroups", { idTeacher: idTeacher }, {
+        console.log(idTeacher);
+        return axios.post("/teacher/groups", { idTeacher: idTeacher }, {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
->>>>>>> luis
             return response.data;
+            console.log(response.data);
         })
-    }
-
-<<<<<<< HEAD
-    getChallenges(idGroup) {
-        return axios.get("/teacher/getGroups/Challenges",{params: { idGroup:idGroup}},{ headers: {"Authorization" : `Bearer ${authHeader()}`}
-        }).then( response =>{
-            return response.data;
-           
-        })
-    }
-
-    getChallenge(idChallenge) {
-    
-       return axios.get("/teacher/getGroups/getChallenge",{params:{idChallenge:idChallenge}},{ headers: {"Authorization" : `Bearer ${authHeader()}`}
-       }).then( response => {
-            return response.data;
-       })
-    }
-
-    getCategories() {
-       
-        return axios.get("/teacher/getGroups/getCategories",{ headers: {"Authorization" : `Bearer ${authHeader()}`}
-        }).then( response => {
-                return response.data;
-        })
-                
     }
 
     getProfile(idStudent) {
@@ -83,17 +46,11 @@ class TeacherService {
         })
     }
 
-    allGroups(idTeacher) 
-    {   
-        return axios.post("/teacher/getGroups", {idTeacher: idTeacher} ,{ headers: {"Authorization" : `Bearer ${authHeader()}`} 
-        }).then( response => {
-              return response.data;
-        })
-    }
-
 
     searchStudent(searchStudent, searchType) {
 
+        console.log(searchStudent);
+        console.log(searchType);
         return axios.post("/teacher/searchStudent", { searchStudent: searchStudent, type :searchType},{ headers: {"Authorization" : `Bearer ${authHeader()}`}
         })
         .then(response => {
@@ -117,8 +74,14 @@ class TeacherService {
     inviteToGroup(idGroup, idStudent) {
 
         return axios.post("/teacher/inviteStudentToGroup", { grupo: idGroup, idEstudiante: idStudent},{ headers: {"Authorization" : `Bearer ${authHeader()}`}})
-        .then(response => {
-=======
+            .then(response => {
+                return response.data;
+            }).catch(error => {
+                console.log(error.message);
+            })
+
+    }
+
     /*Obtiene todas las categorias de los desafios */
     getCategories() {
         return axios.get("/teacher/getCategories", {
@@ -148,15 +111,6 @@ class TeacherService {
         })
     }
 
-    // /*Crea desafio del profesor */
-    // createChallenge(form) {
-    //     return axios.post("/teacher/createChallenge", { form: form }, {
-    //         headers: { "Authorization": `Bearer ${authHeader()}` }
-    //     }).then(response => {
-    //         return response;
-    //     })
-    // }
-
 
     /*Crea desafio del profesor */
     createChallenge(idGroup, title, description, type, category, qualification, endDate) {
@@ -167,14 +121,6 @@ class TeacherService {
         })
     }
 
-    // /*Edita el desafio del profesor*/
-    // editChallenge(form) {
-    //     return axios.post("/teacher/editChallenge", { params: { form: form } }, {
-    //         headers: { "Authorization": `Bearer ${authHeader()}` }
-    //     }).then(response => {
-    //         return response.data;
-    //     })
-    // }
 
     /*Edita el desafio del profesor*/
     editChallenge(idChallenge, idGroup, title, description, type, category, qualification, endDate) {
@@ -199,45 +145,26 @@ class TeacherService {
             })
     }
 
-    // /*Envia los archivos multimedia del profesor*/
-    // sendMultimedia(file, idTeacher, idChallenge, path) {
-
-    //     const form = new FormData();
-    //     form.append("file", file);
-    //     form.append("idTeacher", idTeacher);
-    //     form.append("idChallenge", idChallenge);
-    //     form.append("path", path);
-
-    //     return axios.post("/teacher/sendMultimedia", form, { params: { idUser: idTeacher,idFolder:idChallenge } }, {
-    //         headers: { "Authorization": `Bearer ${authHeader()}` }
-    //     }).then(response => {
-    //         return response.data;
-    //     }).catch(error => {
-    //         console.log(error.message);
-    //     })
-    // }
-
 
     /*Envia los archivos multimedia del profesor*/
     sendMultimedia(imgCollection, idTeacher, idChallenge) {
+        debugger;
         const form = new FormData();
 
         for (const key of Object.keys(imgCollection)) {
             form.append('imgCollection', imgCollection[key])
         }
-        
+
         form.append("idTeacher", idTeacher);
         form.append("idChallenge", idChallenge);
 
         return axios.post("/teacher/sendMultimedia", form, { params: { idUser: idTeacher, idFolder: idChallenge } }, {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
->>>>>>> luis
             return response.data;
         }).catch(error => {
             console.log(error.message);
         })
-<<<<<<< HEAD
 
     }
 
@@ -249,11 +176,6 @@ class TeacherService {
         }).catch(error => {
             console.log(error.message);
         })
-    }
-}
-
-export default new TeacherService;
-=======
     }
 
     /*Elimina los archivos multimedia del profesor*/
@@ -276,5 +198,4 @@ export default new TeacherService;
 
 }
 
-export default new TeacherService();
->>>>>>> luis
+export default new TeacherService;

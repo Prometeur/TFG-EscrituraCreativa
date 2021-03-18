@@ -4,7 +4,6 @@ const controller = require("../controllers/controllerUser");
 const express = require('express');//voy a usar el modulo express
 const router =express.Router();
 
-<<<<<<< HEAD
 router.use(function(request, response,next) {
     response.header(
         "Access-Control-Allow-Headers",
@@ -13,16 +12,10 @@ router.use(function(request, response,next) {
     next();
 });
 
-
-/*Obtiene los los grupos del profesor */
-router.get("/getGroups",controller.getGroups);
-
-=======
 /*Obtiene los los grupos del profesor */
 router.get("/getGroups",controller.getGroups);
 
 
->>>>>>> luis
 /*Obtiene los los grupos del alumno */
 router.get("/getStudentGroups",controller.getStudentGroups);
 

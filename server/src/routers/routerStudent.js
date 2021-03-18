@@ -1,10 +1,4 @@
 //ruta para almacenar los enlaces
-<<<<<<< HEAD
-
-const controller = require("../controllers/controllerStudent");
-const express = require('express');//voy a usar el modulo express
-const router =express.Router();
-=======
 const controller = require("../controllers/controllerStudent");
 const express = require('express');//voy a usar el modulo express
 const router =express.Router();
@@ -12,7 +6,6 @@ const multer = require('multer');
 const storage = require('../utils/multer');
 const uploader = multer({storage});
 
->>>>>>> luis
 
 router.use(function(request, response,next) {
     response.header(
@@ -22,15 +15,6 @@ router.use(function(request, response,next) {
     next();
 });
 
-<<<<<<< HEAD
-
-router.post("/challenges",controller.getGroupStudent);
-router.get("/getChallenges",controller.getChallenges);
-router.get("/getChallenge",controller.getChallenge);
-router.post("/postWriting",controller.postWriting);
-router.get("/getWritings",controller.getWritings);
-
-=======
 /*Obtiene los grupos del estudiante*/
 router.post("/getGroups",controller.getGroups);
 
@@ -68,6 +52,4 @@ router.post("/sendMultimedia",uploader.array('imgCollection', 20),controller.sen
 router.post("/deleteFile",controller.deleteFile); 
 
 
-
->>>>>>> luis
 module.exports = router;

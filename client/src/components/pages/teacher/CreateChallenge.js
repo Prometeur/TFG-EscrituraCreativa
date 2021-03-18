@@ -1,6 +1,4 @@
-<<<<<<< HEAD
 import React, { Component } from 'react';
-import TeacherService from '../../../services/teacher/teacherService';
 import '../../../styles/Challenge.css';
 import '../../../styles/styleGeneral.css';
 import '../../../styles/styleCard.css';
@@ -9,60 +7,40 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Button  from 'react-bootstrap/Button';
-=======
-/*
- *  Name_file :CreateChallenge.js
- *  Description: Pagina del Desafio, contiene la vista del desafio del profesor
- */
-import React, { Component } from 'react';
-/*Importacion del css*/
-import '../../../styles/Challenge.css';
-
->>>>>>> luis
-/*Importaciones del Video*/
-import ReactPlayer from "react-player";
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Alert from 'react-bootstrap/Alert';
 
 /*Importaciones del editor */
 import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
-<<<<<<< HEAD
-import Dates from '../../dates/Dates.js';
-
-=======
 
 /**Importacion del calendario */
-import Dates from '../../dates/dates.js';
+import Dates from '../../dates/Dates.js';
 
 /**Datos de Sesion del usuario */
 import AuthUser from '../../../services/authenticity/auth-service.js';
 
 /**Servicios del profesor */
 import TeacherService from '../../../services/teacher/teacherService';
->>>>>>> luis
 
 class CreateChallenge extends Component {
 
     constructor(props) {
         super(props);
-<<<<<<< HEAD
-       
-        this.state = {
 
-            editorState: EditorState.createEmpty(),
-            data: [],
-            categories: [],
-            stateModal:false,
-=======
         const dataUser = AuthUser.getCurrentUser();
         this.onFileChange = this.onFileChange.bind(this);
+        this.onDeleteMultimedia = this.onDeleteMultimedia.bind(this);
         this.state = {
-            imgCollection: '',
+            imgCollection: [],
+            imgNamesCollection:[],
             editorState: EditorState.createEmpty(),
             data: [],
             categories: [],
->>>>>>> luis
 
             formErrors: {
                 title: '',
@@ -74,16 +52,6 @@ class CreateChallenge extends Component {
             },
 
             form: {
-<<<<<<< HEAD
-                title: '',
-                descripcion: '',
-                file: '',
-                reader: '',//valor o flujo de caracteres del fichero
-                date: new Date(),
-                // //date: '',
-                type: '1',
-                category: '',
-=======
                 idTeacher: dataUser.id,
                 idGroup: this.props.match.params.idGroup,
                 title: '',
@@ -95,22 +63,16 @@ class CreateChallenge extends Component {
                 qualification: '1',
                 category: '',
                 date: new Date(), //fecha
->>>>>>> luis
             }
         };
     }
 
-<<<<<<< HEAD
     /*Si vuelvo a la pagina de login, comprueba si el usuario ya inicio sesion anteriomente
     si es el caso lo redirige a la home segun su rol*/
-    componentDidMount() {
-      
-       TeacherService.getCategories().then(response => {
-=======
+
     componentDidMount() {
         /*Obtiene todas las categorias de los desafios */
         TeacherService.getCategories().then(response => {
->>>>>>> luis
             this.setState({ categories: response });
         }).catch(error => {
             console.log(error.message);
@@ -126,11 +88,9 @@ class CreateChallenge extends Component {
                 [e.target.name]: e.target.value
             }
         });
-<<<<<<< HEAD
+
         console.log(this.state.form);//visualizar consola navegador lo que escribimos en el input
-=======
-        console.log(this.state.form); //visualizar consola navegador lo que escribimos en el input
->>>>>>> luis
+
     }
 
 
@@ -149,22 +109,17 @@ class CreateChallenge extends Component {
         //debugger;
         // this.setState({ formErrors, [name]: value }, () => console.log(this.state));
         this.setState({
-<<<<<<< HEAD
-            formErrors, form: {
-=======
+
             formErrors,
             form: {
->>>>>>> luis
+
                 ...this.state.form,
                 [name]: value
             }
         }, () => console.log(this.state));
     }
 
-<<<<<<< HEAD
 
-=======
->>>>>>> luis
     onEditorStateChange = (editorState) => {
         this.setState({
             editorState,
@@ -173,7 +128,6 @@ class CreateChallenge extends Component {
 
     changeView = () => {
         //debugger;
-<<<<<<< HEAD
         window.location.href = "/teacher/group/";
     }
 
@@ -188,25 +142,15 @@ class CreateChallenge extends Component {
             form: {
                 ...this.state.form,
                 date: date
-=======
-        window.location.href = "/teacher/groups";
-    }
-
-    handleDateChange = (date) => {
-        this.setState({
-            form: {
-                ...this.state.form,
-                date: date
             }
         });
-    };
+    }
 
     qualificationSelection = event => {
         this.setState({
             form: {
                 ...this.state.form,
                 qualification: event.target.value
->>>>>>> luis
             }
         });
     };
@@ -229,92 +173,19 @@ class CreateChallenge extends Component {
         });
     };
 
-<<<<<<< HEAD
+    onDeleteMultimedia(indexItem){
 
-    //Previsualización del fichero
-    onFileChange = (e) => {
-        if (e.target.files && e.target.files.length > 0) {
-            const file = e.target.files[0]
-            if (file.type.includes("image") || file.type.includes("video") || file.type.includes("audio")) {
-                const reader = new FileReader()
-                reader.readAsDataURL(file)
-                reader.onload = () => {
-                    this.setState({
-                        form: {
-                            ...this.state.form,
-                            reader: reader.result
-                        }
-                    });
-                }
-                this.setState({
-                    form: {
-                        ...this.state.form,
-                        file: file,
-                        url: "http://localhost:3001/images/" + file.name
-                    }
-                });
-            }
-            else {
-                console.log("there was an error")
-            }
-        }
+        this.setState(()=>
+            ({imgNamesCollection:this.state.imgNamesCollection.filter((todo,index)=> index !==indexItem)}));
+
     }
 
-
-    //Envio del desafio al server
-    sendChallenge = () => {
-        const form = new FormData();
-        form.append("file", this.state.form.file);
-        form.append("idGroup", this.props.match.id);
-        form.append("title", this.state.form.title);
-        form.append("description", this.state.form.descripcion);
-        form.append("date", this.state.form.date);
-        form.append("type", this.state.form.type);
-        form.append("category", this.state.form.category);
-        form.append("url", this.state.form.url);
-
-        TeacherService.createChallenge(form);
-
-        window.location.href = '/teacher';
-    };
-
-
-=======
-    // //Previsualización del fichero
-    // onFileChange = (e) => {
-    //     if (e.target.files && e.target.files.length > 0) {
-    //         const file = e.target.files[0]
-    //         if (file.type.includes("image") || file.type.includes("video") || file.type.includes("audio")) {
-    //             const reader = new FileReader()
-    //             reader.readAsDataURL(file)
-    //             reader.onload = () => {
-    //                 this.setState({
-    //                     form: {
-    //                         ...this.state.form,
-    //                         reader: reader.result
-    //                     }
-    //                 });
-    //             }
-    //             var str = file.type;
-    //             var res = str.split("/");
-    //             //dir->idteacher/tipo/
-    //             const dir = this.state.form.idTeacher + "/" + res[0] + "/";
-
-    //             this.setState({
-    //                 form: {
-    //                     ...this.state.form,
-    //                     file: file
-    //                 }
-    //             });
-    //         }
-    //         else {
-    //             console.log("there was an error")
-    //         }
-    //     }
-    // }
-
     onFileChange(e) {
-        this.setState({ imgCollection: e.target.files })
+        let newFiles = this.state.imgNamesCollection;
+        this.setState({ imgCollection: e.target.files });
+        Array.from(e.target.files).forEach((file) => {newFiles.push(file)});
+        this.setState({imgNamesCollection:[...newFiles]});
+        console.log(this.state.imgNamesCollection);
     }
 
     //Envio del desafio al server
@@ -342,28 +213,14 @@ class CreateChallenge extends Component {
 
     };
 
->>>>>>> luis
     /*Dibuja la pagina */
     render() {
-        let media = "";
-        if (this.state.form.file.type !== undefined) {
-            if (this.state.form.file.type.includes("image"))
-<<<<<<< HEAD
-             
-                media = <div className="image"><img src={this.state.form.reader} /></div>;
-           
-            else
-              
-                media = <ReactPlayer className="video" url={this.state.form.reader} controls={true} />;
-        }
-        else {
-            media =  <div className="image"><p>Selecciona tu multimedia </p></div>;
-        }
 
-        const { editorState } = this.state;
         const { formErrors } = this.state;
+        const {editorState} = this.state;
 
         return (
+
             <div className="container">
                 <label className='form-label'>Crear desafio</label>
                     <Card className="card-edit">
@@ -438,6 +295,14 @@ class CreateChallenge extends Component {
                                         </Col>
                                      </Form.Group>
                                  </Form>
+                                <div className="form-select">
+                                    <label className='form-label'> Tipo de Calificación </label>
+                                    <select onChange={this.qualificationSelection}>
+                                        <option value="" selected disabled hidden>Seleccionar</option>
+                                        <option value="1"> Numerica</option>
+                                        <option value="2"> Conceptual</option>
+                                    </select>
+                                </div>
                             </div>
                             <div className="row-edit">
                                <div className="form-select">
@@ -448,24 +313,38 @@ class CreateChallenge extends Component {
                                    />
                                </div>
                             </div>
-                            <div className="row-edit">
-                               <div className="form">
-                                   {media}
-                                   <input
-                                       type="file"
-                                       id="file"
-                                       onChange={this.onFileChange}
-                                   />
-                                   <label htmlFor="file" className="btn-1">upload file</label>
+                             <div className="row-edit">
+                                 <div className="form">
+                                     {
+                                         this.state.imgNamesCollection ==0 ? (
+                                             <Alert variant='info'>
+                                                 No hay Archivos cargados.
+                                             </Alert>
+                                         ): (
+
+                                             <ListGroup>
+                                                     {this.state.imgNamesCollection.map((row, index) => (
+                                                         <ListGroup.Item action variant="info" key={index}>
+                                                             <i className="form-select">{row.name}</i>
+                                                             <IconButton  className="form-select" aria-label="delete" onClick={()=>this.onDeleteMultimedia(index)}>
+                                                                 <DeleteIcon fontSize="small" />
+                                                             </IconButton>
+                                                         </ListGroup.Item>
+                                                     ))}
+                                             </ListGroup>
+
+                                         )
+                                     }
+
+                                     <input id="file" type="file" name="imgCollection" onChange={this.onFileChange} multiple />
+                                     <label htmlFor="file" className="btn-1">upload file</label>
                                </div>
                             </div>
-                            <div className="form-btn">
-                                <div className="form-select">
-                                    <Button  onClick={() => this.onModal(true)}>Guardar</Button>
-                                </div>
-                                <div className="form-select">
-                                    <Button  onClick={() => this.changeView()}>Cancelar</Button>
-                                </div>
+                            <div className="form-select">
+                                <Button  onClick={() => this.onModal(true)}>Guardar</Button>
+                            </div>
+                            <div className="form-select">
+                                <Button  onClick={() => this.changeView()}>Cancelar</Button>
                             </div>
                             <Modal
                                 size="lg"
@@ -497,104 +376,3 @@ class CreateChallenge extends Component {
 }
 
 export default  CreateChallenge;
-=======
-                media = < img className="image" src={this.state.form.reader} alt="" />;
-            else
-                media = < ReactPlayer className="video" url={this.state.form.reader} controls={true} />;
-        } else {
-            media = < img className="image" src="http://localhost:3001/images/drop-files.jpg" alt="" />;
-        }
-        const { editorState } = this.state;
-        const { formErrors } = this.state;
-        //console.log(draftToHtml(convertToRaw(editorState.getCurrentContent())));
-        return (
-            <>
-                <div className="challenge-container" >
-                    <div className='challenge-content' >
-                        <div className='challenge-card' >
-                            < div class="challenge-inputs" >
-                                <h2 > Crea tu propio desafio completando la información de abajo </h2>
-                            </div>
-                            <div class="challenge-inputs" >
-                                <label className='form-label' > Escribe un Titulo </label>
-                                <input
-                                    className={formErrors.title.length > 0 ? "error" : "form-input"}
-                                    type="text"
-                                    name="title"
-                                    placeholder="escribe el título"
-                                    // onChange={this.handleChange}
-                                    onChange={this.handleErrors}
-                                />
-                                {formErrors.title.length > 0 && (<span className="errorMessage" > { formErrors.title} </span>)}
-                            </div>
-                            <div class="challenge-inputs" >
-                                <label className='form-label' > Escribe una Descripción </label>
-                                <Editor
-                                    editorState={editorState}
-                                    toolbarClassName="toolbarClassName"
-                                    wrapperClassName="wrapperClassName"
-                                    editorClassName="editorClassName"
-                                    onEditorStateChange={this.onEditorStateChange}
-                                    // onChange={this.handleEditorChange}
-                                    onChange={
-                                        (event, editor) => {
-                                            this.setState({
-                                                form: {
-                                                    ...this.state.form,
-                                                    description: draftToHtml(convertToRaw(editorState.getCurrentContent()))
-                                                }
-                                            });
-                                        }
-                                    }
-                                />
-                            </div>
-                            < div class="challenge-inputs" >
-                                <label className='form-label' > Puedes agregar un fichero multimedia si lo deseas(imagen, video o audio): </label>
-                                <div className="form-media" >
-                                    {/* {media}  */}
-                                    { /* <input type="file" id="file" name="imagen" onChange={this.onFileChange}/> */}
-                                    <input type="file" name="imgCollection" onChange={this.onFileChange} multiple />
-                                </div>
-                            </div>
-                            <div class="challenge-inputs" >
-                                <label className='form-label' > Selecciona la categoría del desafio </label>
-                                <select onChange={this.handleSelectionCategory} >
-                                    <option value="" selected disabled hidden > Choose here </option>
-                                    {this.state.categories.map(elemento => (
-                                        <option key={elemento.id} value={elemento.id} > { elemento.nombre} </option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div class="challenge-inputs" >
-                                <label className='form-label' > Tipo de Calificación </label>
-                                <select onChange={this.qualificationSelection} >
-                                    <option value="" selected disabled hidden > Choose here </option>
-                                    <option value="1" > Numerica </option>
-                                    <option value="2" > Conceptual </option>
-                                </select>
-                            </div>
-                            <div class="challenge-inputs" >
-                                <label className='form-label' > Selecciona si el desafio es individual o en equipo </label>
-                                <select onChange={this.handleSelectionChange} >
-                                    <option value="" selected disabled hidden > Choose here </option>
-                                    <option value="1" > Individual </option>
-                                    <option value="2" > Equipo </option>
-                                </select>
-                            </div>
-                            <div class="challenge-inputs" >
-                                <label className='form-label' > Selecciona la duración del desafio </label>
-                                <Dates handleDateChange={this.handleDateChange} param={this.state.form.date} />
-                            </div>
-                        </div>
-                        <div className="form-btn" >
-                            <button className="form-btn-send" onClick={() => this.sendChallenge()} > Enviar </button>
-                            <button className="form-btn-cancel" onClick={() => this.changeView()} > Cancelar </button>
-                        </div>
-                    </div>
-                </div>
-            </>
-        );
-    }
-}
-export default CreateChallenge;
->>>>>>> luis
