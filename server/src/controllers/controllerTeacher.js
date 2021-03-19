@@ -165,6 +165,7 @@ function getMultimedia(req, res) {
 function sendMultimedia(req, res) {
     const idTeacher = req.body.idTeacher;
     const idChallenge = req.body.idChallenge;
+
     const reqFiles = [];
 
     for (var i = 0; i < req.files.length; i++) {

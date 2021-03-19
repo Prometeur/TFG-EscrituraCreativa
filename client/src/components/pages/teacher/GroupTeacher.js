@@ -31,7 +31,7 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
         onClick(e);
       }}
     >
-        {children} { <Icon><ExpandMoreRoundedIcon></ExpandMoreRoundedIcon></Icon>}
+        {children} {<Icon><ExpandMoreRoundedIcon></ExpandMoreRoundedIcon></Icon>}
 
     </a>
   ));

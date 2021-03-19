@@ -234,13 +234,12 @@ class EditChallenge extends Component {
         });
     };
 
-
     //Envio del desafio al server
     sendChallenge = () => {
         TeacherService.editChallenge(this.state.form.idChallenge, this.state.form.idGroup, this.state.form.title, this.state.form.description, this.state.form.type, this.state.form.category, this.state.form.qualification, this.state.form.date)
             .then(response => {
                 if (this.state.imgCollection.length > 0) {
-                    TeacherService.sendMultimedia(this.state.imgCollection, this.state.form.idTeacher, this.props.match.params.idChallenge)
+                    TeacherService.sendMultimedia(this.state.imgNamesCollection, this.state.form.idTeacher, this.props.match.params.idChallenge)
                         .then(response => {
                             window.location.href = '/teacher/groups';
                         })
@@ -256,7 +255,7 @@ class EditChallenge extends Component {
             });
     };
 
-    /*
+
     deleteFile = (challenge) => {
         var str = challenge.ruta;
         var res = str.split("/");
@@ -281,7 +280,6 @@ class EditChallenge extends Component {
             });
         }
     }
-     */
 
 
     onDeleteMultimedia(indexItem){
@@ -296,7 +294,6 @@ class EditChallenge extends Component {
         this.setState({ imgCollection: e.target.files });
         Array.from(e.target.files).forEach((file) => {newFiles.push(file)});
         this.setState({imgNamesCollection:[...newFiles]});
-        console.log(this.state.imgNamesCollection);
     }
 
     //Obtiene el nombre del desafio/escrito
@@ -423,6 +420,22 @@ class EditChallenge extends Component {
                                 </div>
                             </div>
                             <div className="row-edit">
+                                <label className='form-label'> Ficheros Multimedia: </label>
+                                <table>
+                                    <tbody>
+                                    {data.map((challenge) => (
+                                        <tr key={challenge.id}>
+                                            <td> {this.showTitle(challenge)} </td>
+                                            <td>< a href={challenge.ruta}> Ver </a></td>
+                                            <td>
+                                                < button onClick={() => this.deleteFile(challenge)}>Eliminar</button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div className="row-edit">
                                 <div className="form">
                                     {
                                         this.state.imgNamesCollection ==0 ? (
@@ -452,7 +465,7 @@ class EditChallenge extends Component {
                                 </div>
                             </div>
                             <div className="form-select">
-                                <Button   onClick={() => this.onModal(true)} >
+                                <Button  onClick={() => this.onModal(true)} >
                                     Guardar
                                 </Button>
                             </div>
@@ -471,9 +484,7 @@ class EditChallenge extends Component {
                                 <Modal.Body>
                                     <h4>Centered Modal</h4>
                                     <p>
-                                        Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-                                        dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-                                        consectetur ac, vestibulum at eros.
+                                         ¿Desea guardar los cambios?
                                     </p>
                                 </Modal.Body>
                                 <Modal.Footer>

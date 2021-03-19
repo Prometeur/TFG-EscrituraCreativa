@@ -61,7 +61,7 @@ class CreateChallenge extends Component {
                 reader: '', //valor o flujo de caracteres del fichero
                 type: '1', //individual o colaborativo
                 qualification: '1',
-                category: '',
+                category: '1',
                 date: new Date(), //fecha
             }
         };
@@ -190,11 +190,12 @@ class CreateChallenge extends Component {
 
     //Envio del desafio al server
     sendChallenge = () => {
-        TeacherService.createChallenge(this.state.form.idGroup, this.state.form.title, this.state.form.description, this.state.form.type, this.state.form.category, this.state.form.qualification, this.state.form.date)
+        TeacherService.createChallenge(this.state.form.idGroup, this.state.form.title, this.state.form.description,
+            this.state.form.type, this.state.form.category, this.state.form.qualification, this.state.form.date)
             .then(response => {
                 const idChallenge = response.data;
                 if (this.state.imgCollection.length > 0) {
-                    TeacherService.sendMultimedia(this.state.imgCollection, this.state.form.idTeacher, idChallenge)
+                    TeacherService.sendMultimedia(this.state.imgNamesCollection, this.state.form.idTeacher, idChallenge)
                         .then(response => {
                             window.location.href = '/teacher/groups';
 
@@ -251,17 +252,16 @@ class CreateChallenge extends Component {
                                         wrapperClassName="demo-wrapper"
                                         editorClassName="border-edit"
                                         onEditorStateChange={this.onEditorStateChange}
-
-                                        onChange={this.handleEditorChange}
-
-                                        onChange={(event, editor) => {
-                                            this.setState({
-                                                form: {
-                                                    ...this.state.form,
-                                                    descripcion: draftToHtml(convertToRaw(editorState.getCurrentContent()))
-                                                }
-                                            });
-                                        }}
+                                        onChange={
+                                            (event, editor) => {
+                                                this.setState({
+                                                    form: {
+                                                        ...this.state.form,
+                                                        description: draftToHtml(convertToRaw(editorState.getCurrentContent()))
+                                                    }
+                                                });
+                                            }
+                                        }
                                     />
 
                                 </div>
