@@ -148,12 +148,11 @@ class TeacherService {
 
     /*Envia los archivos multimedia del profesor*/
     sendMultimedia(imgCollection, idTeacher, idChallenge) {
-        debugger;
-        const form = new FormData();
 
-        for (const key of Object.keys(imgCollection)) {
-            form.append('imgCollection', imgCollection[key])
-        }
+        const form = new FormData();
+        imgCollection.map((row)=>{
+            form.append('imgCollection', row);
+        });
 
         form.append("idTeacher", idTeacher);
         form.append("idChallenge", idChallenge);

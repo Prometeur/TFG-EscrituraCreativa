@@ -7,6 +7,9 @@ import React, { Component } from 'react';
 
 /*Importacion del css*/
 import '../../../styles/Writing.css';
+import '../../../styles/Challenge.css';
+import '../../../styles/styleGeneral.css';
+import '../../../styles/styleCard.css';
 
 /*Importaciones del Video*/
 import ReactPlayer from "react-player";
@@ -25,7 +28,14 @@ import StudentService from '../../../services/student/student-service.js';
 /**Datos del usuario */
 import AuthUser from '../../../services/authenticity/auth-service.js';
 
-// import EditorText from '../../TextEditor/TextEditor.js';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Alert from 'react-bootstrap/Alert';
+import Card from 'react-bootstrap/Card';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Button  from 'react-bootstrap/Button';
+
+
 
 class EditWriting extends Component {
 
@@ -34,7 +44,8 @@ class EditWriting extends Component {
         const dataUser = AuthUser.getCurrentUser();
         this.onFileChange = this.onFileChange.bind(this);
         this.state = {
-            imgCollection: '',
+            imgCollection: [],
+            imgNamesCollection:[],
             contentState: null,
             editorState: EditorState.createEmpty(),
             challenge: '',
@@ -125,9 +136,19 @@ class EditWriting extends Component {
     //     }
     // }
 
-    onFileChange(e) {
-        this.setState({ imgCollection: e.target.files })
+    onDeleteMultimedia(indexItem){
+        this.setState(()=>
+            ({imgNamesCollection:this.state.imgNamesCollection.filter((todo,index)=> index !==indexItem)}));
     }
+
+    onFileChange(e) {
+        let newFiles = this.state.imgNamesCollection;
+        this.setState({ imgCollection: e.target.files });
+        Array.from(e.target.files).forEach((file) => {newFiles.push(file)});
+        this.setState({imgNamesCollection:[...newFiles]});
+
+    }
+
     editorChange = () => {
         this.setState({
             form: {
@@ -154,7 +175,7 @@ class EditWriting extends Component {
         StudentService.editWriting(this.props.match.params.idWriting, this.props.match.params.idGroup, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.escrito, this.state.challenge.colaborativo)
             .then(response => {
                 if (this.state.imgCollection.length > 0) {
-                    StudentService.sendMultimedia(this.state.imgCollection, this.state.form.idWriter, this.props.match.params.idChallenge)
+                    StudentService.sendMultimedia(this.state.imgNamesCollection, this.state.form.idWriter, this.props.match.params.idChallenge)
                         .then(response => {
                             window.location.href = '/student/groups';
                         }).catch(error => {
@@ -221,73 +242,96 @@ class EditWriting extends Component {
             }
         }
         return (
-            <>
-                <div className="writing-container">
-                    <div className="writing-content">
-                        <div className="challenge-card">
-                            <div class="challenge-inputs">
-                                <h2 > {this.state.challenge.titulo} </h2>
-                            </div>
-                            <div class="challenge-inputs">
-                                <label className='form-label'>{this.state.challenge.nombre}</label>
-                            </div>
-                            <div className="challenge-inputs" dangerouslySetInnerHTML={{ __html: this.state.challenge.descripcion }}></div>
-                            <div class="challenge-inputs">
-                                <label className='form-label'>Ficheros Multimedia: </label>
-                                <table>
-                                    <tbody>
-                                        {dataMediaChallenge.map((challenge) => (
-                                            <tr key={challenge.id}>
-                                                <td>{this.showTitle(challenge)}</td>
-                                                <td><a href={challenge.ruta}>Ver</a></td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div className="writing-card">
-                            <div class="writing-inputs">
-                                <label className='form-label'>Escribe una Descripción </label>
-                                <Editor
-                                    editorState={this.state.editorState}
-                                    toolbarClassName="toolbarClassName"
-                                    wrapperClassName="wrapperClassName"
-                                    editorClassName="editorClassName"
-                                    onEditorStateChange={this.onEditorStateChange}
-                                    onContentStateChange={this.onContentStateChange}
-                                    onChange={this.editorChange}
-                                />
-                                {/* <EditorText onEditorStateChange={this.onEditorStateChange} onContentStateChange={this.onContentStateChange}  onChange={this.editorChange} param={this.state.editorState}/> */}
-                            </div>
-                            <div class="writing-inputs">
-                                <label className='form-label'>Puedes agregar un fichero multimedia si lo deseas (imagen,video o audio): </label>
-                                <div className="form-media">
-                                    <input type="file" name="imgCollection" onChange={this.onFileChange} multiple />
-                                </div>
-                            </div>
-                            <div class="writing-inputs">
-                                <label className='form-label'>Ficheros Multimedia: </label>
-                                <table>
-                                    <tbody>
-                                        {dataMediaWriting.map((writing) => (
-                                            <tr key={writing.id}>
-                                                <td>{this.showTitle(writing)}</td>
-                                                <td><a href={writing.ruta}>Ver</a></td>
-                                                <td > < button onClick={() => this.deleteFile(writing)} > Eliminar </button> </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                            <br />
-                            <br />
-                            <button text='enviar' onClick={() => this.editWriting()}> enviar  </button>
-                            <button onClick={() => window.location.href = '/student/groups'}>Cancelar</button>
-                        </div>
+            <div className="container">
+                <label className='form-label'>Editar Escrito</label>
+                <Card className="card-edit">
+                  <Card.Body>
+                    <div class="row-edit">
+                        <h5> {this.state.challenge.titulo} </h5>
                     </div>
-                </div>
-            </>
+                    <div class="row-edit">
+                        <label className='form-label'>{this.state.challenge.nombre}</label>
+                    </div>
+                    <div className="challenge-inputs" dangerouslySetInnerHTML={{ __html: this.state.challenge.descripcion }}></div>
+                    <div class="row-edit">
+                        <label className='form-label'>Ficheros Multimedia: </label>
+                        <table>
+                            <tbody>
+                                {dataMediaChallenge.map((challenge) => (
+                                    <tr key={challenge.id}>
+                                        <td>{this.showTitle(challenge)}</td>
+                                        <td><a href={challenge.ruta}>Ver</a></td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div className="row-edit">
+                        <label className='form-label'>Descripción</label>
+                        <div class="form-inputs">
+                            <Editor
+                                editorState={this.state.editorState}
+                                toolbarClassName="toolbarClassName"
+                                wrapperClassName="wrapperClassName"
+                                editorClassName="border-edit"
+                                onEditorStateChange={this.onEditorStateChange}
+                                onContentStateChange={this.onContentStateChange}
+                                onChange={this.editorChange}
+                            />
+                            {/* <EditorText onEditorStateChange={this.onEditorStateChange} onContentStateChange={this.onContentStateChange}  onChange={this.editorChange} param={this.state.editorState}/> */}
+                        </div>
+                    </div>   
+                    <div class="row-edit">
+                        <label className='form-label'>Puedes agregar un fichero multimedia si lo deseas (imagen,video o audio): </label>
+                        <div className="form">
+                            {
+                                this.state.imgNamesCollection ==0 ? (
+                                    <Alert variant='info'>
+                                        No hay Archivos cargados.
+                                    </Alert>
+                                ): (
+
+                                    <ListGroup>
+                                        {this.state.imgNamesCollection.map((row, index) => (
+                                            <ListGroup.Item action variant="info" key={index}>
+                                                <i className="form-select">{row.name}</i>
+                                                <IconButton  className="form-select" aria-label="delete" onClick={()=>this.onDeleteMultimedia(index)}>
+                                                    <DeleteIcon fontSize="small" />
+                                                </IconButton>
+                                            </ListGroup.Item>
+                                        ))}
+                                    </ListGroup>
+
+                                )
+                            }
+
+                            <input id="file" type="file" name="imgCollection" onChange={this.onFileChange} multiple />
+                            <label htmlFor="file" className="btn-1">upload file</label>
+                         </div>
+                    </div>
+                    <div class="row-edit">
+                        <label className='form-label'>Ficheros Multimedia: </label>
+                        <table>
+                            <tbody>
+                                {dataMediaWriting.map((writing) => (
+                                    <tr key={writing.id}>
+                                        <td>{this.showTitle(writing)}</td>
+                                        <td><a href={writing.ruta}>Ver</a></td>
+                                        <td > < button onClick={() => this.deleteFile(writing)} > Eliminar </button> </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div className="form-select">
+                        <Button text='enviar' onClick={() => this.editWriting()}> Enviar </Button>                  
+                    </div>
+                    <div className="form-select">
+                        <Button onClick={() => window.location.href = '/student/groups'}>Cancelar</Button>                 
+                    </div>
+                    </Card.Body>
+                </Card>
+            </div>
         );
     }
 }

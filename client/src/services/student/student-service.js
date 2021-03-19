@@ -71,6 +71,7 @@ class StudentService {
 
     /*Envia el escrito del estudiante segun su grupo*/
     sendWriting(idGroup, idChallenge, idWriter, escrito, type) {
+
         return axios.post("/student/sendWriting", { idGroup: idGroup, idChallenge: idChallenge, idWriter: idWriter, escrito: escrito, type: type }, {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
@@ -78,6 +79,7 @@ class StudentService {
         }).catch(error => {
             console.log(error.message);
         })
+
     }
 
     /*Obtiene multimedia del escrito del estudiante */
@@ -107,15 +109,17 @@ class StudentService {
 
     /*Envia los archivos multimedia del estudiante*/
     sendMultimedia(imgCollection,idWriter, idChallenge) {
-        const form = new FormData();
 
-        for (const key of Object.keys(imgCollection)) {
-            form.append('imgCollection', imgCollection[key])
-        }
+       const form = new FormData();
+
+       imgCollection.map((row)=>{
+           form.append('imgCollection', row);
+       });
 
         form.append("idWriter", idWriter);
         form.append("idChallenge", idChallenge);
-      
+
+        console.log(form);
         return axios.post("/student/sendMultimedia", form, {params: { idUser: idWriter,idFolder:idChallenge} },{
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
