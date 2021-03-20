@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-03-2021 a las 15:43:25
+-- Tiempo de generación: 20-03-2021 a las 12:59:29
 -- Versión del servidor: 10.4.14-MariaDB
 -- Versión de PHP: 7.4.11
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `categoria` (
   `id` int(11) NOT NULL,
   `nombre` varchar(50) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `categoria`
@@ -111,7 +111,9 @@ CREATE TABLE `equipo` (
 --
 
 INSERT INTO `equipo` (`id`, `nombre`, `activo`, `idCreador`, `idGrupo`) VALUES
-(2, 'Los escribanos', 1, 6, 3);
+(2, 'Los escribanos', 1, 6, 3),
+(3, 'el club de los poetas ', 1, 9, 3),
+(9, 'Alejandria', 1, 16, 3);
 
 -- --------------------------------------------------------
 
@@ -120,6 +122,7 @@ INSERT INTO `equipo` (`id`, `nombre`, `activo`, `idCreador`, `idGrupo`) VALUES
 --
 
 CREATE TABLE `equipoestudiante` (
+  `id` int(9) NOT NULL,
   `idEquipo` int(9) NOT NULL,
   `idEstudiante` int(9) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -128,9 +131,11 @@ CREATE TABLE `equipoestudiante` (
 -- Volcado de datos para la tabla `equipoestudiante`
 --
 
-INSERT INTO `equipoestudiante` (`idEquipo`, `idEstudiante`) VALUES
-(2, 6),
-(2, 7);
+INSERT INTO `equipoestudiante` (`id`, `idEquipo`, `idEstudiante`) VALUES
+(1, 2, 6),
+(3, 3, 6),
+(4, 3, 9),
+(15, 9, 16);
 
 -- --------------------------------------------------------
 
@@ -212,7 +217,34 @@ INSERT INTO `grupoestudiante` (`id`, `idGrupo`, `idEstudiante`) VALUES
 (1, 3, 6),
 (2, 3, 7),
 (3, 4, 9),
-(4, 3, 9);
+(4, 3, 9),
+(5, 3, 16);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `mensajeria`
+--
+
+CREATE TABLE `mensajeria` (
+  `id` int(9) NOT NULL,
+  `idEmisor` int(9) NOT NULL,
+  `idReceptor` int(9) NOT NULL,
+  `idCreador` int(9) NOT NULL,
+  `mensaje` mediumtext CHARACTER SET utf8 NOT NULL,
+  `tipo` int(1) NOT NULL,
+  `fecha` datetime NOT NULL DEFAULT current_timestamp(),
+  `activo` int(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `mensajeria`
+--
+
+INSERT INTO `mensajeria` (`id`, `idEmisor`, `idReceptor`, `idCreador`, `mensaje`, `tipo`, `fecha`, `activo`) VALUES
+(3, 6, 9, 6, 'Hola te envío una invitación para mi equipo', 2, '2021-03-16 11:11:37', 1),
+(4, 7, 9, 0, 'Hello world!', 1, '2021-03-16 11:12:23', 1),
+(5, 16, 9, 9, 'Hola te envio una solicitud para unirme a tu equipo', 0, '2021-03-19 13:27:51', 1);
 
 -- --------------------------------------------------------
 
@@ -265,11 +297,12 @@ CREATE TABLE `usuario` (
 
 INSERT INTO `usuario` (`id`, `correo`, `password`, `nombre`, `apellidos`, `foto`, `activo`, `rol`) VALUES
 (4, 'cora@ucm.es', '$2a$08$yobEY52jl8G2FpN6Nhd7nOLVjNdn96A1GWGQwHuJFREpmMcsUye9G', 'cora', 'cora2', '', 1, 'T'),
-(6, 'genesis@ucm.es', 'genesis', 'genesis', 'genesis2', '', 1, 'S'),
-(7, 'gonzalo@ucm.es', 'gonzalo', 'gonzalo', 'gonzalo2', '', 1, 'S'),
-(8, 'adrian@ucm.es', 'adrian', 'adrian', 'riesco', '', 1, 'A'),
+(6, 'genesis@ucm.es', '$2a$08$yobEY52jl8G2FpN6Nhd7nOLVjNdn96A1GWGQwHuJFREpmMcsUye9G', 'genesis', 'genesis2', '', 1, 'S'),
+(7, 'gonzalo@ucm.es', '$2a$08$yobEY52jl8G2FpN6Nhd7nOLVjNdn96A1GWGQwHuJFREpmMcsUye9G', 'gonzalo', 'gonzalo2', '', 1, 'S'),
+(8, 'adrian@ucm.es', '$2a$08$yobEY52jl8G2FpN6Nhd7nOLVjNdn96A1GWGQwHuJFREpmMcsUye9G', 'adrian', 'riesco', '', 1, 'A'),
 (9, 'luis@ucm.es', '$2a$08$yobEY52jl8G2FpN6Nhd7nOLVjNdn96A1GWGQwHuJFREpmMcsUye9G', 'luis', 'jaramillo', '', 1, 'S'),
-(10, 'stefano@ucm.es', 'stefano', 'stefano', 'stefano2', '', 1, 'S');
+(10, 'stefano@ucm.es', '$2a$08$yobEY52jl8G2FpN6Nhd7nOLVjNdn96A1GWGQwHuJFREpmMcsUye9G', 'stefano', 'stefano2', '', 1, 'S'),
+(16, 'pedro@ucm.es', '$2a$08$/fYrEGbexRF6udkEeon5CuNNhyzfex0iX/8rMafYfbW5YrayYwp6e', 'pedro', 'mata', '', 1, 'S');
 
 --
 -- Índices para tablas volcadas
@@ -307,6 +340,7 @@ ALTER TABLE `equipo`
 -- Indices de la tabla `equipoestudiante`
 --
 ALTER TABLE `equipoestudiante`
+  ADD PRIMARY KEY (`id`),
   ADD KEY `idEquipo` (`idEquipo`),
   ADD KEY `idEstudiante` (`idEstudiante`);
 
@@ -339,6 +373,14 @@ ALTER TABLE `grupoestudiante`
   ADD PRIMARY KEY (`id`),
   ADD KEY `idEstudiante` (`idEstudiante`),
   ADD KEY `idGrupo` (`idGrupo`);
+
+--
+-- Indices de la tabla `mensajeria`
+--
+ALTER TABLE `mensajeria`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `indexEmisor` (`idEmisor`) USING BTREE,
+  ADD KEY `indexReceptor` (`idReceptor`) USING BTREE;
 
 --
 -- Indices de la tabla `multimediadesafio`
@@ -375,19 +417,25 @@ ALTER TABLE `categoria`
 -- AUTO_INCREMENT de la tabla `desafio`
 --
 ALTER TABLE `desafio`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=238;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=250;
 
 --
 -- AUTO_INCREMENT de la tabla `equipo`
 --
 ALTER TABLE `equipo`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT de la tabla `equipoestudiante`
+--
+ALTER TABLE `equipoestudiante`
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `escrito`
 --
 ALTER TABLE `escrito`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=123;
 
 --
 -- AUTO_INCREMENT de la tabla `grupo`
@@ -399,25 +447,31 @@ ALTER TABLE `grupo`
 -- AUTO_INCREMENT de la tabla `grupoestudiante`
 --
 ALTER TABLE `grupoestudiante`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `mensajeria`
+--
+ALTER TABLE `mensajeria`
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `multimediadesafio`
 --
 ALTER TABLE `multimediadesafio`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=192;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=207;
 
 --
 -- AUTO_INCREMENT de la tabla `multimediaescrito`
 --
 ALTER TABLE `multimediaescrito`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Restricciones para tablas volcadas
@@ -475,6 +529,13 @@ ALTER TABLE `grupo`
 ALTER TABLE `grupoestudiante`
   ADD CONSTRAINT `grupoestudiante_ibfk_1` FOREIGN KEY (`idEstudiante`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `grupoestudiante_ibfk_2` FOREIGN KEY (`idGrupo`) REFERENCES `grupo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `mensajeria`
+--
+ALTER TABLE `mensajeria`
+  ADD CONSTRAINT `mensajeria_ibfk_1` FOREIGN KEY (`idEmisor`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `mensajeria_ibfk_2` FOREIGN KEY (`idReceptor`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `multimediadesafio`
