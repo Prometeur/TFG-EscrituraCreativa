@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+
+/*Importaciones del css*/
 import '../../../styles/Challenge.css';
 import '../../../styles/styleGeneral.css';
 import '../../../styles/styleCard.css';
@@ -12,13 +14,6 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Alert from 'react-bootstrap/Alert';
-/*Importaciones del time*/
-import DateFnsUtils from '@date-io/date-fns';
-import {
-    MuiPickersUtilsProvider,
-    KeyboardTimePicker,
-    KeyboardDatePicker,
-} from '@material-ui/pickers';
 
 /*Importaciones del editor */
 import { Editor } from "react-draft-wysiwyg";
@@ -29,14 +24,14 @@ import draftToHtml from "draftjs-to-html";
 // escribe el 'html' en el editor
 import { stateFromHTML } from 'draft-js-import-html';
 
-import Dates from "../../dates/Dates.js";
+/**Importacion del calendario */
+import Dates from "../../dates/dates.js";
 
 /**Datos de Sesion del usuario */
 import AuthUser from '../../../services/authenticity/auth-service.js';
 
 /**Servicios del profesor */
 import TeacherService from '../../../services/teacher/teacherService';
-
 
 
 class EditChallenge extends Component {
@@ -48,7 +43,7 @@ class EditChallenge extends Component {
         this.onFileChange = this.onFileChange.bind(this);
         this.state = {
             imgCollection: [],
-            imgNamesCollection:[],
+            imgNamesCollection: [],
             editorState: EditorState.createEmpty(),
             contentState: null,
             data: [], //array de multimedia del desafio
@@ -58,7 +53,6 @@ class EditChallenge extends Component {
                 title: '',
                 description: '',
                 file: '',
-                url: '',
                 path: '',
                 date: '',
                 category: '',
@@ -139,7 +133,6 @@ class EditChallenge extends Component {
                 [e.target.name]: e.target.value
             }
         });
-
         console.log(this.state.form);//visualizar consola navegador lo que escribimos en el input
     }
 
@@ -148,7 +141,6 @@ class EditChallenge extends Component {
         e.preventDefault();
         const { name, value } = e.target;
         let formErrors = { ...this.state.formErrors };
-
         switch (name) {
             case "title":
                 formErrors.title =
@@ -157,7 +149,6 @@ class EditChallenge extends Component {
             default:
                 break;
         }
-
         this.setState({
             formErrors,
             form: {
@@ -181,15 +172,14 @@ class EditChallenge extends Component {
 
     onModal(modal) {
         this.setState({
-             stateModal:modal
+            stateModal: modal
         });
     }
 
 
     //redireccion a una pagina
     changeView = () => {
-        window.location.href = "/teacher/group";
-        //window.location.href = './';
+        window.location.href = "/teacher/groups";
     }
 
 
@@ -204,7 +194,6 @@ class EditChallenge extends Component {
 
     /* manejador de fechas*/
     handleDateChange = (date) => {
-
         // this.setState({ date: date });
         this.setState({
             form: {
@@ -261,39 +250,36 @@ class EditChallenge extends Component {
         var res = str.split("/");
         var opcion = window.confirm("Estás Seguro que deseas Eliminar " + res[7]);
         if (opcion === true) {
-        var contador = 0;
-        var arreglo = this.state.data;
-        arreglo.map((registro) => {
-            if (challenge.id === registro.id)
-            {
-                arreglo.splice(contador, 1);
-             }
-             contador++;
-        });
-        this.setState({ data: arreglo });
-            TeacherService.deleteMultimedia(challenge.id, challenge.ruta)
-            .then(response => {
-
-            })
-            .catch(error => {
-                console.log(error.message);
+            var contador = 0;
+            var arreglo = this.state.data;
+            arreglo.map((registro) => {
+                if (challenge.id === registro.id) {
+                    arreglo.splice(contador, 1);
+                }
+                contador++;
             });
+            this.setState({ data: arreglo });
+            TeacherService.deleteMultimedia(challenge.id, challenge.ruta)
+                .then(response => {
+
+                })
+                .catch(error => {
+                    console.log(error.message);
+                });
         }
     }
 
 
-    onDeleteMultimedia(indexItem){
-
-        this.setState(()=>
-            ({imgNamesCollection:this.state.imgNamesCollection.filter((todo,index)=> index !==indexItem)}));
-
+    onDeleteMultimedia(indexItem) {
+        this.setState(() =>
+            ({ imgNamesCollection: this.state.imgNamesCollection.filter((todo, index) => index !== indexItem) }));
     }
 
     onFileChange(e) {
-        let newFiles = this.state.imgNamesCollection;
         this.setState({ imgCollection: e.target.files });
-        Array.from(e.target.files).forEach((file) => {newFiles.push(file)});
-        this.setState({imgNamesCollection:[...newFiles]});
+        let newFiles = this.state.imgNamesCollection;
+        Array.from(e.target.files).forEach((file) => { newFiles.push(file) });
+        this.setState({ imgNamesCollection: [...newFiles] });
     }
 
     //Obtiene el nombre del desafio/escrito
@@ -316,17 +302,14 @@ class EditChallenge extends Component {
     render() {
 
         let media = "";
-        if (this.state.form.file.type !== undefined)
-        { //si hemos previsualizado un archivo
+        if (this.state.form.file.type !== undefined) { //si hemos previsualizado un archivo
             if (this.state.form.file.type.includes("image"))
                 media = < img className="image" src={this.state.form.reader} alt="" />;
-             else
-                 media = < ReactPlayer className="video" url={this.state.form.reader} controls={true}/>;
+            else
+                media = < ReactPlayer className="video" url={this.state.form.reader} controls={true} />;
         }
-        else
-        { //si no hemos previsualizado un archivo
-            if (this.state.form.path == null || this.state.form.path === "")
-            { //si la ruta es vacia o no contiene una ruta (recibido de la bd)
+        else { //si no hemos previsualizado un archivo
+            if (this.state.form.path == null || this.state.form.path === "") { //si la ruta es vacia o no contiene una ruta (recibido de la bd)
                 media = < img className="image" src="http://localhost:3001/images/drop-files.jpg" alt="" />;
             }
             else {
@@ -334,15 +317,15 @@ class EditChallenge extends Component {
                 var res = str.split("/");
                 if (res[5] === "image") {
                     media = < img className="image"
-                    src={this.state.form.path}
-                    key={this.state.form.path}
-                    alt="" />; //si contine una ruta (recibido de la bd)
+                        src={this.state.form.path}
+                        key={this.state.form.path}
+                        alt="" />; //si contine una ruta (recibido de la bd)
                 }
                 else {
                     media = < ReactPlayer className="video"
-                    url={this.state.form.path}
-                    controls={true}
-                     />;
+                        url={this.state.form.path}
+                        controls={true}
+                    />;
                 }
             }
         }
@@ -352,26 +335,26 @@ class EditChallenge extends Component {
         return (
             <div className="container">
                 <label className='form-label'>Modificar datos</label>
-                    <Card className="card-edit">
-                        <Card.Body>
-                            <div className="row-edit">
-                                <div className="form-inputs">
-                                    <label className='form-label'>Escribe un Titulo </label>
-                                    <input
-                                        className={formErrors.title.length > 0 ? "error" : "form-input"}
-                                        type="text"
-                                        name="title"
-                                        placeholder="escribe el título"
-                                        value={this.state.form.title}
-                                        onChange={this.handleErrors}
-                                    />
-                                        {formErrors.title.length > 0 && (
-                                            <span className="errorMessage">{formErrors.title}</span>
-                                        )}
-                                </div>
+                <Card className="card-edit">
+                    <Card.Body>
+                        <div className="row-edit">
+                            <div className="form-inputs">
+                                <label className='form-label'>Título </label>
+                                <input
+                                    className={formErrors.title.length > 0 ? "error" : "form-input"}
+                                    type="text"
+                                    name="title"
+                                    placeholder="escribe el título"
+                                    value={this.state.form.title}
+                                    onChange={this.handleErrors}
+                                />
+                                {formErrors.title.length > 0 && (
+                                    <span className="errorMessage">{formErrors.title}</span>
+                                )}
                             </div>
-                            <div className="row-edit">
-                                <div class="form-inputs">
+                        </div>
+                        <div className="row-edit">
+                            <div class="form-inputs">
                                 <label className='form-label'>Descripción</label>
                                 <Editor
 
@@ -383,46 +366,45 @@ class EditChallenge extends Component {
                                     onContentStateChange={this.onContentStateChange}
                                     onChange={this.editorChange}
                                 />
-                                </div>
                             </div>
-                            <div className="row-edit">
-                                <div className="form-select">
-                                    <label className='form-label'>Selecciona la categoría</label>
-                                    <select value={this.state.form.category} onChange={this.handleSelectionCategory}>
-                                        {this.state.categories.map(elemento => (
-                                            <option key={elemento.id} value={elemento.id}>{elemento.nombre}</option>
-                                        ))}
+                        </div>
+                        <div className="row-edit">
+                            <div className="form-select">
+                                <label className='form-label'>Categoría</label>
+                                <select value={this.state.form.category} onChange={this.handleSelectionCategory}>
+                                    {this.state.categories.map(elemento => (
+                                        <option key={elemento.id} value={elemento.id}>{elemento.nombre}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div class="form-select">
+                                <label className='form-label'>Tipo de desafio</label>
+                                <select value={this.state.form.type} onChange={this.handleSelectionChange}>
+                                    {/* <option value="" selected disabled hidden>Choose here</option> */}
+                                    {/* <option value = {this.state.form.type} selected>{this.state.form.type} </option> */}
+                                    <option value="1">Individual</option>
+                                    <option value="2">Colaborativo</option>
+                                </select>
+                            </div>
 
-                                    </select>
-                                </div>
-                                <div class="form-select">
-                                    <label className='form-label'>Tipo de evalución</label>
-                                    <select value={this.state.form.type} onChange={this.handleSelectionChange}>
-                                        {/* <option value="" selected disabled hidden>Choose here</option> */}
-                                        {/* <option value = {this.state.form.type} selected>{this.state.form.type} </option> */}
-                                        <option value="1">Individual</option>
-                                        <option value="2">Equipo</option>
-                                    </select>
-                                 </div>
-                                <div className="form-select">
-                                    <label className='form-label'> Tipo de Calificación </label>
-                                    <select onChange={this.qualificationSelection}>
-                                        <option value="" selected disabled hidden>Seleccionar</option>
-                                        <option value="1"> Numerica</option>
-                                        <option value="2"> Conceptual</option>
-                                    </select>
-                                </div>
+                            <div className="form-select">
+                                <label className='form-label'> Tipo de Calificación </label>
+                                <select value={this.state.form.qualification} onChange={this.qualificationSelection} >
+                                    <option value="1"> Numerica</option>
+                                    <option value="2"> Conceptual</option>
+                                </select>
                             </div>
-                            <div className="row-edit">
-                                <div className="form-select">
-                                    <label className='form-label'>Selecciona la fecha y hora final </label>
-                                    <Dates param={this.state.form.date}/>
-                                </div>
+                        </div>
+                        <div className="row-edit">
+                            <div className="form-select">
+                                <label className='form-label'> Fecha y Hora </label>
+                                <Dates handleDateChange={this.handleDateChange} param={this.state.form.date} />
                             </div>
-                            <div className="row-edit">
-                                <label className='form-label'> Ficheros Multimedia: </label>
-                                <table>
-                                    <tbody>
+                        </div>
+                        <div className="row-edit">
+                            <label className='form-label'> Ficheros Multimedia: </label>
+                            <table>
+                                <tbody>
                                     {data.map((challenge) => (
                                         <tr key={challenge.id}>
                                             <td> {this.showTitle(challenge)} </td>
@@ -432,72 +414,69 @@ class EditChallenge extends Component {
                                             </td>
                                         </tr>
                                     ))}
-                                    </tbody>
-                                </table>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className="row-edit">
+                            <div className="form">
+                                {
+                                    this.state.imgNamesCollection == 0 ? (
+                                        <Alert variant='info'>
+                                            No hay Archivos cargados.
+                                        </Alert>
+                                    ) : (
+                                        <ListGroup>
+                                            {this.state.imgNamesCollection.map((row, index) => (
+                                                <ListGroup.Item action variant="info" key={index}>
+                                                    <i className="form-select">{row.name}</i>
+                                                    <IconButton
+                                                        className="form-select"
+                                                        aria-label="delete"
+                                                        onClick={() => this.onDeleteMultimedia(index)}>
+                                                        <DeleteIcon fontSize="small" />
+                                                    </IconButton>
+                                                </ListGroup.Item>
+                                            ))}
+                                        </ListGroup>
+                                    )
+                                }
+                                <input id="file" type="file" name="imgCollection" onChange={this.onFileChange} multiple />
+                                <label htmlFor="file" className="btn-1">upload file</label>
                             </div>
-                            <div className="row-edit">
-                                <div className="form">
-                                    {
-                                        this.state.imgNamesCollection ==0 ? (
-                                            <Alert variant='info'>
-                                                No hay Archivos cargados.
-                                            </Alert>
-                                        ): (
-
-                                            <ListGroup>
-                                                {this.state.imgNamesCollection.map((row, index) => (
-                                                    <ListGroup.Item action variant="info" key={index}>
-                                                        <i className="form-select">{row.name}</i>
-                                                        <IconButton
-                                                            className="form-select"
-                                                            aria-label="delete"
-                                                            onClick={()=>this.onDeleteMultimedia(index)}>
-                                                            <DeleteIcon fontSize="small" />
-                                                        </IconButton>
-                                                    </ListGroup.Item>
-                                                ))}
-                                            </ListGroup>
-
-                                        )
-                                    }
-                                    <input id="file" type="file" name="imgCollection" onChange={this.onFileChange} multiple />
-                                    <label htmlFor="file" className="btn-1">upload file</label>
-                                </div>
-                            </div>
-                            <div className="form-select">
-                                <Button  onClick={() => this.onModal(true)} >
-                                    Guardar
-                                </Button>
-                            </div>
-                            <Modal
-                                size="lg"
-                                aria-labelledby="contained-modal-title-vcenter"
-                                centered
-                                show={this.state.stateModal}
-                                onHide={this.state.stateModal}
-                            >
-                                <Modal.Header >
-                                    <Modal.Title id="contained-modal-title-vcenter">
-                                        Modal heading
+                        </div>
+                        <div className="form-select">
+                            <Button onClick={() => this.onModal(true)}>Guardar</Button>
+                        </div>
+                        <div className="form-select">
+                            <Button onClick={() => this.changeView()}>Cancelar</Button>
+                        </div>
+                        <Modal
+                            size="lg"
+                            aria-labelledby="contained-modal-title-vcenter"
+                            centered
+                            show={this.state.stateModal}
+                            onHide={this.state.stateModal}
+                        >
+                            <Modal.Header >
+                                <Modal.Title id="contained-modal-title-vcenter">
+                                    Modal heading
                                     </Modal.Title>
-                                </Modal.Header>
-                                <Modal.Body>
-                                    <h4>Centered Modal</h4>
-                                    <p>
-                                         ¿Desea guardar los cambios?
+                            </Modal.Header>
+                            <Modal.Body>
+                                <h4>Centered Modal</h4>
+                                <p>
+                                    ¿Desea guardar los cambios?
                                     </p>
-                                </Modal.Body>
-                                <Modal.Footer>
-                                    <Button onClick={()=> this.onModal(false)}>Cancelar</Button>
-                                    <Button onClick={() => this.sendChallenge()}>Aceptar</Button>
-                                </Modal.Footer>
-                            </Modal>
-                        </Card.Body>
-                    </Card>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button onClick={() => this.sendChallenge()}>Aceptar</Button>
+                                <Button onClick={() => this.onModal(false)}>Cancelar</Button>
+                            </Modal.Footer>
+                        </Modal>
+                    </Card.Body>
+                </Card>
             </div>
         );
     }
-
 }
-
 export default EditChallenge;

@@ -274,5 +274,9 @@ input.error {
 .editorClassName {
     /* border: 1px solid rgb(62, 161, 84); */
     height: 55vh;
-    width:31vw;
+    width:100vw;
+}
+
+.wrapperClassName {
+    border: 1px solid;
 }

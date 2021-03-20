@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
         //obtengo la ruta -> multimedia/idUser/idfolder/tipo
         const dir=  prueba + req.query.idUser + "/"+ req.query.idFolder +"/"+res[0];
 
-        console.log("----->Carpeta------>", dir);
+        // console.log("----->Carpeta------>", dir);
         //crea la carpeta en la ruta
         fs.mkdirSync(dir, { recursive: true });
         cb(null, dir);

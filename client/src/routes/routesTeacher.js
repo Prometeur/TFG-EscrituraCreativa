@@ -18,8 +18,11 @@ function Routes() {
           <Sidebar links={LinksTeacher} url={url} />
             <Switch>
               <Route exact path="/teacher/groups" component={Group} />
-              <Route exact path="/teacher/groups/createChallenge/:idGroup" component={CreateChallenge} />
-              <Route exact path="/teacher/groups/:idGroup/editChallenge/:idChallenge" component={EditChallenge} />
+
+              {/* <Route exact path="/teacher/groups/createChallenge/:idGroup" component={CreateChallenge} />
+              <Route exact path="/teacher/groups/:idGroup/editChallenge/:idChallenge" component={EditChallenge} /> */}
+               <Route exact path="/teacher/createChallenge/:idGroup" component={CreateChallenge} />
+               <Route exact path="/teacher/editChallenge/:idGroup/:idChallenge" component={EditChallenge} />
               <Route exact path="/teacher/students" component={StudentList}/>
               <Route exact path="/teacher/students/viewProfile/:idStudent" component={Profile} />
             </Switch>

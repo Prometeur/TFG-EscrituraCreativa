@@ -119,7 +119,8 @@ class GroupTeacher extends Component {
                                 </Dropdown>
                             </div>
                             <div className="column column-rigth">
-                                <Link to={`/teacher/groups/createChallenge/${groupSelect}`}>
+                                {/* <Link to={`/teacher/groups/createChallenge/${groupSelect}`}> */}
+                                <Link to={`/teacher/createChallenge/${groupSelect}`}>
                                     <Button variant="primary">Crear desafio</Button>
                                 </Link>
                             </div>

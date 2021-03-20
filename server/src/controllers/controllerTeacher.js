@@ -177,7 +177,7 @@ function sendMultimedia(req, res) {
         reqFiles.push([idChallenge, path])
     }
 
-    console.log(reqFiles);
+    // console.log(reqFiles);
 
     modelTeacher.sendMultimedia(reqFiles, function (err, result) {
         if (err) {

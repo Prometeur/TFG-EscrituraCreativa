@@ -7,6 +7,8 @@ class modelStudent {
 
     /*Obtiene los grupos del estudiante*/
     getGroups(student, callback) {
+
+
         const sqlSelect = "SELECT grupoestudiante.idGrupo, grupoestudiante.idEstudiante, grupo.nombre, grupo.idProfesor "
             + "FROM grupoestudiante INNER JOIN grupo ON grupoestudiante.idGrupo = grupo.id WHERE grupoestudiante.idEstudiante=?";
         this.pool.query(sqlSelect, student, (err, result) => {
@@ -15,6 +17,7 @@ class modelStudent {
             }
             else {
                 callback(null, result);
+                
             }
         });
     }
