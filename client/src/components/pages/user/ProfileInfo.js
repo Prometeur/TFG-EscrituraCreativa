@@ -1,9 +1,11 @@
 /*
 *  Name_file :ProfileInfo.js
-*  Description: Contiene los datos de un usuario segun un ID dado. Es un componente de Porfile.
+*  Description: Contiene los datos de un usuario segun un ID dado.
 *    
 */
 import React, { Component } from 'react';
+import authHeader from '../../../services/authenticity/auth-header.js';
+import AuthUser from '../../../services/authenticity/auth-service.js';
 import TeacherService from '../../../services/teacher/teacherService.js';
 
 
@@ -19,6 +21,7 @@ class ProfileInfo extends Component {
             studentGroupData: [],
             finalGroupData:[],
             finalGroupKickData:[],
+            currentUser: {id: ""},
             groupSelect: "-1",
             groupKickSelect: "-1"
     
@@ -37,17 +40,18 @@ class ProfileInfo extends Component {
     }
 
     /*Se hacen peticiones al servidor para que me devuelva todos los grupos del profesor*/
-    peticionGetGruposTeacher() {
+    peticionGetGruposTeacher(id) {
       
-        TeacherService.allGroups().then(response => {
-            this.setState({ teacherGroupData: response.data });
+        TeacherService.getGroups(id).then(response => {
+            this.setState({ teacherGroupData: response });
+            console.log(this.state.teacherGroupData);
             this.peticionGetGruposStudent();
         }).catch(error => {
             console.log(error.message);
         })
     }
 
-    /*Se hacen peticiones al servidor para que me devuelva todos los grupos del profesor*/
+    /*Se hacen peticiones al servidor para que me devuelva todos los grupos del alumno*/
     peticionGetGruposStudent() {
 
         TeacherService.getGroupsStudent(this.props.idStudent).then(response =>{ 
@@ -113,7 +117,11 @@ class ProfileInfo extends Component {
     /*Si vuelvo a la pagina de login, comprueba si el usuario ya inicio sesion anteriomente
    si es el caso lo redirige a la home segun su rol*/
    componentDidMount() {
+    const dataUser = AuthUser.getCurrentUser();
+    this.setState({currentUser: dataUser});
+    
      this.peticionGet();
+     this.peticionGetGruposTeacher(dataUser.id);
    }
 
     //Acepta al estudiante como usuario de la aplicación.
@@ -215,6 +223,15 @@ class ProfileInfo extends Component {
             botonEchaGrupo = <nav></nav>;
         }
 
+        let fotoSource = "";
+        let imagenUser = <div></div>
+
+        if(this.state.data.foto != undefined)
+        {
+            fotoSource = "data:image/png;base64," + btoa(String.fromCharCode.apply(null, this.state.data.foto.data));
+            imagenUser = <img src={fotoSource} alt="" style={{width: '100px'}}  ></img>
+        }
+
 
         return (
             <>
@@ -223,7 +240,8 @@ class ProfileInfo extends Component {
                 <div>
                 
                     {cartel}
-                
+
+                    {imagenUser}
 
                     {contenido}
 

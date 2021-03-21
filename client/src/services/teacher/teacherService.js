@@ -10,6 +10,7 @@ class TeacherService {
         return axios.post("/teacher/groups", { idTeacher: idTeacher }, {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
+            console.log(response);
             return response.data;
             console.log(response.data);
         })
@@ -27,7 +28,7 @@ class TeacherService {
 
     getGroupsStudent(idStudent) {
         
-        return axios.get("/teacher/getStudentGroups", { params: { idStudent: idStudent} },{ headers: {"Authorization" : `Bearer ${authHeader()}`}})
+        return axios.get("/teacher/getStudentGroups", { params: { idEstudiante: idStudent} },{ headers: {"Authorization" : `Bearer ${authHeader()}`}})
         .then( response => {
             return response.data;
         }).catch(error => {
@@ -49,8 +50,6 @@ class TeacherService {
 
     searchStudent(searchStudent, searchType) {
 
-        console.log(searchStudent);
-        console.log(searchType);
         return axios.post("/teacher/searchStudent", { searchStudent: searchStudent, type :searchType},{ headers: {"Authorization" : `Bearer ${authHeader()}`}
         })
         .then(response => {

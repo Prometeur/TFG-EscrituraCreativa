@@ -6,14 +6,24 @@ class modelTeacher {
     }
 
     /*Obtiene todos los grupos del profesor*/
-    getGroups(idTeacher, callback) {
-        const sqlSelect = "SELECT * FROM grupo where idprofesor= ?";
-        this.pool.query(sqlSelect, idTeacher, (err, result) => {
-            if (err) {
-                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
-            }
-            else {
-                callback(null, result);
+    getGroups(group, callback) {
+        this.pool.getConnection(function(err, connection) {
+            if (err) 
+            {
+                callback(new Error("No se puede conectar a la base de datos."))
+            } 
+            else 
+            {
+                const sql = "SELECT * FROM grupo WHERE idprofesor= ? AND activo = 1";
+                const valores = [group];
+                connection.query(sql, valores, function(err, res) {
+                    connection.release();
+                    if (err) {
+                        callback(new Error("Error al buscar los grupos del profesor."));
+                    } else {
+                        callback(null, res);
+                    }
+                })
             }
         });
     }

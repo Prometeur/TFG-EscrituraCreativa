@@ -10,6 +10,7 @@ import '../../../styles/styleGeneral.css';
 import '../../../styles/styleCard.css';
 import Card from 'react-bootstrap/Card';
 import Button  from 'react-bootstrap/Button';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 class SearchStudentRes extends Component {
 
@@ -18,8 +19,8 @@ class SearchStudentRes extends Component {
 
         this.state = {
             data: [],
-            filteredData:[],
-            searchStudent: ' ',
+            filteredData: [],
+            searchStudent: '',
             searchType: 'nombre'
     
         };
@@ -29,7 +30,7 @@ class SearchStudentRes extends Component {
     //Filtra los datos de los estudiantes buscados para solo buscar en la base de datos una vez
     filterData = () =>{
         let auxArray = [];
-        this.state.filteredData = [];
+        //this.state.filteredData = [];
         for(let i = 0; i < this.state.data.length; i++){
             if(this.state.searchType == "email")
             {
@@ -64,13 +65,18 @@ class SearchStudentRes extends Component {
         });
         this.filterData();
     }
+
+    changeViewStudentProfile = (idStudent) => 
+    {
+        window.location.href = '/teacher/students/viewProfile/'+ idStudent;
+    }
     
 
     componentDidMount() {
 
         TeacherService.searchStudent(this.state.searchStudent, this.state.searchType).then(response =>{
             this.setState({data:response});
-            this.setState({filterData:response});
+            this.setState({filteredData:response});
             this.filterData();
         })
 
@@ -80,31 +86,23 @@ class SearchStudentRes extends Component {
     /*Dibuja la pagina  */
     render() {
         let cartel =<div> </div>;
-        let tabla = <table>
-        <thead>
-            <tr>
-                <th>idEstudiante</th>
-                <th>Nombre</th>
-                <th>Apellidos</th>
-                <th>email</th>
+        let tabla = <ListGroup variant="flush">
 
-            </tr>
-        </thead>
-
-        <tbody>
-            {this.state.filteredData.map(student => {
-                return (
-                    <tr>
-                        <td>{student.id}</td>
-                        <td>{student.nombre}</td>
-                        <td>{student.apellidos}</td>
-                        <td>{student.correo}</td>
-                        <td><Link key={student.id} to={`/teacher/students/viewProfile/${student.id}`}><button text='Ver Perfil'> Ver perfil </button></Link></td>
-                    </tr>
+            {this.state.filteredData.map((student) => 
+                (
+                    <React.Fragment>
+                    <ListGroup.Item>
+                        {student.id} 
+                        <img src={"data:image/png;base64," + btoa(String.fromCharCode.apply(null, student.foto.data))} alt="" style={{width: '5%',  borderRadius: '80%'}} ></img>
+                        {student.nombre} {student.apellidos} 
+                        {student.correo}
+                        <Link key={student.id} to={`/teacher/students/viewProfile/${student.id}`}><button text='Ver Perfil'> Ver perfil </button></Link>
+                    </ListGroup.Item>
+                    </React.Fragment>
+                    
                 )
-            })}
-        </tbody>
-    </table>;
+            )}
+    </ListGroup>;
         if(this.state.filteredData.length === 0)
         {
             cartel = <nav>
