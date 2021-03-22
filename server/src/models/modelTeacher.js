@@ -196,6 +196,27 @@ class modelTeacher {
             }
         });
     }
+
+    //Expulsa a un estudiante de un grupo.
+    kickStudentFromGroup(grupo, id, callback) {
+        this.pool.getConnection(function(err, connection) {
+            if (err) {
+                callback(new Error("No se puede conectar a la base de datos."))
+            } else {
+                const sql = 'DELETE FROM grupoestudiante WHERE idGrupo = ? AND idEstudiante = ?;'; 
+                const valores = [grupo, id];
+                connection.query(sql, valores, function(err, res) {
+                    connection.release();
+                    if (err) {
+                        callback(new Error("Error al expulsar al estudiante del grupo."));
+                    } else {
+                        callback(null, res);
+                    }
+                })
+            }
+        });
+    }
+
 }
 
 //Data export

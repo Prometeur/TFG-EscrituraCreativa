@@ -138,9 +138,10 @@ class ProfileInfo extends Component {
      /*Se hacen peticiones al servidor para invitar al estudiante al grupo*/
      inviteToGroup = (idGroup) => {
         TeacherService.inviteToGroup(idGroup,this.props.idStudent).then(response =>{
-            console.log(response);
+            this.peticionGetGruposTeacher(this.state.currentUser.id);
+            //window.location.href = '/teacher/students/viewProfile/' + this.state.data.id;
+            this.setState({groupSelect: "-1"});
         }).catch(error => {
-            
               console.log(error.message);
         })
      }
@@ -148,9 +149,9 @@ class ProfileInfo extends Component {
     /*Se hacen peticiones al servidor para expulsar al estudiante del grupo*/
     kickFromGroup = (idGroup) => {
          
-        TeacherService.kickFromGroup(idGroup,this.props.match.params.idStudent)
-        .then(response => {
-            window.location.href = "http://localhost:3000/Profile";
+        TeacherService.kickFromGroup(idGroup,this.props.idStudent).then(response => {
+            this.peticionGetGruposTeacher(this.state.currentUser.id);
+            this.setState({groupKickSelect: "-1"});
         }).catch(error => {
              console.log(error.message);
         })
@@ -183,6 +184,18 @@ class ProfileInfo extends Component {
 
         if(this.state.groupSelect === "-1"){
             botonInvitaGrupo= <div><button disabled text='Invitar a grupo' onClick={() => this.inviteToGroup(this.state.groupSelect)}>Invitar a grupo</button></div>;
+            invitaGrupo = 
+            <div>
+                <label for="groupSelect">Invitar a un grupo:</label>
+                <select name="groupSelect" id="groupSelect" onChange={this.handleChangeGroupSelect}>
+                    <option selected value= "-1" selected>Elija un grupo</option>
+                    {this.state.finalGroupData.map(group => {
+                        return (
+                                <option value={group.id}>{group.nombre}</option>
+                        )
+                    })}
+                </select> 
+            </div>;
         }
 
         let echaGrupo = 
@@ -201,6 +214,18 @@ class ProfileInfo extends Component {
 
         if(this.state.groupKickSelect === "-1"){
             botonEchaGrupo= <div><button disabled text='Expulsar del grupo' onClick={() => this.kickFromGroup(this.state.groupKickSelect)}>Expulsar del grupo</button></div>;
+            echaGrupo = 
+                <div>
+                    <label for="groupKickSelect">Expulsar de un grupo:</label>
+                    <select name="groupKickSelect" id="groupKickSelect" onChange={this.handleChangeGroupKickSelect}>
+                        <option selected value= "-1" >Elija un grupo</option>
+                        {this.state.finalGroupKickData.map(group => {
+                            return (
+                                    <option value={group.id}>{group.nombre}</option>
+                            )
+                        })}
+                    </select> 
+                </div>;
         }
 
         if(this.state.data.activo === 0)
