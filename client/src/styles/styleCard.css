@@ -2,15 +2,14 @@
 {
 
     flex-basis: 100%;
-    margin: .5em;
+    margin: .2em;
     text-align: center;
 }
 
 
 input[type="text"],
 input[type="password"] {
-    margin-right: auto;
-    margin-left: auto;
+    margin:8px 0;
 }
 
 input[type="password"] 
@@ -64,7 +63,7 @@ input[type=text]:focus
 
 .card-login {
     width: 20rem;
-    height: 19rem;
+    height: 20rem;
     right: 24rem;
     top: 2rem;
 }

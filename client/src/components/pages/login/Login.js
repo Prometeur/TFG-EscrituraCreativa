@@ -13,13 +13,13 @@ import '../../../styles/styleButton.css';
 import '../../../styles/styleCard.css';
 import Card from "react-bootstrap/Card";
 import Alert from "react-bootstrap/Alert";
-
+import Button from '@material-ui/core/Button'
 
 
 const required = value => {
     if (!value) {
       return (
-          <Alert variant="danger" bsPrefix="alert-heading">
+          <Alert variant="danger" bsPrefix="alert-login">
               ¡Todos los campos son obligatorios!
           </Alert>
 
@@ -40,7 +40,8 @@ class Login extends Component {
           username: "",
           password: "",
           loading: false,
-          message: ""
+          message: "",
+          error: false,
         };
     }
 
@@ -69,7 +70,7 @@ class Login extends Component {
 
     this.setState({
       message: "",
-      loading: true
+      loading: true,
     });
 
     this.form.validateAll();
@@ -82,36 +83,46 @@ class Login extends Component {
           })
         .catch(e => {
           console.log(e);
+            this.setState({
+                error:true,
+            });
         });
       } 
       else 
       {
         this.setState({
-          loading: false
+          loading: false,
         });
         console.log("error");
       }
     }
     
   render() {
+        console.log(this.state.error);
       return (
           <>
           <div className="container">
             <Card className="card-login">
               <Card.Body>
-                <Card.Title>Sign In</Card.Title>
+                  <Card.Title>Sign In</Card.Title>
                   <Form  
                     onSubmit={this.handleLogin}
                     ref= {c => {
                     this.form = c;
                     }}
                   >
-                  <div className="form-group">
+                  <div className="row">
+                  <div className="alert-error">
+                      <Alert variant="danger" bsPrefix="alert-login"  show={this.state.error}>
+                          Correo o Contraseña incorrectos
+                      </Alert>
+                  </div>
+                   <div className="form-group">
                       <div className="section-column">
                         <Input 
                             type="text" 
                             name="username" 
-                            placeholder="Usuario"
+                            placeholder=" Usuario"
                             value={this.state.username}
                             onChange={this.onChangeUsername} 
                             validations={[required]}
@@ -122,22 +133,24 @@ class Login extends Component {
                         <Input
                             type="text" 
                             name="password"
-                            placeholder="Contraseña"
+                            placeholder=" Contraseña"
                             value={this.state.password} 
                             onChange={this.onChangePassword}
                             validations={[required]}
                         />
                       </div>
-                    </div>
-                    <div class="box">
-                      <button className="btn btn-white btn-animation-1" > Login </button>
-                    </div>
+
+                      <div className="section-column">
+                        <button className="btn btn-white btn-animation-1" > Login </button>
+                      </div>
                     <CheckButton
-                      text='Log In' 
+                      text='Log In'
                       style={{ display: "none" }}
                       ref={c => {
                         this.checkBtn = c}}
                     />
+                   </div>
+                    </div>
                     </Form>
                   </Card.Body>
               </Card>

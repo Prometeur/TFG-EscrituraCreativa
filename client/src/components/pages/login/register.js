@@ -14,7 +14,7 @@ import Alert from 'react-bootstrap/Alert';
 const required = value => {
     if (!value) {
       return (
-          <Alert variant="danger" bsPrefix="alert-heading">
+          <Alert variant="danger" bsPrefix="alert-login">
             ¡Todos los campos son obligatorios!
           </Alert>
       );
@@ -34,7 +34,7 @@ const required = value => {
   const vusername = value => {
     if (value.length < 3 || value.length > 20) {
       return (
-          <Alert variant="danger" bsPrefix="alert-heading">
+          <Alert variant="danger" bsPrefix="alert-login">
               El nombre del usuario debe tener entre 3 a 20 caracteres.
           </Alert>
       );
@@ -44,7 +44,7 @@ const required = value => {
   const vsurname = value => {
     if (value.length < 3 || value.length > 20) {
       return (
-          <Alert variant="danger" bsPrefix="alert-heading">
+          <Alert variant="danger" bsPrefix="alert-login">
               El Apellido del usuario debe tener entre 3 a 20 caracteres.
           </Alert>
       );
@@ -54,7 +54,7 @@ const required = value => {
   const vpassword = value => {
     if (value.length < 6 || value.length > 40) {
       return (
-          <Alert variant="danger" bsPrefix="alert-heading">
+          <Alert variant="danger" bsPrefix="alert-login">
               La contraseña debe tener entre 6 y 40 caracteres.
           </Alert>
       );
@@ -162,51 +162,59 @@ class Register extends Component {
                   }}
                 >
                   {!this.state.successful && (
+                  <div className="row">
                     <div className="form-group">
-                        <Input
-                          type="text"
-                          className="form-control"
-                          name="username"
-                          placeholder="Nombre"
-                          value={this.state.username}
-                          onChange={this.onChangeUsername}
-                          validations={[required, vusername]}
-                        />
-
-                        <Input
-                          type="text"
-                          className="form-control"
-                          name="surname"
-                          placeholder="Apellido"
-                          value={this.state.surname}
-                          onChange={this.onChangeSurname}
-                          validations={[required, vsurname]}
-                        />
-
-                        <Input
-                          type="text"
-                          className="form-control"
-                          name="email"
-                          placeholder="Correo"
-                          value={this.state.email}
-                          onChange={this.onChangeEmail}
-                          validations={[required, email]}
-                        />
-
-                        <Input
-                          type="password"
-                          className="form-control"
-                          name="password"
-                          placeholder="Contraseña"
-                          value={this.state.password}
-                          onChange={this.onChangePassword}
-                          validations={[required, vpassword]}
-                        />
-
-                        <div className="box">
-                            <button className="btn btn-white btn-animation-1"> Sign Up</button>
+                       <div className="section-column">
+                            <Input
+                              type="text"
+                              className="form-control"
+                              name="username"
+                              placeholder="Nombre"
+                              value={this.state.username}
+                              onChange={this.onChangeUsername}
+                              validations={[required, vusername]}
+                            />
+                       </div>
+                        <div className="section-column">
+                            <Input
+                              type="text"
+                              className="form-control"
+                              name="surname"
+                              placeholder="Apellido"
+                              value={this.state.surname}
+                              onChange={this.onChangeSurname}
+                              validations={[required, vsurname]}
+                            />
+                        </div>
+                        <div className="section-column">
+                            <Input
+                              type="text"
+                              className="form-control"
+                              name="email"
+                              placeholder="Correo"
+                              value={this.state.email}
+                              onChange={this.onChangeEmail}
+                              validations={[required, email]}
+                            />
+                        </div>
+                        <div className="section-column">
+                            <Input
+                              type="password"
+                              className="form-control"
+                              name="password"
+                              placeholder="Contraseña"
+                              value={this.state.password}
+                              onChange={this.onChangePassword}
+                              validations={[required, vpassword]}
+                            />
+                        </div>
+                        <div className="section-column">
+                            <div className="box">
+                                <button className="btn btn-white btn-animation-1"> Sign Up</button>
+                            </div>
                         </div>
                     </div>
+                  </div>
                   )}
 
                   {this.state.message && (

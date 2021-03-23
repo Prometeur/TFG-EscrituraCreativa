@@ -197,9 +197,10 @@ h1.main-title {
 
 
 .section-column{
-    margin: 1rem 0;
-    padding: .3rem;
+    margin: .1rem 0;
+    padding: 0.2rem;
 }
+
 
 select {
     border: 1px solid #e6e6e6;
@@ -248,14 +249,22 @@ select {
     border-radius: 2px;
 }
 
-.alert-heading{
-    margin-bottom: .5rem;
-    border: 1px solid transparent;
-    padding: 0;
-    border-radius: .25rem;
-    font-size: 10px;
+.alert-login{
+    margin-top: 1rem;
+    padding: .5rem;
     background-color: #ffc1c9;
-    border: 1px solid #ff7e7b;
+    width: 100%;
+    border: 1px solid  #9b0410;
+    text-align: center;
+    font-size: 10px;
+    color: #9b0410;
+    font-weight: bolder;
+    border-radius: 4px;
+}
+
+.alert-error {
+
+    width: 100%;
 }
 
 .rdw-emoji-wrapper {
