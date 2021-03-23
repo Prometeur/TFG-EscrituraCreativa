@@ -1,9 +1,11 @@
 /*
 *  Name_file :ProfileInfo.js
-*  Description: Contiene los datos de un usuario segun un ID dado. Es un componente de Porfile.
+*  Description: Contiene los datos de un usuario segun un ID dado.
 *    
 */
 import React, { Component } from 'react';
+import authHeader from '../../../services/authenticity/auth-header.js';
+import AuthUser from '../../../services/authenticity/auth-service.js';
 import TeacherService from '../../../services/teacher/teacherService.js';
 
 
@@ -19,6 +21,7 @@ class ProfileInfo extends Component {
             studentGroupData: [],
             finalGroupData:[],
             finalGroupKickData:[],
+            currentUser: {id: ""},
             groupSelect: "-1",
             groupKickSelect: "-1"
     
@@ -37,17 +40,18 @@ class ProfileInfo extends Component {
     }
 
     /*Se hacen peticiones al servidor para que me devuelva todos los grupos del profesor*/
-    peticionGetGruposTeacher() {
+    peticionGetGruposTeacher(id) {
       
-        TeacherService.allGroups().then(response => {
-            this.setState({ teacherGroupData: response.data });
+        TeacherService.getGroups(id).then(response => {
+            this.setState({ teacherGroupData: response });
+            console.log(this.state.teacherGroupData);
             this.peticionGetGruposStudent();
         }).catch(error => {
             console.log(error.message);
         })
     }
 
-    /*Se hacen peticiones al servidor para que me devuelva todos los grupos del profesor*/
+    /*Se hacen peticiones al servidor para que me devuelva todos los grupos del alumno*/
     peticionGetGruposStudent() {
 
         TeacherService.getGroupsStudent(this.props.idStudent).then(response =>{ 
@@ -113,7 +117,11 @@ class ProfileInfo extends Component {
     /*Si vuelvo a la pagina de login, comprueba si el usuario ya inicio sesion anteriomente
    si es el caso lo redirige a la home segun su rol*/
    componentDidMount() {
+    const dataUser = AuthUser.getCurrentUser();
+    this.setState({currentUser: dataUser});
+    
      this.peticionGet();
+     this.peticionGetGruposTeacher(dataUser.id);
    }
 
     //Acepta al estudiante como usuario de la aplicación.
@@ -130,9 +138,10 @@ class ProfileInfo extends Component {
      /*Se hacen peticiones al servidor para invitar al estudiante al grupo*/
      inviteToGroup = (idGroup) => {
         TeacherService.inviteToGroup(idGroup,this.props.idStudent).then(response =>{
-            console.log(response);
+            this.peticionGetGruposTeacher(this.state.currentUser.id);
+            //window.location.href = '/teacher/students/viewProfile/' + this.state.data.id;
+            this.setState({groupSelect: "-1"});
         }).catch(error => {
-            
               console.log(error.message);
         })
      }
@@ -140,9 +149,9 @@ class ProfileInfo extends Component {
     /*Se hacen peticiones al servidor para expulsar al estudiante del grupo*/
     kickFromGroup = (idGroup) => {
          
-        TeacherService.kickFromGroup(idGroup,this.props.match.params.idStudent)
-        .then(response => {
-            window.location.href = "http://localhost:3000/Profile";
+        TeacherService.kickFromGroup(idGroup,this.props.idStudent).then(response => {
+            this.peticionGetGruposTeacher(this.state.currentUser.id);
+            this.setState({groupKickSelect: "-1"});
         }).catch(error => {
              console.log(error.message);
         })
@@ -175,6 +184,18 @@ class ProfileInfo extends Component {
 
         if(this.state.groupSelect === "-1"){
             botonInvitaGrupo= <div><button disabled text='Invitar a grupo' onClick={() => this.inviteToGroup(this.state.groupSelect)}>Invitar a grupo</button></div>;
+            invitaGrupo = 
+            <div>
+                <label for="groupSelect">Invitar a un grupo:</label>
+                <select name="groupSelect" id="groupSelect" onChange={this.handleChangeGroupSelect}>
+                    <option selected value= "-1" selected>Elija un grupo</option>
+                    {this.state.finalGroupData.map(group => {
+                        return (
+                                <option value={group.id}>{group.nombre}</option>
+                        )
+                    })}
+                </select> 
+            </div>;
         }
 
         let echaGrupo = 
@@ -193,6 +214,18 @@ class ProfileInfo extends Component {
 
         if(this.state.groupKickSelect === "-1"){
             botonEchaGrupo= <div><button disabled text='Expulsar del grupo' onClick={() => this.kickFromGroup(this.state.groupKickSelect)}>Expulsar del grupo</button></div>;
+            echaGrupo = 
+                <div>
+                    <label for="groupKickSelect">Expulsar de un grupo:</label>
+                    <select name="groupKickSelect" id="groupKickSelect" onChange={this.handleChangeGroupKickSelect}>
+                        <option selected value= "-1" >Elija un grupo</option>
+                        {this.state.finalGroupKickData.map(group => {
+                            return (
+                                    <option value={group.id}>{group.nombre}</option>
+                            )
+                        })}
+                    </select> 
+                </div>;
         }
 
         if(this.state.data.activo === 0)
@@ -215,6 +248,15 @@ class ProfileInfo extends Component {
             botonEchaGrupo = <nav></nav>;
         }
 
+        let fotoSource = "";
+        let imagenUser = <div></div>
+
+        if(this.state.data.foto != undefined)
+        {
+            fotoSource = "data:image/png;base64," + btoa(String.fromCharCode.apply(null, this.state.data.foto.data));
+            imagenUser = <img src={fotoSource} alt="" style={{width: '100px'}}  ></img>
+        }
+
 
         return (
             <>
@@ -223,7 +265,8 @@ class ProfileInfo extends Component {
                 <div>
                 
                     {cartel}
-                
+
+                    {imagenUser}
 
                     {contenido}
 
