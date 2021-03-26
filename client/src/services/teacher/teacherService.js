@@ -3,13 +3,82 @@ import authHeader from '../authenticity/auth-header';
 
 class TeacherService {
 
+
     /*Obtiene los  grupos del profesor */
     getGroups(idTeacher) {
-        return axios.post("/teacher/getGroups", { idTeacher: idTeacher }, {
+        console.log(idTeacher);
+        return axios.post("/teacher/groups", { idTeacher: idTeacher }, {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
+            console.log(response);
             return response.data;
+            console.log(response.data);
         })
+    }
+
+    getProfile(idStudent) {
+           
+        return axios.get("/teacher/getProfile", { params: { idUser: idStudent} },{ headers: {"Authorization" : `Bearer ${authHeader()}`}})
+        .then(response => {
+            return response.data;
+        }).catch(error => {
+            console.log(error.message);
+        })
+    }
+
+    getGroupsStudent(idStudent) {
+        
+        return axios.get("/teacher/getStudentGroups", { params: { idEstudiante: idStudent} },{ headers: {"Authorization" : `Bearer ${authHeader()}`}})
+        .then( response => {
+            return response.data;
+        }).catch(error => {
+            console.log(error.message);
+        })
+
+    }
+
+    getScriptsByStudent(idStudent) {
+      
+        return axios.get("/teacher/getScriptsByStudent", { params: { id:idStudent} },{ headers: {"Authorization" : `Bearer ${authHeader()}`}})
+        .then(response => {
+             return response.data;
+        }).catch(error => {
+            console.log(error.message);
+        })
+    }
+
+
+    searchStudent(searchStudent, searchType) {
+
+        return axios.post("/teacher/searchStudent", { searchStudent: searchStudent, type :searchType},{ headers: {"Authorization" : `Bearer ${authHeader()}`}
+        })
+        .then(response => {
+            return response.data;
+        }).catch(error => {
+            console.log(error.message);
+        })
+
+    }
+
+    acceptApplicantStudent(idApplicant) {
+      
+        return axios.get("/user/acceptAplplicant", { params: { idUser: idApplicant } }, { headers: {"Authorization" : `Bearer ${authHeader()}`}})
+          .then(response => {
+             return response.data;
+       }).catch(error => {
+           console.log(error.message);
+       })
+    }
+
+    inviteToGroup(idGroup, idStudent) {
+
+        return axios.post("/teacher/inviteStudentToGroup", { grupo: idGroup, idEstudiante: idStudent},{ headers: {"Authorization" : `Bearer ${authHeader()}`}})
+            .then(response => {
+                return response.data;
+            }).catch(error => {
+                console.log(error.message);
+            })
+
     }
 
     /*Obtiene todas las categorias de los desafios */
@@ -41,15 +110,6 @@ class TeacherService {
         })
     }
 
-    // /*Crea desafio del profesor */
-    // createChallenge(form) {
-    //     return axios.post("/teacher/createChallenge", { form: form }, {
-    //         headers: { "Authorization": `Bearer ${authHeader()}` }
-    //     }).then(response => {
-    //         return response;
-    //     })
-    // }
-
 
     /*Crea desafio del profesor */
     createChallenge(idGroup, title, description, type, category, qualification, endDate) {
@@ -60,14 +120,6 @@ class TeacherService {
         })
     }
 
-    // /*Edita el desafio del profesor*/
-    // editChallenge(form) {
-    //     return axios.post("/teacher/editChallenge", { params: { form: form } }, {
-    //         headers: { "Authorization": `Bearer ${authHeader()}` }
-    //     }).then(response => {
-    //         return response.data;
-    //     })
-    // }
 
     /*Edita el desafio del profesor*/
     editChallenge(idChallenge, idGroup, title, description, type, category, qualification, endDate) {
@@ -92,33 +144,15 @@ class TeacherService {
             })
     }
 
-    // /*Envia los archivos multimedia del profesor*/
-    // sendMultimedia(file, idTeacher, idChallenge, path) {
-
-    //     const form = new FormData();
-    //     form.append("file", file);
-    //     form.append("idTeacher", idTeacher);
-    //     form.append("idChallenge", idChallenge);
-    //     form.append("path", path);
-
-    //     return axios.post("/teacher/sendMultimedia", form, { params: { idUser: idTeacher,idFolder:idChallenge } }, {
-    //         headers: { "Authorization": `Bearer ${authHeader()}` }
-    //     }).then(response => {
-    //         return response.data;
-    //     }).catch(error => {
-    //         console.log(error.message);
-    //     })
-    // }
-
 
     /*Envia los archivos multimedia del profesor*/
     sendMultimedia(imgCollection, idTeacher, idChallenge) {
-        const form = new FormData();
 
-        for (const key of Object.keys(imgCollection)) {
-            form.append('imgCollection', imgCollection[key])
-        }
-        
+        const form = new FormData();
+        imgCollection.map((row)=>{
+            form.append('imgCollection', row);
+        });
+
         form.append("idTeacher", idTeacher);
         form.append("idChallenge", idChallenge);
 
@@ -126,6 +160,17 @@ class TeacherService {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
             return response.data;
+        }).catch(error => {
+            console.log(error.message);
+        })
+
+    }
+
+    kickFromGroup(idGroup, idStudent) {
+        
+        return axios.post("/teacher/kickStudentFromGroup", { grupo: idGroup, idEstudiante: idStudent},{ headers: {"Authorization" : `Bearer ${authHeader()}`}})
+        .then(response => {
+                return response.data;
         }).catch(error => {
             console.log(error.message);
         })
@@ -151,4 +196,4 @@ class TeacherService {
 
 }
 
-export default new TeacherService();
+export default new TeacherService;

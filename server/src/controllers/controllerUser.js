@@ -109,10 +109,9 @@ function getStudentGroups(req, res) {
 
 //Busca estudiantes según una clave dada.
 function searchStudent(request, response, next){
-    
-    let clave = request.body.clave;
+    let clave ="";
     let tipo = "nombre";
-    
+
     if(request.body.tipo == "email"){
         tipo = "email";
     }
@@ -138,12 +137,12 @@ function searchStudent(request, response, next){
                 error: "No hay estudiantes con los parámetros escogidos."
             });*/
             console.log("No hay estudiantes con los parámetros escogidos.");
-        
         } 
         else 
         {
             response.status(200);
-           response.send(JSON.stringify(studentList));
+            console.log(studentList);
+            response.send(JSON.stringify(studentList));
         }
     });
 

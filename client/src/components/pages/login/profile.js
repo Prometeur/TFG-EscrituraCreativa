@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect }from "react-router-dom";
 import AuthService from "../../../services/authenticity/auth-service";
 
 export default class Profile extends Component {
@@ -15,13 +15,11 @@ export default class Profile extends Component {
   }
 
 
-
   componentDidMount() {
     const currentUser = AuthService.getCurrentUser();
-
+   
     if (!currentUser)
-      this.setState({ redirect: "/home" });
-
+        this.setState({ redirect: "/home" });
     this.setState({ currentUser: currentUser, userReady: true });
   }
 
@@ -36,14 +34,17 @@ export default class Profile extends Component {
     return (
       <div className="container">
         {(this.state.userReady) ?
-          <div>
+            <div>
             <header className="jumbotron">
               <h3>
                 <strong></strong>
-            Profile
-          </h3>
+                Profile
+              </h3>
             </header>
-          </div> : null}
+            <p>
+              <strong>Token:</strong>
+            </p>
+          </div>: null}
       </div>
     );
   }

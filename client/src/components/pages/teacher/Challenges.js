@@ -6,8 +6,11 @@
 import React, { Component } from 'react';
 import TeacherService from '../../../services/teacher/teacherService';
 import moment from 'moment';
-//import CreateChallenge from './CreateChallenge.js';
 import { Link } from "react-router-dom";
+import Table from "react-bootstrap/Table";
+import Button from "react-bootstrap/Button";
+import '../../../styles/styleGeneral.css';
+import Dates from '../../dates/dates.js';
 
 class Challenges extends Component {
 
@@ -42,29 +45,30 @@ class Challenges extends Component {
     componentDidMount() {
         //Obtiene los desafios del grupo seleccionado por el profesor
         TeacherService.getChallenges(this.props.groupSelect)
-        .then(response => {
-            this.setState({ data: response });
-        }).catch(error => {
-            console.log(error.message);
-        })
-        
+            .then(response => {
+                this.setState({ data: response });
+            }).catch(error => {
+                console.log(error.message);
+            })
+
         //Obtiene las categorias del desafio al iniciar
         TeacherService.getCategories()
-        .then(response => {
-            this.setState({ categories: response });
+            .then(response => {
+                this.setState({ categories: response });
+            }).catch(error => {
+                console.log(error.message);
+            })
 
-        }).catch(error => {
-            console.log(error.message);
-        })
     }
 
-      //Obtiene el nombre del desafio/escrito
-      showCollaborative = (challenge) => {
-        if (challenge.colaborativo === 1){
+
+    //Obtiene el nombre del desafio/escrito
+    showCollaborative = (challenge) => {
+        if (challenge.colaborativo === 1) {
             return "individual"
         }
-        else{
-            return "equipo"
+        else {
+            return "colaborativo"
         }
     }
 
@@ -73,24 +77,35 @@ class Challenges extends Component {
         let formatedDate;
         const { categories, data } = this.state;
         return (
-            <div>
-                <div>
-                    <table>
+            <>
+                <div className="table-margin">
+                    <Table striped bordered hover>
                         <thead>
                             <tr>
-                                {/* <th className ="challenge-th">idDesafio</th>
-                                <th className ="challenge-th">idGrupo</th> */}
-                                <th className ="challenge-th">Titulo</th>
-                                <th className ="challenge-th">categoria</th>
-                                <th className ="challenge-th">tipo</th>
-                                <th className ="challenge-th">fecha</th>
-                                <th className ="challenge-th">Hora</th>
-                                {/* <th>activo</th> */}
-                                <th className ="challenge-th">acciones</th>
+                                <th>Titulo</th>
+                                <th>Categoria</th>
+                                <th>Tipo</th>
+                                <th>Fecha</th>
+                                <th>Hora</th>
+
                             </tr>
                         </thead>
                         <tbody>
+                            {/* {data.map((challenge) => (
+                                <tr key={challenge.id}>
+                                    <td>{challenge.titulo}</td>
+                                    {categories.filter(category => category.id === challenge.idCategoria).map((item, index) =>
+                                        <td>{item.nombre}</td>
+                                    )}
+                                    <td>{challenge.colaborativo}</td>
+                                    <td>{formatedDate = moment(challenge.fechaFin).format('DD/MM/YYYY')}</td>
+                                    <td>{formatedDate = moment(challenge.fechaFin).format('LT')}</td>
+                                    <td>{challenge.activo}</td>
 
+                                    <td><Link to={`/teacher/groups/${this.props.groupSelect}/editChallenge/${challenge.id}`}><Button variant="outline-primary" size="sm">Editar</Button></Link></td>
+                                    <td><Link to={`/teacher/groups/${this.props.groupSelect}/editChallenge/${challenge.id}`}><Button variant="outline-primary" size="sm">Eliminar</Button></Link></td>
+                                </tr>
+                            ))} */}
                             {data.filter(challenge => challenge.activo === 1).map((challenge, index) =>
                                 <tr key={challenge.id}>
                                     {/* <td className ="challenge-td">{challenge.id}</td>
@@ -103,15 +118,14 @@ class Challenges extends Component {
                                     <td className ="challenge-td">{formatedDate = moment(challenge.fechaFin).format('DD/MM/YYYY')}</td>
                                     <td className ="challenge-td">{formatedDate = moment(challenge.fechaFin).format('LT')}</td>
                                     {/* <td>{challenge.activo}</td> */}
-                                    <td className ="challenge-td"><Link to={`/teacher/editChallenge/${this.props.groupSelect}/${challenge.id}`}><button >Editar</button></Link></td>
-                                    <td className ="challenge-td"><button onClick={() => this.deleteChallenge(challenge)}>Eliminar</button></td>
+                                    <td ><Link to={`/teacher/editChallenge/${this.props.groupSelect}/${challenge.id}`}><Button variant="outline-primary" size="sm">Editar</Button></Link></td>
+                                    <td ><Button variant="outline-primary" size="sm" onClick={() => this.deleteChallenge(challenge)}>Eliminar</Button></td>
                                 </tr>
                             )}
                         </tbody>
-                    </table>
+                    </Table>
                 </div>
-                <td><Link to={`/teacher/createChallenge/${this.props.groupSelect}`}><button >Crear Desafio</button></Link></td>
-            </div>
+            </>
         );
     }
 }

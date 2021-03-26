@@ -7,6 +7,11 @@ import DropdownItem from 'react-bootstrap/DropdownItem';
 import DropdownToggle from 'react-bootstrap/DropdownToggle';
 import FormControl from 'react-bootstrap/FormControl';
 import Challenges from './Challenges.js';
+import Writings from './Writings.js';
+import '../../../styles/styleGeneral.css';
+import Card from 'react-bootstrap/Card';
+import Icon from '@material-ui/core/Icon';
+import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
     <a
@@ -18,7 +23,7 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
       }}
     >
       {children}
-      &#x25bc;
+      { <Icon><ExpandMoreRoundedIcon></ExpandMoreRoundedIcon></Icon>}
     </a>
   ));
 
@@ -65,11 +70,13 @@ class GroupStudent extends Component {
     }
   
     componentDidMount() {
+
         const dataUser = AuthUser.getCurrentUser();
         this.setState({currentUser:dataUser.id});
 
         /**Obtiene todos los grupos del estudiante */
         StudentService.getGroups(dataUser.id).then( response => {
+
              this.setState({dataGroup:response});
          })
      }
@@ -78,25 +85,34 @@ class GroupStudent extends Component {
       this.setState({groupSelect:groupId});
     }
 
-     render() {
-        const {dataGroup,groupSelect}= this.state;
-         return (
-            <div>
-               <Dropdown>
-                     <DropdownToggle as={CustomToggle} id="dropdown-custom-components">
-                         Selecciona grupo
-                     </DropdownToggle>
-                     <DropdownMenu as={CustomMenu}>
-                         {dataGroup.map((row)=>(
-                           
-                             <DropdownItem eventKey={row.idGrupo} onClick= {() => this.handleSelect(row.idGrupo)}>{row.nombre}</DropdownItem>
-                         ))}  
-                     </DropdownMenu>
-              </Dropdown>
 
-              <Challenges key={groupSelect} groupSelect={groupSelect} />
-              {/* <Writings key={groupSelect}  idUser={currentUser} groupSelect={groupSelect} />      */}
+     render() {
+    
+        const {dataGroup, currentUser,groupSelect}= this.state;
+         return (
+            <div className="container">
+               <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+               <Card className="card-long">
+                 <Card.Body>
+                 <div className="row">
+                    <Dropdown>
+                          <DropdownToggle as={CustomToggle} id="dropdown-custom-components">
+                              Selecciona grupo
+                          </DropdownToggle>
+                          <DropdownMenu as={CustomMenu}>
+                              {dataGroup.map((row)=>(
+                                  <DropdownItem eventKey={row.idGrupo} onClick= {() => this.handleSelect(row.idGrupo)}>{row.nombre}</DropdownItem>
+                              ))}  
+                          </DropdownMenu>
+                    </Dropdown>
+                    </div>
+                    <div className="row">
+                     <Challenges key={groupSelect} groupSelect={groupSelect} />
+                    </div>
+                </Card.Body>
+              </Card>     
             </div>
+
          );
      }
 

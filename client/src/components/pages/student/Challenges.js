@@ -8,7 +8,9 @@ import StudentService from '../../../services/student/student-service.js';
 import moment from 'moment';
 //import CreateChallenge from './CreateChallenge.js';
 import { Link } from "react-router-dom";
-
+import Table from "react-bootstrap/Table";
+import Button from "react-bootstrap/Button";
+import '../../../styles/styleGeneral.css';
 /**Datos del usuario */
 import AuthUser from '../../../services/authenticity/auth-service.js';
 
@@ -24,6 +26,7 @@ class Challenges extends Component {
     }
 
     componentDidMount() {
+
         /**Obtiene los desafios del estudiante segun su grupo */
         StudentService.getChallenges(this.props.groupSelect).then(response => {
             this.setState({ data: response });
@@ -31,13 +34,15 @@ class Challenges extends Component {
             console.log(error.message);
         })
 
-        /**Obtiene los escritos del estudiante segun su grupo */
+        /**Obtiene los desafios del estudiante segun su grupo */
         StudentService.getWritings(AuthUser.getCurrentUser().id, this.props.groupSelect).then(response => {
             this.setState({ dataWriting: response });
         }).catch(error => {
             console.log(error.message);
         })
+
     }
+
 
     prueba = (item,p) => {
 
@@ -63,8 +68,8 @@ class Challenges extends Component {
         let n = false;
         let idWriting = '';
         return (
-            <div>
-                <table>
+            <div className="table-margin">
+                <Table striped bordered hover >
                     <thead>
                         <tr>
                             {/* <th className ="challenge-th">idDesafio</th> */}
@@ -96,16 +101,16 @@ class Challenges extends Component {
                                         n=true;
                                         e=false;
                                         idWriting=item.id;
-                                    } 
+                                    }
                                 )}
 
-                                <td className ="challenge-td"><Link to={`/student/writing/${this.props.groupSelect}/${challenge.id}`}><button disabled={n}>Nuevo Escrito</button></Link></td>
+                                <td className ="challenge-td"><Link to={`/student/writing/${this.props.groupSelect}/${challenge.id}`}><Button variant="outline-primary" disabled={n}>Nuevo Escrito</Button></Link></td>
                                 {/* <td><Link to={`/student/editWriting/${this.props.groupSelect}/${challenge.id}`}><button disabled={e}>Editar Escrito</button></Link></td> */}
-                                <td className ="challenge-td"><Link to={`/student/editWriting/${this.props.groupSelect}/${challenge.id}/${idWriting}`}><button disabled={e}>Editar Escrito</button></Link></td>
+                                <td className ="challenge-td"><Link to={`/student/editWriting/${this.props.groupSelect}/${challenge.id}/${idWriting}`}><Button variant="outline-primary" disabled={e}>Editar Escrito</Button></Link></td>
                             </tr>
                         ))}
                     </tbody>
-                </table>
+                </Table>
             </div>
         );
     }

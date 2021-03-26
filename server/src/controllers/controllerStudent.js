@@ -1,13 +1,11 @@
 const modelo = require("../models/modelStudent");
-
 const fs = require('fs')
-
 //importar la conexion
 const mysql = require("mysql");
 const config = require('../db/config');
 const pool = mysql.createPool(config.database);
-
 const modelStudent = new modelo(pool);
+
 
 /*Obtiene los grupos del estudiante*/
 function getGroups(req, res) {
@@ -60,6 +58,7 @@ function sendWriting(req, res) {
     const idWriter = req.body.idWriter;
     const texto = req.body.escrito;
     const type = req.body.type;
+    console.log(req.body.idGroup);
     modelStudent.sendWriting(idGroup, desafio, idWriter, texto, type, function (err, result) {
         if (err) {
             console.log(err.message);
@@ -134,21 +133,24 @@ function getMultimediaChallenge(req, res) {
 
 /*Envia los ficheros multimedia del escrito del estudiante*/
 function sendMultimedia(req, res) {
+
     const idWriter = req.body.idWriter;
     const idChallenge = req.body.idChallenge;
     const reqFiles = [];
 
+    console.log(req.files);
     for (var i = 0; i < req.files.length; i++) {
         var str = req.files[i].mimetype;
+        console.log(req.files[i].mimetype);
         var type = str.split("/");
         //dir->idWriter/idChallenge/tipo/
         const dir = idWriter + "/" + idChallenge + "/" + type[0] + "/";
         let path = "http://localhost:3001/multimedia/" + dir + req.files[i].filename;
         reqFiles.push([idWriter,idChallenge,path]) 
     }
-    console.log(reqFiles);
 
-    modelStudent.sendMultimedia(reqFiles, function (err, result) {
+
+   modelStudent.sendMultimedia(reqFiles, function (err, result) {
         if (err) {
             console.log(err.message);
         }

@@ -55,8 +55,7 @@ function signUp(request, response) {
 function signIn(request, response) {
  
   let username = request.body.username;
-  
- 
+
   model_user.findOneEmail(username, function(err, rel) {
     if(err)
     {
@@ -65,6 +64,7 @@ function signIn(request, response) {
     else
     {
       if(!rel)
+
       {   
         // console.log("ERROR---> user not found");
         response.status(404).send({ message: "User Not found." });

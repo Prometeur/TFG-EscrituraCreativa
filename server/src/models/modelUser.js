@@ -7,6 +7,7 @@ class modelUser {
 
     /*Obtiene todos los grupos del profesor*/
     getGroups(group, callback) {
+
         this.pool.getConnection(function (err, connection) {
             if (err) {
                 callback(new Error("No se puede conectar a la base de datos."))
@@ -28,6 +29,7 @@ class modelUser {
 
     /*Obtiene todos los grupos del alumno*/
     getStudentGroups(group, callback) {
+
         this.pool.getConnection(function (err, connection) {
             if (err) {
                 callback(new Error("No se puede conectar a la base de datos."))
@@ -49,11 +51,14 @@ class modelUser {
 
     //Busca todos los estudiantes que contengan "clave" bien en su nombre o en su correo. Esta elección está pensada para elegirse desde un combobox.
     searchStudent(clave, tipo, callback) {
+        console.log(clave);
+        console.log(tipo);
         this.pool.getConnection(function (err, connection) {
             if (err) {
                 callback(new Error("No se puede conectar a la base de datos."))
             } else {
                 let consulta = 'SELECT id, nombre, apellidos, foto, correo FROM usuario WHERE (nombre LIKE ? OR apellidos LIKE ?)AND rol = "S" AND activo = 1;';
+
                 if (tipo == "email") {
                     consulta = 'SELECT id, nombre, apellidos, foto, correo FROM usuario WHERE correo LIKE ? AND rol = "S" AND activo = 1;';
                 }
@@ -64,6 +69,7 @@ class modelUser {
                     if (err) {
                         callback(new Error("Error al buscar esudiantes con " + tipo + " similar a " + clave + "."));
                     } else {
+                        console.log(res);
                         callback(null, res);
                     }
                 })
@@ -88,6 +94,7 @@ class modelUser {
                     if (err) {
                         callback(new Error("Error al buscar solicitudes con " + tipo + " similar a " + clave + "."));
                     } else {
+
                         callback(null, res);
                     }
                 })
@@ -97,6 +104,7 @@ class modelUser {
 
     /*Obtiene los datos de perfil del alumno*/
     acceptApplicant(idUser, callback) {
+
         this.pool.getConnection(function (err, connection) {
             if (err) {
                 callback(new Error("No se puede conectar a la base de datos."))
@@ -138,6 +146,7 @@ class modelUser {
     }
 
     getStudentOfGroup(idGrupo, callback) {
+
         this.pool.getConnection(function (err, connection) {
             if (err) {
                 callback(new Error("No se puede conectar a la base de datos."))
@@ -157,29 +166,10 @@ class modelUser {
         });
     }
 
-    /*Obtiene los datos de perfil del alumno*/
-    getProfile(idUser, callback) {
-        this.pool.getConnection(function (err, connection) {
-            if (err) {
-                callback(new Error("No se puede conectar a la base de datos."))
-            }
-            else {
-                const sql = "SELECT id, nombre, apellidos, foto, correo, activo FROM usuario where id =  ?";
-                const valores = [idUser];
-                connection.query(sql, valores, function (err, res) {
-                    connection.release();
-                    if (err) {
-                        callback(new Error("Error al buscar al usuario."));
-                    } else {
-                        callback(null, res);
-                    }
-                })
-            }
-        });
-    }
 
     /*Obtiene los datos de perfil del alumno*/
     deleteChallenge(id, callback) {
+
         this.pool.getConnection(function (err, connection) {
             if (err) {
                 callback(new Error("No se puede conectar a la base de datos."))

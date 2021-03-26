@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
         //obtengo la ruta -> multimedia/idUser/idfolder/tipo
         const dir=  prueba + req.query.idUser + "/"+ req.query.idFolder +"/"+res[0];
 
-        console.log("----->Carpeta------>", dir);
+        // console.log("----->Carpeta------>", dir);
         //crea la carpeta en la ruta
         fs.mkdirSync(dir, { recursive: true });
         cb(null, dir);
@@ -25,11 +25,4 @@ const storage = multer.diskStorage({
 
 module.exports = storage
 
-// const storage = multer.diskStorage({
-//     destination:path.join(__dirname, '../../public/multimedia'),filename:function(req,file,cb){ 
-//         // console.log("---->1",file.mimetype);
-//         cb(null, file.originalname);//nombre original de la imagen
-//     }
-
-// })
 
