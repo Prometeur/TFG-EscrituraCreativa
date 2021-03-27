@@ -1,22 +1,20 @@
 // Functionality systems
 class modelTeacher {
-
     constructor(pool) {
         this.pool = pool;
     }
 
+    //-------------------------------------------------GROUP------------------------------------------------------------------//
     /*Obtiene todos los grupos del profesor*/
     getGroups(group, callback) {
-        this.pool.getConnection(function(err, connection) {
-            if (err) 
-            {
+        this.pool.getConnection(function (err, connection) {
+            if (err) {
                 callback(new Error("No se puede conectar a la base de datos."))
-            } 
-            else 
-            {
+            }
+            else {
                 const sql = "SELECT * FROM grupo WHERE idprofesor= ? AND activo = 1";
                 const valores = [group];
-                connection.query(sql, valores, function(err, res) {
+                connection.query(sql, valores, function (err, res) {
                     connection.release();
                     if (err) {
                         callback(new Error("Error al buscar los grupos del profesor."));
@@ -27,6 +25,48 @@ class modelTeacher {
             }
         });
     }
+
+    //Busca todos los estudiantes que contengan "clave" bien en su nombre o en su correo. Esta elección está pensada para elegirse desde un combobox.
+    inviteStudentToGroup(grupo, id, callback) {
+        this.pool.getConnection(function (err, connection) {
+            if (err) {
+                callback(new Error("No se puede conectar a la base de datos."))
+            } else {
+                const sql = 'INSERT INTO grupoestudiante (idGrupo,idEstudiante) VALUES (?,?);';
+                const valores = [grupo, id];
+                connection.query(sql, valores, function (err, res) {
+                    connection.release();
+                    if (err) {
+                        callback(new Error("Error al invitar al estudiante al grupo."));
+                    } else {
+                        callback(null, res);
+                    }
+                })
+            }
+        });
+    }
+
+    //Expulsa a un estudiante de un grupo.
+    kickStudentFromGroup(grupo, id, callback) {
+        this.pool.getConnection(function (err, connection) {
+            if (err) {
+                callback(new Error("No se puede conectar a la base de datos."))
+            } else {
+                const sql = 'DELETE FROM grupoestudiante WHERE idGrupo = ? AND idEstudiante = ?;';
+                const valores = [grupo, id];
+                connection.query(sql, valores, function (err, res) {
+                    connection.release();
+                    if (err) {
+                        callback(new Error("Error al expulsar al estudiante del grupo."));
+                    } else {
+                        callback(null, res);
+                    }
+                })
+            }
+        });
+    }
+
+    //-------------------------------------------------CHALLENGE------------------------------------------------------------------//
 
     /*Obtiene todas las categorias de los desafios*/
     getCategories(callback) {
@@ -43,7 +83,7 @@ class modelTeacher {
         });
     }
 
-    /*Obtiene el desafio del profesor segun su grupo*/
+    /*Obtiene el desafio del profesor*/
     getChallenge(idChallenge, callback) {
         const sqlSelect = "SELECT * FROM desafio where id= ?";
 
@@ -78,12 +118,10 @@ class modelTeacher {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }
             else {
-                // console.log("------>Esto deberia estar genial--->",result.insertId);
                 callback(null, result);
             }
         });
     }
-
 
     /*Edita el desafio del profesor*/
     editChallenge(idChallenge, idGroup, title, description, qualification, category, type, date, callback) {
@@ -99,7 +137,6 @@ class modelTeacher {
         });
     }
 
-
     /*Obtiene los ficheros multimedia del desafio del profesor*/
     getMultimedia(idChallenge, callback) {
         const sqlSelect = "SELECT * FROM multimediadesafio where idDesafio=?";
@@ -113,30 +150,8 @@ class modelTeacher {
         });
     }
 
-    // /*Envia los ficheros multimedia del desafio del profesor*/
-    // sendMultimedia(idChallenge, path, callback) {
-    //     const sqlInsert = "INSERT INTO multimediadesafio (idDesafio,ruta) VALUES (?,?)";
-    //     this.pool.query(sqlInsert, [idChallenge, path], (err, result) => {
-    //         if (err) {
-    //             callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
-    //         }
-    //         else {
-    //             callback(null, result);
-    //         }
-    //     });
-    // }
-
     /*Envia los ficheros multimedia del desafio del profesor*/
     sendMultimedia(values, callback) {
-
-        // var pars = [
-        //     ['211', 'hola1'], 
-        //     ['211', 'hola2'], 
-        //     ['211', 'hola3']
-        // ];
-
-        // console.log("por favor funciona--->",pars);
-
         const sqlInsert = "INSERT INTO multimediadesafio (idDesafio,ruta) VALUES ?";
         this.pool.query(sqlInsert, [values], (err, result) => {
             if (err) {
@@ -161,13 +176,12 @@ class modelTeacher {
         });
     }
 
-
-    /*Elimina el fichero multimedia del desafio*/
+    /*Elimina/desactiva desafio*/
     deleteChallenge(idChallenge, callback) {
         const sqlUpdate = "UPDATE desafio SET activo =? WHERE id=?";
 
-       
-        this.pool.query(sqlUpdate, [0,idChallenge], (err, result) => {
+
+        this.pool.query(sqlUpdate, [0, idChallenge], (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }
@@ -176,48 +190,7 @@ class modelTeacher {
             }
         });
     }
-
-    //Busca todos los estudiantes que contengan "clave" bien en su nombre o en su correo. Esta elección está pensada para elegirse desde un combobox.
-    inviteStudentToGroup(grupo, id, callback) {
-        this.pool.getConnection(function (err, connection) {
-            if (err) {
-                callback(new Error("No se puede conectar a la base de datos."))
-            } else {
-                const sql = 'INSERT INTO grupoestudiante (idGrupo,idEstudiante) VALUES (?,?);';
-                const valores = [grupo, id];
-                connection.query(sql, valores, function (err, res) {
-                    connection.release();
-                    if (err) {
-                        callback(new Error("Error al invitar al estudiante al grupo."));
-                    } else {
-                        callback(null, res);
-                    }
-                })
-            }
-        });
-    }
-
-    //Expulsa a un estudiante de un grupo.
-    kickStudentFromGroup(grupo, id, callback) {
-        this.pool.getConnection(function(err, connection) {
-            if (err) {
-                callback(new Error("No se puede conectar a la base de datos."))
-            } else {
-                const sql = 'DELETE FROM grupoestudiante WHERE idGrupo = ? AND idEstudiante = ?;'; 
-                const valores = [grupo, id];
-                connection.query(sql, valores, function(err, res) {
-                    connection.release();
-                    if (err) {
-                        callback(new Error("Error al expulsar al estudiante del grupo."));
-                    } else {
-                        callback(null, res);
-                    }
-                })
-            }
-        });
-    }
-
 }
 
 //Data export
-module.exports = modelTeacher;  
+module.exports = modelTeacher;

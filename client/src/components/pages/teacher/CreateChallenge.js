@@ -183,10 +183,10 @@ class CreateChallenge extends Component {
     onFileChange(e) {
         this.setState({ imgCollection: e.target.files });
 
-        let newFiles = this.state.imgNamesCollection;
-        Array.from(e.target.files).forEach((file) => { newFiles.push(file) });
-        this.setState({ imgNamesCollection: [...newFiles] });
-        console.log(this.state.imgNamesCollection);
+        // let newFiles = this.state.imgNamesCollection;
+        // Array.from(e.target.files).forEach((file) => { newFiles.push(file) });
+        // this.setState({ imgNamesCollection: [...newFiles] });
+        // console.log(this.state.imgNamesCollection);
     }
 
     //Envio del desafio al server
@@ -196,7 +196,7 @@ class CreateChallenge extends Component {
             .then(response => {
                 const idChallenge = response.data;
                 if (this.state.imgCollection.length > 0) {
-                    TeacherService.sendMultimedia(this.state.imgNamesCollection, this.state.form.idTeacher, idChallenge)
+                    TeacherService.sendMultimedia(this.state.imgCollection, this.state.form.idTeacher, idChallenge, this.state.form.type)
                         .then(response => {
                             window.location.href = '/teacher/groups';
                         })
@@ -292,7 +292,7 @@ class CreateChallenge extends Component {
                                     </Col>
                                 </Form.Group>
                             </Form> */}
-                             <div class="form-select" >
+                            <div class="form-select" >
                                 <label className='form-label' > Tipo de Desafío </label>
                                 <select onChange={this.handleSelectionChange} >
                                     <option value="" selected disabled hidden > Seleccionar </option>
@@ -319,7 +319,8 @@ class CreateChallenge extends Component {
                                 />
                             </div>
                         </div>
-                        <div className="row-edit">
+
+                        {/* <div className="row-edit">
                             <div className="form">
                                 {
                                     this.state.imgNamesCollection == 0 ? (
@@ -341,9 +342,15 @@ class CreateChallenge extends Component {
 
                                     )
                                 }
-
                                 <input id="file" type="file" name="imgCollection" onChange={this.onFileChange} multiple />
                                 <label htmlFor="file" className="btn-1">upload file</label>
+                            </div>
+                        </div> */}
+
+                        <div class="row-edit">
+                            <label className='form-label'>Puedes agregar un fichero multimedia si lo deseas (imagen,video o audio): </label>
+                            <div className="form">
+                                <input type="file" name="imgCollection" onChange={this.onFileChange} multiple />
                             </div>
                         </div>
                         <div className="form-select">
@@ -371,7 +378,7 @@ class CreateChallenge extends Component {
                             </Modal.Body>
                             <Modal.Footer>
                                 <Button onClick={() => this.sendChallenge()}>Si</Button>
-                                <Button onClick={() => this.onModal(false)}>No</Button>  
+                                <Button onClick={() => this.onModal(false)}>No</Button>
                             </Modal.Footer>
                         </Modal>
                     </Card.Body>

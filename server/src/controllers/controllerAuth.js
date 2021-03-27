@@ -90,6 +90,7 @@ function signIn(request, response) {
          response.status(200).send({
           id: rel.id,
           username: rel.nombre,
+          surname:rel.apellidos,
           email: rel.correo,
           activo: rel.activo,
           rol: rel.rol,

@@ -82,9 +82,9 @@ input.error {
 }
 
 [type="file"] {
-    height: 0;
-    overflow: hidden;
-    width: 0;
+    /* height: 0; */
+    /* overflow: hidden;
+    width: 0; */
 }
 [type="file"] + label {
     background: #f15d22;
