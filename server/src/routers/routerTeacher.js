@@ -34,16 +34,17 @@ router.get("/getProfile",controller_user.getProfile);
 
 router.get("/acceptApplicant",controller_user.acceptApplicant);
 
+router.post("/groups",controller_teacher.getGroups);
+
 //Invita a un estudiante a un grupo dado.
 router.post("/inviteStudentToGroup", controller_teacher.inviteStudentToGroup);
 
 //Expulsa a un estudiante de un grupo dado.
 router.post("/kickStudentFromGroup", controller_teacher.kickStudentFromGroup);
 
-/*BUsca todos los escritos no colaborativos del usuario */
+/*Busca todos los escritos no colaborativos del usuario */
 router.get("/getScriptsByStudent",controller_user.getScriptsByStudent);
 
-router.post("/groups",controller_teacher.getGroups);
 
 /*Obtiene todas las categorias de los desafios */
 router.get("/getCategories",controller_teacher.getCategories);

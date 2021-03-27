@@ -10,9 +10,15 @@ const storage = multer.diskStorage({
         
         var str = file.mimetype;//
         var res = str.split("/");//
-        //obtengo la ruta -> multimedia/idUser/idfolder/tipo
-        const dir=  prueba + req.query.idUser + "/"+ req.query.idFolder +"/"+res[0];
+        var dir;
+        if(req.query.type==1){
 
+        //obtengo la ruta -> multimedia/idUser/idfolder/tipo
+         dir =  prueba + "users"+"/"+ req.query.id + "/"+ req.query.idFolder +"/"+res[0];
+        }
+        else if (req.query.type==2) {
+            dir=  prueba + "teams"+"/"+ req.query.id + "/"+ req.query.idFolder +"/"+res[0];
+        }
         // console.log("----->Carpeta------>", dir);
         //crea la carpeta en la ruta
         fs.mkdirSync(dir, { recursive: true });
@@ -25,4 +31,11 @@ const storage = multer.diskStorage({
 
 module.exports = storage
 
+// const storage = multer.diskStorage({
+//     destination:path.join(__dirname, '../../public/multimedia'),filename:function(req,file,cb){ 
+//         // console.log("---->1",file.mimetype);
+//         cb(null, file.originalname);//nombre original de la imagen
+//     }
+
+// })
 

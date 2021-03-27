@@ -4,13 +4,20 @@
 *  que tiene el grupo seleccionado por el profesor  
 */
 import React, { Component } from 'react';
+
+
 import TeacherService from '../../../services/teacher/teacherService';
 import moment from 'moment';
 import { Link } from "react-router-dom";
+
+// Componentes de estilos
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
+
+// Estilos
 import '../../../styles/styleGeneral.css';
-import Dates from '../../dates/dates.js';
+
+
 
 class Challenges extends Component {
 

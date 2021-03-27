@@ -43,7 +43,7 @@ class EditChallenge extends Component {
         this.onFileChange = this.onFileChange.bind(this);
         this.state = {
             imgCollection: [],
-            imgNamesCollection: [],
+            // imgNamesCollection: [],
             editorState: EditorState.createEmpty(),
             contentState: null,
             data: [], //array de multimedia del desafio
@@ -176,12 +176,10 @@ class EditChallenge extends Component {
         });
     }
 
-
     //redireccion a una pagina
     changeView = () => {
         window.location.href = "/teacher/groups";
     }
-
 
     qualificationSelection = event => {
         this.setState({
@@ -228,7 +226,7 @@ class EditChallenge extends Component {
         TeacherService.editChallenge(this.state.form.idChallenge, this.state.form.idGroup, this.state.form.title, this.state.form.description, this.state.form.type, this.state.form.category, this.state.form.qualification, this.state.form.date)
             .then(response => {
                 if (this.state.imgCollection.length > 0) {
-                    TeacherService.sendMultimedia(this.state.imgNamesCollection, this.state.form.idTeacher, this.props.match.params.idChallenge)
+                    TeacherService.sendMultimedia(this.state.imgCollection, this.state.form.idTeacher, this.props.match.params.idChallenge, this.state.form.type)
                         .then(response => {
                             window.location.href = '/teacher/groups';
                         })
@@ -248,7 +246,7 @@ class EditChallenge extends Component {
     deleteFile = (challenge) => {
         var str = challenge.ruta;
         var res = str.split("/");
-        var opcion = window.confirm("Estás Seguro que deseas Eliminar " + res[7]);
+        var opcion = window.confirm("Estás Seguro que deseas Eliminar " + res[8]);
         if (opcion === true) {
             var contador = 0;
             var arreglo = this.state.data;
@@ -277,16 +275,17 @@ class EditChallenge extends Component {
 
     onFileChange(e) {
         this.setState({ imgCollection: e.target.files });
-        let newFiles = this.state.imgNamesCollection;
-        Array.from(e.target.files).forEach((file) => { newFiles.push(file) });
-        this.setState({ imgNamesCollection: [...newFiles] });
+
+        // let newFiles = this.state.imgNamesCollection;
+        // Array.from(e.target.files).forEach((file) => { newFiles.push(file) });
+        // this.setState({ imgNamesCollection: [...newFiles] });
     }
 
     //Obtiene el nombre del desafio/escrito
     showTitle = (challenge) => {
         var str = challenge.ruta;
         var res = str.split("/");
-        return res[7];
+        return res[8];
     }
 
     editorChange = () => {
@@ -417,7 +416,8 @@ class EditChallenge extends Component {
                                 </tbody>
                             </table>
                         </div>
-                        <div className="row-edit">
+
+                        {/* <div className="row-edit">
                             <div className="form">
                                 {
                                     this.state.imgNamesCollection == 0 ? (
@@ -443,7 +443,15 @@ class EditChallenge extends Component {
                                 <input id="file" type="file" name="imgCollection" onChange={this.onFileChange} multiple />
                                 <label htmlFor="file" className="btn-1">upload file</label>
                             </div>
+                        </div> */}
+
+                        <div class="row-edit">
+                            <label className='form-label'>Puedes agregar un fichero multimedia si lo deseas (imagen,video o audio): </label>
+                            <div className="form">
+                                <input type="file" name="imgCollection" onChange={this.onFileChange} multiple />
+                            </div>
                         </div>
+
                         <div className="form-select">
                             <Button onClick={() => this.onModal(true)}>Guardar</Button>
                         </div>
