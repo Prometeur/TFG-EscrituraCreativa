@@ -12,6 +12,8 @@ import Register from './components/pages/login/register.js';
 import Profile from './components/pages/login/profile.js';
 import TeacherBoard from '../src/components/pages/teacher/TeacherBoard.js';
 import StudentBoard from '../src/components/pages/student/StudentBoard.js';
+import EditProfile from './components/pages/login/EditProfile.js';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/styleGeneral.css';
 import './styles/styleNavBar.css';
@@ -124,6 +126,7 @@ class App extends Component {
                     <Route exact path='/register' component={Register} />
                     <Route exact path='/profile' component={Profile} />
                     <Route exact path='/admin' component={Register} />
+                    <Route exact path='/editProfile' component={EditProfile} />
                     <Route exact path='/teacher' component={TeacherBoard} />
                     <Route exact path='/student' component={StudentBoard} />
                   </Switch>

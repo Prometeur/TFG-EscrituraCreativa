@@ -58,7 +58,6 @@ input[type=text]:focus
 .card-register {
     width: 26rem;
     height: 24rem;
-
 }
 
 .card-login {
@@ -67,3 +66,9 @@ input[type=text]:focus
     right: 24rem;
     top: 2rem;
 }
+
+.card-profile {
+  width: 100%;
+  height: 100%;
+}
+
