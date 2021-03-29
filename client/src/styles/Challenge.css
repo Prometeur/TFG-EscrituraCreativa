@@ -29,10 +29,12 @@
 }
 
 .form-select {
-    margin: 0.6rem 0;
+    margin: 0.6rem 2rem;
     display: inline-grid;
     padding: 0 0.9rem
 }
+
+
 
 .image p {
 
