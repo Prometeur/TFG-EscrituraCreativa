@@ -144,26 +144,26 @@ class TeacherService {
             })
     }
 
-
     /*Envia los archivos multimedia del profesor*/
-    sendMultimedia(imgCollection, idTeacher, idChallenge) {
-
+    sendMultimedia(imgCollection, idTeacher, idChallenge,type) {
         const form = new FormData();
-        imgCollection.map((row)=>{
-            form.append('imgCollection', row);
-        });
+        debugger;
 
+        for (const key of Object.keys(imgCollection)) {
+            form.append('imgCollection', imgCollection[key])
+        }
+        
         form.append("idTeacher", idTeacher);
         form.append("idChallenge", idChallenge);
 
-        return axios.post("/teacher/sendMultimedia", form, { params: { idUser: idTeacher, idFolder: idChallenge } }, {
+
+        return axios.post("/teacher/sendMultimedia", form, { params: { id: idTeacher, idFolder: idChallenge,type:1 } }, {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
             return response.data;
         }).catch(error => {
             console.log(error.message);
         })
-
     }
 
     kickFromGroup(idGroup, idStudent) {

@@ -1,86 +1,28 @@
-import React, { Component } from 'react';
-import StudentService from '../../../services/student/student-service.js';
+import React,{ useState } from "react";
 
 
-class Writings extends Component {
-   
-   constructor(props){
-       super(props);
+import TabsWriting from "./TabsWriting";
 
-       this.state = {
-            data: [],
-      }
-
-   }
+import WritingsStudent from "./WritingsStudent";
+import WritingsTeam from "./WritingsTeam";
 
 
-    /*Si vuelvo a la pagina de login, comprueba si el usuario ya inicio sesion anteriomente
-    si es el caso lo redirige a la home segun su rol*/
-    componentDidMount() {
 
-        this.peticionGet();
+function Team(props) {
+    const [count, setCount] = useState(0);
 
-    }
-
-   
-    /*Se hacen peticiones al servidor para que me devuelva la tabla de escritos del estudiante,
-     me muestra todos los escritos del grupo seleccioando por el estudiante*/
-    peticionGet() {
+    const data = [
+            { id: 1, name: "Escritos", content: () => <WritingsStudent key={props.groupSelect} groupSelect={props.groupSelect}/>, state: "active" },
+             { id: 2, name: "Escritos en equipo", content: () => <WritingsTeam key={props.groupSelect} groupSelect={props.groupSelect} />, state: "inactive" },
+    ];
         
-        StudentService.getWritings(this.props.idUser, this.props.groupSelect)
-        .then( response =>
-        {
-            this.setState({data:response});
-        })
-    
-    }
+    return (
+        <div>
+            <TabsWriting data={data} />
+        </div>
+    );
 
-    /*Dibuja la pagina  */
-    render() {
-
-        let {data} = this.state;
-        return (
-            <>
-                <div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Desafío</th>
-                                <th>Escritor</th>
-                                <th>Escrito</th>
-                                <th>Puntuación</th>
-                                <th>Fecha Creación</th>
-                                <th>Activo</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            {data.map((writing) => (
-                                    <tr>
-                                        <td>{writing.idDesafio}</td>
-                                        <td>{writing.idEscritor}</td>
-                                        <td>{writing.nombre}</td>
-                                        <td>{writing.puntuacion}</td>
-                                        <td>{writing.fecha}</td>
-                                        <td>{writing.activo}</td>
-                                        <td>
-                                            <button>Ver</button>
-                                            <button>Editar</button>
-                                            <button>Eliminar</button>
-                                        </td>
-                                    </tr>
-                            ))}
-                        </tbody>
-                    </table>
-
-                    <button>Cancelar</button>
-
-                </div>
-            </>
-        );
-    }
 
 }
 
-export default Writings;
+export default Team;

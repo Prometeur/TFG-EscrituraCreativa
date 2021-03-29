@@ -6,6 +6,8 @@
 import React,{ Component, useState } from 'react';
 import TeacherService from '../../../services/teacher/teacherService.js';
 import AuthUser from '../../../services/authenticity/auth-service.js';
+
+//Componentes de Estilos
 import SplitButtom from 'react-bootstrap/Spinner';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownMenu from 'react-bootstrap/DropdownMenu';
