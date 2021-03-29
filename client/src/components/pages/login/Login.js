@@ -4,6 +4,7 @@
 *    
 */
 import React, { Component } from 'react';
+import { Redirect, Link }from "react-router-dom";
 import AuthService  from "../../../services/authenticity/auth-service";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
@@ -102,7 +103,7 @@ class Login extends Component {
       return (
           <>
           <div className="container">
-            <Card className="card-login">
+            <Card bsPrefix="card card-login">
               <Card.Body>
                   <Card.Title>Sign In</Card.Title>
                   <Form  
@@ -139,10 +140,14 @@ class Login extends Component {
                             validations={[required]}
                         />
                       </div>
-
+                       <Link to={""}>¿Has olvidado tu contraseña?</Link>
                       <div className="section-column">
-                        <button className="btn btn-white btn-animation-1" > Login </button>
+                        <button className="button button5" > Login </button>
                       </div>
+                       <p className="p-login">
+                           Al crear la cuenta, aceptas nuestros términos y condiciones.
+                           Por favor, lee nuestra política de privacidad y nuestra política de cookies.
+                       </p>
                     <CheckButton
                       text='Log In'
                       style={{ display: "none" }}

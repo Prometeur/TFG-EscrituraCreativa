@@ -5,6 +5,7 @@ import '../../../styles/styleGeneral.css';
 import '../../../styles/styleCard.css';
 import Card from 'react-bootstrap/Card';
 import Figure from 'react-bootstrap/Figure';
+import Button from 'react-bootstrap/Button';
 
 
 export default class Profile extends Component {
@@ -56,7 +57,7 @@ export default class Profile extends Component {
                         <Figure.Image
                             bsPrefix="figure"
                             alt="171x180"
-                            src="p2.png"
+                            src="fotoperfil.jpg"
                         />
                         <h5>
                             {currentUser.username}
@@ -65,8 +66,16 @@ export default class Profile extends Component {
                             {role}
                         </h6>
                     </Figure>
-                    <img src="gear.png" alt=""/>
-                    <Link to={"/editProfile"}>Edit profile</Link>
+                    <ul className="flex-container wrap">
+                        <li className="item-button-icon">
+                            <img src="gear.png" alt=""/>
+                        </li>
+                        <li className="item-button-icon">
+                            <Link to={"/editProfile"}>
+                                <Button size="sm" bsPrefix="btn" variant="outline-secondary">Editar</Button>
+                            </Link>
+                        </li>
+                    </ul>
                 </div>
                 <div className="container">
                     <Card className="card-profile">
