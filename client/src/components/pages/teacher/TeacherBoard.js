@@ -10,7 +10,9 @@ function TeacherBoard() {
 
      /*Dibuja la pagina  del profesor */
      return (
+       <>
         <RoutesTeacher />
+       </>
      );
 }
 
