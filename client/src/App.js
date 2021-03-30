@@ -12,6 +12,9 @@ import Register from './components/pages/login/register.js';
 import Profile from './components/pages/login/profile.js';
 import TeacherBoard from '../src/components/pages/teacher/TeacherBoard.js';
 import StudentBoard from '../src/components/pages/student/StudentBoard.js';
+import EditProfile from './components/pages/login/EditProfile.js';
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/styleGeneral.css';
 import './styles/styleNavBar.css';
@@ -35,6 +38,7 @@ class App extends Component {
     };
   }
 
+
   componentDidMount() {
     //Take info about server
     const user = AuthService.getCurrentUser();
@@ -49,93 +53,60 @@ class App extends Component {
     }
   }
 
+
   logOut() {
     AuthService.logout();
   }
 
   render() {
     const { currentUser, showStudent, showTeacher, showAdmin } = this.state;
+
     return (
       <Router>
-        <div className="full-wrapper">
+        <div className= "full-wrapper">
           <header>
-            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald&family=Oswald&display=swap"></link>
-            <div className="menuBar">
-              <nav>
-                <ul>
-                  {showAdmin && (
-                    <li>
-                      <Link to={"/admin"} >
-                        Dashboard
-                          </Link>
-                    </li>
-                  )}
-                  {showStudent && (
-                    <li>
-                      <Link to={"/student"}>
-                        Dashboard
-                          </Link>
-                    </li>
-                  )}
-                  {showTeacher && (
-                    <li>
-                      <Link to={"/teacher"}>
-                        Dashboard
-                          </Link>
-                    </li>
-                  )}
-
-                  {currentUser ? (
-                    <>
-                      <li>
-                        <Link to={"/profile"}>
-                          {currentUser.username}
-                        </Link>
-                      </li>
-                      <li><Link to={"/student/messenger"} >Mensajeria</Link></li>
-                      <li>
-                        <a href="/login" onClick={this.logOut}>
-                          Cerrar sesión
-                              </a>
-                      </li>
-                    </>
-                  ) : (
-                    <>
-                      <li>
-                        <Link to={"/home"}>
-                          Home
-                                  </Link>
-                      </li>
-                      <li>
-                        <Link to={"/login"} >
-                          Iniciar
-                                  </Link>
-                      </li>
-                      <li>
-                        <Link to={"/register"}>
-                          Registarse
-                                  </Link>
-                      </li>
-                    </>
-                  )}
-                </ul>
-              </nav>
-            </div>
-          </header>
-          <Switch>
-            <Route exact path={["/", "/home"]} component={Home} />
-            <Route exact path='/login' component={Login} />
-            <Route exact path='/register' component={Register} />
-            <Route exact path='/profile' component={Profile} />
-            <Route exact path='/admin' component={Register} />
-
-            <Route exact path="/student/messenger" component={Messenger} />
-            <Route exact path="/student/message/:idMessage" component={Message} />
-
-            <Route exact path='/teacher' component={TeacherBoard} />
-            <Route exact path='/student' component={StudentBoard} />
-          </Switch>
-        </div>
+              <Navbar collapseOnSelect expand="lg" >
+                <Navbar.Brand href="/home">Creativa</Navbar.Brand>
+                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                <Navbar.Collapse id="responsive-navbar-nav">
+                    {currentUser ? (
+                        <Nav className="mr-auto">
+                          {showAdmin && (
+                              <Nav.Link href="/admin">Dashboard</Nav.Link>
+                          )}
+                          {showStudent && (
+                              <Nav.Link href="/student">Dashboard</Nav.Link>
+                          )}
+                          {showTeacher && (
+                              <Nav.Link href="/teacher">Dashboard</Nav.Link>
+                          )}
+                          <Nav.Link href="/profile"> {currentUser.username}</Nav.Link>
+                          <Nav.Link href="/student/messenger"> Mensajeria</Nav.Link>
+                          <Nav.Link href="/login" onClick={this.logOut}>Cerrar sesión</Nav.Link>
+                        </Nav>
+                      ) : (
+                      <Nav className="mr-auto">
+                        <Nav.Link href="/login">Iniciar</Nav.Link>
+                        <Nav.Link href="/register">Registar</Nav.Link>
+                      </Nav>
+                    )}
+                 </Navbar.Collapse>
+                </Navbar>
+                </header>
+                  <Switch>
+                    <Route exact path={["/", "/home"]} component={Home} />
+                    <Route exact path='/login' component={Login} />
+                    <Route exact path='/register' component={Register} />
+                    <Route exact path='/profile' component={Profile} />
+                    <Route exact path='/admin' component={Register} />
+                    <Route exact path='/editProfile' component={EditProfile} />
+                    <Route exact path='/teacher' component={TeacherBoard} />
+                    <Route exact path="/student/messenger" component={Messenger} />
+                    <Route exact path="/student/message/:idMessage" component={Message} />
+                    <Route exact path='/teacher' component={TeacherBoard} />
+                    <Route exact path='/student' component={StudentBoard} />
+                 </Switch>
+             </div>
       </Router>
     );
   }

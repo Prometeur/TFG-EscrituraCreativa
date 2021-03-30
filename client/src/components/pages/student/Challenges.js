@@ -19,9 +19,11 @@ function Challenges(props) {
     ];
         
     return (
-        <div>
+
+        <>
             <TabsChallenge data={data} />
-        </div>
+        </>
+
     );
 }
 

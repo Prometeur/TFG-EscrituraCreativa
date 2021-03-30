@@ -2,15 +2,14 @@
 {
 
     flex-basis: 100%;
-    margin: .5em;
+    margin: .2em;
     text-align: center;
 }
 
 
 input[type="text"],
 input[type="password"] {
-    margin-right: auto;
-    margin-left: auto;
+    margin:8px 0;
 }
 
 input[type="password"] 
@@ -36,14 +35,20 @@ input[type=text]:focus
     margin : auto;
 }
 
-.card-title.h5 {
-    margin: auto;
-    padding: 1em 1em;
-    font-family: "Pavanam", sans-serif;
+.card {
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
 }
 
-.card-upload {
-
+.card-title.h5 {
+    margin: .1rem;
+    padding: 1em 1em;
+    font-family: "Pavanam", sans-serif;
 }
 
 .card-edit {
@@ -59,12 +64,48 @@ input[type=text]:focus
 .card-register {
     width: 26rem;
     height: 24rem;
-
 }
 
-.card-login {
+
+.card > .card-login {
     width: 20rem;
-    height: 19rem;
-    right: 24rem;
+    height: 25rem;
     top: 2rem;
 }
+
+.card-profile {
+  width: 100%;
+  height: 100%;
+}
+
+
+@media screen and (min-width: 320px) {
+    .card-login {
+        width: 20rem;
+        height: 25rem;
+        top: 3rem;
+        right: 2rem;
+    }
+}
+
+@media screen and (min-width:768px) {
+
+    .card-login {
+        width: 20rem;
+        height: 25rem;
+        top: 3rem;
+        right: 2rem;
+    }
+
+}
+
+@media screen and (min-width:1024px) {
+    .card-login {
+        width: 20rem;
+        height: 25rem;
+        right: 15rem;
+        top: 3rem;
+    }
+
+ }
+
