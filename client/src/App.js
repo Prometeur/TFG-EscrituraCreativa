@@ -38,6 +38,7 @@ class App extends Component {
     };
   }
 
+
   componentDidMount() {
     //Take info about server
     const user = AuthService.getCurrentUser();
@@ -51,6 +52,7 @@ class App extends Component {
       });
     }
   }
+
 
   logOut() {
     AuthService.logout();
