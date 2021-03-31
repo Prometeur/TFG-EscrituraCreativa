@@ -278,7 +278,7 @@ class StudentService {
     }
 
 
-    /*Obtiene multimedia del desafio */
+    /*Obtiene ficheros multimedia del desafio */
     getMultimediaChallenge(idChallenge) {
         return axios.get("/student/getMultimediaChallenge", { params: { idChallenge: idChallenge } },
             {

@@ -1,9 +1,24 @@
 /*
-*  Name_file :Writing.js
-*  Description: Pagina del Escrito, contiene la vista del escrito para un desafio seleccionado por el estudiante
-*    
+*  Name_file :EditWriting.js
+*  Description: Pagina de editar Escrito
 */
+
 import React, { Component } from 'react';
+import { Link } from "react-router-dom";
+
+/*Importaciones del editor */
+import { Editor } from "react-draft-wysiwyg";
+import { EditorState, convertToRaw } from "draft-js";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import draftToHtml from "draftjs-to-html";
+import { stateFromHTML } from 'draft-js-import-html';// escribe el 'html' en el editor
+// import EditorText from '../../TextEditor/TextEditor.js';
+
+/**Datos del usuario */
+import AuthUser from '../../../services/authenticity/auth-service.js';
+
+/**Servicios del estudiante */
+import StudentService from '../../../services/student/student-service.js';
 
 /*Importacion del css*/
 import '../../../styles/Writing.css';
@@ -11,23 +26,7 @@ import '../../../styles/Challenge.css';
 import '../../../styles/styleGeneral.css';
 import '../../../styles/styleCard.css';
 
-/*Importaciones del Video*/
-import ReactPlayer from "react-player";
-
-/*Importaciones del editor */
-import { Editor } from "react-draft-wysiwyg";
-import { EditorState, convertToRaw } from "draft-js";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import draftToHtml from "draftjs-to-html";
-// escribe el 'html' en el editor
-import { stateFromHTML } from 'draft-js-import-html';
-
-/**Servicios del estudiante */
-import StudentService from '../../../services/student/student-service.js';
-
-/**Datos del usuario */
-import AuthUser from '../../../services/authenticity/auth-service.js';
-
+/*Componentes de estilo Bootstrap*/
 import ListGroup from 'react-bootstrap/ListGroup';
 import Alert from 'react-bootstrap/Alert';
 import Card from 'react-bootstrap/Card';
@@ -35,28 +34,36 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from 'react-bootstrap/Button';
 
-// import EditorText from '../../TextEditor/TextEditor.js';
+/*Componentes de estilo Reactstrap*/
+import {
+    Table,
+    Container,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    FormGroup,
+    ModalFooter,
+} from "reactstrap";
 
 class EditWriting extends Component {
 
     constructor(props) {
         super(props);
-        const dataUser = AuthUser.getCurrentUser();
         this.onFileChange = this.onFileChange.bind(this);
         this.state = {
-            imgCollection: [],
-            imgNamesCollection: [],
+            imgCollection: [],//array de ficheros multimedia
             dataTeamStudent: [],//contiene el equipo del estudiante
-            contentState: null,
+            contentState: null,//editor
             editorState: EditorState.createEmpty(),
-            challenge: '',
+            challenge: '',//contiene el desafio 
             dataMediaChallenge: [],//array de multimedia del desafio
             dataMediaWriting: [],//array de multimedia del escrito
+            modalDeleteFile: false,
+            deleteFileMedia: '',//fichero multimedia del escrito que desea ser borrado
+            nameDeleteFileMedia: '',//nomnbre del fichero multimedia del escrito que desea ser borrado
             form: {
                 idWriter: '',
-                escrito: '',
-                file: '',
-                reader: ''
+                escrito: ''
             }
         }
     }
@@ -79,13 +86,12 @@ class EditWriting extends Component {
                                     ...this.state.form,
                                     idWriter: response[0].idEquipo
                                 }
-
                             });
                         }).catch(error => {
                             console.log(error.message);
                         })
                 }
-                else {//es individual
+                else {//si es individual
                     this.setState({
                         dataTeamStudent: response,
                         form: {
@@ -133,44 +139,55 @@ class EditWriting extends Component {
             });
     }
 
-    // //Previsualización del fichero(image, video o audio)
-    // onFileChange = (e) => {
-    //     if (e.target.files && e.target.files.length > 0) {
-    //         const file = e.target.files[0]
-    //         if (file.type.includes("image") || file.type.includes("video") || file.type.includes("audio")) {
-    //             const reader = new FileReader()
-    //             reader.readAsDataURL(file)
-    //             reader.onload = () => {
-    //                 this.setState({
-    //                     form: {
-    //                         ...this.state.form,
-    //                         reader: reader.result
-    //                     }
-    //                 });
-    //             }
-    //             var str = file.type;
-    //             var res = str.split("/");
-    //             const dir = this.state.form.idWriter + "/" + res[0] + "/";
-    //             this.setState({
-    //                 form: {
-    //                     ...this.state.form, file:
-    //                         file,
-    //                     path: "http://localhost:3001/multimedia/" + dir + file.name
-    //                 }
-    //             });
-    //         }
-    //         else
-    //             console.log("there was an error")
-    //     }
-    // }
-
-    onFileChange(e) {
-        this.setState({ imgCollection: e.target.files });
-        // let newFiles = this.state.imgNamesCollection;
-        // Array.from(e.target.files).forEach((file) => { newFiles.push(file) });
-        // this.setState({ imgNamesCollection: [...newFiles] });
+    //Envia el escrito editado 
+    editWriting = () => {
+        /*Edita escrito del estudiante*/
+        StudentService.editWriting(this.props.match.params.idWriting, this.props.match.params.idGroup, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.escrito, this.state.challenge.colaborativo)
+            .then(response => {
+                if (this.state.imgCollection.length > 0) {
+                    StudentService.sendMultimedia(this.state.imgCollection, this.state.form.idWriter, this.props.match.params.idChallenge, this.state.challenge.colaborativo)
+                        .then(response => {
+                            // window.location.href = '/student/groups';
+                            window.location.href = '/student';
+                        }).catch(error => {
+                            console.log(error.message);
+                        });
+                }
+                else {
+                    window.location.href = '/student';
+                }
+            })
+            .catch(error => {
+                console.log(error.message);
+            });
     }
 
+    //Elimina el fichero multimedia del escrito
+    deleteFile = (writing) => {
+        this.closeModalDeleteFile();
+        var contador = 0;
+        var arreglo = this.state.dataMediaWriting;
+        arreglo.map((registro) => {
+            if (writing.id === registro.id) {
+                arreglo.splice(contador, 1);
+            }
+            contador++;
+        });
+        this.setState({ dataMediaWriting: arreglo });
+        StudentService.deleteMultimedia(writing.id, writing.ruta)
+            .then(response => {
+            })
+            .catch(error => {
+                console.log(error.message);
+            });
+    }
+
+    //Carga los ficheros multimedia del escrito 
+    onFileChange(e) {
+        this.setState({ imgCollection: e.target.files });
+    }
+
+    //convierte la descripción del escrito a html y lo guarda en el form
     editorChange = () => {
         this.setState({
             form: {
@@ -192,86 +209,48 @@ class EditWriting extends Component {
         });
     };
 
-    editWriting = () => {
-        /*Edita escrito del estudiante*/
-        StudentService.editWriting(this.props.match.params.idWriting, this.props.match.params.idGroup, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.escrito, this.state.challenge.colaborativo)
-            .then(response => {
-                if (this.state.imgCollection.length > 0) {
-                    StudentService.sendMultimedia(this.state.imgCollection, this.state.form.idWriter, this.props.match.params.idChallenge, this.state.challenge.colaborativo)
-                        .then(response => {
-                            window.location.href = '/student/groups';
-                        }).catch(error => {
-                            console.log(error.message);
-                        });
-                }
-                else {
-                    window.location.href = '/student/groups';
-                }
-            })
-            .catch(error => {
-                console.log(error.message);
-            });
-    }
-
     //Obtiene el nombre de los ficheros multimedia desafio/escrito
     showTitle = (challenge) => {
-        debugger;
         var str = challenge.ruta;
         var res = str.split("/");
         return res[8];
     }
 
-    deleteFile = (writing) => {
+    //Muestra modal de confirmación para eliminar fichero multimedia
+    askDeleteFile = (writing) => {
         var str = writing.ruta;
         var res = str.split("/");
-        var opcion = window.confirm("Estás Seguro que deseas Eliminar " + res[7]);
-        if (opcion === true) {
-            var contador = 0;
-            var arreglo = this.state.dataMediaWriting;
-            arreglo.map((registro) => {
-                if (writing.id === registro.id) {
-                    arreglo.splice(contador, 1);
-                }
-                contador++;
-            });
-            this.setState({ dataMediaWriting: arreglo });
-            StudentService.deleteMultimedia(writing.id, writing.ruta)
-                .then(response => {
-                })
-                .catch(error => {
-                    console.log(error.message);
-                });
-        }
+        this.setState({
+            nameDeleteFileMedia: res[8],
+            deleteFileMedia: writing
+        });
+        this.showModalDeleteFile();
     }
+
+    //Muestra el modal de eliminar fichero
+    showModalDeleteFile = () => {
+        this.setState({
+            modalDeleteFile: true,
+        });
+    };
+
+    //Cierra el modal de eliminar fichero
+    closeModalDeleteFile = () => {
+        this.setState({ modalDeleteFile: false });
+    };
+
 
     /*Dibuja la pagina */
     render() {
         const { dataMediaChallenge } = this.state;
         const { dataMediaWriting } = this.state;
         // const { formErrors } = this.state;
-        let media1 = "";
-        if (this.state.form.file.type !== undefined) {//si hemos previsualizado un archivo
-            if (this.state.form.file.type.includes("image"))
-                media1 = <img className="image" src={this.state.form.reader} alt="" />;
-            else
-                media1 = <ReactPlayer className="video" url={this.state.form.reader} controls={true} />;
-        }
-        else {//si no hemos previsualizado un archivo
-            if (this.state.form.path == null || this.state.form.path === "") {//si la url es vacia o no contiene una url (recibido de la bd)
-                media1 = <img className="image" src="http://localhost:3001/images/drop-files.jpg" alt="" />;
-            }
-            else {
-                media1 = <img className="image" src={this.state.form.path} alt="" />;//si contine una url (recibido de la bd)
-            }
-        }
         return (
             <>
                 <div className="container">
                     <label className='form-label'>Editar Escrito</label>
                     <Card className="card-edit">
-
                         <Card.Body>
-
                             <div className="row-edit">
                                 <h2 > {this.state.challenge.titulo} </h2>
                             </div>
@@ -286,7 +265,7 @@ class EditWriting extends Component {
                                         {dataMediaChallenge.map((challenge) => (
                                             <tr key={challenge.id}>
                                                 <td>{this.showTitle(challenge)}</td>
-                                                <td><a href={challenge.ruta}>Ver</a></td>
+                                                <td><Button onClick={() => window.open(challenge.ruta)}>Ver</Button></td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -306,34 +285,6 @@ class EditWriting extends Component {
                                 />
                                 {/* <EditorText onEditorStateChange={this.onEditorStateChange} onContentStateChange={this.onContentStateChange}  onChange={this.editorChange} param={this.state.editorState}/> */}
                             </div>
-                            {/* <div className="row-edit">
-                                <label className='form-label'>Puedes agregar un fichero multimedia si lo deseas (imagen,video o audio): </label>
-
-                                <div className="form">
-                                    {
-                                        this.state.imgNamesCollection == 0 ? (
-                                            <Alert variant='info'>
-                                                No hay Archivos cargados.
-                                            </Alert>
-                                        ) : (
-
-                                            <ListGroup>
-                                                {this.state.imgNamesCollection.map((row, index) => (
-                                                    <ListGroup.Item action variant="info" key={index}>
-                                                        <i className="form-select">{row.name}</i>
-                                                        <IconButton className="form-select" aria-label="delete" onClick={() => this.onDeleteMultimedia(index)}>
-                                                            <DeleteIcon fontSize="small" />
-                                                        </IconButton>
-                                                    </ListGroup.Item>
-                                                ))}
-                                            </ListGroup>
-
-                                        )
-                                    }
-                                    <input id="file" type="file" name="imgCollection" onChange={this.onFileChange} multiple />
-                                    <label htmlFor="file" className="btn-1">upload file</label>
-                                </div>
-                            </div> */}
 
                             <div class="row-edit">
                                 <label className='form-label'>Puedes agregar un fichero multimedia si lo deseas (imagen,video o audio): </label>
@@ -349,8 +300,8 @@ class EditWriting extends Component {
                                         {dataMediaWriting.map((writing) => (
                                             <tr key={writing.id}>
                                                 <td>{this.showTitle(writing)}</td>
-                                                <td><a href={writing.ruta}>Ver</a></td>
-                                                <td > < button onClick={() => this.deleteFile(writing)} > Eliminar </button> </td>
+                                                <td><Button onClick={() => window.open(writing.ruta)}>Ver</Button></td>
+                                                <td><Button variant="danger" onClick={() => this.askDeleteFile(writing)}>Eliminar</Button></td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -358,14 +309,29 @@ class EditWriting extends Component {
                             </div>
 
                             <div className="form-select">
-                                <Button text='enviar' onClick={() => this.editWriting()}> Enviar  </Button>
+                                <Button text='enviar' onClick={() => this.editWriting()}> Guardar  </Button>
                             </div>
                             <div className="form-select">
-                                <Button onClick={() => window.location.href = '/student/groups'}>Cancelar</Button>
+                                <Button onClick={() => window.location.href = '/student'}>Cancelar</Button>
                             </div>
                         </Card.Body>
                     </Card>
                 </div>
+
+                <Modal isOpen={this.state.modalDeleteFile}>
+                    <ModalHeader>
+                        <div><h5>¿Estás seguro de eliminar {this.state.nameDeleteFileMedia}?</h5> </div>
+                    </ModalHeader>
+                    <ModalBody>
+                        <FormGroup>
+                        </FormGroup>
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button onClick={() => this.deleteFile(this.state.deleteFileMedia)}>Aceptar</Button>
+                        <Button variant="danger" onClick={() => this.closeModalDeleteFile()}>Cancelar</Button>
+                    </ModalFooter>
+                </Modal>
             </>
         );
     }
