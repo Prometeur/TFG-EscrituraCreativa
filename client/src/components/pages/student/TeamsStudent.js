@@ -26,8 +26,6 @@ import {
 } from "reactstrap";
 
 
-
-
 import '../../../styles/styleGeneral.css';
 
 class TeamsStudent extends Component {
@@ -181,23 +179,6 @@ class TeamsStudent extends Component {
             })
     };
 
-    // //Abandona el estudiante un equipo
-    // leaveTeam = () => {
-    //     //si soy el creador del equipo
-    //     if (this.state.dataTeamStudentGroup[0].idCreador === AuthUser.getCurrentUser().id && this.state.dataMembersTeam.length > 1) {
-    //         this.showModalLeaveLider();
-    //     }
-    //     else {//salir del equipo
-    //         StudentService.leaveStudentTeam(this.state.dataTeamStudentGroup[0].idEquipo, AuthUser.getCurrentUser().id)
-    //             .then(response => {
-    //                 this.closeModalLeaveTeam();
-    //             })
-    //             .catch(error => {
-    //                 console.log(error.message);
-    //             })
-    //     }
-    // };
-
     //Abandona el estudiante un equipo
     askLeaveTeam = () => {
         //si soy el creador del equipo
@@ -208,7 +189,6 @@ class TeamsStudent extends Component {
             this.showModalLeaveTeam();
         }
     };
-
 
     //Abandona el estudiante un equipo
     leaveTeam = () => {
@@ -436,17 +416,6 @@ class TeamsStudent extends Component {
                     <table>
                         <div  >
                             <label > Eliminar Integrante del equipo </label>
-                            {/* <td><button disabled={this.disabledButtonDeleteTeam()} onClick={() => this.askDeleteTeam()} >Eliminar Equipo</button></td> */}
-
-
-                            {/* {this.state.dataWriting.filter(writing => writing.idDesafio === challenge.id)
-                                    .map((item, index) =>{
-                                        n=true;
-                                        e=false;
-                                        idWriting=item.id;
-                                    } 
-                                )} */}
-
                             <select onChange={this.selectKicked} disabled={this.disabledButtonDeleteTeam()} >
                                 <option value="" selected disabled hidden >Seleccionar</option>
                                 {this.state.dataMembersTeam.filter(member => member.idEstudiante !== AuthUser.getCurrentUser().id)

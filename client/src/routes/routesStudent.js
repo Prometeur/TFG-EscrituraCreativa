@@ -9,6 +9,7 @@ import GroupStudent from '../components/pages/student/GroupStudent.js';
 import TeamsStudent from '../components/pages/student/TeamsStudent.js';
 import CreateWriting from '../components/pages/student/CreateWriting.js';
 import EditWriting from '../components/pages/student/EditWriting.js';
+import ViewMultimedia from '../components/pages/student/ViewMultimedia.js';
 import LinksStudent from '../links/links-Student.js';
 // import Teams from '../components/pages/student/Teams.js';
 // import Messenger from '../components/pages/student/Messenger.js';
@@ -35,6 +36,7 @@ function Routes() {
                 <Route exact path="/student/writing/:idGroup/:idChallenge" component={CreateWriting} />
                 {/* <Route exact path="/student/editWriting/:idGroup/:idChallenge" component={EditWriting} /> */}
                 <Route exact path="/student/editWriting/:idGroup/:idChallenge/:idWriting" component={EditWriting} />
+                <Route exact path="/student/viewMultimedia" component={ViewMultimedia} />
 
             </Switch>
         </BrowserRouter>
