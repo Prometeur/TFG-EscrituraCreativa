@@ -60,9 +60,21 @@ class TeacherService {
 
     }
 
+    searchApplicant(searchStudent, searchType) {
+
+        return axios.post("/teacher/searchApplicant", { clave: searchStudent, tipo :searchType},{ headers: {"Authorization" : `Bearer ${authHeader()}`}
+        })
+        .then(response => {
+            return response.data;
+        }).catch(error => {
+            console.log(error.message);
+        })
+
+    }
+
     acceptApplicantStudent(idApplicant) {
       
-        return axios.get("/user/acceptAplplicant", { params: { idUser: idApplicant } }, { headers: {"Authorization" : `Bearer ${authHeader()}`}})
+        return axios.get("/user/acceptApplicant", { params: { idUser: idApplicant } }, { headers: {"Authorization" : `Bearer ${authHeader()}`}})
           .then(response => {
              return response.data;
        }).catch(error => {

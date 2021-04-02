@@ -114,8 +114,7 @@ class ProfileInfo extends Component {
         });
     }
 
-    /*Si vuelvo a la pagina de login, comprueba si el usuario ya inicio sesion anteriomente
-   si es el caso lo redirige a la home segun su rol*/
+    /*Cargo todos los datos que necesito nada más cargar la página, como los datos del usuario o los grupos.*/
    componentDidMount() {
     const dataUser = AuthUser.getCurrentUser();
     this.setState({currentUser: dataUser});
@@ -130,6 +129,7 @@ class ProfileInfo extends Component {
         TeacherService.acceptApplicantStudent(idApplicant)
         .then(response=>{
              this.setState({ data: response});
+             this.props.handler();
         }).catch(error => {
             console.log(error.message);
         })

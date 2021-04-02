@@ -11,6 +11,11 @@ const linksTeacher = [
         name: "Estudiantes",
         id: "Estudiantes"
     },
+    {
+        path: "/applicants",
+        name: "Solicitantes",
+        id: "Solicitantes"
+    },
 
 ];
 

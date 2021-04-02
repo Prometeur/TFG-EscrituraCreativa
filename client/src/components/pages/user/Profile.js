@@ -18,28 +18,55 @@ t
 
         this.state = {
             ventana: 1,
+            data: [],
         }
-
+        this.handler = this.handler.bind(this)
     }
+
+    //Permite refrescar la página desde abajo
+    handler() {
+       this.peticionGet();
+      }
 
     cambiaVentana = (opcion) =>{
         this.setState({ventana : opcion});
     }
+
+    /*Se hacen peticiones al servidor para que me devuelva los datos del estudiante*/
+    peticionGet() {
+       
+        TeacherService.getProfile(this.props.match.params.idStudent).then(response => {
+              this.setState({data:response});
+        }).catch(error => {
+            console.log(error.message);
+        })
+    }
+
+    componentDidMount() {
+         this.peticionGet();
+       }
 
     /*Dibuja la pagina  */
     render() {
         
        let idStudent = this.props.match.params.idStudent;
 
+       let tabs =   <TabList>
+                        <Tab>DATOS</Tab>
+                        <Tab>ESCRITOS</Tab>
+                    </TabList>;
+        if(this.state.data.activo === 0){
+            tabs =   <TabList>
+                        <Tab>DATOS</Tab>
+                    </TabList>;
+        }
+
         return (
            <div className="container-box"> 
                 <Tabs>
-                    <TabList>
-                        <Tab>DATOS</Tab>
-                        <Tab>DESAFIOS</Tab>
-                    </TabList>
+                    {tabs}
                     <TabPanel>
-                        <Datos key={idStudent} idStudent={idStudent}/>
+                        <Datos key={idStudent} idStudent={idStudent} handler ={this.handler}/>
                     </TabPanel>
                     <TabPanel>
                         <Escritos key={idStudent} idStudent={idStudent}/>
