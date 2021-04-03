@@ -4,6 +4,7 @@
 */
 import React, { Component } from 'react';
 import TeacherService from "../../../services/teacher/teacherService.js";
+import '../../../styles/ScriptList.css';
 
 class GroupTeacher extends Component {
 
@@ -83,30 +84,26 @@ class GroupTeacher extends Component {
     /*Dibuja la pagina  */
     render() {
         let cartel =<div> </div>;
-        let tabla = <table>
-        <thead>
-            <tr>
-                <th>idEscritor</th>
-                <th>IdDesafio</th>
-                <th>Nombre del escrito</th>
-                <th>Título del desafío</th>
-
-            </tr>
-        </thead>
-
-        <tbody>
+        let tabla =
+        <div className = "scriptList">
+        
             {this.state.filteredData.map(script => {
                 return (
-                    <tr>
-                        <td>{script.idEscritor}</td>
-                        <td>{script.idDesafio}</td>
-                        <td>{script.nombre}</td>
-                        <td>{script.titulo}</td>
-                    </tr>
+                <div className ="scriptCardContainer">
+                    <a href ={`/teacher/students/viewScript/${script.id}`}>
+                            <div className ="scriptCard">
+                                <h6>Nombre</h6>
+                                <h5>{script.nombre}</h5>
+                                <h6>Desafío</h6>
+                                <h5>{script.titulo}</h5>
+                        </div>
+                    </a>
+                </div>
                 )
             })}
-        </tbody>
-    </table>;
+
+    </div>
+    ;
         if(this.state.filteredData.length === 0)
         {
             cartel = <nav>
@@ -121,7 +118,7 @@ class GroupTeacher extends Component {
                 <h1>Escritos del estudiante:</h1>
 
                 <div>
-                <h2> Resultados de buscar escritos con  similar a:</h2>
+                
                 <h1></h1>
                         <label>Buscar estudiante: </label>
                         <br />
@@ -132,6 +129,7 @@ class GroupTeacher extends Component {
                             <option value="nombre">Nombre</option>
                             <option value="titulo">Título</option>
                         </select> 
+                        <h2> Resultados de buscar escritos con {this.state.searchType} similar a {this.state.searchKey}:</h2>
                 </div>
                 <div>
                 
