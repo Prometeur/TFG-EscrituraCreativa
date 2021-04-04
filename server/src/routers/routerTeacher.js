@@ -76,7 +76,7 @@ router.post("/deleteFile",controller_teacher.deleteFile);
 router.post("/deleteChallenge",controller_teacher.deleteChallenge);
 
 //Muestra todos los estudiantes aún no aceptados (solicitantes) que contienen cierta clave ya sea en nombre o en su email.
-router.post("/searchApplicant", controller_teacher.searchApplicant);
+router.post("/searchApplicant", controller_user.searchApplicant);
 
 /*Acepta al estudiante solicitante en la aplicación cambiando su campo activo a 1 */
 router.get("/acceptApplicant",controller_teacher.acceptApplicant);

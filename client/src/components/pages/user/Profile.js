@@ -37,6 +37,7 @@ t
        
         TeacherService.getProfile(this.props.match.params.idStudent).then(response => {
               this.setState({data:response});
+              console.log(this.state.data);
         }).catch(error => {
             console.log(error.message);
         })
@@ -55,10 +56,26 @@ t
                         <Tab>DATOS</Tab>
                         <Tab>ESCRITOS</Tab>
                     </TabList>;
+        if(this.state.data.rol == "T"){
+            tabs =   <TabList>
+                        <Tab>DATOS</Tab>
+                        <Tab>GRUPOS</Tab>
+                    </TabList>;
+        }
+        if(this.state.data.rol == "A"){
+            tabs =   <TabList>
+                        <Tab>DATOS</Tab>
+                    </TabList>;
+        }
         if(this.state.data.activo === 0){
             tabs =   <TabList>
                         <Tab>DATOS</Tab>
                     </TabList>;
+        }
+        let secondTab = <Escritos key={idStudent} idStudent={idStudent}/>;
+
+        if(this.state.data.rol == "T"){ //COMPLETAR LUEGO CON LA VISTA DE GRUPOS 
+            secondTab = <Escritos key={idStudent} idStudent={idStudent}/> ;
         }
 
         return (
@@ -69,7 +86,7 @@ t
                         <Datos key={idStudent} idStudent={idStudent} handler ={this.handler}/>
                     </TabPanel>
                     <TabPanel>
-                        <Escritos key={idStudent} idStudent={idStudent}/>
+                        {secondTab}
                     </TabPanel>
                 </Tabs>
            </div>
