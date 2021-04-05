@@ -7,6 +7,7 @@ import React, { Component } from 'react';
 import authHeader from '../../../services/authenticity/auth-header.js';
 import AuthUser from '../../../services/authenticity/auth-service.js';
 import TeacherService from '../../../services/teacher/teacherService.js';
+import AdminService from '../../../services/admin/adminService.js';
 
 
 class ProfileInfo extends Component {
@@ -21,7 +22,8 @@ class ProfileInfo extends Component {
             studentGroupData: [],
             finalGroupData:[],
             finalGroupKickData:[],
-            currentUser: {id: ""},
+            currentUserId: '',
+            currentUserRole: '',
             groupSelect: "-1",
             groupKickSelect: "-1"
     
@@ -31,9 +33,9 @@ class ProfileInfo extends Component {
 
     /*Se hacen peticiones al servidor para que me devuelva los datos del estudiante*/
     peticionGet() {
-       
         TeacherService.getProfile(this.props.idStudent).then(response => {
               this.setState({data:response});
+              this.props.handler();
         }).catch(error => {
             console.log(error.message);
         })
@@ -44,7 +46,17 @@ class ProfileInfo extends Component {
       
         TeacherService.getGroups(id).then(response => {
             this.setState({ teacherGroupData: response });
-            console.log(this.state.teacherGroupData);
+            this.peticionGetGruposStudent();
+        }).catch(error => {
+            console.log(error.message);
+        })
+    }
+
+    /*Se hacen peticiones al servidor para que me devuelva todos los grupos (FUNCION ADMIN)*/
+    peticionGetAllGroups() {
+      
+        AdminService.getAllGroups().then(response => {
+            this.setState({ teacherGroupData: response });
             this.peticionGetGruposStudent();
         }).catch(error => {
             console.log(error.message);
@@ -98,6 +110,7 @@ class ProfileInfo extends Component {
             }
         }
         this.setState({finalGroupKickData: finalGroups})
+        
     }
 
     /*Detecta un cambio en el valor del grupo a escoger */
@@ -114,13 +127,35 @@ class ProfileInfo extends Component {
         });
     }
 
+    /*Detecta un cambio en el valor del grupo a escoger */
+    handleChangeCurrentUserId = (dataUser)=> {
+        this.setState({
+            currentUserId: dataUser.id
+        });
+        this.handleChangeCurrentUserRole(dataUser);
+    }
+
+    /*Detecta un cambio en el valor del grupo a escoger */
+    handleChangeCurrentUserRole = (dataUser)=> {
+        this.setState({
+            currentUserRole: dataUser.rol
+        });
+
+        this.peticionGet();
+        if(dataUser.rol == "A"){//ADMIN
+            this.peticionGetAllGroups();
+        }
+        else{//PROFESOR
+            this.peticionGetGruposTeacher(dataUser.id);
+        }
+        
+    }
+
     /*Cargo todos los datos que necesito nada más cargar la página, como los datos del usuario o los grupos.*/
    componentDidMount() {
     const dataUser = AuthUser.getCurrentUser();
-    this.setState({currentUser: dataUser});
-    
-     this.peticionGet();
-     this.peticionGetGruposTeacher(dataUser.id);
+    this.handleChangeCurrentUserId(dataUser);
+     
    }
 
     //Acepta al estudiante como usuario de la aplicación.
@@ -128,8 +163,7 @@ class ProfileInfo extends Component {
         
         TeacherService.acceptApplicantStudent(idApplicant)
         .then(response=>{
-             this.setState({ data: response});
-             this.props.handler();
+            this.peticionGet();
         }).catch(error => {
             console.log(error.message);
         })
@@ -138,9 +172,15 @@ class ProfileInfo extends Component {
      /*Se hacen peticiones al servidor para invitar al estudiante al grupo*/
      inviteToGroup = (idGroup) => {
         TeacherService.inviteToGroup(idGroup,this.props.idStudent).then(response =>{
-            this.peticionGetGruposTeacher(this.state.currentUser.id);
-            //window.location.href = '/teacher/students/viewProfile/' + this.state.data.id;
-            this.setState({groupSelect: "-1"});
+            if(this.state.currentUserRole ="A")
+            {
+                this.peticionGetAllGroups();
+            }
+            else{
+                this.peticionGetGruposTeacher(this.state.currentUserId);
+            }
+            this.setState({groupKickSelect: "-1"});
+            this.peticionGet();
         }).catch(error => {
               console.log(error.message);
         })
@@ -150,10 +190,35 @@ class ProfileInfo extends Component {
     kickFromGroup = (idGroup) => {
          
         TeacherService.kickFromGroup(idGroup,this.props.idStudent).then(response => {
-            this.peticionGetGruposTeacher(this.state.currentUser.id);
+            if(this.state.currentUserRole ="A")
+            {
+                this.peticionGetAllGroups();
+            }
+            else{
+                this.peticionGetGruposTeacher(this.state.currentUserId);
+            }
             this.setState({groupKickSelect: "-1"});
+            this.peticionGet();
         }).catch(error => {
              console.log(error.message);
+        })
+    }
+
+    /*Se hacen peticiones al servidor para desactivar al usuario*/
+    deactivateUser = (id) => {
+        AdminService.deactivateUser(id).then(response => {
+            this.peticionGet();
+        }).catch(error => {
+            console.log(error.message);
+        })
+    }
+
+    /*Se hacen peticiones al servidor para eliminar al usuario*/
+    deleteUser = (id) => {
+        AdminService.deleteUser(id).then(response => {
+            window.location.href = '/homeadmin';
+        }).catch(error => {
+            console.log(error.message);
         })
     }
 
@@ -228,6 +293,54 @@ class ProfileInfo extends Component {
                 </div>;
         }
 
+        let botonDesactivar = <div></div>;
+        let botonEliminar = <div></div>;
+
+
+            //      RESTRICCIONES POR USUARIO LOGUEADO
+
+            if(this.state.currentUserRole == "A")
+            {
+
+                botonDesactivar = <div><button text='Desactivar usuario' onClick={() => this.deactivateUser(this.state.data.id)}>Desactivar usuario</button></div>;
+                botonEliminar = <div><button text='Eliminar usuario' onClick={() => 
+                {if(window.confirm('El usuario '+ this.state.data.nombre + ' '+ this.state.data.apellidos +' y todos sus grupos, escritos, equipos y desafíos se eliminarán de forma permanente de la base de datos. ESTA ACCIÓN ES IRREVERSIBLE. ¿Eliminar usuario?'))
+                {this.deleteUser(this.state.data.id)};}}>Eliminar usuario</button></div>;
+
+            }
+            if(this.state.currentUserRole == "S")
+            {
+                invitaGrupo = <nav></nav>;
+                botonInvitaGrupo = <nav></nav>;
+
+                echaGrupo = <nav></nav>;
+                botonEchaGrupo = <nav></nav>;
+            }
+
+
+            //      RESTRICCIONES POR EL USUARIO QUE VEO
+
+        if(this.state.data.rol == "A")//SI EL USUARIO QUE VEO ES ADMIN NO LO PUEDO MODIFICAR
+        {
+            invitaGrupo = <nav></nav>;
+            botonInvitaGrupo = <nav></nav>;
+
+            echaGrupo = <nav></nav>;
+            botonEchaGrupo = <nav></nav>;
+            botonDesactivar = <nav></nav>;
+            botonEliminar =<nav></nav>;
+        }
+        if(this.state.data.rol == "T")//SI EL USUARIO QUE VEO ES PROFESOR NO PUEDO MODIFICAR A QUE GRUPOS PERTENECE
+        {
+            invitaGrupo = <nav></nav>;
+            botonInvitaGrupo = <nav></nav>;
+
+            echaGrupo = <nav></nav>;
+            botonEchaGrupo = <nav></nav>;
+        }
+
+        //      RESTRICCIONES PARA SOLICITANTES
+
         if(this.state.data.activo === 0)
         {
             cartel = <nav>
@@ -246,6 +359,8 @@ class ProfileInfo extends Component {
 
             echaGrupo = <nav></nav>;
             botonEchaGrupo = <nav></nav>;
+
+            botonDesactivar = <div></div>;
         }
 
         let fotoSource = "";
@@ -276,6 +391,9 @@ class ProfileInfo extends Component {
 
                     {echaGrupo}
                     {botonEchaGrupo}
+
+                    {botonDesactivar}
+                    {botonEliminar}
 
                 </div>
             </>

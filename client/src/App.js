@@ -12,6 +12,7 @@ import Register from './components/pages/login/register.js';
 import Profile from './components/pages/login/profile.js';
 import TeacherBoard from '../src/components/pages/teacher/TeacherBoard.js';
 import StudentBoard from '../src/components/pages/student/StudentBoard.js';
+import AdminBoard from '../src/components/pages/admin/AdminBoard';
 import EditProfile from './components/pages/login/EditProfile.js';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
@@ -98,7 +99,7 @@ class App extends Component {
                     <Route exact path='/login' component={Login} />
                     <Route exact path='/register' component={Register} />
                     <Route exact path='/profile' component={Profile} />
-                    <Route exact path='/admin' component={Register} />
+                    <Route exact path='/admin' component={AdminBoard} />
                     <Route exact path='/editProfile' component={EditProfile} />
                     <Route exact path='/teacher' component={TeacherBoard} />
                     <Route exact path="/student/messenger" component={Messenger} />
