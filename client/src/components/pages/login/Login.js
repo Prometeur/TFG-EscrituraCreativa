@@ -101,66 +101,55 @@ class Login extends Component {
   render() {
         console.log(this.state.error);
       return (
-          <>
           <div className="container">
-            <Card bsPrefix="card card-login">
-              <Card.Body>
-                  <Card.Title>Sign In</Card.Title>
                   <Form  
                     onSubmit={this.handleLogin}
                     ref= {c => {
                     this.form = c;
                     }}
                   >
-                  <div className="row">
-                  <div className="alert-error">
-                      <Alert variant="danger" bsPrefix="alert-login"  show={this.state.error}>
-                          Correo o Contraseña incorrectos
-                      </Alert>
-                  </div>
-                   <div className="form-group">
-                      <div className="section-column">
-                        <Input 
-                            type="text" 
-                            name="username" 
-                            placeholder=" Usuario"
-                            value={this.state.username}
-                            onChange={this.onChangeUsername} 
-                            validations={[required]}
+                  <div className="form-group-login">
+                          <h4>Iniciar sesión</h4>
+                          <div className="section-column">
+                            <Input
+                                type="text"
+                                name="username"
+                                className="form-control"
+                                placeholder=" Usuario"
+                                value={this.state.username}
+                                onChange={this.onChangeUsername}
+                                validations={[required]}
 
+                            />
+                          </div>
+                          <div className="section-column">
+                            <Input
+                                type="password"
+                                className="form-control"
+                                name="password"
+                                placeholder=" Contraseña"
+                                value={this.state.password}
+                                onChange={this.onChangePassword}
+                                validations={[required]}
+                            />
+                          </div>
+                           <Link to={""}>¿Has olvidado tu contraseña?</Link>
+                          <div className="section-column">
+                            <button className="button button5" > Login </button>
+                          </div>
+                           <p className="p-login">
+                               Al crear la cuenta, aceptas nuestros términos y condiciones.
+                               Por favor, lee nuestra política de privacidad y nuestra política de cookies.
+                           </p>
+                        <CheckButton
+                          text='Log In'
+                          style={{ display: "none" }}
+                          ref={c => {
+                            this.checkBtn = c}}
                         />
-                      </div>
-                      <div className="section-column">
-                        <Input
-                            type="text" 
-                            name="password"
-                            placeholder=" Contraseña"
-                            value={this.state.password} 
-                            onChange={this.onChangePassword}
-                            validations={[required]}
-                        />
-                      </div>
-                       <Link to={""}>¿Has olvidado tu contraseña?</Link>
-                      <div className="section-column">
-                        <button className="button button5" > Login </button>
-                      </div>
-                       <p className="p-login">
-                           Al crear la cuenta, aceptas nuestros términos y condiciones.
-                           Por favor, lee nuestra política de privacidad y nuestra política de cookies.
-                       </p>
-                    <CheckButton
-                      text='Log In'
-                      style={{ display: "none" }}
-                      ref={c => {
-                        this.checkBtn = c}}
-                    />
-                   </div>
-                    </div>
-                    </Form>
-                  </Card.Body>
-              </Card>
-            </div>
-          </>
+                       </div>
+                  </Form>
+          </div>
       );
   }
 }

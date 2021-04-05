@@ -1,11 +1,22 @@
-.form-group
+.form-group-login
 {
-
-    flex-basis: 100%;
-    margin: .2em;
+    width: 20rem;
+    margin: 1.2em;
     text-align: center;
+    border: 1px solid #dfdfdf;
+    padding: 2rem;
+    border-radius: .2rem;
 }
 
+.form-group-register
+{
+    width: 33rem;
+    margin: 1em;
+    text-align: center;
+    border: 1px solid #dfdfdf;
+    padding: 1rem 2rem;
+    border-radius: .2rem;
+}
 
 input[type="text"],
 input[type="password"] {
@@ -35,21 +46,6 @@ input[type=text]:focus
     margin : auto;
 }
 
-.card {
-    flex-direction: column;
-    min-width: 0;
-    word-wrap: break-word;
-    background-color: #fff;
-    background-clip: border-box;
-    border: 1px solid rgba(0,0,0,.125);
-    border-radius: .25rem;
-}
-
-.card-title.h5 {
-    margin: .1rem;
-    padding: 1em 1em;
-    font-family: "Pavanam", sans-serif;
-}
 
 .card-edit {
     width: 100%;
@@ -61,17 +57,6 @@ input[type=text]:focus
     height: 30rem;
 }
 
-.card-register {
-    width: 26rem;
-    height: 24rem;
-}
-
-
-.card > .card-login {
-    width: 20rem;
-    height: 25rem;
-    top: 2rem;
-}
 
 .card-profile {
   width: 100%;
@@ -80,32 +65,37 @@ input[type=text]:focus
 
 
 @media screen and (min-width: 320px) {
-    .card-login {
-        width: 20rem;
-        height: 25rem;
-        top: 3rem;
-        right: 2rem;
+
+    .form-group-login {
+        width: 15rem;
+        margin: 1rem 2rem 1rem 1rem;
+    }
+
+    .form-group-register {
+        width: 16rem;
+        margin: 1rem 2rem 1rem 1rem;
     }
 }
 
 @media screen and (min-width:768px) {
 
-    .card-login {
+    .form-group-login {
+
         width: 20rem;
-        height: 25rem;
-        top: 3rem;
-        right: 2rem;
+    }
+
+    .form-group-register {
+        width: 26rem;
     }
 
 }
 
 @media screen and (min-width:1024px) {
-    .card-login {
-        width: 20rem;
-        height: 25rem;
-        right: 15rem;
-        top: 3rem;
-    }
 
+    .form-group-login {
+
+        width: 20rem;
+
+    }
  }
 
