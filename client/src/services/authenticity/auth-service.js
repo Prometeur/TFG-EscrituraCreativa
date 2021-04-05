@@ -33,17 +33,35 @@ class AuthService {
             username: username,
             surname: surname,
             email: email,
-            password: password,
-        }, { headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-         } 
-        });
+            password: password
+        },{ headers:
+                {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+        } );
+    }
+
+    editProfile(id,username,surname,email,password,foto) {
+
+        return axios.post("auth/editProfile",
+            {
+                id:id,
+                username:username,
+                surname:surname,
+                email:email,
+                password:password,
+                foto:foto
+            },
+            { headers:
+                {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            });
     }
 
     getCurrentUser() {
 
-        return JSON.parse(localStorage.getItem('user'));;
-
+        return JSON.parse(localStorage.getItem('user'));
     }
 }
 

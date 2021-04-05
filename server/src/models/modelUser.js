@@ -5,6 +5,28 @@ class modelUser {
         this.pool = pool;
     }
 
+    create(username, surname, email, password, callback) {
+
+        this.pool.getConnection(function (err, connection) {
+
+            if (err) {
+                callback(new Error("No se puede conectar a la base de datos."))
+            } else {
+                const sql = "INSERT INTO usuario (correo, password,nombre,apellidos,activo,rol) values (?,?,?,?,?,?)";
+                const valores = [email, password, username, surname, 1, "E"];
+                connection.query(sql, valores, function (err, res) {
+                    connection.release();
+                    if (err) {
+                        callback(new Error("Error al crear el desafío."));
+                    } else {
+                        return callback(null, res[0]);
+                    }
+                })
+            }
+        });
+
+    }
+
     /*Obtiene todos los grupos del profesor*/
     getGroups(group, callback) {
 
@@ -232,6 +254,58 @@ class modelUser {
                 })
             }
         });
+    }
+
+    editProfile(id, nombre, apellidos, correo, password, foto, callback) {
+
+        this.pool.getConnection(function (err, connection) {
+            if (err) {
+                callback(new Error("No se puede conectar a la base de datos."))
+            }
+            else {
+
+                let query ='';
+                let parametros='';
+
+                if(!password && !foto){
+
+                    query = "UPDATE usuario  SET correo = ?,nombre = ?, apellidos=? WHERE id= ?";
+                    parametros = [correo,nombre,apellidos,id];
+                }
+                else if(!password  && foto)
+                {
+                     query = "UPDATE usuario  SET correo = ?,nombre = ?, apellidos =?, LOAD_FILE(foto =?) WHERE id= ?";
+                     parametros = [correo,nombre,apellidos,foto,id];
+                }
+                else if(password && !foto)
+                {
+                    query = "UPDATE usuario  SET correo = ?,nombre = ?, apellidos =?, password=? WHERE id= ?";
+                    parametros = [correo,nombre,apellidos,password,id];
+                }
+                else {
+
+                    query = "UPDATE usuario  SET correo = ?,nombre = ?, apellidos =?, password =? ,LOAD_FILE(foto =?) WHERE id= ?";
+                    parametros = [correo,nombre,apellidos, password, foto, id];
+
+                }
+
+                const sql = query;
+                const valores = parametros;
+
+                connection.query(sql, valores, function (err, res) {
+                    connection.release();
+                    if (err) {
+
+                        callback(new Error("Error al actualizar el usuario " + nombre + "."));
+                    }
+                    else {
+
+                        callback(null, res);
+                    }
+                })
+            }
+        });
+
     }
 }
 

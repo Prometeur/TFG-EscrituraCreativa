@@ -238,6 +238,10 @@ select {
     border: 1px solid #e6e6e6;
 }
 
+form {
+    width: 63rem;
+}
+
 .row-edit{
     justify-content: space-between;
     margin-bottom: .75em;
@@ -284,15 +288,14 @@ select {
 
 .alert-login{
     margin-top: 1rem;
-    padding: .5rem;
+    padding: .2rem;
     background-color: #ffc1c9;
     width: 100%;
-    border: 1px solid  #9b0410;
     text-align: center;
     font-size: 10px;
     color: #9b0410;
-    font-weight: bolder;
     border-radius: 4px;
+    line-height: initial;
 }
 
 .alert-error {
@@ -366,14 +369,38 @@ select {
 .flex-item {
     padding: 3px 20px;
     width: 350px;
-    height: 80px;
-    margin: 10px 35px;
-    line-height: 100px;
+    margin: 5px 20px;
+    line-height: 3rem;
     color: black;
     font-weight: bold;
     font-size: 16px;
 }
 
+.flex-item-file {
+    padding: 0px 17px;
+    width: 350px;
+    height: 80px;
+    line-height: 2rem;
+    margin: 5px 20px;
+    font-size: 16px;
+}
+
+.flex-item-small {
+    padding: 0px 8px;
+    width: 9%;
+    margin: 10px 5px;
+    color: black;
+    font-weight: bold;
+}
+
+.flex-item-medium {
+    padding: 3px 10px;
+    width: 80%;
+    margin: 10px 5px;
+    color: black;
+    font-weight: bold;
+    font-size: 9px;
+}
 
 .item-button-icon {
     padding: 0;
@@ -404,23 +431,40 @@ select {
     margin-left: 1.7rem;
 }
 
+.p-general {
+    margin-bottom: 1rem;
+    font-size: .95rem;
+    text-align: left;
+    text-transform: uppercase;
+    color: #4a4848;
+}
+
 @media screen and (min-width: 320px) {
- .sidebar-left {
-    width: 100%;
-    height: auto;
-    position: relative;
- }
-.sidebar-left a {float: left;}
+
+    .sidebar-left {
+        width: 100%;
+        position: relative;
+    }
+
+    .sidebar-left a {
+        float: left;
+    }
+
+
+
   }
 
 @media screen and (min-width:768px) {
+
     .sidebar-left a {
         text-align: center;
         float: none;
     }
+
 }
 
 @media screen and (min-width:1024px) {
+
     .sidebar-left a {
         text-align: center;
         float: none;

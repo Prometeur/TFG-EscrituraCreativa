@@ -94,6 +94,7 @@ function signIn(request, response) {
           email: rel.correo,
           activo: rel.activo,
           rol: rel.rol,
+          foto:rel.foto,
           accessToken: token
         });
       }
@@ -102,7 +103,44 @@ function signIn(request, response) {
   
 }
 
+function editProfile(request, response) {
+
+    let id = request.body.id;
+    let nombre = request.body.username;
+    let apellidos =  request.body.surname;
+    let password =  request.body.password;
+    let correo = request.body.email;
+    let foto = request.body.foto;
+
+    if(request.body.password != ''){
+        password= bcrypt.hashSync(request.body.password, 8);
+    }
+
+    model_user.editProfile(id,nombre,apellidos,correo,password ,foto, function (err, rel) {
+
+        if(err){
+            response.status(500).send({message:"Internal server error"});
+        }
+        else
+        {
+
+            if(!rel)
+
+            {
+                // console.log("ERROR---> user not found");
+                response.status(404).send({ message: "User Not update." });
+            }
+            else
+            {
+                response.status(200).send({ message: "usuario actualizado!" });
+            }
+
+        }
+    });
+}
+
 module.exports = {
    signUp: signUp,
-   signIn: signIn
+   signIn: signIn,
+   editProfile: editProfile,
 } 

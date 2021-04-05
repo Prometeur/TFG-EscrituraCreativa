@@ -6,6 +6,7 @@ import '../../../styles/styleCard.css';
 import Card from 'react-bootstrap/Card';
 import Figure from 'react-bootstrap/Figure';
 import Button from 'react-bootstrap/Button';
+import ListGroup from "../user/StudentLits";
 
 
 export default class Profile extends Component {
@@ -92,23 +93,25 @@ export default class Profile extends Component {
                             <div className="row">
                                 <ul className="flex-container wrap">
                                     <li className="flex-item">
-                                        Nombre: {currentUser.username}
+                                        <p className="p-general">
+                                            Nombre: {currentUser.username} {currentUser.surname}
+                                        </p>
                                     </li>
                                     <li className="flex-item">
-                                        Tipo de rol {role}
+                                       <p className="p-general">Tipo de rol: {role}</p>
                                     </li>
                                     <li className="flex-item">
-                                        Correo: {currentUser.email}
+                                       <p className="p-general">Correo: {currentUser.email}</p>
                                     </li>
                                     { currentUser.activo ? (
                                         <li className="flex-item">
-                                            Estado <img className="status" src="circuloVerde.png" />
+                                            <p className="p-general">Estado <img className="status" src="circuloVerde.png" /></p>
                                         </li>
-                                    ):(
-                                        <li className="flex-item">
-                                            <img className="status" src="circuloRojo.png" />
-                                        </li>
-                                    )
+                                        ):(
+                                            <li className="flex-item">
+                                                <p className="p-general">Estado <img className="status" src="circuloRojo.png" /></p>
+                                            </li>
+                                        )
                                     }
                                 </ul>
                             </div>
