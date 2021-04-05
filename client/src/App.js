@@ -73,17 +73,17 @@ class App extends Component {
                     {currentUser ? (
                         <Nav className="mr-auto">
                           {showAdmin && (
-                              <Nav.Link href="/admin">Dashboard</Nav.Link>
+                              <Nav.Link bsPrefix="nav-link" href="/admin">Dashboard</Nav.Link>
                           )}
                           {showStudent && (
-                              <Nav.Link href="/student">Dashboard</Nav.Link>
+                              <Nav.Link  bsPrefix="nav-link" href="/student">Dashboard</Nav.Link>
                           )}
                           {showTeacher && (
-                              <Nav.Link href="/teacher">Dashboard</Nav.Link>
+                              <Nav.Link  bsPrefix="nav-link" href="/teacher">Dashboard</Nav.Link>
                           )}
-                          <Nav.Link href="/profile"> {currentUser.username}</Nav.Link>
-                          <Nav.Link href="/student/messenger"> Mensajeria</Nav.Link>
-                          <Nav.Link href="/login" onClick={this.logOut}>Cerrar sesión</Nav.Link>
+                          <Nav.Link bsPrefix="nav-link" href="/profile"> {currentUser.username}</Nav.Link>
+                          <Nav.Link bsPrefix="nav-link" href="/student/messenger"> Mensajeria</Nav.Link>
+                          <Nav.Link bsPrefix="nav-link" href="/login" onClick={this.logOut}>Cerrar sesión</Nav.Link>
                         </Nav>
                       ) : (
                       <Nav className="mr-auto">

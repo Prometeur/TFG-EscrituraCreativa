@@ -29,12 +29,10 @@
 }
 
 .form-select {
-    margin: 0.6rem 2rem;
+    margin: .3rem .1rem;
     display: inline-grid;
-    padding: 0 0.9rem
+    padding: 0 0.2rem;
 }
-
-
 
 .image p {
 
@@ -75,6 +73,13 @@ input.error {
       height: 30px;
       display: block;
       border: 1px solid red;
+}
+
+.section-card {
+    display: flex;
+    flex-direction: row;
+    left: 4rem;
+    margin: 0rem 6rem;
 }
 
 .errorMessage {

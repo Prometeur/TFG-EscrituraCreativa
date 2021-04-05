@@ -368,5 +368,4 @@ module.exports = {
     kickStudentFromGroup: kickStudentFromGroup,
     searchApplicant:searchApplicant,
     acceptApplicant:acceptApplicant
-    
 };
