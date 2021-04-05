@@ -179,7 +179,7 @@ class ProfileInfo extends Component {
             else{
                 this.peticionGetGruposTeacher(this.state.currentUserId);
             }
-            this.setState({groupKickSelect: "-1"});
+            this.setState({groupSelect: "-1"});
             this.peticionGet();
         }).catch(error => {
               console.log(error.message);

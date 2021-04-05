@@ -10,6 +10,7 @@ import UserList from '../components/pages/user/UserList.js';
 import Profile from '../components/pages/user/Profile.js';
 import ApplicantList from '../components/pages/user/ApplicantList';
 import Grupos from '../components/pages/user/GroupList';
+import Grupo from '../components/pages/user/Group';
 import Sidebar from '../components/sidebar/Sidebar.js';
 
 import LinksAdmin from '../links/links-Admin';
@@ -27,6 +28,7 @@ function Routes() {
         <Route exact path="/admin/users/viewProfile/:idStudent" component={Profile} />
         <Route exact path="/admin/applicants" component={ApplicantList}/>
         <Route exact path="/admin/groups" component={Grupos}/>
+        <Route exact path="/admin/viewGroup/:idGroup" component={Grupo}/>
         </Switch>
       </BrowserRouter>
     );

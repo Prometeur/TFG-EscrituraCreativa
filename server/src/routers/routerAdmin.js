@@ -36,22 +36,22 @@ router.post("/deactivateUser", controllerAdmin.deactivateUser);
 router.post("/deleteUser", controllerAdmin.deleteUser);
 
 //Renombra al grupo dado.
-//router.post("/renameGroup", controllerAdmin.renameGroup);
+router.post("/renameGroup", controllerAdmin.renameGroup);
 
 //Desactiva a un grupo.
-//router.post("/deactivateGroup", controllerAdmin.deactivateGroup);
+router.post("/deactivateGroup", controllerAdmin.deactivateGroup);
 
 //Muestra los estudiantes de un grupo.
-//router.post("/getStudentsOfGroup", controllerUser.searchStudentOfGroup);
+router.post("/getStudentsOfGroup", controllerUser.searchStudentOfGroup);
 
 //Busca escritos del usuario.
 router.get("/getScriptsByStudent", controllerUser.getScriptsByStudent);
 
 //Busca grupos del profesor.
-//router.get("/getGroupsOfTeacher", controllerUser.getGroups);
+router.get("/getGroupsOfTeacher", controllerUser.getGroups);
 
 //Muestra los datos del grupo.
-//router.get("/getGroupData", controllerUser.getGroupData);
+router.get("/getGroupData", controllerUser.getGroupData);
 
 //Accede a los datos de un usuario.
 router.get("/getProfile", controllerUser.getProfile);
