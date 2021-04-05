@@ -51,10 +51,9 @@ export default class Profile extends Component {
 
         const { currentUser,role} = this.state;
 
-        return (
-            <>
-                <div className="perfil-left">
-                    <Figure>
+        console.log(this.state);
+
+        let foto = <Figure>
                         <Figure.Image
                             bsPrefix="figure"
                             alt="171x180"
@@ -66,7 +65,33 @@ export default class Profile extends Component {
                         <h6>
                             {role}
                         </h6>
-                    </Figure>
+                </Figure>;
+
+        if(this.state.currentUser.foto != undefined)
+        {
+            if(this.state.currentUser.foto.data.length != 0)
+            {
+            let fotoSource = "data:image/png;base64," + btoa(String.fromCharCode.apply(null, this.state.currentUser.foto.data));
+            foto = <Figure>
+                        <Figure.Image
+                            bsPrefix="figure"
+                            alt="171x180"
+                            src={fotoSource}
+                        />
+                        <h5>
+                            {currentUser.username}
+                        </h5>
+                        <h6>
+                            {role}
+                        </h6>
+                </Figure>;
+            }
+        }
+
+        return (
+            <>
+                <div className="perfil-left">
+                    {foto}
                     <ul className="flex-container wrap">
                         <li className="item-button-icon">
                             <img src="gear.png" alt=""/>

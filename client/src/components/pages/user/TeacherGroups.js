@@ -1,6 +1,6 @@
 /*
-*  Name_file :GroupList.js
-*  Description: Pagina que lista todos los grupos  
+*  Name_file :TeacherGroups.js
+*  Description: Pagina que lista los grupos creados por un profesor
 *  que tiene el grupo seleccionado por el profesor  
 */
 import React, { Component } from 'react';
@@ -26,7 +26,7 @@ class GroupList extends Component {
 
     /*Se hacen peticiones al servidor para que me devuelva todos los grupos del profesor*/
     peticionGet = () => {
-        adminService.getAllGroups().then(response => {
+        adminService.getGroupsOfTeacher(this.props.idStudent).then(response => {
             this.setState({ data: response });
             this.filterData();
         }).catch(error => {
@@ -34,8 +34,7 @@ class GroupList extends Component {
         })
     }
 
-    /*Si vuelvo a la pagina de login, comprueba si el usuario ya inicio sesion anteriomente
-   si es el caso lo redirige a la home segun su rol*/
+    /*Se llama a esta función nada más cargar la página*/
     componentDidMount() {
         this.peticionGet();
     }

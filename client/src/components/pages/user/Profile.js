@@ -7,6 +7,7 @@ import React, { Component } from 'react';
 import TeacherService from '../../../services/teacher/teacherService.js';
 import Datos from "./ProfileInfo";
 import Escritos from "./ProfileScripts";
+import Grupos from "./TeacherGroups";
 import '../../../styles/styleGeneral.css';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
@@ -37,7 +38,6 @@ t
        
         TeacherService.getProfile(this.props.match.params.idStudent).then(response => {
               this.setState({data:response});
-              console.log(this.state.data);
         }).catch(error => {
             console.log(error.message);
         })
@@ -75,7 +75,7 @@ t
         let secondTab = <Escritos key={idStudent} idStudent={idStudent}/>;
 
         if(this.state.data.rol == "T"){ //COMPLETAR LUEGO CON LA VISTA DE GRUPOS 
-            secondTab = <Escritos key={idStudent} idStudent={idStudent}/> ;
+            secondTab = <Grupos key={idStudent} idStudent={idStudent}/> ;
         }
 
         return (
