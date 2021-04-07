@@ -45,7 +45,7 @@ import {
     ModalFooter,
 } from "reactstrap";
 
-class EditWriting extends Component {
+class ViewWriting extends Component {
 
     constructor(props) {
         super(props);
@@ -56,15 +56,14 @@ class EditWriting extends Component {
             contentState: null,//editor
             editorState: EditorState.createEmpty(),
             challenge: '',//contiene el desafio 
+            writing: '',//contiene el escrito
             dataMediaChallenge: [],//array de multimedia del desafio
             dataMediaWriting: [],//array de multimedia del escrito
             modalDeleteFile: false,
             deleteFileMedia: '',//fichero multimedia del escrito que desea ser borrado
             nameDeleteFileMedia: '',//nomnbre del fichero multimedia del escrito que desea ser borrado
-            writing: '',
             form: {
                 idWriter: '',
-                title: '',
                 escrito: ''
             }
         }
@@ -89,18 +88,9 @@ class EditWriting extends Component {
                                     idWriter: response[0].idEquipo
                                 }
                             });
-                            /*Obtiene multimedia del escrito del equipo */
-                            StudentService.getMultimediaWriting(this.props.match.params.idChallenge, response[0].idEquipo)
-                                .then(response => {
-                                    this.setState({ dataMediaWriting: response.data });
-                                }).catch(error => {
-                                    console.log(error.message);
-                                });
-
                         }).catch(error => {
                             console.log(error.message);
                         })
-
                 }
                 else {//si es individual
                     this.setState({
@@ -110,16 +100,15 @@ class EditWriting extends Component {
                             idWriter: AuthUser.getCurrentUser().id
                         }
                     });
-
-                    /*Obtiene multimedia del escrito del estudiante */
-                    StudentService.getMultimediaWriting(this.props.match.params.idChallenge, AuthUser.getCurrentUser().id)
-                        .then(response => {
-                            this.setState({ dataMediaWriting: response.data });
-                        }).catch(error => {
-                            console.log(error.message);
-                        });
-
                 }
+
+                /*Obtiene multimedia del escrito del estudiante/equipo */
+                StudentService.getMultimediaWriting(this.props.match.params.idChallenge, this.state.form.idWriter)
+                    .then(response => {
+                        this.setState({ dataMediaWriting: response.data });
+                    }).catch(error => {
+                        console.log(error.message);
+                    });
 
             }).catch(error => {
                 console.log(error.message);
@@ -136,15 +125,15 @@ class EditWriting extends Component {
         /*Obtiene el escrito del estudiante */
         StudentService.getWriting(this.props.match.params.idWriting)
             .then(response => {
+                debugger;
                 var contentState = stateFromHTML(response.data[0].texto);
                 let editorState = EditorState.createWithContent(contentState);
                 // this.setState({ editorState: editorState });
                 this.setState({
-                    writing: response.data[0],
                     editorState: editorState,
+                    writing: response.data[0],
                     form: {
                         ...this.state.form,
-                        title: response.data[0].nombre,
                         escrito: response.data[0].texto
                     }
                 });
@@ -156,7 +145,7 @@ class EditWriting extends Component {
     //Envia el escrito editado 
     editWriting = () => {
         /*Edita escrito del estudiante*/
-        StudentService.editWriting(this.props.match.params.idWriting, this.props.match.params.idGroup, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.title, this.state.form.escrito, this.state.challenge.colaborativo)
+        StudentService.editWriting(this.props.match.params.idWriting, this.props.match.params.idGroup, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.escrito, this.state.challenge.colaborativo)
             .then(response => {
                 if (this.state.imgCollection.length > 0) {
                     StudentService.sendMultimedia(this.state.imgCollection, this.state.form.idWriter, this.props.match.params.idChallenge, this.state.challenge.colaborativo)
@@ -253,13 +242,15 @@ class EditWriting extends Component {
         this.setState({ modalDeleteFile: false });
     };
 
-    onChangeWritingName = e => {
-        this.setState({
-            form: {
-                ...this.state.form,
-                title: e.target.value
-            }
-        });
+    //Muestra el tipo de desafio
+    showTypeChallenge = () => {
+
+        if (this.state.challenge.colaborativo === 1) {
+            return "Escrito individual"
+        }
+        else {
+            return "Escrito Colaborativo"
+        }
     }
 
     /*Dibuja la pagina */
@@ -270,12 +261,13 @@ class EditWriting extends Component {
         return (
             <>
                 <div className="container">
-                    <label className='form-label'>Editar Escrito</label>
+                    <label className='form-label'>{this.showTypeChallenge()}</label>
                     <Card className="card-edit">
                         <Card.Body>
                             <div className="row-edit">
                                 <h2 > {this.state.challenge.titulo} </h2>
                             </div>
+
                             <div className="row-edit">
 
                                 <label className='form-label'>Categoria</label>
@@ -286,6 +278,7 @@ class EditWriting extends Component {
                                 <label className='form-label'>Leer la descripción del Desafío</label>
                                 <div className="challenge-inputs" dangerouslySetInnerHTML={{ __html: this.state.challenge.descripcion }}></div>
                             </div>
+
                             <div className="row-edit">
                                 <label className='form-label'>Ficheros Multimedia: </label>
                                 <table>
@@ -301,44 +294,40 @@ class EditWriting extends Component {
                                     </tbody>
                                 </table>
                             </div>
-                            <div className="form-inputs">
-                                <label className='form-label'>Titulo</label>
-                                <div>
-                                    <input
-                                        // className='form-input'
-                                        type="text"
-                                        name="title"
-                                        placeholder="Escribe el título"
-                                        value={this.state.form.title}
-                                        // onChange={this.handleChange}
-                                        onChange={this.onChangeWritingName}
-                                    />
+
+                            <div className="row-edit">
+                                <label className='form-label'>Titulo </label>
+                                <div  >
+                                    <h5>{this.state.writing.nombre}</h5>
                                 </div>
 
                             </div>
                             <div className="row-edit">
-                                <label className='form-label' >Descripción </label>
+                                <label className='form-label'>Descripción </label>
+                                <div dangerouslySetInnerHTML={{ __html: this.state.form.escrito }}></div>
+
+                            </div>
+                            {/* <div className="row-edit" dangerouslySetInnerHTML={{ __html: this.state.form.escrito }}></div> */}
+
+                            {/* <div className="row-edit">
+                                <label className='form-label'>Descripción </label>
                                 <Editor
                                     editorState={this.state.editorState}
-                                    // toolbarClassName="toolbarClassName"
-                                    // // wrapperClassName="demo-wrapper"
-                                    // // editorClassName="border-edit"
-                                    wrapperClassName="wrapperClassName1"
-                                    editorClassName="editorClassName1"
-                                    toolbarClassName="toolbarClassName1"
+                                    toolbarClassName="toolbarClassName"
+                                    wrapperClassName="wrapperClassName"
+                                    editorClassName="editorClassName"
                                     onEditorStateChange={this.onEditorStateChange}
                                     onContentStateChange={this.onContentStateChange}
                                     onChange={this.editorChange}
                                 />
-                                {/* <EditorText onEditorStateChange={this.onEditorStateChange} onContentStateChange={this.onContentStateChange}  onChange={this.editorChange} param={this.state.editorState}/> */}
-                            </div>
+                            </div> */}
 
-                            <div class="row-edit">
+                            {/* <div class="row-edit">
                                 <label className='form-label'>Puedes agregar un fichero multimedia si lo deseas (imagen,video o audio): </label>
                                 <div className="form">
                                     <input type="file" name="imgCollection" onChange={this.onFileChange} multiple />
                                 </div>
-                            </div>
+                            </div> */}
 
                             <div class="row-edit">
                                 <label className='form-label'>Ficheros Multimedia: </label>
@@ -349,7 +338,7 @@ class EditWriting extends Component {
                                                 <tr key={writing.id}>
                                                     <td>{this.showTitle(writing)}</td>
                                                     <td><Button onClick={() => window.open(writing.ruta)}>Ver</Button></td>
-                                                    <td><Button variant="danger" onClick={() => this.askDeleteFile(writing)}>Eliminar</Button></td>
+                                                    {/* <td><Button variant="danger" onClick={() => this.askDeleteFile(writing)}>Eliminar</Button></td> */}
                                                 </tr>
                                             ))}
                                         </div>
@@ -357,11 +346,23 @@ class EditWriting extends Component {
                                 </table>
                             </div>
 
-                            <div className="form-select">
-                                <Button text='enviar' onClick={() => this.editWriting()}> Guardar  </Button>
+                            <div class="row-edit">
+                                <label className='form-label'>Calificación: </label>
+                                <td><textarea rows="2" cols="10" value={this.state.writing.puntuacion} readOnly={true} style={{ resize: "none", textAlign: "center" }} ></textarea></td>
                             </div>
+                            {/* <td><textarea name="mensaje" rows="10" cols="70" value={this.state.message.mensaje} readOnly={true} style={{ resize: "none" }} ></textarea></td> */}
+
+                            <div class="row-edit">
+                                <label className='form-label'>Comentarios: </label>
+                                <td><textarea rows="10" cols="70" value={this.state.writing.comentario} readOnly={true} style={{ resize: "none", justifyContent: "center" }} ></textarea></td>
+                            </div>
+
+
+                            {/* <div className="form-select">
+                                <Button text='enviar' onClick={() => this.editWriting()}> Guardar  </Button>
+                            </div> */}
                             <div className="form-select">
-                                <Button onClick={() => window.location.href = '/student'}>Cancelar</Button>
+                                <Button onClick={() => window.location.href = '/student'}>Volver</Button>
                             </div>
                         </Card.Body>
                     </Card>
@@ -385,4 +386,4 @@ class EditWriting extends Component {
         );
     }
 }
-export default EditWriting;
+export default ViewWriting;
