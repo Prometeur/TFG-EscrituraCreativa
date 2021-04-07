@@ -160,3 +160,7 @@ modelStudent
 -sendWriting agregado campo title del escrito
 -editWriting agregado campo title del escrito
 -getWritingWriter
+
+SQL
+
+agregado campo comentario a la tabla escritos
