@@ -356,7 +356,6 @@ class EditChallenge extends Component {
                             <div class="form-inputs">
                                 <label className='form-label'>Descripción</label>
                                 <Editor
-
                                     editorState={editorState}
                                     wrapperClassName="demo-wrapper"
                                     editorClassName="border-edit"
