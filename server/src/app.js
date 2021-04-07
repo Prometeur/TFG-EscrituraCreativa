@@ -7,22 +7,68 @@
 /*constantes usadas */
 const express = require("express");
 const app = express();
-const bodyParser = require ('body-parser');
+const bodyParser = require('body-parser');
 const cors = require("cors");
 const path = require('path');
 
+const http = require("http");
+const server = http.createServer(app);
+
+/*-------------------------------------------SOCKET --------------------------------------------------------------------- */
+const socketio = require("socket.io");
+const io = socketio(server);
+
+
+
+//Funcionalidad de socket.io en el servidor
+io.on("connection", (socket) => {
+  let nombre;
+  // socket.on("conectado", () => {
+  //   console.log("Hola amigo Luis");
+
+  // });
+
+    //cada vez que se conecte  un cliente se ejecutara socket.on 
+    socket.on("conectado", (nomb) => {
+      nombre = nomb;
+      //socket.broadcast.emit manda el mensaje a todos los clientes excepto al que ha enviado el mensaje
+      socket.broadcast.emit("mensajes", {
+        nombre: nombre,
+        mensaje: `${nombre} ha entrado en el desafio colaborativo`,
+      });
+    });
+
+    socket.on("mensaje", (nombre, mensaje) => {
+      //io.emit manda el mensaje a todos los clientes conectados al chat
+      
+      io.emit("mensajes", { nombre, mensaje });
+    });
+
+    socket.on("disconnect", () => {
+      io.emit("mensajes", {
+        server: "Servidor",
+        mensaje: `${nombre} ha abandonado el desafio colaborativo`,
+      });
+    });
+
+
+});
+// server.listen(3001, () => console.log("Servidor inicializado"));
+
 
 /*-------------------------------------------SETTING SERVER--------------------------------------------------------------------- */
-//configuracion del servidor express
-app.set('port',process.env.PORT || 3001);// defino el puerto
+// //configuracion del servidor express
+app.set('port', process.env.PORT || 3001);// defino el puerto
 
-//starting the server
-app.listen(app.get('port'),()=>{
-    console.log('Server on port', app.get('port'));
-});
+// //starting the server
+// app.listen(app.get('port'),()=>{
+//     console.log('Server on port', app.get('port'));
+// });
+
+server.listen(app.get('port'), () => console.log("Server on port", app.get('port')));
 
 //Es necesario indicar las rutas de las imagenes
-app.use(express.static(path.join(__dirname,'../public')));
+app.use(express.static(path.join(__dirname, '../public')));
 /*-------------------------------------------MIDDLEWARE-------------------------------------------------------------------------- */
 
 //middleware funciones app cliente envia peticion al servidor
@@ -31,14 +77,17 @@ app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json());
 
+
+
+
 /*--------------------------------------------ROUTES----------------------------------------------------------------------------- */
 
 //Routes  url del servidor
-app.use('/admin',require('./routers/routerAdmin'));
-app.use('/teacher',require('./routers/routerTeacher'));
-app.use('/student',require('./routers/routerStudent'));
-app.use('/auth',require('./routers/routerAuth'));
-app.use('/user',require('./routers/routerUser'));
+app.use('/admin', require('./routers/routerAdmin'));
+app.use('/teacher', require('./routers/routerTeacher'));
+app.use('/student', require('./routers/routerStudent'));
+app.use('/auth', require('./routers/routerAuth'));
+app.use('/user', require('./routers/routerUser'));
 app.use(middlewareNotFoundError);
 app.use(middlewareServerError);
 
@@ -47,28 +96,28 @@ app.use(middlewareServerError);
 
 /* Código 404: User error */
 function middlewareNotFoundError(request, response) {
-   
-    response.status(404);
-    /*
-    response.render("404", {
-            mensaje: "La pagina " + request.url + " no existe..."
-    });
-    */
-   
+
+  response.status(404);
+  /*
+  response.render("404", {
+          mensaje: "La pagina " + request.url + " no existe..."
+  });
+  */
+
 }
 
 /* Código 500: Internal server error */
 function middlewareServerError(error, request, response, next) {
 
-    response.status(500);
-    console.log(error.message);
-    console.log(error.stack);
-    /*
-    response.render("500", {
-            mensaje: error.message,
-            pila: error.stack
-    });
-    */
+  response.status(500);
+  console.log(error.message);
+  console.log(error.stack);
+  /*
+  response.render("500", {
+          mensaje: error.message,
+          pila: error.stack
+  });
+  */
 }
 
 

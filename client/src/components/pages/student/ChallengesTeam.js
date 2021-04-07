@@ -27,6 +27,8 @@ class ChallengesTeam extends Component {
             dataTeamStudent: [],//Contiene el equipo del estudiante
             data: [],//contiene desafios del estudiante
             dataWritingTeam: [],//contiene escritos del equipo del estudiante
+        
+            
         };
     }
 
@@ -43,12 +45,11 @@ class ChallengesTeam extends Component {
             .then(response => {
                 this.setState({ dataTeamStudent: response });
                 //si el estudiante tiene equipo
-                debugger;
                 if (response.length != 0) {
                     /**Obtiene los escritos del equipo del estudiante */
                     StudentService.getWritingsTeam(response[0].idEquipo, this.props.groupSelect)
                         .then(response => {
-
+                          
                             this.setState({ dataWritingTeam: response });
                         }).catch(error => {
                             console.log(error.message);
@@ -61,20 +62,36 @@ class ChallengesTeam extends Component {
 
     }
 
-    disabledButtonEdit = (n) => {
+
+    disabledButtonEdit = (challenge,n) => {
+        //si no tiene equipo o si el escrito ya esta finalizado  
         if (this.state.dataTeamStudent.length === 0)
             return true;
-
+        var dateActual = new Date();
+        var dateFin = new Date(challenge.fechaFin)
+        //si ya se paso la fecha del desafio, desactivar button
+        if (dateActual.getTime() > dateFin.getTime()) {
+            return true;
+        }
         if (n)
             return false;
         else
             return true;
     };
 
-    disabledButtonCreate = (n) => {
-        if (this.state.dataTeamStudent.length === 0)
+    disabledButtonCreate = (challenge,n) => {
+        //Si no tiene equipo 
+        if (this.state.dataTeamStudent.length === 0 )
             return true;
 
+        
+
+        var dateActual = new Date();
+        var dateFin = new Date(challenge.fechaFin)
+        //si ya se paso la fecha del desafio, desactivar button
+        if (dateActual.getTime() > dateFin.getTime()) {
+            return true;
+        }
         if (n)
             return true;
         else
@@ -91,6 +108,13 @@ class ChallengesTeam extends Component {
         }
     }
 
+    //Devuelve el nombre del equipo
+    showNameTeam = () => {
+        if (this.state.dataTeamStudent.length > 0) {
+            return this.state.dataTeamStudent[0].nombreEquipo
+        }
+    }
+
     /*Dibuja la pagina  */
     render() {
         let formatedDate;
@@ -99,11 +123,12 @@ class ChallengesTeam extends Component {
         let idWriting = '';
         return (
             <div className="table-margin">
-                 <Table striped bordered hover >
+                <Table striped bordered hover >
                     <thead>
                         <tr>
                             {/* <th className ="challenge-th">idDesafio</th> */}
                             <th className="challenge-th">Desafio</th>
+                            <th className="challenge-th">Equipo</th>
                             <th className="challenge-th">categoria</th>
                             <th className="challenge-th">tipo</th>
                             <th className="challenge-th">fecha</th>
@@ -117,6 +142,7 @@ class ChallengesTeam extends Component {
                             <tr key={challenge.id}>
                                 {/* <td className ="challenge-td">{challenge.id}</td> */}
                                 <td className="challenge-td">{challenge.titulo}</td>
+                                <td>{this.showNameTeam()}</td>
                                 {/* <td>{challenge.tipoCalificacion}</td> */}
                                 <td className="challenge-td">{challenge.nombre}</td>
                                 {/* <td className ="challenge-td">{challenge.colaborativo}</td> */}
@@ -133,14 +159,14 @@ class ChallengesTeam extends Component {
                                         idWriting = item.id;
                                     }
                                     )}
-
-                                <td className="challenge-td"><Link to={`/student/writing/${this.props.groupSelect}/${challenge.id}`}><Button variant="outline-primary" disabled={this.disabledButtonCreate(n)}>Nuevo Escrito</Button></Link></td>
-                                {/* <td><Link to={`/student/editWriting/${this.props.groupSelect}/${challenge.id}`}><button disabled={e}>Editar Escrito</button></Link></td> */}
-                                <td className="challenge-td"><Link to={`/student/editWriting/${this.props.groupSelect}/${challenge.id}/${idWriting}`}><Button variant="outline-primary" disabled={this.disabledButtonEdit(n)}>Editar Escrito</Button></Link></td>
+                                <td className="challenge-td"><Link to={`/student/writing/${this.props.groupSelect}/${challenge.id}`}><Button variant="outline-primary" disabled={this.disabledButtonCreate(challenge,n)}>Nuevo Escrito</Button></Link></td>
+                                <td className="challenge-td"><Link to={`/student/editWriting/${this.props.groupSelect}/${challenge.id}/${idWriting}`}><Button variant="outline-primary" disabled={this.disabledButtonEdit(challenge,n)}>Editar Escrito</Button></Link></td>
+                                
+                                <td className="challenge-td"><Link to={`/student/editWritingTeam/${this.props.groupSelect}/${challenge.id}/${idWriting}`}><Button variant="outline-primary" disabled={this.disabledButtonEdit(challenge,n)}>Editar Escrito Team</Button></Link></td>
                             </tr>
                         ))}
                     </tbody>
-                    </Table>
+                </Table>
             </div>
         );
     }

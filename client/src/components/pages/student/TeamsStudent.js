@@ -51,7 +51,8 @@ class TeamsStudent extends Component {
             teamName: '',//nombre del equipo a crear
             idGuest: '',//invitado
             idKicked: '',
-            idLider: ''//idLider
+            idLider: '',//idLider
+            nameLider: '',//idLider
         }
     }
 
@@ -68,14 +69,18 @@ class TeamsStudent extends Component {
         StudentService.getTeamStudentGroup(AuthUser.getCurrentUser().id, this.props.groupSelect)
             .then(response => {
 
-                this.setState({ dataTeamStudentGroup: response });
+                this.setState({ dataTeamStudentGroup: response, idLider: response[0].idCreador });
                 //si el estudiante tiene equipo
                 if (response.length != 0) {
                     //me traigo los integrantes de un mismo equipo
                     StudentService.getMembersTeam(response[0].idEquipo)
                         .then(response => {
-                            debugger;
-                            this.setState({ dataMembersTeam: response });
+                            var nombre;
+                            response.filter(member1 => member1.idEstudiante === this.state.idLider).map((member) => ( 
+                                nombre = member.nombreEstudiante +" "+ member.apellidoEstudiante
+                            ));
+
+                            this.setState({ dataMembersTeam: response,nameLider:nombre });
 
                         }).catch(error => {
                             console.log(error.message);
@@ -88,7 +93,7 @@ class TeamsStudent extends Component {
         /*Obtiene estudiantes sin equipos de un grupo*/
         StudentService.getStudentWithoutTeam(this.props.groupSelect)
             .then(response => {
-                debugger;
+
                 // dataStudentWithoutTeam
                 this.setState({ dataStudentWithoutTeam: response });
 
@@ -106,8 +111,6 @@ class TeamsStudent extends Component {
                     this.showModalSuccessCreateTeam();
                     var idTeam = response;
                     this.setState({ idTeamCreated: response });
-
-
                     //agrega a la tabla equipoestudiante el nuevo equipo con idTeam y idEstudiante
                     StudentService.addStudentTeam(idTeam, AuthUser.getCurrentUser().id)
                         .then(response => {
@@ -169,7 +172,6 @@ class TeamsStudent extends Component {
         var equipo = this.state.dataTeamStudentGroup[0].nombreEquipo;
         var grupo = this.state.dataTeamStudentGroup[0].nombreGrupo;
         var message = nombre + " " + apellidos + " " + messageBody + " " + equipo + " del Grupo de " + grupo;
-        debugger;
         StudentService.sendMessage(AuthUser.getCurrentUser().id, this.state.idGuest, AuthUser.getCurrentUser().id, message, 2)
             .then(response => {
                 this.showModalSuccesfulInvitation();
@@ -370,7 +372,7 @@ class TeamsStudent extends Component {
                                                 <td>{item.apellidoEstudiante}</td>
                                             </tr>
                                         )}
-                                        <td></td>
+                                        <td>{this.state.nameLider}</td>
                                         <td><Button variant="outline-primary" disabled={this.disabledButtonDeleteTeam()} onClick={() => this.askDeleteTeam()} >Eliminar</Button></td>
                                     </tr>
                                 )

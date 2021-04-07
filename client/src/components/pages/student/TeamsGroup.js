@@ -51,6 +51,7 @@ class TeamsGroup extends Component {
         //Obtiene los equipos del grupo 
         StudentService.getTeamsGroup(this.props.groupSelect)
             .then(response => {
+                debugger
                 this.setState({ dataTeamsGroup: response });
             }).catch(error => {
                 console.log(error.message);
@@ -167,7 +168,7 @@ class TeamsGroup extends Component {
                                         <td>{team.nombreGrupo}</td>
 
                                         {this.state.dataTeamStudent.filter(teamStudent => teamStudent.idEquipo === team.idEquipo).map((item, index) =>
-                                            <tr> {item.nombre}</tr>
+                                            <tr> {item.nombre} {item.apellidos}</tr>
                                         )}
 
                                         <td ><Button onClick={() => this.sendRequest(team)} disabled={this.disabledButtonJoin()}>Unirse</Button></td>
