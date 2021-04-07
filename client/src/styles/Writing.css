@@ -115,21 +115,20 @@
 } */
 
 
-.editorClassName{
-    /* border: 1px solid rgb(62, 161, 84); */
+.editorClassName1{
+    border: 1px solid rgb(62, 161, 84);
     height: 55vh;
-    width:31vw;
+    width:800px; 
 }
 
 
- /* .wrapperClassName{
-    border: 1px solid rgb(141, 62, 161);
+ .wrapperClassName1{
+    /* border: 1px solid rgb(141, 62, 161); */
     width:800px;
-    height: 300px;
-} */
+    height: 75vh;
+} 
 
-/* .toolbarClassName{
-    border: 1px solid rgb(161, 62, 62);
+.toolbarClassName1{
+    /* border: 1px solid rgb(161, 62, 62); */
     width:800px;
-
-} */
+}

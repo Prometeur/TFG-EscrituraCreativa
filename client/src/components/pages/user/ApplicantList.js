@@ -109,10 +109,12 @@ class SearchStudentRes extends Component {
             this.setState({searchRole:"S"});
         }
 
-
         TeacherService.searchApplicant(this.state.searchName, this.state.searchType).then(response =>{
             this.setState({data:response});
             this.setState({filteredData:response});
+            this.setState({
+                currentUserRole: dataUser.rol
+            });
             this.filterData();
         })
 
@@ -125,7 +127,8 @@ class SearchStudentRes extends Component {
         
         let tabla = <div> </div>;
 
-    if(this.currentUserRole ="A"){
+
+    if(this.state.currentUserRole ==="T"){
         tabla = <ListGroup variant="flush">
 
             {this.state.filteredData.map((student) => 
@@ -146,7 +149,8 @@ class SearchStudentRes extends Component {
     </ListGroup>;
     }
 
-    if(this.currentUserRole ="A"){
+    if(this.state.currentUserRole ==="A"){
+
         tabla = <ListGroup variant="flush">
 
             {this.state.filteredData.map((student) => 

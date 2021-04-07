@@ -31,11 +31,12 @@ class ChallengesStudent extends Component {
 
     componentDidMount() {
         /**Obtiene los desafios del estudiante segun su grupo */
-        StudentService.getChallenges(this.props.groupSelect).then(response => {
-            this.setState({ data: response });
-        }).catch(error => {
-            console.log(error.message);
-        })
+        StudentService.getChallenges(this.props.groupSelect)
+            .then(response => {
+                this.setState({ data: response });
+            }).catch(error => {
+                console.log(error.message);
+            })
 
 
         /**Obtiene los escritos del estudiante segun su grupo */
@@ -52,6 +53,33 @@ class ChallengesStudent extends Component {
         console.log(item);
     };
 
+    disabledButtonEdit = (challenge, n) => {
+        var dateActual = new Date();
+        var dateFin = new Date(challenge.fechaFin)
+        //si ya se paso la fecha del desafio, desactivar button
+        if (dateActual.getTime() > dateFin.getTime()) {
+            return true;
+        }
+        if (n)
+            return false;
+        else
+            return true;
+    };
+
+    disabledButtonCreate = (challenge, n) => {
+
+        var dateActual = new Date();
+        var dateFin = new Date(challenge.fechaFin)
+        //si ya se paso la fecha del desafio, desactivar button
+        if (dateActual.getTime() > dateFin.getTime()) {
+            return true;
+        }
+        if (n)
+            return true;
+        else
+            return false;
+    };
+
     //Muestra el tipo de desafio
     showCollaborative = (challenge) => {
         if (challenge.colaborativo === 1) {
@@ -66,7 +94,6 @@ class ChallengesStudent extends Component {
     render() {
         let formatedDate;
         const { data } = this.state;
-        let e = false;
         let n = false;
         let idWriting = '';
         return (
@@ -96,19 +123,15 @@ class ChallengesStudent extends Component {
                                 <td className="challenge-td">{formatedDate = moment(challenge.fechaFin).format('DD/MM/YYYY')}</td>
                                 <td className="challenge-td">{formatedDate = moment(challenge.fechaFin).format('LT')}</td>
                                 {/* <td>{challenge.activo}</td> */}
-
-                                {e = true}{n = false}
+                                {n = false}
                                 {this.state.dataWritingStudent.filter(writing => writing.idDesafio === challenge.id)
                                     .map((item, index) => {
                                         n = true;
-                                        e = false;
                                         idWriting = item.id;
                                     }
                                     )}
-
-                                <td className="challenge-td"><Link to={`/student/writing/${this.props.groupSelect}/${challenge.id}`}><Button variant="outline-primary"  disabled={n}>Nuevo Escrito</Button></Link></td>
-                                {/* <td><Link to={`/student/editWriting/${this.props.groupSelect}/${challenge.id}`}><button disabled={e}>Editar Escrito</button></Link></td> */}
-                                <td className="challenge-td"><Link to={`/student/editWriting/${this.props.groupSelect}/${challenge.id}/${idWriting}`}><Button variant="outline-primary" disabled={e}>Editar Escrito</Button></Link></td>
+                                <td className="challenge-td"><Link to={`/student/writing/${this.props.groupSelect}/${challenge.id}`}><Button variant="outline-primary" disabled={this.disabledButtonCreate(challenge, n)}>Nuevo Escrito</Button></Link></td>
+                                <td className="challenge-td"><Link to={`/student/editWriting/${this.props.groupSelect}/${challenge.id}/${idWriting}`}><Button variant="outline-primary" disabled={this.disabledButtonEdit(challenge, n)}>Editar Escrito</Button></Link></td>
                             </tr>
                         ))}
                     </tbody>
