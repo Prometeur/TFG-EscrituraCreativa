@@ -198,14 +198,14 @@ class CreateChallenge extends Component {
                 if (this.state.imgCollection.length > 0) {
                     TeacherService.sendMultimedia(this.state.imgCollection, this.state.form.idTeacher, idChallenge, this.state.form.type)
                         .then(response => {
-                            window.location.href = '/teacher/groups';
+                            window.location.href = '/teacher';
                         })
                         .catch(error => {
                             console.log(error.message);
                         });
                 }
                 else {
-                    window.location.href = '/student/groups';
+                    window.location.href = '/teacher';
                 }
             })
             .catch(error => {

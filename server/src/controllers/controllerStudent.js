@@ -153,9 +153,10 @@ function sendWriting(req, res) {
     const idGroup = req.body.idGroup;
     const desafio = req.body.idChallenge;
     const idWriter = req.body.idWriter;
+    const title = req.body.title;
     const texto = req.body.escrito;
     const type = req.body.type;
-    modelStudent.sendWriting(idGroup, desafio, idWriter, texto, type, function (err, result) {
+    modelStudent.sendWriting(idGroup, desafio, idWriter, title,texto, type, function (err, result) {
         if (err) {
             console.log(err.message);
         }
@@ -168,6 +169,21 @@ function getWriting(req, res) {
     const idWriting= req.query.idWriting;
   
     modelStudent.getWriting(idWriting, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
+        res.send(result);
+    });
+}
+
+
+/*Obtiene el escrito del estudiante */
+function getWritingWriter(req, res) {
+    const idGroup= req.query.idGroup;
+    const idChallenge= req.query.idChallenge;
+    const idWriter= req.query.idWriter;
+  
+    modelStudent.getWritingWriter(idGroup,idChallenge,idWriter, function (err, result) {
         if (err) {
             console.log(err.message);
         }
@@ -205,9 +221,10 @@ function editWriting(req, res) {
     const idGroup = req.body.idGroup;
     const idChallenge = req.body.idChallenge;
     const idWriter = req.body.idWriter;
+    const title = req.body.title;
     const text = req.body.escrito;
     const type = req.body.type;
-    modelStudent.editWriting(idWriting, idGroup, idChallenge, idWriter, text, type, function (err, result) {
+    modelStudent.editWriting(idWriting, idGroup, idChallenge, idWriter, title,text, type, function (err, result) {
         if (err) {
             console.log(err.message);
         }
@@ -381,7 +398,8 @@ function sendMultimedia(req, res) {
         var type = str.split("/");
         //dir->idWriter/idChallenge/tipo/
         const dir = idWriter + "/" + idChallenge + "/" + type[0] + "/";
-        let path = "http://localhost:3001/multimedia/" + typeChallenge +"/"+ dir + req.files[i].filename;
+        // let path = "http://localhost:3001/multimedia/" + typeChallenge +"/"+ dir + req.files[i].filename;
+        let path = "http://"+ req.headers.host+"/multimedia/" + typeChallenge +"/"+ dir + req.files[i].filename;
         reqFiles.push([idWriter,idChallenge,path]) 
     }
     modelStudent.sendMultimedia(reqFiles, function (err, result) {
@@ -399,7 +417,11 @@ function deleteFile(req, res) {
     const idMultimedia = req.body.idMultimedia;
     const path = req.body.path;
     // console.log("Eliminando file--------->", idMultimedia);
-    var filePath = "public/" + path.replace('http://localhost:3001/', '');
+
+    //'http://localhost:3001/' es remplazado por vacio ''
+
+    // var filePath = "public/" + path.replace('http://localhost:3001/', '');
+    var filePath = "public/" + path.replace('http://' + req.headers.host + "/", '');
     fs.unlink(filePath, (err) => {
         if (err) {
             console.error(err)
@@ -428,6 +450,7 @@ module.exports = {
     getChallenges: getChallenges,
     getChallenge: getChallenge,
     getWriting: getWriting,
+    getWritingWriter: getWritingWriter,
     getWritingsTeam:getWritingsTeam,
     getWritingsStudent:getWritingsStudent,
     sendWriting: sendWriting,

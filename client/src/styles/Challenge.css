@@ -61,9 +61,6 @@
     text-transform: uppercase;
 }
 
-.wrapperClassName{
-    border: 1px solid;
-}
 
 .MuiGrid-root{
     margin-top: 6px;
@@ -273,12 +270,19 @@ input.error {
     text-align: center;
 }
 
+.wrapperClassName{
+    border: 1px solid;
+}
+
 .editorClassName {
     /* border: 1px solid rgb(62, 161, 84); */
-    height: 55vh;
-    width:100vw;
+    /* height: 55vh;
+    width:60vw; */
 }
 
 .wrapperClassName {
-    border: 1px solid;
+    /* border: 1px solid; */
 }
+
+
+

@@ -166,8 +166,8 @@ class StudentService {
             })
     }
 
-       /**edita el equipo*/
-       deleteTeam(idTeam) {
+    /**edita el equipo*/
+    deleteTeam(idTeam) {
         return axios.post("/student/deleteTeam", { idTeam: idTeam }, { headers: { "Authorization": `Bearer ${authHeader()}` } })
             .then(response => {
                 return response.data;
@@ -219,18 +219,30 @@ class StudentService {
                 console.log(error.message);
             })
     }
-    
-        /*Obtiene los escritos del estudiante en un grupo*/
-        getWritingsStudent(idStudent, idGroup) {
-            return axios.get("student/getWritingsStudent", { params: { idStudent: idStudent, idGroup: idGroup } }, {
+
+      /*Obtiene el escrito del estudiante */
+      getWritingWriter(idGroup,idChallenge,idWriter) {
+        return axios.get("/student/getWritingWriter", { params: { idGroup:idGroup,idChallenge: idChallenge,idWriter:idWriter} },
+            {
                 headers: { "Authorization": `Bearer ${authHeader()}` }
             }).then(response => {
-                return response.data;
+                return response;
             }).catch(error => {
                 console.log(error.message);
             })
-        }
-    
+    }
+
+    /*Obtiene los escritos del estudiante en un grupo*/
+    getWritingsStudent(idStudent, idGroup) {
+        return axios.get("student/getWritingsStudent", { params: { idStudent: idStudent, idGroup: idGroup } }, {
+            headers: { "Authorization": `Bearer ${authHeader()}` }
+        }).then(response => {
+            return response.data;
+        }).catch(error => {
+            console.log(error.message);
+        })
+    }
+
 
     /*Obtiene los escritos de un equipo */
     getWritingsTeam(idTeam, idGroup) {
@@ -244,8 +256,8 @@ class StudentService {
     }
 
     /*Edito el escrito del estudiante */
-    editWriting(idWriting, idGroup, idChallenge, idWriter, escrito, type) {
-        return axios.post("/student/editWriting", { idWriting: idWriting, idGroup: idGroup, idChallenge: idChallenge, idWriter: idWriter, escrito: escrito, type: type }, {
+    editWriting(idWriting, idGroup, idChallenge, idWriter, title, escrito, type) {
+        return axios.post("/student/editWriting", { idWriting: idWriting, idGroup: idGroup, idChallenge: idChallenge, idWriter: idWriter, title: title, escrito: escrito, type: type }, {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
             return response.data;
@@ -255,8 +267,8 @@ class StudentService {
     }
 
     /*Envia el escrito del estudiante segun su grupo*/
-    sendWriting(idGroup, idChallenge, idWriter, escrito, type) {
-        return axios.post("/student/sendWriting", { idGroup: idGroup, idChallenge: idChallenge, idWriter: idWriter, escrito: escrito, type: type }, {
+    sendWriting(idGroup, idChallenge, idWriter, title, escrito, type) {
+        return axios.post("/student/sendWriting", { idGroup: idGroup, idChallenge: idChallenge, idWriter: idWriter, title: title, escrito: escrito, type: type }, {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
             return response.data;
@@ -310,8 +322,8 @@ class StudentService {
     //     })
     // }
 
-     /*Envia los archivos multimedia del estudiante*/
-     sendMultimedia(imgCollection, idWriter, idChallenge,type) {
+    /*Envia los archivos multimedia del estudiante*/
+    sendMultimedia(imgCollection, idWriter, idChallenge, type) {
         const form = new FormData();
 
         for (const key of Object.keys(imgCollection)) {
@@ -321,14 +333,14 @@ class StudentService {
         form.append("idWriter", idWriter);
         form.append("idChallenge", idChallenge);
 
-        return axios.post("/student/sendMultimedia", form, { params: { id: idWriter, idFolder: idChallenge,type:type } }, {
+        return axios.post("/student/sendMultimedia", form, { params: { id: idWriter, idFolder: idChallenge, type: type } }, {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
             return response.data;
         }).catch(error => {
             console.log(error.message);
         })
-        
+
     }
 
     /*Edita los archivos multimedia del estudiante*/

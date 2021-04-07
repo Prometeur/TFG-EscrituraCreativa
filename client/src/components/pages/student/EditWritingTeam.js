@@ -34,6 +34,8 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from 'react-bootstrap/Button';
 
+import Chat from "./Chat"
+
 /*Componentes de estilo Reactstrap*/
 import {
     Table,
@@ -45,7 +47,10 @@ import {
     ModalFooter,
 } from "reactstrap";
 
-class EditWriting extends Component {
+
+import socket from "../../../utils/Socket";
+
+class EditWritingTeam extends Component {
 
     constructor(props) {
         super(props);
@@ -61,10 +66,8 @@ class EditWriting extends Component {
             modalDeleteFile: false,
             deleteFileMedia: '',//fichero multimedia del escrito que desea ser borrado
             nameDeleteFileMedia: '',//nomnbre del fichero multimedia del escrito que desea ser borrado
-            writing: '',
             form: {
                 idWriter: '',
-                title: '',
                 escrito: ''
             }
         }
@@ -74,9 +77,7 @@ class EditWriting extends Component {
         /*Obtiene el desafio seleccionado*/
         StudentService.getChallenge(this.props.match.params.idChallenge)
             .then(response => {
-                this.setState({
-                    challenge: response[0]
-                });
+                this.setState({ challenge: response[0] });
                 //Si es colaborativo
                 if (response[0].colaborativo === 2) {
                     /*Obtiene equipo del estudiante correspondiente a un grupo en concreto*/
@@ -96,35 +97,13 @@ class EditWriting extends Component {
                                 }).catch(error => {
                                     console.log(error.message);
                                 });
-
                         }).catch(error => {
                             console.log(error.message);
                         })
-
                 }
-                else {//si es individual
-                    this.setState({
-                        dataTeamStudent: response,
-                        form: {
-                            ...this.state.form,
-                            idWriter: AuthUser.getCurrentUser().id
-                        }
-                    });
-
-                    /*Obtiene multimedia del escrito del estudiante */
-                    StudentService.getMultimediaWriting(this.props.match.params.idChallenge, AuthUser.getCurrentUser().id)
-                        .then(response => {
-                            this.setState({ dataMediaWriting: response.data });
-                        }).catch(error => {
-                            console.log(error.message);
-                        });
-
-                }
-
             }).catch(error => {
                 console.log(error.message);
             });
-
         /*Obtiene multimedia del desafio*/
         StudentService.getMultimediaChallenge(this.props.match.params.idChallenge)
             .then(response => {
@@ -140,11 +119,9 @@ class EditWriting extends Component {
                 let editorState = EditorState.createWithContent(contentState);
                 // this.setState({ editorState: editorState });
                 this.setState({
-                    writing: response.data[0],
                     editorState: editorState,
                     form: {
                         ...this.state.form,
-                        title: response.data[0].nombre,
                         escrito: response.data[0].texto
                     }
                 });
@@ -156,7 +133,7 @@ class EditWriting extends Component {
     //Envia el escrito editado 
     editWriting = () => {
         /*Edita escrito del estudiante*/
-        StudentService.editWriting(this.props.match.params.idWriting, this.props.match.params.idGroup, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.title, this.state.form.escrito, this.state.challenge.colaborativo)
+        StudentService.editWriting(this.props.match.params.idWriting, this.props.match.params.idGroup, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.escrito, this.state.challenge.colaborativo)
             .then(response => {
                 if (this.state.imgCollection.length > 0) {
                     StudentService.sendMultimedia(this.state.imgCollection, this.state.form.idWriter, this.props.match.params.idChallenge, this.state.challenge.colaborativo)
@@ -253,14 +230,6 @@ class EditWriting extends Component {
         this.setState({ modalDeleteFile: false });
     };
 
-    onChangeWritingName = e => {
-        this.setState({
-            form: {
-                ...this.state.form,
-                title: e.target.value
-            }
-        });
-    }
 
     /*Dibuja la pagina */
     render() {
@@ -277,15 +246,9 @@ class EditWriting extends Component {
                                 <h2 > {this.state.challenge.titulo} </h2>
                             </div>
                             <div className="row-edit">
-
-                                <label className='form-label'>Categoria</label>
-                                <p>{this.state.challenge.nombre}</p>
+                                <label className='form-label'>{this.state.challenge.nombre}</label>
                             </div>
-
-                            <div className="row-edit">
-                                <label className='form-label'>Leer la descripción del Desafío</label>
-                                <div className="challenge-inputs" dangerouslySetInnerHTML={{ __html: this.state.challenge.descripcion }}></div>
-                            </div>
+                            <div className="challenge-inputs" dangerouslySetInnerHTML={{ __html: this.state.challenge.descripcion }}></div>
                             <div className="row-edit">
                                 <label className='form-label'>Ficheros Multimedia: </label>
                                 <table>
@@ -301,31 +264,14 @@ class EditWriting extends Component {
                                     </tbody>
                                 </table>
                             </div>
-                            <div className="form-inputs">
-                                <label className='form-label'>Titulo</label>
-                                <div>
-                                    <input
-                                        // className='form-input'
-                                        type="text"
-                                        name="title"
-                                        placeholder="Escribe el título"
-                                        value={this.state.form.title}
-                                        // onChange={this.handleChange}
-                                        onChange={this.onChangeWritingName}
-                                    />
-                                </div>
 
-                            </div>
                             <div className="row-edit">
-                                <label className='form-label' >Descripción </label>
+                                <label className='form-label'>Descripción </label>
                                 <Editor
                                     editorState={this.state.editorState}
-                                    // toolbarClassName="toolbarClassName"
-                                    // // wrapperClassName="demo-wrapper"
-                                    // // editorClassName="border-edit"
+                                    toolbarClassName="toolbarClassName1"
                                     wrapperClassName="wrapperClassName1"
                                     editorClassName="editorClassName1"
-                                    toolbarClassName="toolbarClassName1"
                                     onEditorStateChange={this.onEditorStateChange}
                                     onContentStateChange={this.onContentStateChange}
                                     onChange={this.editorChange}
@@ -340,10 +286,14 @@ class EditWriting extends Component {
                                 </div>
                             </div>
 
+                            {/* style="width:100px; height:115px; overflow: scroll;" */
+
+
+                            }
                             <div class="row-edit">
-                                <label className='form-label'>Ficheros Multimedia: </label>
+                                <label className='form-label' >Ficheros Multimedia: </label>
                                 <table>
-                                    <tbody>
+                                    <tbody  >
                                         <div style={{ width: "500px", height: "250px", overflow: "scroll", behavior: "smooth" }}>
                                             {dataMediaWriting.map((writing) => (
                                                 <tr key={writing.id}>
@@ -352,10 +302,17 @@ class EditWriting extends Component {
                                                     <td><Button variant="danger" onClick={() => this.askDeleteFile(writing)}>Eliminar</Button></td>
                                                 </tr>
                                             ))}
+
                                         </div>
+
                                     </tbody>
                                 </table>
                             </div>
+
+                            <div class="row-edit">
+                                <Chat nombre={AuthUser.getCurrentUser().username} />
+                            </div>
+
 
                             <div className="form-select">
                                 <Button text='enviar' onClick={() => this.editWriting()}> Guardar  </Button>
@@ -363,6 +320,7 @@ class EditWriting extends Component {
                             <div className="form-select">
                                 <Button onClick={() => window.location.href = '/student'}>Cancelar</Button>
                             </div>
+
                         </Card.Body>
                     </Card>
                 </div>
@@ -385,4 +343,4 @@ class EditWriting extends Component {
         );
     }
 }
-export default EditWriting;
+export default EditWritingTeam;
