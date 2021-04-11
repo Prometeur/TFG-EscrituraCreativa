@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 
-import StudentService from '../../../services/student/student-service.js';
+import TeacherService from '../../../services/teacher/teacherService.js';
 
 /**Datos del usuario */
 import AuthUser from '../../../services/authenticity/auth-service.js';
@@ -16,46 +16,60 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 //Estilos
 import '../../../styles/styleGeneral.css';
+import teacherService from '../../../services/teacher/teacherService.js';
 
-class WritingsStudent extends Component {
+class WritingsTeam extends Component {
 
     constructor(props) {
         super(props);
-
+        debugger;
         this.state = {
-            data: [],
+
+            dataWritings: [],//contiene todos los escritos colaborativos de un grupo y desafio dado
+            type:2,//desafio en equipo
+            challenge: '',
+            idChallenge: '',
         }
 
     }
 
     componentDidMount() {
-
-        // /**Obtiene los desafios del estudiante segun su grupo */
-        // StudentService.getChallenges(this.props.groupSelect).then(response => {
-        //     this.setState({ data: response });
-        // }).catch(error => {
-        //     console.log(error.message);
-        // })
-
-        //obtiene los escritos del estudiante
-        StudentService.getWritingsStudent(AuthUser.getCurrentUser().id, this.props.groupSelect)
+        
+        TeacherService.getWritingsStudent(this.props.groupSelect, this.props.idChallenge)
             .then(response => {
-                debugger;
-                this.setState({ data: response });
+                
+                this.setState({ dataWritings: response.data });
+
+            }).catch(error => {
+                console.log(error.message);
             })
+
     }
+
+
+    // handleSelect(challenge) {
+    //     debugger;
+    //     this.setState({ challenge: challenge });
+    //   }
 
     /*Dibuja la pagina  */
     render() {
         let formatedDate;
-        let { data } = this.state;
+        let { dataWritings } = this.state;
+        const { showWritings } = this.state;
         return (
             <>
+
+
                 <div className="table-margin">
+                    <div className="row-edit">
+                        <label className='form-label'>{this.state.idChallenge}</label>
+                    </div>
                     <Table striped bordered hover >
                         <thead>
                             <tr>
                                 <th >Desafío</th>
+                                <th >Escrito</th>
                                 <th >Estudiante</th>
                                 <th >Puntuación</th>
                                 <th >Fecha</th>
@@ -64,24 +78,26 @@ class WritingsStudent extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {data.filter(writing1 => writing1.finalizado === 1).map((writing) => (
-                                < tr key={writing.id} >
+                        {dataWritings.map((writing) => (
+                                <tr>
                                     <td>{writing.nombreDesafio}</td>
-                                    <td>{writing.nombre} {writing.apellidos}</td>
-                                    {/* <td>{writing.apellidos}</td> */}
+                                    <td>{writing.nombreEscrito}</td>
+                                    <td>{writing.nombreEstudiante} {writing.apellidosEstudiante}</td>
                                     <td>{writing.puntuacion}</td>
                                     <td >{formatedDate = moment(writing.fecha).format('DD/MM/YYYY')}</td>
                                     <td >{formatedDate = moment(writing.fecha).format('LT')}</td>
-                                    <td><Link to={`/student/viewWriting/${this.props.groupSelect}/${writing.idDesafio}/${writing.id}`}><Button variant="outline-primary">Ver</Button></Link></td>
-                                   
+                                    <td className="challenge-td"><Link to={`/teacher/editWriting/${this.props.groupSelect}/${writing.idDesafio}/${writing.idEscrito}/${writing.idEstudiante}`}><Button variant="outline-primary" >Editar Escrito</Button></Link></td>
                                 </tr>
                             ))}
                         </tbody>
                     </Table>
-            </div>
+                </div>
+
+
+
             </>
         );
     }
 }
 
-export default WritingsStudent;
+export default WritingsTeam;

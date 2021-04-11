@@ -61,6 +61,7 @@ router.get("/getWriting",controller.getWriting);
 /*Obtiene el escrito del estudiante segun su grupo*/
 router.get("/getWritingWriter",controller.getWritingWriter);
 
+
 /*Obtiene los escritos de un equipo*/
 router.get("/getWritingsTeam",controller.getWritingsTeam);
 

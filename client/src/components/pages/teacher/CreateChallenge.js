@@ -196,7 +196,7 @@ class CreateChallenge extends Component {
             .then(response => {
                 const idChallenge = response.data;
                 if (this.state.imgCollection.length > 0) {
-                    TeacherService.sendMultimedia(this.state.imgCollection, this.state.form.idTeacher, idChallenge, this.state.form.type)
+                    TeacherService.sendMultimediaChallenge(this.state.imgCollection, this.state.form.idTeacher, idChallenge, this.state.form.type)
                         .then(response => {
                             window.location.href = '/teacher';
                         })
