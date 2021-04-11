@@ -160,3 +160,8 @@ modelStudent
 -sendWriting agregado campo title del escrito
 -editWriting agregado campo title del escrito
 -getWritingWriter
+
+
+--------------------------------------------------------------------------------------------------------------------
+Cambios Luis 11/04/2021
+

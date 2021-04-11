@@ -16,6 +16,8 @@ router.use(function(request, response,next) {
     next();
 });
 
+
+//-------------------------------------------------GROUP------------------------------------------------------------------//
 /*Obtiene los  grupos del profesor *
 //Muestra todos los estudiantes que pertenezcan a un grupo dado.
 //router.post("/inviteStudentToGroup", controller.inviteStudentToGroup);
@@ -45,6 +47,19 @@ router.post("/kickStudentFromGroup", controller_teacher.kickStudentFromGroup);
 /*Busca todos los escritos no colaborativos del usuario */
 router.get("/getScriptsByStudent",controller_user.getScriptsByStudent);
 
+//Muestra todos los estudiantes que pertenezcan a un grupo dado.
+//router.post("/inviteStudentToGroup", controller.inviteStudentToGroup);
+
+//-------------------------------------------------CHALLENGE------------------------------------------------------------------//
+
+/*Crea desafio del profesor */
+router.post("/createChallenge",controller_teacher.createChallenge);
+
+/*Edita el desafio del profesor*/
+router.post("/editChallenge",controller_teacher.editChallenge);
+
+/*Elimina desafio*/
+router.post("/deleteChallenge",controller_teacher.deleteChallenge);
 
 /*Obtiene todas las categorias de los desafios */
 router.get("/getCategories",controller_teacher.getCategories);
@@ -55,28 +70,44 @@ router.get("/getChallenge",controller_teacher.getChallenge);
 /*Obtiene los desafios del profesor segun su grupo*/
 router.get("/Challenges",controller_teacher.getChallenges);
 
-/*Crea desafio del profesor */
-router.post("/createChallenge",controller_teacher.createChallenge);
-
-/*Edita el desafio del profesor*/
-router.post("/editChallenge",controller_teacher.editChallenge);
+//----------------------------------------------MULTIMEDIA CHALLENGE------------------------------------------------------------------//
 
 /*Obtiene los ficheros multimedia del desafio del profesor*/
-router.get("/getMultimedia",controller_teacher.getMultimedia);
+router.get("/getMultimediaChallenge",controller_teacher.getMultimediaChallenge);
 
 /*Envia los ficheros multimedia del desafio del profesor*/
 // router.post("/sendMultimedia",uploader.single('file'),controller.sendMultimedia);
 
-router.post("/sendMultimedia",uploader.array('imgCollection', 20),controller_teacher.sendMultimedia);
+router.post("/sendMultimediaChallenge",uploader.array('imgCollection', 20),controller_teacher.sendMultimediaChallenge);
 
 /*Elimina el fichero multimedia del desafio*/
 router.post("/deleteFile",controller_teacher.deleteFile);
 
-/*Elimina desafio*/
-router.post("/deleteChallenge",controller_teacher.deleteChallenge);
+//-------------------------------------------------WRITING------------------------------------------------------------------//
+
+/*Edito el escrito del estudiante */
+router.post("/editWriting",controller_teacher.editWriting); 
+
+/*Obtiene escritos de estudiantes */
+router.get("/getWritingsStudent",controller_teacher.getWritingsStudent);
+
+/*Obtiene el escritos de equipos*/
+router.get("/getWritingsTeam",controller_teacher.getWritingsTeam);
+
+/*Obtiene el escrito del estudiante segun su grupo*/
+router.get("/getWriting",controller_teacher.getWriting);
 
 
-//Muestra todos los estudiantes que pertenezcan a un grupo dado.
-//router.post("/inviteStudentToGroup", controller.inviteStudentToGroup);
+
+//----------------------------------------------MULTIMEDIA WRITING------------------------------------------------------------------//
+
+/*Obtiene los ficheros multimedia del escrito del estudiante*/
+router.get("/getMultimediaWriting",controller_teacher.getMultimediaWriting);
+
+//-------------------------------------------------TEAM--------------------------------------------------------------------//
+
+/*Obtiene equipo del estudiante correspondiente a un grupo en concreto*/
+router.get("/getTeamStudentGroup",controller_teacher.getTeamStudentGroup);
+
 
 module.exports = router;

@@ -152,28 +152,6 @@ function getCategories(req, res) {
     });
 }
 
-/*Obtiene el desafio del profesor*/
-function getChallenge(req, res) {
-    const idChallenge = req.query.idChallenge;
-    modelTeacher.getChallenge(idChallenge, function (err, result) {
-        if (err) {
-            console.log(err.message);
-        }
-        res.send(result);
-    });
-}
-
-/*Obtiene los desafios del profesor segun su grupo*/
-function getChallenges(req, res) {
-    const group = req.query.idGroup;
-    modelTeacher.getChallenges(group, function (err, result) {
-        if (err) {
-            console.log(err.message);
-        }
-        res.send(result);
-    });
-}
-
 /*Crea desafio del profesor */
 function createChallenge(req, res) {
     const idGroup = req.body.idGroup;
@@ -213,10 +191,11 @@ function editChallenge(req, res) {
     });
 }
 
-/*Obtiene los ficheros multimedia del desafio del profesor*/
-function getMultimedia(req, res) {
-    const idChallenge = req.query.idChallenge;
-    modelTeacher.getMultimedia(idChallenge, function (err, result) {
+/*elimina/desactiva el desafio*/
+function deleteChallenge(req, res) {
+    const idChallenge = req.body.idChallenge;
+
+    modelTeacher.deleteChallenge(idChallenge, function (err, result) {
         if (err) {
             console.log(err.message);
         }
@@ -224,12 +203,33 @@ function getMultimedia(req, res) {
     });
 }
 
+/*Obtiene el desafio del profesor*/
+function getChallenge(req, res) {
+    const idChallenge = req.query.idChallenge;
+    modelTeacher.getChallenge(idChallenge, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
+        res.send(result);
+    });
+}
+
+/*Obtiene los desafios del profesor segun su grupo*/
+function getChallenges(req, res) {
+    const group = req.query.idGroup;
+    modelTeacher.getChallenges(group, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
+        res.send(result);
+    });
+}
+//-------------------------------------------------MULTIMEDIA CHALLENGE------------------------------------------------------------------//
+
 /*Envia los ficheros multimedia del desafio del profesor*/
-function sendMultimedia(req, res) {
+function sendMultimediaChallenge(req, res) {
     const idTeacher = req.body.idTeacher;
     const idChallenge = req.body.idChallenge;
-
-    
     const reqFiles = [];
     var typeChallenge;
     if (req.query.type == 1) {
@@ -246,7 +246,7 @@ function sendMultimedia(req, res) {
         reqFiles.push([idChallenge, path])
     }
 
-    modelTeacher.sendMultimedia(reqFiles, function (err, result) {
+    modelTeacher.sendMultimediaChallenge(reqFiles, function (err, result) {
         if (err) {
             console.log(err.message);
         }
@@ -274,11 +274,97 @@ function deleteFile(req, res) {
     });
 }
 
-/*elimina/desactiva el desafio*/
-function deleteChallenge(req, res) {
-    const idChallenge = req.body.idChallenge;
+/*Obtiene los ficheros multimedia del desafio del profesor*/
+function getMultimediaChallenge(req, res) {
+    const idChallenge = req.query.idChallenge;
+    modelTeacher.getMultimediaChallenge(idChallenge, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
+        res.send(result);
+    });
+}
 
-    modelTeacher.deleteChallenge(idChallenge, function (err, result) {
+//-------------------------------------------------WRITING------------------------------------------------------------------//
+
+/*Obtiene escritos de estudiantes */
+function getWritingsStudent(req, res) {
+    const idGroup = req.query.idGroup;
+    const idChallenge = req.query.idChallenge;
+
+    modelTeacher.getWritingsStudent(idGroup, idChallenge, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
+        res.send(result);
+    });
+}
+
+/*Obtiene escritos colaborativos  de equipos*/
+function getWritingsTeam(req, res) {
+    const idGroup = req.query.idGroup;
+    const idChallenge = req.query.idChallenge;
+
+    modelTeacher.getWritingsTeam(idGroup, idChallenge, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
+        res.send(result);
+    });
+}
+
+/*Obtiene el escrito del estudiante segun su grupo*/
+function getWriting(req, res) {
+    const idWriting= req.query.idWriting;
+  
+    modelTeacher.getWriting(idWriting, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
+        res.send(result);
+    });
+}
+
+/*Edita el escrito del estudiante */
+function editWriting(req, res) {
+    const idWriting = req.body.idWriting;
+    const idGroup = req.body.idGroup;
+    const idChallenge = req.body.idChallenge;
+    const idWriter = req.body.idWriter;
+    const title = req.body.title;
+    const text = req.body.escrito;
+    const score = req.body.score;
+    const commentary = req.body.commentary;
+    const type = req.body.type;
+    const finish = req.body.finish;
+    modelTeacher.editWriting(idWriting, idGroup, idChallenge, idWriter, title,text, score,commentary,type,finish, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
+        res.send(result);
+    });
+}
+
+//----------------------------------------------MULTIMEDIA WRITING------------------------------------------------------------------//
+
+/*Obtiene los ficheros multimedia del escrito del estudiante*/
+function getMultimediaWriting(req, res) {
+    const idChallenge = req.query.idChallenge;
+    const idWriter = req.query.idWriter;
+    modelTeacher.getMultimediaWriting(idChallenge, idWriter, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
+        res.send(result);
+    });
+}
+//---------------------------------------------------TEAM---------------------------------------------------------------------//
+
+/*Obtiene equipo del estudiante correspondiente a un grupo en concreto*/
+function getTeamStudentGroup(req, res) {
+    const idStudent = req.query.idStudent;
+    const idGroup = req.query.idGroup;
+    modelTeacher.getTeamStudentGroup(idStudent, idGroup, function (err, result) {
         if (err) {
             console.log(err.message);
         }
@@ -292,12 +378,18 @@ module.exports = {
     getChallenge: getChallenge,
     createChallenge: createChallenge,
     getCategories: getCategories,
+    getTeamStudentGroup: getTeamStudentGroup,
+    getWritingsStudent: getWritingsStudent,
+    getWritingsTeam: getWritingsTeam,
+    editWriting: editWriting,
     editChallenge: editChallenge,
-    getMultimedia: getMultimedia,
-    sendMultimedia: sendMultimedia,
+    getMultimediaChallenge: getMultimediaChallenge,
+    sendMultimediaChallenge: sendMultimediaChallenge,
     deleteFile: deleteFile,
+    getWriting: getWriting,
     inviteStudentToGroup: inviteStudentToGroup,
     deleteChallenge: deleteChallenge,
     kickStudentFromGroup: kickStudentFromGroup,
-    
+    getMultimediaWriting: getMultimediaWriting,
+
 };
