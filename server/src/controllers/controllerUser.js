@@ -16,6 +16,7 @@ const modelUser = new modelo(pool);
     let grupo = req.query.idEstudiante;
     if (grupo != null) {
         
+        
         modelUser.getGroups(grupo, function(err, result) {
             if(err) 
             {
@@ -106,6 +107,38 @@ function getStudentGroups(req, res) {
     }
 }
 
+ /*Obtiene todos los grupos que hay*/
+ function getAllGroups(req, res) {
+    
+    modelUser.getAllGroups(function(err, result) {
+        if(err) 
+        {
+            if (err.message == "No se puede conectar a la base de datos.") 
+            {
+                //next(err);
+                console.log("No se puede conectar a la base de datos");
+            }
+            res.status(200);
+            /*response.render("perfil", {
+                error: err.message
+            });*/
+            console.log(err.message);
+        } 
+        else
+        {
+            res.status(200);
+            /*
+            response.render("perfil", {
+                error: null,
+                usuarioPerfil: usuarioPerfil
+            });
+            */
+           res.send(JSON.stringify(result));
+        }
+    });
+
+}
+
 
 //Busca estudiantes según una clave dada.
 function searchStudent(request, response, next){
@@ -141,7 +174,45 @@ function searchStudent(request, response, next){
         else 
         {
             response.status(200);
-            console.log(studentList);
+            response.send(JSON.stringify(studentList));
+        }
+    });
+
+}
+
+//Busca usuarios según una clave dada.
+function searchUsers(request, response, next){
+    let clave = request.body.clave;
+    let tipo = "nombre";
+    if(request.body.tipo == "email"){
+        tipo = "email";
+    }
+    
+    modelUser.searchUsers(clave, tipo, function(err, studentList) {
+        if(err) 
+        {
+            if (err.message == "No se puede conectar a la base de datos.") 
+            {
+                //next(err);
+                console.log("No se puede conectar a la base de datos");
+            }
+            response.status(500);
+            /*response.render("perfil", {
+                error: err.message
+            });*/
+            console.log(err.message);
+        }
+        else if (studentList == null) 
+        {
+            response.status(200);
+            /*response.render("perfil", {
+                error: "No hay estudiantes con los parámetros escogidos."
+            });*/
+            console.log("No hay usuarios con los parámetros escogidos.");
+        } 
+        else 
+        {
+            response.status(200);
             response.send(JSON.stringify(studentList));
         }
     });
@@ -301,6 +372,53 @@ function searchStudentOfGroup(request, response, next){
     }
 }
 
+/*Obtiene los datos del grupo escogido*/
+function getGroupData(req, res) {
+    
+    let id = req.query.idGroup;
+    if (id != null) {
+        modelUser.getGroupData(id, function(err, result) {
+            if(err) 
+            {
+                if (err.message == "No se puede conectar a la base de datos.") 
+                {
+                    //next(err);
+                    console.log("No se puede conectar a la base de datos");
+                }
+                res.status(200);
+                /*response.render("perfil", {
+                    error: err.message
+                });*/
+                console.log(err.message);
+            } 
+            else if (result == null) 
+            {
+                res.status(200);
+                /*response.render("perfil", {
+                    error: "El usuario no existe."
+                });*/
+                console.log("El grupo no existe");
+            } 
+            else
+            {
+                res.status(200);
+                /*
+                response.render("perfil", {
+                    error: null,
+                    usuarioPerfil: usuarioPerfil
+                });
+                */
+               res.send(JSON.stringify(result[0]));
+            }
+        });
+    }
+    else 
+    {
+        res.status(200);
+        console.log("El id es nulo");
+    }
+}
+
 //Desactiva el desafío cambiando su campo activo.
 function deleteChallenge(request, response, next){
     let id = request.query.id;
@@ -370,10 +488,13 @@ function getScriptsByStudent(request, response, next){
 module.exports = {
     getGroups:getGroups,
     getStudentGroups:getStudentGroups,
+    getAllGroups:getAllGroups,
     searchStudent:searchStudent,
+    searchUsers:searchUsers,
     searchApplicant:searchApplicant,
     searchStudentOfGroup:searchStudentOfGroup,
     getProfile:getProfile,
+    getGroupData:getGroupData,
     acceptApplicant:acceptApplicant,
     deleteChallenge:deleteChallenge,
     getScriptsByStudent:getScriptsByStudent

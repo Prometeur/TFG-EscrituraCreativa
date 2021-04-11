@@ -6,6 +6,7 @@ import CreateChallenge from '../components/pages/teacher/CreateChallenge.js';
 import EditChallenge from '../components/pages/teacher/EditChallenge.js';
 
 import StudentList from '../components/pages/user/StudentLits.js';
+import ApplicantList from '../components/pages/user/ApplicantList';
 import LinksTeacher from '../links/links-Teacher.js';
 import Profile from '../components/pages/user/Profile.js';
 
@@ -27,6 +28,7 @@ function Routes() {
                <Route exact path="/teacher/createChallenge/:idGroup" component={CreateChallenge} />
                <Route exact path="/teacher/editChallenge/:idGroup/:idChallenge" component={EditChallenge} />
               <Route exact path="/teacher/students" component={StudentList}/>
+              <Route exact path="/teacher/applicants" component={ApplicantList}/>
               <Route exact path="/teacher/students/viewProfile/:idStudent" component={Profile} />
               <Route exact path="/teacher/editWriting/:idGroup/:idChallenge/:idWriting/:idStudent" component={EditWriting} />
             </Switch>

@@ -31,7 +31,7 @@ router.get("/getStudentGroups",controller_user.getStudentGroups);
 
 router.post("/searchStudent", controller_user.searchStudent);
 
-/*Obtiene los los grupos del profesor */
+/*Obtiene los datos del usuario */
 router.get("/getProfile",controller_user.getProfile);
 
 router.get("/acceptApplicant",controller_user.acceptApplicant);
@@ -85,6 +85,7 @@ router.post("/deleteFile",controller_teacher.deleteFile);
 
 //-------------------------------------------------WRITING------------------------------------------------------------------//
 
+
 /*Edito el escrito del estudiante */
 router.post("/editWriting",controller_teacher.editWriting); 
 
@@ -108,6 +109,13 @@ router.get("/getMultimediaWriting",controller_teacher.getMultimediaWriting);
 
 /*Obtiene equipo del estudiante correspondiente a un grupo en concreto*/
 router.get("/getTeamStudentGroup",controller_teacher.getTeamStudentGroup);
+
+//Muestra todos los estudiantes aún no aceptados (solicitantes) que contienen cierta clave ya sea en nombre o en su email.
+router.post("/searchApplicant", controller_user.searchApplicant);
+
+/*Acepta al estudiante solicitante en la aplicación cambiando su campo activo a 1 */
+router.get("/acceptApplicant",controller_teacher.acceptApplicant);
+
 
 
 module.exports = router;

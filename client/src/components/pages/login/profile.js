@@ -6,6 +6,7 @@ import '../../../styles/styleCard.css';
 import Card from 'react-bootstrap/Card';
 import Figure from 'react-bootstrap/Figure';
 import Button from 'react-bootstrap/Button';
+import ListGroup from "../user/StudentLits";
 
 
 export default class Profile extends Component {
@@ -50,10 +51,9 @@ export default class Profile extends Component {
 
         const { currentUser,role} = this.state;
 
-        return (
-            <>
-                <div className="perfil-left">
-                    <Figure>
+        console.log(this.state);
+
+        let foto = <Figure>
                         <Figure.Image
                             bsPrefix="figure"
                             alt="171x180"
@@ -65,7 +65,33 @@ export default class Profile extends Component {
                         <h6>
                             {role}
                         </h6>
-                    </Figure>
+                </Figure>;
+
+        if(this.state.currentUser.foto != undefined)
+        {
+            if(this.state.currentUser.foto.data.length != 0)
+            {
+            let fotoSource = "data:image/png;base64," + btoa(String.fromCharCode.apply(null, this.state.currentUser.foto.data));
+            foto = <Figure>
+                        <Figure.Image
+                            bsPrefix="figure"
+                            alt="171x180"
+                            src={fotoSource}
+                        />
+                        <h5>
+                            {currentUser.username}
+                        </h5>
+                        <h6>
+                            {role}
+                        </h6>
+                </Figure>;
+            }
+        }
+
+        return (
+            <>
+                <div className="perfil-left">
+                    {foto}
                     <ul className="flex-container wrap">
                         <li className="item-button-icon">
                             <img src="gear.png" alt=""/>
@@ -92,23 +118,25 @@ export default class Profile extends Component {
                             <div className="row">
                                 <ul className="flex-container wrap">
                                     <li className="flex-item">
-                                        Nombre: {currentUser.username}
+                                        <p className="p-general">
+                                            Nombre: {currentUser.username} {currentUser.surname}
+                                        </p>
                                     </li>
                                     <li className="flex-item">
-                                        Tipo de rol {role}
+                                       <p className="p-general">Tipo de rol: {role}</p>
                                     </li>
                                     <li className="flex-item">
-                                        Correo: {currentUser.email}
+                                       <p className="p-general">Correo: {currentUser.email}</p>
                                     </li>
                                     { currentUser.activo ? (
                                         <li className="flex-item">
-                                            Estado <img className="status" src="circuloVerde.png" />
+                                            <p className="p-general">Estado <img className="status" src="circuloVerde.png" /></p>
                                         </li>
-                                    ):(
-                                        <li className="flex-item">
-                                            <img className="status" src="circuloRojo.png" />
-                                        </li>
-                                    )
+                                        ):(
+                                            <li className="flex-item">
+                                                <p className="p-general">Estado <img className="status" src="circuloRojo.png" /></p>
+                                            </li>
+                                        )
                                     }
                                 </ul>
                             </div>

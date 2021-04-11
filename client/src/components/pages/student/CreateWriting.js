@@ -36,6 +36,7 @@ class CreateWriting extends Component {
         super(props);
         const dataUser = AuthUser.getCurrentUser();
         this.onFileChange = this.onFileChange.bind(this);
+
         this.state = {
             imgCollection: [],//ficheros multimedia del escrito
             dataTeamStudent: [],//Contiene los datos del equipo del estudiante

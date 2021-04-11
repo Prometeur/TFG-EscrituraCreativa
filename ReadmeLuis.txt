@@ -182,3 +182,4 @@ mostrara distintos campos segun si es estudiante o equipo
 
 -creada funcionalidad de editar escritos para ello se ha modificado   routes,controlador y modelo en el server del profesor
 
+

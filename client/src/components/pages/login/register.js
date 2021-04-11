@@ -3,7 +3,6 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
-
 import '../../../styles/styleGeneral.css';
 import '../../../styles/styleButton.css';
 import '../../../styles/styleCard.css';
@@ -152,9 +151,6 @@ class Register extends Component {
     render() {
       return (
         <div className="container">
-          <Card className="card-register">
-              <Card.Body>
-                <Card.Title>Sign Up</Card.Title>
                 <Form
                   onSubmit={this.handleRegister}
                   ref={c => {
@@ -163,7 +159,8 @@ class Register extends Component {
                 >
                   {!this.state.successful && (
                   <div className="row">
-                    <div className="form-group">
+                    <div className="form-group-register">
+                        <h4>Registrarse</h4>
                        <div className="section-column">
                             <Input
                               type="text"
@@ -208,10 +205,19 @@ class Register extends Component {
                               validations={[required, vpassword]}
                             />
                         </div>
+                        <ul className="flex-container wrap">
+                            <li className="flex-item-small">
+                                <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike"></input>
+                            </li>
+                            <li className="flex-item-medium">
+                                <label htmlFor="vehicle1">
+                                    Marcando esta casilla confirmo que he leído y acepto la información del servicio y
+                                    protección de datos de carácter personal
+                                </label>
+                            </li>
+                        </ul>
                         <div className="section-column">
-                            <div className="box">
-                                <button className="btn btn-white btn-animation-1"> Sign Up</button>
-                            </div>
+                            <button className="button button5">Sign Up</button>
                         </div>
                     </div>
                   </div>
@@ -237,9 +243,7 @@ class Register extends Component {
                       this.checkBtn = c;
                     }}
                   />
-                </Form>
-              </Card.Body>
-            </Card>
+            </Form>
         </div>
       );
     }

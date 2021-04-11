@@ -5,6 +5,28 @@ class modelUser {
         this.pool = pool;
     }
 
+    create(username, surname, email, password, callback) {
+
+        this.pool.getConnection(function (err, connection) {
+
+            if (err) {
+                callback(new Error("No se puede conectar a la base de datos."))
+            } else {
+                const sql = "INSERT INTO usuario (correo, password,nombre,apellidos,activo,rol) values (?,?,?,?,?,?)";
+                const valores = [email, password, username, surname, 1, "E"];
+                connection.query(sql, valores, function (err, res) {
+                    connection.release();
+                    if (err) {
+                        callback(new Error("Error al crear el desafío."));
+                    } else {
+                        return callback(null, res[0]);
+                    }
+                })
+            }
+        });
+
+    }
+
     /*Obtiene todos los grupos del profesor*/
     getGroups(group, callback) {
 
@@ -49,6 +71,29 @@ class modelUser {
         });
     }
 
+    /*Obtiene todos los grupos*/
+    getAllGroups(callback) {
+        this.pool.getConnection(function(err, connection) {
+            if (err) 
+            {
+                callback(new Error("No se puede conectar a la base de datos."))
+            } 
+            else 
+            {
+                const sql = "SELECT * FROM grupo WHERE activo = 1";
+                const valores = [];
+                connection.query(sql, valores, function(err, res) {
+                    connection.release();
+                    if (err) {
+                        callback(new Error("Error al buscar los grupos."));
+                    } else {
+                        callback(null, res);
+                    }
+                })
+            }
+        });
+    }
+
     //Busca todos los estudiantes que contengan "clave" bien en su nombre o en su correo. Esta elección está pensada para elegirse desde un combobox.
     searchStudent(clave, tipo, callback) {
         console.log(clave);
@@ -77,15 +122,39 @@ class modelUser {
         });
     }
 
+     //Busca todos los usuarios activos con ciertos parámetros.
+     searchUsers(clave, tipo, callback) {
+        this.pool.getConnection(function(err, connection) {
+            if (err) {
+                callback(new Error("No se puede conectar a la base de datos."))
+            } else {
+                let consulta = 'SELECT id, nombre, apellidos, foto, rol, correo FROM usuario WHERE (nombre LIKE ? OR apellidos LIKE ?) AND activo = 1;';
+                if(tipo == "email"){
+                    consulta = 'SELECT id, nombre, apellidos, foto, rol, correo FROM usuario WHERE correo LIKE ? AND activo = 1;';
+                }
+                const sql = consulta; 
+                const valores = [ "%" + clave + "%", "%" + clave + "%"];
+                connection.query(sql, valores, function(err, res) {
+                    connection.release();
+                    if (err) {
+                        callback(new Error("Error al buscar usuarios con " + tipo + " similar a " + clave + "."));
+                    } else {
+                        callback(null, res);
+                    }
+                })
+            }
+        });
+    }
+
     //Busca todos los estudiantes solicitantes (aún no aprobados) que contengan "clave" bien en su nombre o en su correo. 
     searchApplicant(clave, tipo, callback) {
         this.pool.getConnection(function (err, connection) {
             if (err) {
                 callback(new Error("No se puede conectar a la base de datos."))
             } else {
-                let consulta = 'SELECT id, nombre, apellidos, foto, correo FROM usuario WHERE (nombre LIKE ? OR apellidos LIKE ?)AND rol = "S" AND activo = 0;';
+                let consulta = 'SELECT id, nombre, apellidos, foto, rol, correo  FROM usuario WHERE (nombre LIKE ? OR apellidos LIKE ?) AND activo = 0;';
                 if (tipo == "email") {
-                    consulta = 'SELECT id, nombre, apellidos, foto, correo FROM usuario WHERE correo LIKE ? AND rol = "S" AND activo = 0;';
+                    consulta = 'SELECT id, nombre, apellidos, foto, rol, correo FROM usuario WHERE correo LIKE ? AND activo = 0;';
                 }
                 const sql = consulta;
                 const valores = ["%" + clave + "%", "%" + clave + "%"];
@@ -131,12 +200,35 @@ class modelUser {
                 callback(new Error("No se puede conectar a la base de datos."))
             }
             else {
-                const sql = "SELECT id, nombre, apellidos, foto, correo, activo FROM usuario where id =  ?";
+                const sql = "SELECT id, nombre, apellidos, foto, correo, activo, rol FROM usuario where id =  ?";
                 const valores = [idUser];
                 connection.query(sql, valores, function (err, res) {
                     connection.release();
                     if (err) {
                         callback(new Error("Error al buscar al usuario."));
+                    } else {
+                        callback(null, res);
+                    }
+                })
+            }
+        });
+    }
+
+    /*Obtiene los datos de grupo del elegido*/
+    getGroupData(id, callback) {
+        this.pool.getConnection(function(err, connection) {
+            if (err) 
+            {
+                callback(new Error("No se puede conectar a la base de datos."))
+            } 
+            else 
+            {
+                const sql = "SELECT id, nombre, idprofesor FROM grupo WHERE id = ? AND activo = 1";
+                const valores = [id];
+                connection.query(sql, valores, function(err, res) {
+                    connection.release();
+                    if (err) {
+                        callback(new Error("Error al buscar al grupo."));
                     } else {
                         callback(null, res);
                     }
@@ -152,7 +244,7 @@ class modelUser {
                 callback(new Error("No se puede conectar a la base de datos."))
             }
             else {
-                const sql = 'SELECT id, nombre, apellidos, foto, correo FROM usuario INNER JOIN grupoestudiante ON usuario.id = grupoestudiante.idEstudiante WHERE usuario.rol = "S" AND grupoestudiante.idGrupo = ?;';
+                const sql = 'SELECT usuario.id, nombre, apellidos, foto, correo FROM usuario INNER JOIN grupoestudiante ON usuario.id = grupoestudiante.idEstudiante WHERE usuario.rol = "S" AND grupoestudiante.idGrupo = ?;';
                 const valores = [idGrupo];
                 connection.query(sql, valores, function (err, res) {
                     connection.release();
@@ -232,6 +324,58 @@ class modelUser {
                 })
             }
         });
+    }
+
+    editProfile(id, nombre, apellidos, correo, password, foto, callback) {
+
+        this.pool.getConnection(function (err, connection) {
+            if (err) {
+                callback(new Error("No se puede conectar a la base de datos."))
+            }
+            else {
+
+                let query ='';
+                let parametros='';
+
+                if(!password && !foto){
+
+                    query = "UPDATE usuario  SET correo = ?,nombre = ?, apellidos=? WHERE id= ?";
+                    parametros = [correo,nombre,apellidos,id];
+                }
+                else if(!password  && foto)
+                {
+                     query = "UPDATE usuario  SET correo = ?,nombre = ?, apellidos =?, LOAD_FILE(foto =?) WHERE id= ?";
+                     parametros = [correo,nombre,apellidos,foto,id];
+                }
+                else if(password && !foto)
+                {
+                    query = "UPDATE usuario  SET correo = ?,nombre = ?, apellidos =?, password=? WHERE id= ?";
+                    parametros = [correo,nombre,apellidos,password,id];
+                }
+                else {
+
+                    query = "UPDATE usuario  SET correo = ?,nombre = ?, apellidos =?, password =? ,LOAD_FILE(foto =?) WHERE id= ?";
+                    parametros = [correo,nombre,apellidos, password, foto, id];
+
+                }
+
+                const sql = query;
+                const valores = parametros;
+
+                connection.query(sql, valores, function (err, res) {
+                    connection.release();
+                    if (err) {
+
+                        callback(new Error("Error al actualizar el usuario " + nombre + "."));
+                    }
+                    else {
+
+                        callback(null, res);
+                    }
+                })
+            }
+        });
+
     }
 }
 

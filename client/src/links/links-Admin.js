@@ -7,9 +7,9 @@ const linksTeacher = [
 
     },
     {
-        path: "/students",
-        name: "Estudiantes",
-        id: "Estudiantes"
+        path: "/users",
+        name: "Usuarios",
+        id: "Usuarios"
     },
     {
         path: "/applicants",

@@ -276,10 +276,59 @@ class modelTeacher {
             }
             else {
                 callback(null, result);
-            }
+              }
         });
     }
 
+
+    //Busca todos los estudiantes solicitantes (aún no aprobados) que contengan "clave" bien en su nombre o en su correo. 
+    searchApplicant(clave, tipo, callback) {
+        this.pool.getConnection(function(err, connection) {
+            if (err) {
+                callback(new Error("No se puede conectar a la base de datos."))
+            } else {
+                let consulta = 'SELECT id, nombre, apellidos, foto, correo FROM usuario WHERE (nombre LIKE ? OR apellidos LIKE ?) AND activo = 0;';
+                if(tipo == "email"){
+                    consulta = 'SELECT id, nombre, apellidos, foto, correo FROM usuario WHERE correo LIKE ? AND rol = "S" AND activo = 0;';
+                }
+                const sql = consulta; 
+                const valores = [ "%" + clave + "%", "%" + clave + "%"];
+                connection.query(sql, valores, function(err, res) {
+                    connection.release();
+                    if (err) {
+                        callback(new Error("Error al buscar solicitudes con " + tipo + " similar a " + clave + "."));
+                    } else {
+                        callback(null, res);
+                    }
+                })
+               }
+        });
+    }
+
+
+
+    /*Obtiene los datos de perfil del alumno*/
+    acceptApplicant(idUser, callback) {
+        this.pool.getConnection(function(err, connection) {
+            if (err) 
+            {
+                callback(new Error("No se puede conectar a la base de datos."))
+            } 
+            else 
+            {
+                const sql = "UPDATE usuario SET activo = 1 WHERE id =  ?";
+                const valores = [idUser];
+                connection.query(sql, valores, function(err, res) {
+                    connection.release();
+                    if (err) {
+                        callback(new Error("Error al aceptar al solicitante."));
+                    } else {
+                        callback(null, res);
+                    }
+                })
+            }
+        });
+    }
 }
 
 
