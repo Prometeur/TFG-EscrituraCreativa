@@ -161,6 +161,25 @@ modelStudent
 -editWriting agregado campo title del escrito
 -getWritingWriter
 
-SQL
 
-agregado campo comentario a la tabla escritos
+--------------------------------------------------------------------------------------------------------------------
+Cambios Luis 11/04/2021
+
+Agregada funcionalidad de corregir escritos en profesores
+
+-renombrado de algunas funciones referente a multimedia de profesor para evitar conflictos con multimedia de escritos
+
+sendMultimediaChallenge,getmultimediachallenge
+
+-Creada pestaña de escritos en profesores 
+
+-Agregado selector de desafio en profesores para que segun el desafio seleccionado se liste los escritos referentes a ese desafio
+
+-agregado nueva pagina "EditWriting" en profesores para corregir los escritos de un estudiante/equipo mediante comentario, puntuacion,etc
+
+-Creado listado de escritos de los estudiantes/equipos de un desafio en una tabla que contiene todos los campos del escrito, esta tabla
+mostrara distintos campos segun si es estudiante o equipo
+
+-creada funcionalidad de editar escritos para ello se ha modificado   routes,controlador y modelo en el server del profesor
+
+

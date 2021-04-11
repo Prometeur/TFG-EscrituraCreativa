@@ -109,7 +109,7 @@ class EditChallenge extends Component {
         })
 
         //Obtiene multimedia del desafio del profesor
-        TeacherService.getMultimedia(this.props.match.params.idChallenge)
+        TeacherService.getMultimediaChallenge(this.props.match.params.idChallenge)
             .then(response => {
                 var respuesta = response.data[0];
                 this.setState({
@@ -226,7 +226,7 @@ class EditChallenge extends Component {
         TeacherService.editChallenge(this.state.form.idChallenge, this.state.form.idGroup, this.state.form.title, this.state.form.description, this.state.form.type, this.state.form.category, this.state.form.qualification, this.state.form.date)
             .then(response => {
                 if (this.state.imgCollection.length > 0) {
-                    TeacherService.sendMultimedia(this.state.imgCollection, this.state.form.idTeacher, this.props.match.params.idChallenge, this.state.form.type)
+                    TeacherService.sendMultimediaChallenge(this.state.imgCollection, this.state.form.idTeacher, this.props.match.params.idChallenge, this.state.form.type)
                         .then(response => {
                             window.location.href = '/teacher/groups';
                         })

@@ -3,7 +3,7 @@
 *  Description: Pagina del grupo seleccionado por profesor, contiene la vista de los desafios  
 *  que tiene el grupo seleccionado por el profesor  
 */
-import React,{ Component, useState } from 'react';
+import React, { Component, useState } from 'react';
 import TeacherService from '../../../services/teacher/teacherService.js';
 import AuthUser from '../../../services/authenticity/auth-service.js';
 
@@ -15,7 +15,8 @@ import DropdownItem from 'react-bootstrap/DropdownItem';
 import DropdownToggle from 'react-bootstrap/DropdownToggle';
 import FormControl from 'react-bootstrap/FormControl';
 import Challenges from './Challenges.js';
-import { Link} from "react-router-dom";
+import Writings from './Writings.js';
+import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Card from 'react-bootstrap/Card';
 import Icon from '@material-ui/core/Icon';
@@ -25,116 +26,165 @@ import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
 
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
-    <a
-      href=""
-      ref={ref}
-      onClick={(e) => {
-        e.preventDefault();
-        onClick(e);
-      }}
-    >
-        {children} {<Icon><ExpandMoreRoundedIcon></ExpandMoreRoundedIcon></Icon>}
+  <a
+    href=""
+    ref={ref}
+    onClick={(e) => {
+      e.preventDefault();
+      onClick(e);
+    }}
+  >
+    {children}
+    {<Icon><ExpandMoreRoundedIcon></ExpandMoreRoundedIcon></Icon>}
+  </a>
+));
 
-    </a>
-  ));
+const CustomMenu = React.forwardRef(
+  ({ children, style, className, 'aria-labelledby': labeledBy }, ref) => {
+    const [value, setValue] = useState('');
 
-  const CustomMenu = React.forwardRef(
-    ({ children, style, className, 'aria-labelledby': labeledBy }, ref) => {
-      const [value, setValue] = useState('');
-  
-      return (
-        <div
-          ref={ref}
-          style={style}
-          className={className}
-          aria-labelledby={labeledBy}
-        >
-          <FormControl
-            autoFocus
-            className="mx-3 my-2 w-auto"
-            placeholder="Type to filter..."
-            onChange={(e) => setValue(e.target.value)}
-            value={value}
-          />
-          <ul className="list-unstyled">
-            {React.Children.toArray(children).filter(
-              (child) =>
-                !value || child.props.children.toLowerCase().startsWith(value) || child.props.children.toUpperCase().startsWith(value),
-            )}
-          </ul>
-        </div>
-      );
-    },
-  );
-  
+    return (
+      <div
+        ref={ref}
+        style={style}
+        className={className}
+        aria-labelledby={labeledBy}
+      >
+        <FormControl
+          autoFocus
+          className="mx-3 my-2 w-auto"
+          placeholder="Type to filter..."
+          onChange={(e) => setValue(e.target.value)}
+          value={value}
+        />
+        <ul className="list-unstyled">
+          {React.Children.toArray(children).filter(
+            (child) =>
+              !value || child.props.children.toLowerCase().startsWith(value) || child.props.children.toUpperCase().startsWith(value),
+          )}
+        </ul>
+      </div>
+    );
+  },
+);
+
 
 class GroupTeacher extends Component {
 
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            dataGroup: [],
-            currentUser: {id: ""},
-            groupSelect: "",
-        };
+    this.state = {
+      dataGroup: [],//contiene todos los grupos del estudiante
+      currentUser: { id: "" },
+      groupSelect: "",
+      nameGroupSelect: "",
+      itemSelect: "",
+      showChallenges: false,
+      showWritings: false,
+    };
+  }
+
+  componentDidMount() {
+
+    const dataUser = AuthUser.getCurrentUser();
+    this.setState({ currentUser: dataUser });
+
+    /**Obtiene todos los grupos del profesor */
+    TeacherService.getGroups(dataUser.id).then(response => {
+      this.setState({ dataGroup: response });
+    })
+  }
+
+  itemSelection = event => {
+    if (event.target.value === "1") {
+      this.setState({
+        showChallenges: true,
+        showWritings: false
+
+      });
+    }
+    else if (event.target.value === "2") {
+      this.setState({
+        showChallenges: false,
+        showWritings: true
+      });
     }
 
-    /*Si vuelvo a la pagina de login, comprueba si el usuario ya inicio sesion anteriomente
-   si es el caso lo redirige a la home segun su rol*/
-    componentDidMount() {
+  };
 
-        const dataUser = AuthUser.getCurrentUser();
-        this.setState({currentUser: dataUser});
+  // handleSelect(groupId) {
+  //   this.setState({ groupSelect: groupId });
+  // }
 
-        TeacherService.getGroups(dataUser.id).then(response => {
-            this.setState({dataGroup: response});
-        })
-    }
+  handleSelect(group) {
+    this.setState({ groupSelect: group.id, nameGroupSelect: group.nombre });
+  }
 
-    handleSelect(groupId) {
-        this.setState({groupSelect: groupId});
-    }
+  /*Dibuja la pagina  */
+  render() {
 
-    /*Dibuja la pagina  */
-    render() {
+    const { dataGroup, groupSelect, showChallenges, showWritings } = this.state;
 
-        const {dataGroup, currentUser, groupSelect} = this.state;
-
-        return (
-            <div className="container">
-                <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-                <Card className="card-long">
-                    <Card.Body>
-                        <div className="row">
-                            <div className="column column-left">
-                                <Dropdown className="drop-down">
-                                    <DropdownToggle as={CustomToggle} id="dropdown-custom-components">
-                                        Selecciona grupo
-                                    </DropdownToggle>
-                                    <DropdownMenu as={CustomMenu}>
-                                        {dataGroup.map((row) => (
-                                            <DropdownItem eventKey={row.id}
-                                                          onClick={() => this.handleSelect(row.id)}>{row.nombre}</DropdownItem>
-                                        ))}
-                                    </DropdownMenu>
-                                </Dropdown>
-                            </div>
-                            <div className="column column-rigth">
-                                {/* <Link to={`/teacher/groups/createChallenge/${groupSelect}`}> */}
-                                <Link to={`/teacher/createChallenge/${groupSelect}`}>
-                                    <Button variant="primary">Crear desafio</Button>
-                                </Link>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <Challenges key={groupSelect} groupSelect={groupSelect}/>
-                        </div>
-                    </Card.Body>
-                </Card>
+    return (
+      <div className="container">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+        <Card className="card-long">
+          <Card.Body>
+            <div className="row">
+              {/* <div className="column column-left"> */}
+              <Dropdown className="drop-down">
+                <DropdownToggle as={CustomToggle} id="dropdown-custom-components">Selecciona grupo</DropdownToggle>
+                <DropdownMenu as={CustomMenu}>
+                  {dataGroup.map((row) => (
+                    // <DropdownItem eventKey={row.id}
+                    //   onClick={() => this.handleSelect(row.id)}>{row.nombre}</DropdownItem>
+                    <DropdownItem eventKey={row.idGrupo} onClick={() => this.handleSelect(row)}>{row.nombre}</DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
+              {/* </div> */}
             </div>
-        );
-    }
- }
+
+            <td><textarea name="mensaje" rows="1" cols="10" value={this.state.nameGroupSelect} readOnly={true} style={{ resize: "none" }} ></textarea></td>
+
+            <select onChange={this.itemSelection} disabled={!this.state.groupSelect ? true : null} >
+              <option value="" selected disabled hidden > Seleccionar </option>
+              <option value="1" > Desafios </option>
+              <option value="2" > Escritos </option>
+            </select>
+
+            {/* <div className="column column-rigth">
+               
+                <Link to={`/teacher/createChallenge/${groupSelect}`}>
+                  <Button variant="primary">Crear desafio</Button>
+                </Link>
+              </div> */}
+
+            {/* <div className="row">
+              <Challenges key={groupSelect} groupSelect={groupSelect} />
+            </div> */}
+
+            {showChallenges ? (
+              <div className="row">
+                <Challenges key={groupSelect} groupSelect={groupSelect} />
+              </div>
+            ) : (
+              <div></div>
+            )}
+
+            {showWritings ? (
+              <div className="row">
+                <Writings key={groupSelect} groupSelect={groupSelect} />
+              </div>
+            ) : (
+              <div></div>
+            )}
+          </Card.Body>
+        </Card>
+      </div>
+    );
+  }
+}
 
 export default GroupTeacher;
