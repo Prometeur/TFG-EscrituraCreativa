@@ -140,6 +140,42 @@ function kickStudentFromGroup(request, response, next) {
     });
 }
 
+//Crea un grupo nuevo.
+function createGroup(request, response, next){
+    let nombre = request.body.nombre;
+    let idTeacher = request.body.idTeacher;
+
+    modelTeacher.createGroup(nombre, idTeacher, function(err, res) {
+        if(err) 
+        {
+            if (err.message == "No se puede conectar a la base de datos.") 
+            {
+                //next(err);
+                console.log("No se puede conectar a la base de datos");
+            }
+            response.status(500);
+            /*response.render("perfil", {
+                error: err.message
+            });*/
+            console.log(err.message);
+        }
+        else if (res == null) 
+        {
+            response.status(200);
+            /*response.render("perfil", {
+                error: "No hay estudiantes con los parámetros escogidos."
+            });*/
+            console.log("No se ha podido crear el grupo.");
+        } 
+        else 
+        {
+            response.status(200);
+           response.send(JSON.stringify(res));
+        }
+    });
+
+}
+
 //-------------------------------------------------CHALLENGE------------------------------------------------------------------//
 
 /*Obtiene todas las categorias de los desafios*/
@@ -460,6 +496,7 @@ module.exports = {
     getMultimediaWriting: getMultimediaWriting,
     searchApplicant:searchApplicant,
     acceptApplicant:acceptApplicant,
+    createGroup:createGroup,
 
 
 };

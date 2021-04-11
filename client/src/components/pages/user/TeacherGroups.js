@@ -5,7 +5,6 @@
 */
 import React, { Component } from 'react';
 import { Link} from "react-router-dom";
-import Cookies from 'universal-cookie';
 import adminService from '../../../services/admin/adminService';
 import '../../../styles/styleGeneral.css';
 import '../../../styles/styleCard.css';
