@@ -107,6 +107,14 @@ class TeacherService {
             })
     }
 
+    createGroup(id, newName){
+        return axios.post("/teacher/createGroup", { idTeacher: id, nombre: newName  },{ headers: {"Authorization" : `Bearer ${authHeader()}`}}).then(response => {
+            return response.data;
+        }).catch(error => {
+            console.log(error.message);
+        })
+    }
+
 
     //-------------------------------------------------CHALLENGE------------------------------------------------------------------//
 
