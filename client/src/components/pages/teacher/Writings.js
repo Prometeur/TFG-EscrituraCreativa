@@ -54,7 +54,7 @@ function Writings(props) {
                 <TabsWriting data={data} />
             ) : (
                 <div>
-                    Nada
+                  
                 </div>
 
             )}

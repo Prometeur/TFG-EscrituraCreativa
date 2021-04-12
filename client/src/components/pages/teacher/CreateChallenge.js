@@ -128,7 +128,7 @@ class CreateChallenge extends Component {
 
     changeView = () => {
         //debugger;
-        window.location.href = "/teacher/group/";
+        window.location.href = "/teacher";
     }
 
     onModal(modal) {

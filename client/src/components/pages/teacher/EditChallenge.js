@@ -42,8 +42,7 @@ class EditChallenge extends Component {
         const dataUser = AuthUser.getCurrentUser();
         this.onFileChange = this.onFileChange.bind(this);
         this.state = {
-            imgCollection: [],
-            // imgNamesCollection: [],
+            imgCollection: [],//array de ficheros multimedia
             editorState: EditorState.createEmpty(),
             contentState: null,
             data: [], //array de multimedia del desafio
@@ -88,6 +87,7 @@ class EditChallenge extends Component {
 
         //Obtiene los datos del desafio al iniciar
         TeacherService.getChallenge(this.props.match.params.idChallenge).then(response => {
+            debugger;
             var contentState = stateFromHTML(response[0].descripcion);
             let editorState = EditorState.createWithContent(contentState);
             this.setState({ editorState: editorState });
@@ -178,7 +178,7 @@ class EditChallenge extends Component {
 
     //redireccion a una pagina
     changeView = () => {
-        window.location.href = "/teacher/groups";
+        window.location.href = "/teacher";
     }
 
     qualificationSelection = event => {
@@ -223,19 +223,20 @@ class EditChallenge extends Component {
 
     //Envio del desafio al server
     sendChallenge = () => {
+        debugger;
         TeacherService.editChallenge(this.state.form.idChallenge, this.state.form.idGroup, this.state.form.title, this.state.form.description, this.state.form.type, this.state.form.category, this.state.form.qualification, this.state.form.date)
             .then(response => {
                 if (this.state.imgCollection.length > 0) {
                     TeacherService.sendMultimediaChallenge(this.state.imgCollection, this.state.form.idTeacher, this.props.match.params.idChallenge, this.state.form.type)
                         .then(response => {
-                            window.location.href = '/teacher/groups';
+                            window.location.href = '/teacher';
                         })
                         .catch(error => {
                             console.log(error.message);
                         });
                 }
                 else
-                    window.location.href = '/teacher/groups';
+                    window.location.href = '/teacher';
             })
             .catch(error => {
                 console.log(error.message);
@@ -300,34 +301,6 @@ class EditChallenge extends Component {
     /*Dibuja la pagina */
     render() {
 
-        let media = "";
-        if (this.state.form.file.type !== undefined) { //si hemos previsualizado un archivo
-            if (this.state.form.file.type.includes("image"))
-                media = < img className="image" src={this.state.form.reader} alt="" />;
-            else
-                media = < ReactPlayer className="video" url={this.state.form.reader} controls={true} />;
-        }
-        else { //si no hemos previsualizado un archivo
-            if (this.state.form.path == null || this.state.form.path === "") { //si la ruta es vacia o no contiene una ruta (recibido de la bd)
-                media = < img className="image" src="http://localhost:3001/images/drop-files.jpg" alt="" />;
-            }
-            else {
-                var str = this.state.form.path;
-                var res = str.split("/");
-                if (res[5] === "image") {
-                    media = < img className="image"
-                        src={this.state.form.path}
-                        key={this.state.form.path}
-                        alt="" />; //si contine una ruta (recibido de la bd)
-                }
-                else {
-                    media = < ReactPlayer className="video"
-                        url={this.state.form.path}
-                        controls={true}
-                    />;
-                }
-            }
-        }
         const { editorState } = this.state;
         const { formErrors } = this.state;
         const { data } = this.state;
@@ -403,15 +376,21 @@ class EditChallenge extends Component {
                             <label className='form-label'> Ficheros Multimedia: </label>
                             <table>
                                 <tbody>
-                                    {data.map((challenge) => (
-                                        <tr key={challenge.id}>
-                                            <td> {this.showTitle(challenge)} </td>
-                                            <td>< a href={challenge.ruta}> Ver </a></td>
-                                            <td>
-                                                < button onClick={() => this.deleteFile(challenge)}>Eliminar</button>
-                                            </td>
-                                        </tr>
-                                    ))}
+
+
+                                    <div style={{ width: "500px", height: "250px", overflow: "scroll", behavior: "smooth" }}>
+                                        {data.map((challenge) => (
+                                            <tr key={challenge.id}>
+                                                <td> {this.showTitle(challenge)} </td>
+                                                {/* <td>< a href={challenge.ruta}> Ver </a></td> */}
+                                                <td><Button onClick={() => window.open(challenge.ruta)}>Ver</Button></td>
+
+                                                <td>
+                                                    < button onClick={() => this.deleteFile(challenge)}>Eliminar</button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </div>
                                 </tbody>
                             </table>
                         </div>
@@ -472,8 +451,8 @@ class EditChallenge extends Component {
                             <Modal.Body>
                                 <h4>Centered Modal</h4>
                                 <p>
-                                    ¿Desea guardar los cambios?
-                                    </p>
+                                ¿Desea guardar los cambios?
+                                </p>
                             </Modal.Body>
                             <Modal.Footer>
                                 <Button onClick={() => this.sendChallenge()}>Aceptar</Button>
