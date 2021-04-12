@@ -1,6 +1,9 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route, useRouteMatch } from 'react-router-dom';
-import Group from '../components/pages/teacher/GroupTeacher.js';
+import Groups from '../components/pages/user/GroupList';
+import MyGroups from '../components/pages/user/MyGroups';
+import Grupo from '../components/pages/user/Group';
+import CrearGrupo from '../components/pages/teacher/CreateGroup';
 import Sidebar from '../components/sidebar/Sidebar.js';
 import CreateChallenge from '../components/pages/teacher/CreateChallenge.js';
 import EditChallenge from '../components/pages/teacher/EditChallenge.js';
@@ -21,7 +24,10 @@ function Routes() {
         <BrowserRouter>
           <Sidebar links={LinksTeacher} url={url} />
             <Switch>
-              <Route exact path="/teacher/groups" component={Group} />
+              <Route exact path="/teacher/groups" component={Groups} />
+              <Route exact path="/teacher/myGroups" component={MyGroups} />
+              <Route exact path="/teacher/createGroup" component={CrearGrupo} />
+              <Route exact path="/teacher/viewGroup/:idGroup" component={Grupo}/>
 
               {/* <Route exact path="/teacher/groups/createChallenge/:idGroup" component={CreateChallenge} />
               <Route exact path="/teacher/groups/:idGroup/editChallenge/:idChallenge" component={EditChallenge} /> */}

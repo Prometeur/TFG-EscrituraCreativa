@@ -89,6 +89,13 @@ class GroupInfo extends Component {
 
     /*Dibuja la pagina  */
     render() {
+
+        let campoCambiarNombre = <div>
+                                    <label>Cambiar nombre: </label>
+                                    <br />
+                                    <input type="text" name="newName" onChange={this.handleChangeRename} />
+                                    <br />
+                                </div>;
         
         let botonCambiarNombre =  <div><button text='Cambiar' onClick={() => this.rename()}>Cambiar</button></div>;
 
@@ -109,6 +116,12 @@ class GroupInfo extends Component {
                 <h4>{this.state.teacher.nombre} {this.state.teacher.apellidos}</h4>
                 <Link key={this.state.teacher.id} to={`/admin/users/viewProfile/${this.state.teacher.id}`}><button text='Ver Perfil'> Ver perfil </button></Link>
             </div>;
+            if(this.state.currentUserRole === "T"){
+                textoProfe =
+                            <div>
+                                <h4>{this.state.teacher.nombre} {this.state.teacher.apellidos}</h4>
+                            </div>;
+            }
             if(this.state.teacher.foto != undefined)
             {
                 fotoSource = "data:image/png;base64," + btoa(String.fromCharCode.apply(null, this.state.teacher.foto.data));
@@ -118,8 +131,20 @@ class GroupInfo extends Component {
 
         if(this.state.currentUserRole != "A")
         {
+            campoCambiarNombre = <div></div>;
             botonCambiarNombre = <div></div>;
             botonDesactivar = <div></div>;
+        }
+        if(this.state.currentUserRole === "T" && this.state.currentUserId === this.state.data.idprofesor)
+        {
+            campoCambiarNombre = <div>
+                                    <label>Cambiar nombre: </label>
+                                    <br />
+                                    <input type="text" name="newName" onChange={this.handleChangeRename} />
+                                    <br />
+                                </div>;
+        
+            botonCambiarNombre =  <div><button text='Cambiar' onClick={() => this.rename()}>Cambiar</button></div>;
         }
 
 
@@ -133,10 +158,7 @@ class GroupInfo extends Component {
                 <h3>{this.state.data.nombre}</h3>
                 <div>
                     
-                        <label>Cambiar nombre: </label>
-                        <br />
-                        <input type="text" name="newName" onChange={this.handleChangeRename} />
-                        <br />
+                        {campoCambiarNombre}
                         {botonCambiarNombre}
                         {botonDesactivar}
 

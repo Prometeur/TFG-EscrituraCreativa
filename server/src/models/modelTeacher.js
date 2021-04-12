@@ -66,6 +66,26 @@ class modelTeacher {
         });
     }
 
+    //Crea un grupo nuevo.
+    createGroup(nombre, id, callback) {
+        this.pool.getConnection(function(err, connection) {
+            if (err) {
+                callback(new Error("No se puede conectar a la base de datos."))
+            } else {
+                const sql = 'INSERT INTO grupo (nombre, idprofesor, activo) VALUES (?,?,1);'; 
+                const valores = [nombre, id];
+                connection.query(sql, valores, function(err, res) {
+                    connection.release();
+                    if (err) {
+                        callback(new Error("Error al crear el grupo."));
+                    } else {
+                        callback(null, res);
+                    }
+                })
+            }
+        });
+    }
+
     //-------------------------------------------------CHALLENGE------------------------------------------------------------------//
 
     /*Obtiene todas las categorias de los desafios*/

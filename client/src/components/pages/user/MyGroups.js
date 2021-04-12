@@ -1,7 +1,6 @@
 /*
-*  Name_file :GroupList.js
-*  Description: Pagina que lista todos los grupos  
-*  que tiene el grupo seleccionado por el profesor  
+*  Name_file :MyGroups.js
+*  Description: Pagina que lista todos los grupos que ha creado el profesor 
 */
 import React, { Component } from 'react';
 import { Link} from "react-router-dom";
@@ -16,7 +15,7 @@ import Button  from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 
 
-class GroupList extends Component {
+class MyGroups extends Component {
 
     state = {
         data: [],
@@ -27,8 +26,8 @@ class GroupList extends Component {
     }
 
     /*Se hacen peticiones al servidor para que me devuelva todos los grupos del profesor*/
-    peticionGet = () => {
-        adminService.getAllGroups().then(response => {
+    peticionGetTeacher = (idTeacher) => {
+        adminService.getGroupsOfTeacher(idTeacher).then(response => {
             this.setState({ data: response });
             this.filterData();
         }).catch(error => {
@@ -46,7 +45,8 @@ class GroupList extends Component {
         this.setState({
             currentUserRole: dataUser.rol
         });
-        this.peticionGet();
+
+        this.peticionGetTeacher(dataUser.id);
     }
 
     /*Lo que escribamos en el input lo guarda en el state async para que lo veamos en tiempo real */
@@ -82,28 +82,12 @@ class GroupList extends Component {
                     <React.Fragment>
                     <ListGroup.Item>
                         {group.nombre}
-                        <Link key={group.id} to={`/admin/viewGroup/${group.id}`}><button text='Ver Grupo'> Ver grupo </button></Link>
+                        <Link key={group.id} to={`/teacher/viewGroup/${group.id}`}><button text='Ver Grupo'> Ver grupo </button></Link>
                     </ListGroup.Item>
                     </React.Fragment>
                 )
             )}
         </ListGroup>;
-        if(this.state.currentUserRole ==="T")
-        {
-            tabla = <ListGroup variant="flush">
-
-                        {this.state.filteredData.map((group) => 
-                            (
-                                <React.Fragment>
-                                <ListGroup.Item>
-                                    {group.nombre}
-                                    <Link key={group.id} to={`/teacher/viewGroup/${group.id}`}><button text='Ver Grupo'> Ver grupo </button></Link>
-                                </ListGroup.Item>
-                                </React.Fragment>
-                            )
-                        )}
-                    </ListGroup>;
-        }
         if(this.state.filteredData.length === 0)
         {
             cartel = <nav>
@@ -118,7 +102,7 @@ class GroupList extends Component {
              <Card className="card-edit">
                     <Card.Body>
                     
-            <h1>Grupos:</h1>
+            <h1>Mis Grupos:</h1>
             
             
             <div>
@@ -147,4 +131,4 @@ class GroupList extends Component {
 
 }
 
-export default GroupList;
+export default MyGroups;
