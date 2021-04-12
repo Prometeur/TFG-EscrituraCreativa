@@ -5,6 +5,7 @@ const express = require('express');//voy a usar el modulo express
 const router =express.Router();
 const multer = require('multer');
 const storage = require('../utils/multer');
+const controllerTeacher = require("../controllers/controllerTeacher");
 const uploader = multer({storage});
 
 
@@ -46,6 +47,9 @@ router.post("/kickStudentFromGroup", controller_teacher.kickStudentFromGroup);
 
 /*Busca todos los escritos no colaborativos del usuario */
 router.get("/getScriptsByStudent",controller_user.getScriptsByStudent);
+
+//Crea un grupo nuevo.
+router.post("/createGroup", controllerTeacher.createGroup);
 
 //Muestra todos los estudiantes que pertenezcan a un grupo dado.
 //router.post("/inviteStudentToGroup", controller.inviteStudentToGroup);
