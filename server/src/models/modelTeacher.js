@@ -120,8 +120,8 @@ class modelTeacher {
 
     /*Obtiene los desafios del profesor segun su grupo*/
     getChallenges(groupID, callback) {
-        const sqlSelect = "SELECT * FROM desafio where idGrupo= ?";
-        this.pool.query(sqlSelect, groupID, (err, result) => {
+        const sqlSelect = "SELECT * FROM desafio where idGrupo= ? AND activo=?";
+        this.pool.query(sqlSelect, [groupID,1], (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }
