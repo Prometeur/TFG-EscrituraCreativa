@@ -60,7 +60,7 @@ class EditWriting extends Component {
             dataMediaWriting: [],//array de multimedia del escrito
             modalDeleteFile: false,
             deleteFileMedia: '',//fichero multimedia del escrito que desea ser borrado
-            nameDeleteFileMedia: '',//nomnbre del fichero multimedia del escrito que desea ser borrado
+            nameDeleteFileMedia: '',//nombre del fichero multimedia del escrito que desea ser borrado
             writing: '',
             form: {
                 idWriter: '',
@@ -369,7 +369,7 @@ class EditWriting extends Component {
 
                 <Modal isOpen={this.state.modalDeleteFile}>
                     <ModalHeader>
-                        <div><h5>¿Estás seguro de eliminar {this.state.nameDeleteFileMedia}?</h5> </div>
+                        <div><h5>¿Seguro que desea eliminar {this.state.nameDeleteFileMedia}?</h5> </div>
                     </ModalHeader>
                     <ModalBody>
                         <FormGroup>

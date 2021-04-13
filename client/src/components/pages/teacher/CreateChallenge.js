@@ -1,19 +1,8 @@
+/*
+*  Name_file :CreateChallenge.js
+*  Description: Pagina de crear desafio
+*/
 import React, { Component } from 'react';
-
-import '../../../styles/Challenge.css';
-import '../../../styles/styleGeneral.css';
-import '../../../styles/styleCard.css';
-
-
-import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import ListGroup from 'react-bootstrap/ListGroup';
-import Alert from 'react-bootstrap/Alert';
 
 /*Importaciones del editor */
 import { Editor } from "react-draft-wysiwyg";
@@ -30,41 +19,48 @@ import AuthUser from '../../../services/authenticity/auth-service.js';
 /**Servicios del profesor */
 import TeacherService from '../../../services/teacher/teacherService';
 
+/*Importaciones del css*/
+import '../../../styles/Challenge.css';
+import '../../../styles/styleGeneral.css';
+import '../../../styles/styleCard.css';
+import '../../../styles/Writing.css';
+
+/*Componentes de estilo Bootstrap*/
+import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Alert from 'react-bootstrap/Alert';
+
 class CreateChallenge extends Component {
 
     constructor(props) {
         super(props);
-        const dataUser = AuthUser.getCurrentUser();
         this.onFileChange = this.onFileChange.bind(this);
-        this.onDeleteMultimedia = this.onDeleteMultimedia.bind(this);
-
+        // this.onDeleteMultimedia = this.onDeleteMultimedia.bind(this);
         this.state = {
             imgCollection: [],
-            imgNamesCollection: [],
+            // imgNamesCollection: [],
             editorState: EditorState.createEmpty(),
             data: [],
             categories: [],
-
             formErrors: {
                 title: '',
                 description: '',
-                file: '',
                 date: '',
-                category: '',
+                idCategory: '',
                 type: '',
             },
-
             form: {
-                idTeacher: dataUser.id,
-                idGroup: this.props.match.params.idGroup,
                 title: '',
                 description: '',
-                file: '',
-                path: '', //ruta del fichero
-                reader: '', //valor o flujo de caracteres del fichero
                 type: '1', //individual o colaborativo
-                qualification: '1',
-                category: '1',
+                typeQualification: '1',//tipo de calificación numerica o conceptual
+                idCategory: '1',
                 date: new Date(), //fecha
             }
         };
@@ -74,13 +70,35 @@ class CreateChallenge extends Component {
     componentDidMount() {
         /*Obtiene todas las categorias de los desafios */
         TeacherService.getCategories().then(response => {
-            debugger;
             this.setState({ categories: response });
         }).catch(error => {
             console.log(error.message);
         })
     }
 
+    //Envio del desafio al server
+    sendChallenge = () => {
+        TeacherService.createChallenge(this.props.match.params.idGroup, this.state.form.title, this.state.form.description,
+            this.state.form.type, this.state.form.idCategory, this.state.form.typeQualification, this.state.form.date)
+            .then(response => {
+                const idChallenge = response.data;
+                if (this.state.imgCollection.length > 0) {
+                    TeacherService.sendMultimediaChallenge(this.state.imgCollection, AuthUser.getCurrentUser().id, idChallenge, this.state.form.type)
+                        .then(response => {
+                            window.location.href = '/teacher';
+                        })
+                        .catch(error => {
+                            console.log(error.message);
+                        });
+                }
+                else {
+                    window.location.href = '/teacher';
+                }
+            })
+            .catch(error => {
+                console.log(error.message);
+            });
+    };
 
     /*Lo que escribamos en el input lo guarda en el state async para que lo veamos en tiempo real */
     handleChange = async e => {
@@ -90,11 +108,8 @@ class CreateChallenge extends Component {
                 [e.target.name]: e.target.value
             }
         });
-
         console.log(this.state.form);//visualizar consola navegador lo que escribimos en el input
-
     }
-
 
     handleErrors = e => {
         e.preventDefault();
@@ -108,7 +123,6 @@ class CreateChallenge extends Component {
             default:
                 break;
         }
-        //debugger;
         // this.setState({ formErrors, [name]: value }, () => console.log(this.state));
         this.setState({
             formErrors,
@@ -118,7 +132,6 @@ class CreateChallenge extends Component {
             }
         }, () => console.log(this.state));
     }
-
 
     onEditorStateChange = (editorState) => {
         this.setState({
@@ -150,7 +163,7 @@ class CreateChallenge extends Component {
         this.setState({
             form: {
                 ...this.state.form,
-                qualification: event.target.value
+                typeQualification: event.target.value
             }
         });
     };
@@ -168,17 +181,17 @@ class CreateChallenge extends Component {
         this.setState({
             form: {
                 ...this.state.form,
-                category: event.target.value
+                idCategory: event.target.value
             }
         });
     };
 
 
-    onDeleteMultimedia(indexItem) {
-        this.setState(() =>
-            ({ imgNamesCollection: this.state.imgNamesCollection.filter((todo, index) => index !== indexItem) }));
+    // onDeleteMultimedia(indexItem) {
+    //     this.setState(() =>
+    //         ({ imgNamesCollection: this.state.imgNamesCollection.filter((todo, index) => index !== indexItem) }));
 
-    }
+    // }
 
     onFileChange(e) {
         this.setState({ imgCollection: e.target.files });
@@ -188,30 +201,6 @@ class CreateChallenge extends Component {
         // this.setState({ imgNamesCollection: [...newFiles] });
         // console.log(this.state.imgNamesCollection);
     }
-
-    //Envio del desafio al server
-    sendChallenge = () => {
-        TeacherService.createChallenge(this.state.form.idGroup, this.state.form.title, this.state.form.description,
-            this.state.form.type, this.state.form.category, this.state.form.qualification, this.state.form.date)
-            .then(response => {
-                const idChallenge = response.data;
-                if (this.state.imgCollection.length > 0) {
-                    TeacherService.sendMultimediaChallenge(this.state.imgCollection, this.state.form.idTeacher, idChallenge, this.state.form.type)
-                        .then(response => {
-                            window.location.href = '/teacher';
-                        })
-                        .catch(error => {
-                            console.log(error.message);
-                        });
-                }
-                else {
-                    window.location.href = '/teacher';
-                }
-            })
-            .catch(error => {
-                console.log(error.message);
-            });
-    };
 
     /*Dibuja la pagina */
     render() {
@@ -240,28 +229,28 @@ class CreateChallenge extends Component {
                             </div>
                         </div>
                         <div className="row-edit">
-                            <div className="form-inputs">
-                                <label className='form-label'>Descripción</label>
-                                <Editor
-                                    editorState={editorState}
-                                    toolbarClassName="toolbarClassName"
-                                    wrapperClassName="demo-wrapper"
-                                    editorClassName="border-edit"
-                                    // wrapperClassName="wrapperClassName"
-                                    // editorClassName="editorClassName"
-                                    onEditorStateChange={this.onEditorStateChange}
-                                    onChange={
-                                        (event, editor) => {
-                                            this.setState({
-                                                form: {
-                                                    ...this.state.form,
-                                                    description: draftToHtml(convertToRaw(editorState.getCurrentContent()))
-                                                }
-                                            });
-                                        }
+
+                            <label className='form-label'>Descripción</label>
+                            <Editor
+                                editorState={editorState}
+                                // toolbarClassName="toolbarClassName"
+                                // wrapperClassName="demo-wrapper"
+                                // editorClassName="border-edit"
+                                wrapperClassName="wrapperClassName1"
+                                editorClassName="editorClassName1"
+                                toolbarClassName="toolbarClassName1"
+                                onEditorStateChange={this.onEditorStateChange}
+                                onChange={
+                                    (event, editor) => {
+                                        this.setState({
+                                            form: {
+                                                ...this.state.form,
+                                                description: draftToHtml(convertToRaw(editorState.getCurrentContent()))
+                                            }
+                                        });
                                     }
-                                />
-                            </div>
+                                }
+                            />
                         </div>
                         <div className="row-edit">
                             <div className="form-select">
@@ -359,22 +348,14 @@ class CreateChallenge extends Component {
                         <div className="form-select">
                             <Button onClick={() => this.changeView()}>Cancelar</Button>
                         </div>
-                        <Modal
-                            size="lg"
-                            aria-labelledby="contained-modal-title-vcenter"
-                            centered
-                            show={this.state.stateModal}
-                            onHide={this.state.stateModal}
-                        >
+                        <Modal size="lg" aria-labelledby="contained-modal-title-vcenter" centered show={this.state.stateModal} onHide={this.state.stateModal}>
                             <Modal.Header >
                                 <Modal.Title id="contained-modal-title-vcenter">
                                     Aviso
-                                    </Modal.Title>
+                                </Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
-                                <h5>
-                                    ¿ Esta seguro de enviar este desafio ?
-                                    </h5>
+                                <h5>¿ Esta seguro de enviar este desafio ?</h5>
                             </Modal.Body>
                             <Modal.Footer>
                                 <Button onClick={() => this.sendChallenge()}>Si</Button>

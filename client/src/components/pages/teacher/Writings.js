@@ -15,7 +15,7 @@ function Writings(props) {
     const [showWritings, setShowWritings] = useState(false);
     const [idChallenge, setIdChallenge] = useState("");
 
-    const data = [
+    let data = [
         { id: 1, name: "Escritos",prueba:idChallenge, content: () => <WritingsStudent key={props.groupSelect} groupSelect={props.groupSelect} idChallenge={idChallenge} />, state: "active" },
         //  { id: 2, name: "Escritos en equipo", content: () => <WritingsTeam key={props.groupSelect} groupSelect={props.groupSelect} />, state: "inactive" },
     ];
