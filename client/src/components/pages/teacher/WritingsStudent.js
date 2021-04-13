@@ -69,8 +69,37 @@ class WritingsStudent extends Component {
     }
 
     componentDidUpdate(pP,pS,sS){
-        debugger;
-        console.warn("method called",pP )
+        // debugger;
+        // console.warn("method called",pP )
+        TeacherService.getChallenge(pP.idChallenge)
+            .then(response => {
+
+                //Si el desafio es individual muestra los escritos individuales
+                if (response[0].colaborativo === 1) {
+                    TeacherService.getWritingsStudent(this.props.groupSelect, pP.idChallenge)
+                        .then(response => {
+                         
+                            this.setState({ showTableStudent: true, dataWritings: response.data });
+
+                        }).catch(error => {
+                            console.log(error.message);
+                        })
+
+                }
+                else { //Si el desafio es colaborativo muestra los escritos colaborativos
+                    TeacherService.getWritingsTeam(this.props.groupSelect, pP.idChallenge)
+                        .then(response => {
+                            
+                            this.setState({ showTableStudent: false,dataWritings: response });
+
+                        }).catch(error => {
+                            console.log(error.message);
+                        })
+                }
+
+            }).catch(error => {
+                console.log(error.message);
+            })
     }
 
     //Obtiene el nombre del desafio/escrito
