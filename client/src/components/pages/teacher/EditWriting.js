@@ -36,8 +36,6 @@ import Button from 'react-bootstrap/Button';
 
 /*Componentes de estilo Reactstrap*/
 import {
-    Table,
-    Container,
     Modal,
     ModalHeader,
     ModalBody,
