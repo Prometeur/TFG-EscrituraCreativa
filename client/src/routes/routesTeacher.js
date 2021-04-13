@@ -15,32 +15,36 @@ import Profile from '../components/pages/user/Profile.js';
 
 import EditWriting from '../components/pages/teacher/EditWriting.js';
 
+import GroupTeacher from '../components/pages/teacher/GroupTeacher.js';
+
 /*defino las rutas de los componentes
 Rutas o urls del Teacher asociado a la componente pages/teacher*/
 function Routes() {
-  let {url} = useRouteMatch();
-    return (
-      <>
-        <BrowserRouter>
-          <Sidebar links={LinksTeacher} url={url} />
-            <Switch>
-              <Route exact path="/teacher/groups" component={Groups} />
-              <Route exact path="/teacher/myGroups" component={MyGroups} />
-              <Route exact path="/teacher/createGroup" component={CrearGrupo} />
-              <Route exact path="/teacher/viewGroup/:idGroup" component={Grupo}/>
+  let { url } = useRouteMatch();
+  return (
+    <>
+      <BrowserRouter>
+        <Sidebar links={LinksTeacher} url={url} />
+        <Switch>
+          {/* <Route exact path="/teacher/groups" component={Groups} /> */}
 
-              {/* <Route exact path="/teacher/groups/createChallenge/:idGroup" component={CreateChallenge} />
+          <Route exact path="/teacher/groups" component={GroupTeacher} /> 
+          <Route exact path="/teacher/myGroups" component={MyGroups} />
+          <Route exact path="/teacher/createGroup" component={CrearGrupo} />
+          <Route exact path="/teacher/viewGroup/:idGroup" component={Grupo} />
+
+          {/* <Route exact path="/teacher/groups/createChallenge/:idGroup" component={CreateChallenge} />
               <Route exact path="/teacher/groups/:idGroup/editChallenge/:idChallenge" component={EditChallenge} /> */}
-               <Route exact path="/teacher/createChallenge/:idGroup" component={CreateChallenge} />
-               <Route exact path="/teacher/editChallenge/:idGroup/:idChallenge" component={EditChallenge} />
-              <Route exact path="/teacher/students" component={StudentList}/>
-              <Route exact path="/teacher/applicants" component={ApplicantList}/>
-              <Route exact path="/teacher/students/viewProfile/:idStudent" component={Profile} />
-              <Route exact path="/teacher/editWriting/:idGroup/:idChallenge/:idWriting/:idStudent" component={EditWriting} />
-            </Switch>
-        </BrowserRouter>
-      </>  
-    );
-  }
+          <Route exact path="/teacher/createChallenge/:idGroup" component={CreateChallenge} />
+          <Route exact path="/teacher/editChallenge/:idGroup/:idChallenge" component={EditChallenge} />
+          <Route exact path="/teacher/students" component={StudentList} />
+          <Route exact path="/teacher/applicants" component={ApplicantList} />
+          <Route exact path="/teacher/students/viewProfile/:idStudent" component={Profile} />
+          <Route exact path="/teacher/editWriting/:idGroup/:idChallenge/:idWriting/:idStudent" component={EditWriting} />
+        </Switch>
+      </BrowserRouter>
+    </>
+  );
+}
 
 export default Routes;

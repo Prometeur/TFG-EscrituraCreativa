@@ -106,7 +106,7 @@ class modelTeacher {
     /*Obtiene el desafio del profesor*/
     getChallenge(idChallenge, callback) {
         // const sqlSelect = "SELECT * FROM desafio where id= ?";
-        const sqlSelect = "SELECT desafio.id,desafio.idGrupo,desafio.titulo,desafio.descripcion,desafio.tipoCalificacion,categoria.nombre,desafio.colaborativo,desafio.fechaIni,desafio.fechaFin, desafio.activo FROM desafio INNER JOIN categoria ON desafio.idCategoria = categoria.id WHERE desafio.id= ? ";
+        const sqlSelect = "SELECT categoria.nombre,desafio.id,desafio.idGrupo,desafio.titulo,desafio.descripcion,desafio.tipoCalificacion,desafio.idCategoria,desafio.colaborativo,desafio.fechaIni,desafio.fechaFin, desafio.activo FROM desafio INNER JOIN categoria ON desafio.idCategoria = categoria.id WHERE desafio.id= ? ";
 
         this.pool.query(sqlSelect, idChallenge, (err, result) => {
             if (err) {
