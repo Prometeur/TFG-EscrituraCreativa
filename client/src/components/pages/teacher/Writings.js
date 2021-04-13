@@ -16,7 +16,7 @@ function Writings(props) {
     const [idChallenge, setIdChallenge] = useState("");
 
     let data = [
-        { id: 1, name: "Escritos",prueba:idChallenge, content: () => <WritingsStudent key={props.groupSelect} groupSelect={props.groupSelect} idChallenge={idChallenge} />, state: "active" },
+        { id: 1, name: "Escritos", prueba: idChallenge, content: () => <WritingsStudent key={props.groupSelect} groupSelect={props.groupSelect} idChallenge={idChallenge} />, state: "active" },
         //  { id: 2, name: "Escritos en equipo", content: () => <WritingsTeam key={props.groupSelect} groupSelect={props.groupSelect} />, state: "inactive" },
     ];
 
@@ -51,10 +51,13 @@ function Writings(props) {
 
             {showWritings ? (
 
-                <TabsWriting data={data} />
+                // <TabsWriting data={data} />
+                <div className="row">
+                    <WritingsStudent key={props.groupSelect} groupSelect={props.groupSelect} idChallenge={idChallenge} />
+                </div>
             ) : (
                 <div>
-                  
+
                 </div>
 
             )}

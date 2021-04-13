@@ -157,6 +157,7 @@ class Challenges extends Component {
                 </div>
 
                 <div className="column column-rigth">
+        
 
                     <Link to={`/teacher/createChallenge/${this.props.groupSelect}`}><Button variant="primary">Crear desafio</Button></Link>
                 </div>
