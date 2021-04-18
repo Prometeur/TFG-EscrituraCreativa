@@ -324,6 +324,42 @@ function searchStudentOfGroup(request, response, next){
 
 }
 
+//Busca equipos según el grupo dado.
+function getTeamsOfGroup(request, response, next){
+    
+    let grupo = request.body.grupo;
+
+    modelUser.getTeamsOfGroup(grupo, function(err, studentList) {
+        if(err) 
+        {
+            if (err.message == "No se puede conectar a la base de datos.") 
+            {
+                //next(err);
+                console.log("No se puede conectar a la base de datos");
+            }
+            response.status(500);
+            /*response.render("perfil", {
+                error: err.message
+            });*/
+            console.log(err.message);
+        }
+        else if (studentList == null) 
+        {
+            response.status(200);
+            /*response.render("perfil", {
+                error: "No hay estudiantes con los parámetros escogidos."
+            });*/
+            console.log("No hay equipos con los parámetros escogidos.");
+        } 
+        else 
+        {
+            response.status(200);
+           response.send(JSON.stringify(studentList));
+        }
+    });
+
+}
+
  /*Obtiene el perfil del usuario en cuestión*/
  function getProfile(req, res) {
     
@@ -483,6 +519,90 @@ function getScriptsByStudent(request, response, next){
 
 }
 
+//Busca escritos no colaborativos según el id estudiante dado.
+function getScriptsByTeam(request, response, next){
+    
+    let id = request.query.id;
+
+    modelUser.getScriptsByTeam(id, function(err, scriptList) {
+        if(err) 
+        {
+            if (err.message == "No se puede conectar a la base de datos.") 
+            {
+                //next(err);
+                console.log("No se puede conectar a la base de datos");
+            }
+            response.status(500);
+            /*response.render("perfil", {
+                error: err.message
+            });*/
+            console.log(err.message);
+        }
+        else if (scriptList == null) 
+        {
+            response.status(200);
+            /*response.render("perfil", {
+                error: "No hay estudiantes con los parámetros escogidos."
+            });*/
+            console.log("No escritos disponibles.");
+        } 
+        else 
+        {
+            response.status(200);
+           response.send(JSON.stringify(scriptList));
+        }
+    });
+
+}
+
+ /*Obtiene el perfil del equipo en cuestión*/
+ function getTeam(req, res) {
+    
+    let idTeam = req.query.idTeam;
+    
+    if (idTeam != null) {
+        modelUser.getTeam(idTeam, function(err, result) {
+            if(err) 
+            {
+                if (err.message == "No se puede conectar a la base de datos.") 
+                {
+                    //next(err);
+                    console.log("No se puede conectar a la base de datos");
+                }
+                res.status(200);
+                /*response.render("perfil", {
+                    error: err.message
+                });*/
+                console.log(err.message);
+            } 
+            else if (result == null) 
+            {
+                res.status(200);
+                /*response.render("perfil", {
+                    error: "El usuario no existe."
+                });*/
+                console.log("El usuario no existe");
+            } 
+            else
+            {
+                res.status(200);
+                /*
+                response.render("perfil", {
+                    error: null,
+                    usuarioPerfil: usuarioPerfil
+                });
+                */
+               res.send(JSON.stringify(result[0]));
+            }
+        });
+    }
+    else 
+    {
+        res.status(200);
+        console.log("El id es nulo");
+    }
+}
+
 
 
 module.exports = {
@@ -493,10 +613,13 @@ module.exports = {
     searchUsers:searchUsers,
     searchApplicant:searchApplicant,
     searchStudentOfGroup:searchStudentOfGroup,
+    getTeamsOfGroup:getTeamsOfGroup,
     getProfile:getProfile,
     getGroupData:getGroupData,
     acceptApplicant:acceptApplicant,
     deleteChallenge:deleteChallenge,
-    getScriptsByStudent:getScriptsByStudent
+    getScriptsByStudent:getScriptsByStudent,
+    getScriptsByTeam:getScriptsByTeam,
+    getTeam:getTeam
  
 };

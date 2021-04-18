@@ -258,6 +258,27 @@ class modelUser {
         });
     }
 
+    getTeamsOfGroup(idGrupo, callback) {
+
+        this.pool.getConnection(function (err, connection) {
+            if (err) {
+                callback(new Error("No se puede conectar a la base de datos."))
+            }
+            else {
+                const sql = 'SELECT * FROM equipo WHERE idGrupo = ? AND activo = 1;';
+                const valores = [idGrupo];
+                connection.query(sql, valores, function (err, res) {
+                    connection.release();
+                    if (err) {
+                        callback(new Error("Error al buscar equipos en el grupo " + idGrupo + "."));
+                    } else {
+                        callback(null, res);
+                    }
+                })
+            }
+        });
+    }
+
 
     /*Obtiene los datos de perfil del alumno*/
     deleteChallenge(id, callback) {
@@ -288,8 +309,29 @@ class modelUser {
                 callback(new Error("No se puede conectar a la base de datos."))
             }
             else {
-                const sql = "SELECT idEscritor, idDesafio, nombre, titulo FROM escrito INNER JOIN desafio ON escrito.idDesafio = desafio.id  WHERE idEscritor =  ? AND escrito.colaborativo = 0 AND escrito.activo = 1";
+                const sql = "SELECT escrito.id, idEscritor, escrito.idGrupo, idDesafio, nombre, titulo FROM escrito INNER JOIN desafio ON escrito.idDesafio = desafio.id  WHERE idEscritor =  ? AND escrito.colaborativo = 1 AND escrito.activo = 1";
                 const valores = [idUser];
+                connection.query(sql, valores, function (err, res) {
+                    connection.release();
+                    if (err) {
+                        callback(new Error("Error al buscar los escritos."));
+                    } else {
+                        callback(null, res);
+                    }
+                })
+            }
+        });
+    }
+
+    /*Obtiene los escritos no colaborativos del alumno*/
+    getScriptsByTeam(idTeam, callback) {
+        this.pool.getConnection(function (err, connection) {
+            if (err) {
+                callback(new Error("No se puede conectar a la base de datos."))
+            }
+            else {
+                const sql = "SELECT escrito.id, idEscritor, escrito.idGrupo, idDesafio, nombre, titulo FROM escrito INNER JOIN desafio ON escrito.idDesafio = desafio.id  WHERE idEscritor =  ? AND escrito.colaborativo = 2 AND escrito.activo = 1";
+                const valores = [idTeam];
                 connection.query(sql, valores, function (err, res) {
                     connection.release();
                     if (err) {
@@ -376,6 +418,27 @@ class modelUser {
             }
         });
 
+    }
+
+    /*Obtiene los datos del equipo*/
+    getTeam(idTeam, callback) {
+        this.pool.getConnection(function (err, connection) {
+            if (err) {
+                callback(new Error("No se puede conectar a la base de datos."))
+            }
+            else {
+                const sql = "SELECT * FROM equipo where id =  ?";
+                const valores = [idTeam];
+                connection.query(sql, valores, function (err, res) {
+                    connection.release();
+                    if (err) {
+                        callback(new Error("Error al buscar al usuario."));
+                    } else {
+                        callback(null, res);
+                    }
+                })
+            }
+        });
     }
 }
 

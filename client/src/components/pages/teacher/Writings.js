@@ -32,6 +32,7 @@ function Writings(props) {
 
     const selectionChallenge = event => {
         setIdChallenge(event.target.value)
+        console.log(idChallenge);
         setShowWritings(true)
     };
 

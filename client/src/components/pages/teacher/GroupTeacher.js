@@ -16,11 +16,19 @@ import DropdownToggle from 'react-bootstrap/DropdownToggle';
 import FormControl from 'react-bootstrap/FormControl';
 import Challenges from './Challenges.js';
 import Writings from './Writings.js';
+import Teams from './GroupTeams';
+import Students from '../user/GroupStudents';
 import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Card from 'react-bootstrap/Card';
 import Icon from '@material-ui/core/Icon';
 import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
+import AdminService from '../../../services/admin/adminService.js';
+
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
+
+import Accordion from 'react-bootstrap/Accordion';
 
 
 
@@ -53,7 +61,7 @@ const CustomMenu = React.forwardRef(
         <FormControl
           autoFocus
           className="mx-3 my-2 w-auto"
-          placeholder="Type to filter..."
+          placeholder="Buscar grupo..."
           onChange={(e) => setValue(e.target.value)}
           value={value}
         />
@@ -82,6 +90,9 @@ class GroupTeacher extends Component {
       itemSelect: "",
       showChallenges: false,
       showWritings: false,
+      showTeams: false,
+      showStudents: false,
+      newName:""
     };
   }
 
@@ -93,6 +104,10 @@ class GroupTeacher extends Component {
     /**Obtiene todos los grupos del profesor */
     TeacherService.getGroups(dataUser.id).then(response => {
       this.setState({ dataGroup: response });
+      if(this.state.dataGroup.length > 0)
+      {
+        this.setState({ groupSelect: this.state.dataGroup[0].id, nameGroupSelect: this.state.dataGroup[0].nombre });
+      }
     })
   }
 
@@ -100,14 +115,34 @@ class GroupTeacher extends Component {
     if (event.target.value === "1") {
       this.setState({
         showChallenges: true,
-        showWritings: false
+        showWritings: false,
+        showTeams: false,
+        showStudents: false
 
       });
     }
     else if (event.target.value === "2") {
       this.setState({
         showChallenges: false,
-        showWritings: true
+        showWritings: true,
+        showTeams: false,
+        showStudents: false
+      });
+    }
+    else if (event.target.value === "3") {
+      this.setState({
+        showChallenges: false,
+        showWritings: false,
+        showTeams: true,
+        showStudents: false
+      });
+    }
+    else if (event.target.value === "4") {
+      this.setState({
+        showChallenges: false,
+        showWritings: false,
+        showTeams: false,
+        showStudents: true
       });
     }
 
@@ -121,10 +156,95 @@ class GroupTeacher extends Component {
     this.setState({ groupSelect: group.id, nameGroupSelect: group.nombre });
   }
 
+  /*Lo que escribamos en el input lo guarda en el state async para que lo veamos en tiempo real */
+  handleChangeRename = async e => {
+    await this.setState({
+            [e.target.name]: e.target.value
+    });
+  }
+
+  /*Se hacen peticiones al servidor renombrar grupo*/
+  rename = () => {
+      AdminService.renameGroup(this.state.groupSelect, this.state.newName ).then(response => {
+        const dataUser = AuthUser.getCurrentUser();
+          this.setState({ nameGroupSelect: this.state.newName });
+        
+      }).catch(error => {
+          console.log(error.message);
+      })
+  }
+
   /*Dibuja la pagina  */
   render() {
 
-    const { dataGroup, groupSelect, showChallenges, showWritings } = this.state;
+    const { dataGroup, groupSelect, showChallenges, showWritings, showTeams, showStudents } = this.state;
+
+    // SISTEMA DE TABS
+
+      let tabs = <div className="container-box"> 
+                      <Tabs>
+                          <TabList>
+                            <Tab>DESAFIOS</Tab>
+                            <Tab>ESCRITOS</Tab>
+                            <Tab>EQUIPOS</Tab>
+                            <Tab>ESTUDIANTES</Tab>
+                          </TabList>
+                          <TabPanel>
+                          <div className="row">
+                            <Challenges key={groupSelect} groupSelect={groupSelect} />
+                          </div>
+                          </TabPanel>
+                          <TabPanel>
+                          <div className="row">
+                            <Writings key={groupSelect} groupSelect={groupSelect} />
+                          </div>
+                          </TabPanel>
+                          <TabPanel>
+                          <div className="row">
+                            <Teams key={groupSelect} groupSelect={groupSelect} />
+                          </div>
+                          </TabPanel>
+                          <TabPanel>
+                          <div className="row">
+                            <Students key={groupSelect} idGroup={groupSelect} />
+                          </div>
+                          </TabPanel>
+                      </Tabs>
+                </div>;
+
+    // SISTEMA DE TABS
+
+    //VENTANA EMERGENTE DE CAMBIAR NOMBRE
+    //NOTA: EL PANEL BLANCO QUE SALE ES PORQUE EN ALGUN ESTILO, SE OBLIGA A LAS .card A TENER UNA ALTURA FIJA. SIS E QUITA ESE ESTILO, SE ESCONDE BIEN
+      let botonRenombrar = <div><button text='Cambiar' onClick={() => this.rename()}>Cambiar</button></div>;
+      if(this.state.newName ===""){
+        botonRenombrar = <div><button disabled text='Cambiar' onClick={() => this.rename()}>Cambiar</button></div>;
+      }
+
+      let renamePanel = 
+      <Accordion>
+        <Card>
+          <Accordion.Toggle as={Card.Header} eventKey="0">
+            Renombrar grupo
+          </Accordion.Toggle>
+          <Accordion.Collapse eventKey="0">
+            <Card.Body>
+                <div>
+                  <label>Cambiar nombre: </label>
+                  <br />
+                  <input type="text" name="newName" onChange={this.handleChangeRename} />
+                  <br />
+                </div>
+                {botonRenombrar}
+            </Card.Body>
+          </Accordion.Collapse>
+        </Card>
+      </Accordion>
+      
+      
+      
+      ;
+    //VENTANA EMERGENTE DE CAMBIAR NOMBRE
 
     return (
       <div className="container">
@@ -146,13 +266,18 @@ class GroupTeacher extends Component {
               {/* </div> */}
             </div>
 
-            <td><textarea name="mensaje" rows="1" cols="10" value={this.state.nameGroupSelect} readOnly={true} style={{ resize: "none" }} ></textarea></td>
+            {/*<td><textarea name="mensaje" rows="1" cols="10" value={this.state.nameGroupSelect} readOnly={true} style={{ resize: "none" }} ></textarea></td>*/}
+            <h3>{this.state.nameGroupSelect}</h3>
 
-            <select onChange={this.itemSelection} disabled={!this.state.groupSelect ? true : null} >
+            {renamePanel}
+
+            {/*<select onChange={this.itemSelection} disabled={!this.state.groupSelect ? true : null} >
               <option value="" selected disabled hidden > Seleccionar </option>
               <option value="1" > Desafios </option>
               <option value="2" > Escritos </option>
-            </select>
+              <option value="3" > Equipos </option>
+              <option value="4" > Estudiantes </option>
+              </select>*/}
 
             {/* <div className="column column-rigth">
                
@@ -164,6 +289,8 @@ class GroupTeacher extends Component {
             {/* <div className="row">
               <Challenges key={groupSelect} groupSelect={groupSelect} />
             </div> */}
+
+            
 
             {showChallenges ? (
               <div className="row">
@@ -180,6 +307,21 @@ class GroupTeacher extends Component {
             ) : (
               <div></div>
             )}
+            {showTeams ? (
+              <div className="row">
+                <Teams key={groupSelect} groupSelect={groupSelect} />
+              </div>
+            ) : (
+              <div></div>
+            )}
+            {showStudents ? (
+              <div className="row">
+                <Students key={groupSelect} idGroup={groupSelect} />
+              </div>
+            ) : (
+              <div></div>
+            )}
+            {tabs}
           </Card.Body>
         </Card>
       </div>
