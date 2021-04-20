@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Redirect }from "react-router-dom";
 import AuthService from "../../../services/authenticity/auth-service";
+import StudentService from "../../../services/student/student-service.js";
 import '../../../styles/styleGeneral.css';
 import '../../../styles/styleCard.css';
 import Card from 'react-bootstrap/Card';
@@ -13,6 +14,7 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Alert from "react-bootstrap/Alert";
 import {isEmail} from "validator";
+
 
 const required = value => {
     if (!value) {
@@ -86,11 +88,16 @@ export default class Profile extends Component {
         this.onChangeConfirmPassword = this.onChangeConfirmPassword.bind(this);
         this.onFileChange = this.onFileChange.bind(this);
         this.onModal = this.onModal.bind(this);
+        this.onTeamModal = this.onTeamModal.bind(this);
+        this.onDeleteModal = this.onDeleteModal.bind(this);
 
         this.state = {
 
-            stateModal:false,
+            saveModal:false,
+            deleteModal:false,
+            teamModal:false,
             currentUser:[],
+            StudentTeams:[],
              updateUser : {
                  username: '',
                  surname: '',
@@ -106,6 +113,7 @@ export default class Profile extends Component {
     componentDidMount() {
 
         const currentUser = AuthService.getCurrentUser();
+        console.log(currentUser);
         this.setState( { currentUser: currentUser });
         this.setState({
            updateUser:{
@@ -180,9 +188,24 @@ export default class Profile extends Component {
     onModal(modal) {
 
         this.setState({
-            stateModal: modal
+            saveModal: modal
         });
     }
+
+    onTeamModal(modal) {
+
+        this.setState({
+            teamModal: modal
+        });
+    }
+
+    onDeleteModal(modal) {
+
+        this.setState({
+            deleteModal:modal
+        });
+    }
+
 
     //Carga los ficheros multimedia del escrito
     onFileChange(e) {
@@ -207,7 +230,7 @@ export default class Profile extends Component {
        if (this.state.updateUser.password == this.state.updateUser.confirmPassword) {
             AuthService.editProfile(this.state.currentUser.id, this.state.updateUser.username, this.state.updateUser.surname,
                 this.state.updateUser.email,this.state.updateUser.password, this.state.updateUser.photo).then(response => {
-                  this.logout();
+                   this.logout();
                    window.location.href='/login';
             }).catch(error => {
                 console.log(error.message);
@@ -219,13 +242,39 @@ export default class Profile extends Component {
        }
     }
 
+    deleteUser() {
+
+        if(this.state.currentUser.rol=='S'){
+            StudentService.getTeams(this.state.currentUser.id).then( response => {
+                this.setState({StudentTeams:response});
+                console.log(this.state.StudentTeams);
+                if(this.state.StudentTeams.length> 0){
+                    this.setState({teamModal:true});
+                    this.setState({deleteModal:false});
+                }
+
+            }).catch(error =>{
+                console.log(error.message);
+            })
+        }
+        else
+        {
+            AuthService.disableProfile(this.state.currentUser.id).then( response => {
+                this.logout();
+                window.location.href='/login';
+            }).catch(error => {
+                console.log(error.message);
+            });
+        }
+
+    }
 
     render() {
         return (
             <>
                 <div className="editPerfil-left">
-                   <Button  variant="danger">
-                        Eliminar cuenta
+                   <Button  variant="danger" onClick={()=>this.onDeleteModal(true)}>
+                        Baja de cuenta
                    </Button>
                 </div>
                 <div className="container">
@@ -343,11 +392,12 @@ export default class Profile extends Component {
                            </div>
                             <Modal
                                 centered
-                                show={this.state.stateModal}
-                                onHide={this.state.stateModal}
+                                show={this.state.saveModal}
+                                onHide={this.state.saveModal}
                             >
                                 <Modal.Header>
-                                    Aviso
+                                    <h4>Aviso</h4>
+                                    <img src="exclamation.png"></img>
                                 </Modal.Header>
                                 <Modal.Body>
                                     <p>
@@ -359,6 +409,49 @@ export default class Profile extends Component {
                                     <Button variant="secondary" onClick={() => this.onModal(false)}>No</Button>
                                     <Button variant="primary" onClick={() => this.editProfile()}>Aceptar los Cambios</Button>
                                 </Modal.Footer>
+                            </Modal>
+
+                            <Modal
+                                centered
+                                show={this.state.teamModal}
+                                onHide={this.state.teamModal}
+                            >
+                            <Modal.Header>
+                                <Modal.Title>Aviso</Modal.Title>
+                                <img src="exclamation.png"></img>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <h6>Para poder dar de baja su cuenta, debe darse de baja en los siguientes equipos</h6>
+                                <ul>
+                                    { this.state.StudentTeams.map((team, index)=>
+                                        <li>{team.nombreEquipo}</li>
+                                    )}
+                                </ul>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={() => this.onTeamModal(false)}>atras</Button>
+                            </Modal.Footer>
+                        </Modal>
+
+                        <Modal
+                            centered
+                            show={this.state.deleteModal}
+                            onHide={this.state.deleteModal}
+                        >
+                            <Modal.Header>
+                                <Modal.Title>
+                                    ¿Esta seguro/a?
+                                </Modal.Title>
+                                <img src="triangle.png"></img>
+                            </Modal.Header>
+                            <Modal.Body>
+                                Si en algún momento quieres volver, podrás hacerlo contactando con nuestro equipo de
+                                apoyo o a tu centro de estudio.
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="primary" onClick={() => this.deleteUser()}>aceptar</Button>
+                                <Button variant="secondary" onClick={() => this.onDeleteModal(false)}>No</Button>
+                            </Modal.Footer>
                             </Modal>
                         </Card.Body>
                     </Card>

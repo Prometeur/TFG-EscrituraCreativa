@@ -38,8 +38,6 @@ import Chat from "./Chat"
 
 /*Componentes de estilo Reactstrap*/
 import {
-    Table,
-    Container,
     Modal,
     ModalHeader,
     ModalBody,

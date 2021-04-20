@@ -59,6 +59,17 @@ class AuthService {
             });
     }
 
+    disableProfile(idUser) {
+
+        return axios.post("auth/disableProfile",
+            {idUser:idUser},
+            { headers:
+                {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+             });
+    }
+
     getCurrentUser() {
 
         return JSON.parse(localStorage.getItem('user'));

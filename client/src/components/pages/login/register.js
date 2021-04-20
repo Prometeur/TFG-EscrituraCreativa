@@ -158,7 +158,6 @@ class Register extends Component {
                   }}
                 >
                   {!this.state.successful && (
-                  <div className="row">
                     <div className="form-group-register">
                         <h4>Registrarse</h4>
                        <div className="section-column">
@@ -220,7 +219,6 @@ class Register extends Component {
                             <button className="button button5">Sign Up</button>
                         </div>
                     </div>
-                  </div>
                   )}
 
                   {this.state.message && (
@@ -244,6 +242,7 @@ class Register extends Component {
                     }}
                   />
             </Form>
+            <img src="liteaturalapiz.png" alt=""/>
         </div>
       );
     }
