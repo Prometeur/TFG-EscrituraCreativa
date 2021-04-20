@@ -38,7 +38,6 @@ class WritingsStudent extends Component {
 
         TeacherService.getChallenge(this.props.idChallenge)
             .then(response => {
-
                 //Si el desafio es individual muestra los escritos individuales
                 if (response[0].colaborativo === 1) {
                     TeacherService.getWritingsStudent(this.props.groupSelect, this.props.idChallenge)
@@ -78,7 +77,7 @@ class WritingsStudent extends Component {
                 if (response[0].colaborativo === 1) {
                     TeacherService.getWritingsStudent(this.props.groupSelect, pP.idChallenge)
                         .then(response => {
-                         
+                            
                             this.setState({ showTableStudent: true, dataWritings: response.data });
 
                         }).catch(error => {

@@ -75,7 +75,7 @@ class EditWriting extends Component {
         /*Obtiene el desafio seleccionado*/
         TeacherService.getChallenge(this.props.match.params.idChallenge)
             .then(response => {
-                debugger;
+                
                 this.setState({
 
                     challenge: response[0]

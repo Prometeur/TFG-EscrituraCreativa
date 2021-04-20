@@ -1,11 +1,11 @@
 const linksTeacher = [
 
-    {
+    /*{
         path: "/myGroups",
         name: "Mis Grupos",
         id: "myGroups"
 
-    },
+    },*/
     {
         path: "/groups",
         name: "Grupos",
