@@ -115,6 +115,14 @@ class TeacherService {
         })
     }
 
+    getTeamsOfGroup(grupo){
+        return axios.post("/teacher/getTeamsOfGroup", { grupo: grupo },{ headers: {"Authorization" : `Bearer ${authHeader()}`}}).then(response => {
+            return response.data;
+        }).catch(error => {
+            console.log(error.message);
+        })
+    }
+
 
     //-------------------------------------------------CHALLENGE------------------------------------------------------------------//
 
@@ -289,6 +297,38 @@ class TeacherService {
                 console.log(error.message);
             })
     }
+
+    getTeam(idTeam) {
+        return axios.get("/teacher/getTeam", { params: { idTeam: idTeam } }, { headers: { "Authorization": `Bearer ${authHeader()}` } })
+            .then(response => {
+                return response.data;
+            }).catch(error => {
+                console.log(error.message);
+            })
+    }
+
+    // Obtiene los integrantes de un equipo
+    getMembersTeam(idTeam) {
+        return axios.get("/teacher/getMembersTeam", { params: { idTeam: idTeam } }, { headers: { "Authorization": `Bearer ${authHeader()}` } })
+            .then(response => {
+                return response.data;
+            }).catch(error => {
+                console.log(error.message);
+            })
+    }
+
+    getScriptsByTeam(idStudent) {
+
+        return axios.get("/teacher/getScriptsByTeam", { params: { id: idStudent } }, { headers: { "Authorization": `Bearer ${authHeader()}` } })
+            .then(response => {
+                return response.data;
+            }).catch(error => {
+                console.log(error.message);
+            })
+    }
+
 }
+
+
 
 export default new TeacherService;

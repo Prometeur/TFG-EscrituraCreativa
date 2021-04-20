@@ -8,6 +8,8 @@ import Sidebar from '../components/sidebar/Sidebar.js';
 import CreateChallenge from '../components/pages/teacher/CreateChallenge.js';
 import EditChallenge from '../components/pages/teacher/EditChallenge.js';
 
+import Team from '../components/pages/teacher/ViewTeam';
+
 import StudentList from '../components/pages/user/StudentLits.js';
 import ApplicantList from '../components/pages/user/ApplicantList';
 import LinksTeacher from '../links/links-Teacher.js';
@@ -29,9 +31,11 @@ function Routes() {
           {/* <Route exact path="/teacher/groups" component={Groups} /> */}
 
           <Route exact path="/teacher/groups" component={GroupTeacher} /> 
-          <Route exact path="/teacher/myGroups" component={MyGroups} />
+          {/*<Route exact path="/teacher/myGroups" component={MyGroups} />*/}
           <Route exact path="/teacher/createGroup" component={CrearGrupo} />
           <Route exact path="/teacher/viewGroup/:idGroup" component={Grupo} />
+
+          <Route exact path="/teacher/viewTeam/:idTeam" component={Team} />
 
           {/* <Route exact path="/teacher/groups/createChallenge/:idGroup" component={CreateChallenge} />
               <Route exact path="/teacher/groups/:idGroup/editChallenge/:idChallenge" component={EditChallenge} /> */}

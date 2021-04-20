@@ -7,6 +7,7 @@ import React, { Component } from 'react';
 import { Link} from "react-router-dom";
 import TeacherService from '../../../services/teacher/teacherService.js';
 import AdminService from '../../../services/admin/adminService.js';
+import AuthUser from '../../../services/authenticity/auth-service.js';
 import '../../../styles/styleGeneral.css';
 import '../../../styles/styleCard.css';
 import Card from 'react-bootstrap/Card';
@@ -21,6 +22,8 @@ class GroupStudents extends Component {
         this.state = {
             data: [],
             filteredData: [],
+            currentUserId: '',
+            currentUserRole: '',
             searchStudent: '',
             searchType: 'nombre'
     
@@ -69,6 +72,14 @@ class GroupStudents extends Component {
 
     componentDidMount() {
 
+        const dataUser = AuthUser.getCurrentUser();
+        this.setState({
+            currentUserId: dataUser.id
+        });
+        this.setState({
+            currentUserRole: dataUser.rol
+        });
+
         AdminService.getStudentsOfGroup(this.props.idGroup).then(response =>{
             this.setState({data:response});
             this.setState({filteredData:response});
@@ -98,6 +109,27 @@ class GroupStudents extends Component {
                 )
             )}
     </ListGroup>;
+
+        if(this.state.currentUserRole === "T")
+        {
+            tabla = <ListGroup variant="flush">
+
+                        {this.state.filteredData.map((student) => 
+                            (
+                                <React.Fragment>
+                                <ListGroup.Item>
+                                    {student.id} 
+                                    <img src={"data:image/png;base64," + btoa(String.fromCharCode.apply(null, student.foto.data))} alt="" style={{width: '5%',  borderRadius: '80%'}} ></img>
+                                    {student.nombre} {student.apellidos} 
+                                    {student.correo}
+                                    <Link key={student.id} to={`/teacher/students/viewProfile/${student.id}`}><button text='Ver Perfil'> Ver perfil </button></Link>
+                                </ListGroup.Item>
+                                </React.Fragment>
+                                
+                            )
+                        )}
+                </ListGroup>;
+        }
         if(this.state.filteredData.length === 0)
         {
             cartel = <nav>

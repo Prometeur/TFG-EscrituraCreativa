@@ -1,6 +1,7 @@
 //ruta para almacenar los enlaces
 const controller_teacher = require("../controllers/controllerTeacher");
 const controller_user = require("../controllers/controllerUser");
+const controller_student = require("../controllers/controllerStudent");
 const express = require('express');//voy a usar el modulo express
 const router =express.Router();
 const multer = require('multer');
@@ -50,6 +51,9 @@ router.get("/getScriptsByStudent",controller_user.getScriptsByStudent);
 
 //Crea un grupo nuevo.
 router.post("/createGroup", controllerTeacher.createGroup);
+
+//Muestra los equipos de un grupo.
+router.post("/getTeamsOfGroup", controller_user.getTeamsOfGroup);
 
 //Muestra todos los estudiantes que pertenezcan a un grupo dado.
 //router.post("/inviteStudentToGroup", controller.inviteStudentToGroup);
@@ -113,6 +117,17 @@ router.get("/getMultimediaWriting",controller_teacher.getMultimediaWriting);
 
 /*Obtiene equipo del estudiante correspondiente a un grupo en concreto*/
 router.get("/getTeamStudentGroup",controller_teacher.getTeamStudentGroup);
+
+/*Obtiene los datos del equipo */
+router.get("/getTeam",controller_user.getTeam);
+
+/*Obtiene los estudiantes sin equipo de un grupo */
+router.get("/getMembersTeam",controller_student.getMembersTeam);
+
+/*Busca todos los escritos colaborativos del equipo */
+router.get("/getScriptsByTeam",controller_user.getScriptsByTeam);
+
+//-------------------------------------------------SOLICITANTES--------------------------------------------------------------------//
 
 //Muestra todos los estudiantes aún no aceptados (solicitantes) que contienen cierta clave ya sea en nombre o en su email.
 router.post("/searchApplicant", controller_user.searchApplicant);
