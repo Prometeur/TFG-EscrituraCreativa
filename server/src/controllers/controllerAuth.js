@@ -139,8 +139,35 @@ function editProfile(request, response) {
     });
 }
 
+function disableProfile(request,response) {
+
+    let idUser = request.body.idUser;
+
+    model_user.disableProfile(idUser, function (err, rel) {
+        if(err){
+            response.status(500).send({message:"Internal server error"});
+        }
+        else
+        {
+
+            if(!rel)
+
+            {
+                // console.log("ERROR---> user not found");
+                response.status(404).send({ message: "User Not disable." });
+            }
+            else
+            {
+                response.status(200).send({ message: "user disable." });
+            }
+
+        }
+    });
+}
+
 module.exports = {
    signUp: signUp,
    signIn: signIn,
    editProfile: editProfile,
+   disableProfile: disableProfile,
 } 

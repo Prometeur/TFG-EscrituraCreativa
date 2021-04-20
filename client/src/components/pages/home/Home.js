@@ -42,9 +42,10 @@ class Home extends Component {
         return (
 
         
-                <div>
-                   hola
-                </div>
+            <div className="container">
+                <img src="liteaturalapiz.png"></img>
+            </div>
+
 
         );
     }
