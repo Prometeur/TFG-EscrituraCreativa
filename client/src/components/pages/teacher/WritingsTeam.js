@@ -22,7 +22,6 @@ class WritingsTeam extends Component {
 
     constructor(props) {
         super(props);
-        debugger;
         this.state = {
 
             dataWritings: [],//contiene todos los escritos colaborativos de un grupo y desafio dado

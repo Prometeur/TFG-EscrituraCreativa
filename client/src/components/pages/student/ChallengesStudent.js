@@ -30,113 +30,132 @@ class ChallengesStudent extends Component {
     }
 
     componentDidMount() {
-        /**Obtiene los desafios del estudiante segun su grupo */
-        StudentService.getChallenges(this.props.groupSelect)
-            .then(response => {
-                this.setState({ data: response });
-            }).catch(error => {
-                console.log(error.message);
-            })
+        if (this.props.groupSelect === undefined) {
+            //obtener desafios iduser y type(individual=1 o colaborativo=2)
+            StudentService.getChallengesIndividual(AuthUser.getCurrentUser().id, 1)
+                .then(response => {
+                 
+                    this.setState({ data: response });
+                }).catch(error => {
+                    console.log(error.message);
+                })
 
+            StudentService.getWritings(AuthUser.getCurrentUser().id)
+                .then(response => {
 
-        /**Obtiene los escritos del estudiante segun su grupo */
-        StudentService.getWritingsStudent(AuthUser.getCurrentUser().id, this.props.groupSelect)
-            .then(response => {
-                this.setState({ dataWritingStudent: response });
-            }).catch(error => {
-                console.log(error.message);
-            })
+                    this.setState({ dataWritingStudent: response.data });
+                })
+        }
+        else {
+            /**Obtiene los desafios del estudiante segun su grupo */
+            StudentService.getChallenges(this.props.groupSelect, 1)
+                .then(response => {
+                    this.setState({ data: response });
+                }).catch(error => {
+                    console.log(error.message);
+                })
+
+            /**Obtiene los escritos del estudiante segun su grupo */
+            StudentService.getWritingsStudent(AuthUser.getCurrentUser().id, this.props.groupSelect)
+                .then(response => {
+                    this.setState({ dataWritingStudent: response });
+                }).catch(error => {
+                    console.log(error.message);
+                })
+        }
     }
 
-    prueba = (item, p) => {
-        debugger;
-        console.log(item);
-    };
-
-    disabledButtonEdit = (challenge, n) => {
+    disabledButton = (challenge) => {
         var dateActual = new Date();
         var dateFin = new Date(challenge.fechaFin)
         //si ya se paso la fecha del desafio, desactivar button
         if (dateActual.getTime() > dateFin.getTime()) {
             return true;
         }
-        if (n)
-            return false;
-        else
-            return true;
-    };
-
-    disabledButtonCreate = (challenge, n) => {
-
-        var dateActual = new Date();
-        var dateFin = new Date(challenge.fechaFin)
-        //si ya se paso la fecha del desafio, desactivar button
-        if (dateActual.getTime() > dateFin.getTime()) {
-            return true;
-        }
-        if (n)
-            return true;
         else
             return false;
     };
 
     //Muestra el tipo de desafio
     showCollaborative = (challenge) => {
-        if (challenge.colaborativo === 1) {
+        if (challenge.colaborativo === 1)
             return "individual"
-        }
-        else {
+        else
             return "colaborativo"
-        }
+    }
+
+    //Devuelve string de escrito finalizado
+    showChallengeFinalized = (challenge) => {
+        var dateActual = new Date();
+        var dateFin = new Date(challenge.fechaFin)
+        if (dateActual.getTime() > dateFin.getTime())
+            return "Si"
+        else
+            return "No"
     }
 
     /*Dibuja la pagina  */
     render() {
         let formatedDate;
         const { data } = this.state;
-        let n = false;
+        let writingExist = false;
         let idWriting = '';
+        let finish = '';
+        let writingAux = '';
         return (
             <div className="table-margin">
                 <Table striped bordered hover >
                     <thead>
                         <tr>
-                            {/* <th className ="challenge-th">idDesafio</th> */}
-                            <th className="challenge-th">Desafio</th>
-                            <th className="challenge-th">categoria</th>
-                            <th className="challenge-th">tipo</th>
-                            <th className="challenge-th">fecha</th>
-                            <th className="challenge-th">Hora</th>
-                            {/* <th>activo</th> */}
-                            {/* <th className="challenge-th">acciones</th> */}
+                            <th>Desafio</th>
+                            <th>Grupo</th>
+                            <th>Categoria</th>
+                            <th>Tipo</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Finalizado</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {data.filter(challenge1 => challenge1.colaborativo === 1).map((challenge) => (
+                        {data.map((challenge) => (
                             <tr key={challenge.id}>
-                                {/* <td className ="challenge-td">{challenge.id}</td> */}
-                                <td className="challenge-td">{challenge.titulo}</td>
-                                {/* <td>{challenge.tipoCalificacion}</td> */}
-                                <td className="challenge-td">{challenge.nombre}</td>
-                                {/* <td className ="challenge-td">{challenge.colaborativo}</td> */}
-                                <td className="challenge-td">{this.showCollaborative(challenge)}</td>
-                                <td className="challenge-td">{formatedDate = moment(challenge.fechaFin).format('DD/MM/YYYY')}</td>
-                                <td className="challenge-td">{formatedDate = moment(challenge.fechaFin).format('LT')}</td>
-                                {/* <td>{challenge.activo}</td> */}
-                                {n = false}
+                                <td >{challenge.titulo}</td>
+                                <td >{challenge.nombreGrupo}</td>
+                                <td >{challenge.nombreCategoria}</td>
+                                <td >{this.showCollaborative(challenge)}</td>
+                                <td >{formatedDate = moment(challenge.fechaFin).format('DD/MM/YYYY')}</td>
+                                <td >{formatedDate = moment(challenge.fechaFin).format('LT')}</td>
+                                <td >{this.showChallengeFinalized(challenge)}</td>
+                                {writingExist = false}
                                 {this.state.dataWritingStudent.filter(writing => writing.idDesafio === challenge.id)
                                     .map((item, index) => {
-                                        n = true;
+                                        writingExist = true;
                                         idWriting = item.id;
+                                        finish = item.finalizado;
+                                        writingAux = item;
                                     }
                                     )}
-                                <td className="challenge-td"><Link to={`/student/writing/${this.props.groupSelect}/${challenge.id}`}><Button variant="outline-primary" disabled={this.disabledButtonCreate(challenge, n)}>Nuevo Escrito</Button></Link></td>
-                                <td className="challenge-td"><Link to={`/student/editWriting/${this.props.groupSelect}/${challenge.id}/${idWriting}`}><Button variant="outline-primary" disabled={this.disabledButtonEdit(challenge, n)}>Editar Escrito</Button></Link></td>
+                                <td ><Link to={`/student/writing/${challenge.idGrupo}/${challenge.id}`}><Button variant="outline-primary" disabled={this.disabledButton(challenge) || writingExist}>Crear Escrito</Button></Link></td>
+
+                                {/* 
+                                {writingExist ? (
+                                    <td ><Link to={`/student/editWriting/${challenge.idGrupo}/${challenge.id}/${idWriting}`}><Button variant="outline-primary" disabled={this.disabledButton(challenge)}>Editar Escrito</Button></Link></td>
+                                ) : (
+                                    <td ><Link to={`/student/writing/${challenge.idGrupo}/${challenge.id}`}><Button variant="outline-primary" disabled={this.disabledButton(challenge)}>Nuevo Escrito</Button></Link></td>
+                                )}
+
+                                {writingExist && this.disabledButton(challenge) ? (
+                                    <td><Link to={`/student/viewWriting/${challenge.idGrupo}/${challenge.id}/${idWriting}`} ><Button variant="outline-primary" disabled={!this.disabledButton(challenge)}>Ver</Button></Link></td>
+                                ) : (
+                                    <></>
+                                )} */}
+
+
                             </tr>
                         ))}
                     </tbody>
                 </Table>
-            </div>
+            </div >
         );
     }
 }

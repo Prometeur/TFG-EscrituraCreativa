@@ -9,8 +9,6 @@ import AuthUser from '../../../services/authenticity/auth-service.js';
 //Fecha y Hora
 import moment from 'moment';
 
-
-
 // Componentes estilos
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
@@ -21,29 +19,25 @@ class WritingsStudent extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
-
+            changeState: false,
             dataWritings: [],//contiene todos los escritos individuales de un grupo y desafio dado
-
-            challenge: '',
             idChallenge: '',
             showTableStudent: false,
             showTableTeam: false,
         }
-
     }
 
     componentDidMount() {
-
+      
         TeacherService.getChallenge(this.props.idChallenge)
             .then(response => {
                 //Si el desafio es individual muestra los escritos individuales
                 if (response[0].colaborativo === 1) {
                     TeacherService.getWritingsStudent(this.props.groupSelect, this.props.idChallenge)
                         .then(response => {
-                         
-                            this.setState({ showTableStudent: true, dataWritings: response.data });
+
+                            this.setState({ showTableStudent: true, dataWritings: response.data, idChallenge: this.props.idChallenge });
 
                         }).catch(error => {
                             console.log(error.message);
@@ -53,8 +47,8 @@ class WritingsStudent extends Component {
                 else { //Si el desafio es colaborativo muestra los escritos colaborativos
                     TeacherService.getWritingsTeam(this.props.groupSelect, this.props.idChallenge)
                         .then(response => {
-                            
-                            this.setState({ showTableStudent: false,dataWritings: response });
+
+                            this.setState({ showTableStudent: false, dataWritings: response });
 
                         }).catch(error => {
                             console.log(error.message);
@@ -64,41 +58,39 @@ class WritingsStudent extends Component {
             }).catch(error => {
                 console.log(error.message);
             })
-
     }
 
-    componentDidUpdate(pP,pS,sS){
-        // debugger;
-        // console.warn("method called",pP )
-        TeacherService.getChallenge(pP.idChallenge)
-            .then(response => {
 
-                //Si el desafio es individual muestra los escritos individuales
-                if (response[0].colaborativo === 1) {
-                    TeacherService.getWritingsStudent(this.props.groupSelect, pP.idChallenge)
-                        .then(response => {
-                            
-                            this.setState({ showTableStudent: true, dataWritings: response.data });
+    componentDidUpdate(pP, pS, sS) {
+        if ( this.props.idChallenge !== pP.idChallenge) {
+            TeacherService.getChallenge(this.props.idChallenge)
+                .then(response => {
+                    //Si el desafio es individual muestra los escritos individuales
+                    if (response[0].colaborativo === 1) {
+                        TeacherService.getWritingsStudent(this.props.groupSelect, this.props.idChallenge)
+                            .then(response => {
+                           
+                                this.setState({ showTableStudent: true, dataWritings: response.data });
 
-                        }).catch(error => {
-                            console.log(error.message);
-                        })
+                            }).catch(error => {
+                                console.log(error.message);
+                            })
+                    }
+                    else if(response[0].colaborativo === 2) { //Si el desafio es colaborativo muestra los escritos colaborativos
+                        TeacherService.getWritingsTeam(this.props.groupSelect, this.props.idChallenge)
+                            .then(response => {
+                                this.setState({ showTableStudent: false, dataWritings: response });
 
-                }
-                else { //Si el desafio es colaborativo muestra los escritos colaborativos
-                    TeacherService.getWritingsTeam(this.props.groupSelect, pP.idChallenge)
-                        .then(response => {
-                            
-                            this.setState({ showTableStudent: false,dataWritings: response });
+                            }).catch(error => {
+                                console.log(error.message);
+                            })
+                    }
 
-                        }).catch(error => {
-                            console.log(error.message);
-                        })
-                }
+                }).catch(error => {
+                    console.log(error.message);
+                })
+        }
 
-            }).catch(error => {
-                console.log(error.message);
-            })
     }
 
     //Obtiene el nombre del desafio/escrito
@@ -106,19 +98,17 @@ class WritingsStudent extends Component {
         if (writing.colaborativo === 1) {
             return "individual"
         }
-        else if (writing.colaborativo === 2)  {
+        else if (writing.colaborativo === 2) {
             return "colaborativo"
         }
         else
-        return "N/A"
+            return "N/A"
     }
-    // handleSelect(challenge) {
-    //     debugger;
-    //     this.setState({ challenge: challenge });
-    //   }
+
 
     /*Dibuja la pagina  */
     render() {
+        console.log(this.state);
         let formatedDate;
         let { dataWritings, showTableStudent } = this.state;
         // const { showWritings,showTableStudent } = this.state;
@@ -127,7 +117,7 @@ class WritingsStudent extends Component {
                 {showTableStudent ? (
                     <div className="table-margin">
                         <div className="row-edit">
-                            <label className='form-label'>{this.state.idChallenge}</label>
+                            <label className='form-label'>fdafadf</label>
                         </div>
                         <Table striped bordered hover >
                             <thead>
@@ -162,7 +152,7 @@ class WritingsStudent extends Component {
                 ) : (
                     <div className="table-margin">
                         <div className="row-edit">
-                            <label className='form-label'>{this.state.idChallenge}</label>
+                            <label className='form-label'>fafafa</label>
                         </div>
                         <Table striped bordered hover >
                             <thead>

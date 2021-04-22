@@ -1,17 +1,14 @@
 import React,{ useState } from "react";
 
 
-import TabsChallenge from "./TabsChallenge";
+// import TabsChallenge from "./TabsChallenge";
+import Tabs from "./Tabs";
 
 import ChallengesStudent from "./ChallengesStudent";
 import ChallengesTeam from "./ChallengesTeam";
 
-// const data = [
-//     { id: 1, name: "Equipos", content: () => <TeamsGroup key={"66"} groupSelect="67"/>, state: "active" },
-//     { id: 2, name: "Mis Equipos", content: () => <TeamsStudent />, state: "inactive" },
-// ];
 
-function Challenges(props) {
+function ChallengeTabs(props) {
     const [count, setCount] = useState(0);
     const data = [
             { id: 1, name: "Desafios", content: () => <ChallengesStudent key={props.groupSelect} groupSelect={props.groupSelect}/>, state: "active" },
@@ -21,10 +18,10 @@ function Challenges(props) {
     return (
 
         <>
-            <TabsChallenge data={data} />
+            <Tabs data={data} />
         </>
 
     );
 }
 
-export default Challenges;
+export default ChallengeTabs;

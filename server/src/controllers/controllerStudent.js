@@ -140,7 +140,21 @@ function getChallenge(req, res) {
 /*Obtiene los desafios del estudiante segun su grupo*/
 function getChallenges(req, res) {
     const idGroup = req.query.idGroup;
-    modelStudent.getChallenges(idGroup, function (err, result) {
+    const type = req.query.type;
+    modelStudent.getChallenges(idGroup,type, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
+        res.send(result);
+    });
+}
+
+
+/*Obtiene los desafios del estudiante (sin tener en cuenta el grupo del estudiante)*/
+function getChallengesIndividual(req, res) {
+    const idStudent = req.query.idStudent;
+    const type = req.query.type;
+    modelStudent.getChallengesIndividual(idStudent,type, function (err, result) {
         if (err) {
             console.log(err.message);
         }
@@ -169,6 +183,30 @@ function getWriting(req, res) {
     const idWriting= req.query.idWriting;
   
     modelStudent.getWriting(idWriting, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
+        res.send(result);
+    });
+}
+
+   /*Obtiene todos los escritos individuales activos del estudiante*/
+function getWritings(req, res) {
+    const idStudent= req.query.idStudent;
+  
+    modelStudent.getWritings(idStudent, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
+        res.send(result);
+    });
+}
+
+   /*Obtiene todos los escritos colaborativos activos del equipo del estudiante*/
+   function getWritingsCollaborative(req, res) {
+    const idStudent= req.query.idStudent;
+  
+    modelStudent.getWritingsCollaborative(idStudent, function (err, result) {
         if (err) {
             console.log(err.message);
         }
@@ -448,8 +486,11 @@ module.exports = {
     editMessage:editMessage,
     joinTeam:joinTeam,
     getChallenges: getChallenges,
+    getChallengesIndividual:getChallengesIndividual,
     getChallenge: getChallenge,
     getWriting: getWriting,
+    getWritings: getWritings,
+    getWritingsCollaborative:getWritingsCollaborative,
     getWritingWriter: getWritingWriter,
     getWritingsTeam:getWritingsTeam,
     getWritingsStudent:getWritingsStudent,

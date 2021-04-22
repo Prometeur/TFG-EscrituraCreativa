@@ -16,15 +16,17 @@ import '../../../styles/styleGeneral.css';
 import '../../../styles/styleCard.css';
 // import '../../../styles/Student.css';
 
-import {
-    Table,
-    Container,
-    Modal,
-    ModalHeader,
-    ModalBody,
-    FormGroup,
-    ModalFooter,
-} from "reactstrap";
+import Modal from 'react-bootstrap/Modal';
+
+// import {
+//     Table,
+//     Container,
+//     Modal,
+//     ModalHeader,
+//     ModalBody,
+//     FormGroup,
+//     ModalFooter,
+// } from "reactstrap";
 
 //Componentes css
 import Card from 'react-bootstrap/Card';
@@ -38,7 +40,6 @@ import moment from 'moment';
 
 /**Servicios del estudiante */
 import StudentService from '../../../services/student/student-service.js';
-
 
 class Message extends Component {
 
@@ -80,12 +81,9 @@ class Message extends Component {
             })
     }
 
-
-
     acceptRequest = () => {
         if (this.state.message.tipo === 2) {//si el mensaje es una solicitud de unirse a un equipo
             var idMember;
-
             //Obtengo el id del futuro miembro del equipo, identificar si el idEmisor/idReceptor
             //es el futuro miembro
             this.showModalAcceptJoinTeam();
@@ -111,7 +109,6 @@ class Message extends Component {
         else {
             this.showModalAnswerJoinTeam();
         }
-
     }
 
     refuseRequest = () => {
@@ -126,7 +123,6 @@ class Message extends Component {
         else{
             this.showModalAnswerJoinTeam();
         }
-
     }
 
 
@@ -208,49 +204,46 @@ class Message extends Component {
                             </div>
                         </Card.Body>
                     </Card>
-
-
-
                     {/* <td><Link to={`/teacher/createChallenge/${this.props.groupSelect}`}><button >Crear Desafio</button></Link></td> */}
                 </div>
 
-                <Modal isOpen={this.state.modalAcceptJoinTeam}>
-                    <ModalHeader>
-                    </ModalHeader>
-                    <ModalBody>
-                        <FormGroup>
+                <Modal show={this.state.modalAcceptJoinTeam}>
+                    <Modal.Header>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {/* <FormGroup> */}
                             <p> Has aceptado la solicitud</p>
                             {this.closeModalAcceptJoinTeam()}
-                        </FormGroup>
-                    </ModalBody>
-                    <ModalFooter>
-                    </ModalFooter>
+                        {/* </FormGroup> */}
+                    </Modal.Body>
+                    <Modal.Footer>
+                    </Modal.Footer>
                 </Modal>
 
-                <Modal isOpen={this.state.modalRefuseJoinTeam}>
-                    <ModalHeader>
-                    </ModalHeader>
-                    <ModalBody>
-                        <FormGroup>
+                <Modal show={this.state.modalRefuseJoinTeam}>
+                    <Modal.Header>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {/* <FormGroup> */}
                             <p> Has rechazado la solicitud</p>
                             {this.closeModalRefuseJoinTeam()}
-                        </FormGroup>
-                    </ModalBody>
-                    <ModalFooter>
-                    </ModalFooter>
+                        {/* </FormGroup> */}
+                    </Modal.Body>
+                    <Modal.Footer>
+                    </Modal.Footer>
                 </Modal>
 
                 <Modal isOpen={this.state.modalAnswerJoinTeam}>
-                    <ModalHeader>
-                    </ModalHeader>
-                    <ModalBody>
-                        <FormGroup>
+                    <Modal.Header>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {/* <FormGroup> */}
                             <p> Ya has respondido a la solicitud</p>
                             {this.closeModalAnswerJoinTeam()}
-                        </FormGroup>
-                    </ModalBody>
-                    <ModalFooter>
-                    </ModalFooter>
+                        {/* </FormGroup> */}
+                    </Modal.Body>
+                    <Modal.Footer>
+                    </Modal.Footer>
                 </Modal>
             </>
         );

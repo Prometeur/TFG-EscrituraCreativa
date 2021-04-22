@@ -198,8 +198,19 @@ class StudentService {
     }
 
     /**Obtiene los desafios del estudiante segun su grupo */
-    getChallenges(idGroup) {
-        return axios.get("/student/getChallenges", { params: { idGroup: idGroup } }, {
+    getChallenges(idGroup,type) {
+        return axios.get("/student/getChallenges", { params: { idGroup: idGroup,type:type } }, {
+            headers: { "Authorization": `Bearer ${authHeader()}` }
+        }).then(response => {
+            return response.data;
+        }).catch(error => {
+            console.log(error.message);
+        })
+    }
+
+       /**Obtiene los desafios del estudiante (sin tener en cuenta el grupo) */
+       getChallengesIndividual(idStudent,type) {
+        return axios.get("/student/getChallengesIndividual", { params: { idStudent: idStudent,type:type } }, {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
             return response.data;
@@ -220,9 +231,35 @@ class StudentService {
             })
     }
 
-      /*Obtiene el escrito del estudiante */
-      getWritingWriter(idGroup,idChallenge,idWriter) {
-        return axios.get("/student/getWritingWriter", { params: { idGroup:idGroup,idChallenge: idChallenge,idWriter:idWriter} },
+
+    /*Obtiene el escrito del estudiante */
+    getWritings(idStudent) {
+        return axios.get("/student/getWritings", { params: { idStudent: idStudent } },
+            {
+                headers: { "Authorization": `Bearer ${authHeader()}` }
+            }).then(response => {
+                return response;
+            }).catch(error => {
+                console.log(error.message);
+            })
+    }
+
+    
+    /*Obtiene todos los escritos colaborativos activos del equipo del estudiante*/
+    getWritingsCollaborative(idStudent) {
+        return axios.get("/student/getWritingsCollaborative", { params: { idStudent: idStudent } },
+            {
+                headers: { "Authorization": `Bearer ${authHeader()}` }
+            }).then(response => {
+                return response;
+            }).catch(error => {
+                console.log(error.message);
+            })
+    }
+
+    /*Obtiene el escrito del estudiante */
+    getWritingWriter(idGroup, idChallenge, idWriter) {
+        return axios.get("/student/getWritingWriter", { params: { idGroup: idGroup, idChallenge: idChallenge, idWriter: idWriter } },
             {
                 headers: { "Authorization": `Bearer ${authHeader()}` }
             }).then(response => {

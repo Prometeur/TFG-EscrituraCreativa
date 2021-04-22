@@ -8,7 +8,6 @@ class TabsWriting extends Component {
 
     componentDidMount() {
         const { data } = this.props;
-        debugger;
         //me devuelve el primer elemento activo
         const activeTab = data.find(tabData => {
             return tabData.state === "active";

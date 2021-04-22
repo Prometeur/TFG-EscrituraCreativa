@@ -101,7 +101,7 @@ mas bien la idea es de prueba de interaccion con el chat
 TeamsGroup
 -Agregado el campo apellido a los integrantes de un equipo porque puede ocurrir que varios usuarios tengan el mismo nombre
 
-TeamsStudent
+TeamStudent
 -Agregado el nombre de lider y agregado toda la funcionalidad que con ello conlleva(buscar en los integrantes del grupo y compararlo con el idCreador )
 
 ViewWriting
@@ -181,5 +181,122 @@ sendMultimediaChallenge,getmultimediachallenge
 mostrara distintos campos segun si es estudiante o equipo
 
 -creada funcionalidad de editar escritos para ello se ha modificado   routes,controlador y modelo en el server del profesor
+
+
+--------------------------------------------------------------------------------------------------------------------
+Cambios Luis 22/04/2021
+
+Pequeño resumen 
+
+-Corregido el bucle infinito en profesores, al ver un escrito antes habia que seleccionar un desafio para visualizar el escrito
+y habia problemas con el component did update, porque no comparaba el idChallenge del desafio del estado anterior con el estado actuales
+y eso genereba el bucle
+
+-En el sidebar de grupos por defecto ya muestra los desafios del primer grupo que tiene el estudiante,
+la idea de hacer esto es evitar que al principio me lo muestre vacio
+
+-Creado en el siderbar crearEscrito listará todos los desafios de todos los grupos que tiene el estudiante, los desafios
+estan separados por pestañas en desafios individuales y colaborativos, donde el estudiante podra crear un escrito si la fecha
+del desafio lo permite o si no hay un escrito creado anteriormente, si el escrito fue creado anteriormente o la fecha del desafio
+ya paso, permanecerá desactivado el boton crearEscrito
+
+
+-Creado en el siderbar "Escritos", listará todos los escritos de todos los grupos que tiene el estudiante,los escritos estan separados por pestañas en escritos 
+individuales y colaborativos, donde podrá editar un escrito si todavía la fecha del desafío lo permite, y podrá ver un escrito si el escrito
+ya fue corregido por el profesor.
+
+-Creado en el sidebar de Equipos, listará todos los equipos de cada grupo que tiene el estudiante, pudiendo el estudiante gestionarlo
+según el rol que disponga, si es lider o no, dependiendo si es lider podra eliminar un equipo o podra invitar a un estudiante,
+o podra expulsar a un estudiante, una funcionalidad que tiene en comun tanto si es lider o no, es el poder abandonar el equipo.
+
+-Otra funcionalidad hecha es que el profesor no puede editarEscritos que no son del profesor( o el desafio no 
+pertenece al profesor), pero la idea correcta seria que el profesor no debe poder ver los escritos de desafios que no sean suyos, y eso Deberia
+arreglarse, porque puede quitarle prioridad a los escritos que realmente son prioritarios, sobre todo si un alumno tiene muchos escritos
+
+-Corregido todos los modales de reactStrap, utilizando modales de bootstrap.
+
+
+Ficheros modificados
+
+STUDENT
+
+	sidebar Crear escrito,  para que me diferencia si lo hago desde el sidebar o desde el filtrado de grupos
+	ChallengesStudent en el componentdidmount para que me diferencia si lo hago desde el sidebar o filtrado de grupos y corregido modal
+	ChallengesTeam en el componentdidmount para que me diferencia si lo hago desde el sidebar o filtrado de grupos y corregido modal
+	challengesTab contiene las pestañas de desafios Individuales y colaborativo
+
+	EditWriting corregido  modal y que en el titulo me muestra si es un escrito colaborativo o individual
+	EditWritingTeam corregido modal
+	GroupStudent modificado para que me muestre el primer desafio del primer grupo en el sidebar grupos
+	message corregido modal
+
+	-Eliminado TabsChallenge,tabsWriting,TabsTeam, ahora solo se usa Tabs
+
+	-Team(archivo renombrado) ahora me muestra todos los equipos de cada grupo del estudiante
+	-TeamGroup corregido modal
+	-TeamStudent en el componentdidmount para que me diferencia si lo hago desde el sidebar o filtrado de grupos y corregido modal
+	-eliminado viewMultimedia
+	-viewWriting corregido modal
+
+	-writingsStudent en el componentdidmount para que me diferencia si lo hago desde el sidebar o filtrado de grupos y corregido modal,
+	me muestra el nombreEscrito,desafioFinalizado, activa/desactiva boton ver/editarEscrito
+
+	-writingsTeam en el componentdidmount para que me diferencia si lo hago desde el sidebar o filtrado de grupos y corregido modal,
+	me muestra el nombreEscrito,desafioFinalizado, activa/desactiva boton ver/editarEscrito
+
+
+
+TEACHER 
+
+	-challenges corregido modal
+	-EditWriting corregido modal
+	-writingsStudent corregido bucle del componentDidUpdate 
+
+
+LINKS 
+
+	-linksStudent agregado crearEscrito,Escritos y equipos
+
+RouterStudent
+	-agregado rutas teams, writingsTabs,challengesTabs,TeamStudent
+
+
+-student-Service 
+	-getChallenges modificado, agregado un parametro como entrada type, la idea es poder reusar esta funcion tanto
+	para desafios individuales y colaborativos
+	- getWritings agregado esta funcion para que pueda obtener todos los escritos individuales
+	de distintos grupos con solo el id del estudiante
+
+	- getWritingsCollaborative agregado esta funcion para que pueda obtener todos los escritos colaborativos
+	de distintos grupos con solo el id del estudiante
+
+-Server 
+	RouterStudent 
+		-getChallenges modificado, agregado un parametro como entrada type, la idea es poder reusar esta funcion tanto
+		para desafios individuales y colaborativos
+		- getWritings agregado esta funcion para que pueda obtener todos los escritos individuales
+		de distintos grupos con solo el id del estudiante
+
+		- getWritingsCollaborative agregado esta funcion para que pueda obtener todos los escritos colaborativos
+		de distintos grupos con solo el id del estudiante
+
+	ControllerStudent
+		-getChallenges modificado, agregado un parametro como entrada type, la idea es poder reusar esta funcion tanto
+		para desafios individuales y colaborativos
+		- getWritings agregado esta funcion para que pueda obtener todos los escritos individuales
+		de distintos grupos con solo el id del estudiante
+
+		- getWritingsCollaborative agregado esta funcion para que pueda obtener todos los escritos colaborativos
+		de distintos grupos con solo el id del estudiante
+
+	modelStudent
+		-getChallenges modificado, agregado un parametro como entrada type, la idea es poder reusar esta funcion tanto
+		para desafios individuales y colaborativos
+		- getWritings agregado esta funcion para que pueda obtener todos los escritos individuales
+		de distintos grupos con solo el id del estudiante
+
+		- getWritingsCollaborative agregado esta funcion para que pueda obtener todos los escritos colaborativos
+		de distintos grupos con solo el id del estudiante
+
 
 
