@@ -34,10 +34,10 @@ export default class Profile extends Component {
             this.setState({role:"Estudiante"});
         }
         else if (currentUser.rol==='T'){
-            this.setState({role:"Profesor"});
+            this.setState({role:"Profesor/a"});
         }
         else{
-            this.setState({role:"Administrador"});
+            this.setState({role:"Administrador/a"});
         }
         console.log(currentUser);
     }
@@ -117,7 +117,7 @@ export default class Profile extends Component {
                                 <ul className="flex-container wrap">
                                     <li className="flex-item">
                                         <p className="p-general">
-                                            Nombre: {currentUser.username} {currentUser.surname}
+                                            Nombre completo: {currentUser.username} {currentUser.surname}
                                         </p>
                                     </li>
                                     <li className="flex-item">

@@ -396,7 +396,7 @@ select {
 
 .flex-item {
     padding: 3px 20px;
-    width: 350px;
+    width: 25rem;
     margin: 5px 20px;
     line-height: 3rem;
     color: black;
@@ -415,11 +415,10 @@ select {
 
 .flex-item-file {
     padding: 0px 17px;
-    width: 350px;
-    height: 80px;
+    width: 24rem;
     line-height: 2rem;
     margin: 5px 20px;
-    font-size: 16px;
+    font-size: .8rem;
 }
 
 .flex-item-small {
@@ -456,7 +455,7 @@ select {
 
 .btn {
     margin: 1rem;
-    width: 6rem;
+    width: 8rem;
 }
 
 .p-login {
@@ -503,7 +502,7 @@ select {
     }
 
     .perfil-left {
-
+         color: white;
          width: 24rem;
          margin: 1rem;
          padding: .5rem

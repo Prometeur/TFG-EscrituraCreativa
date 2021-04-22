@@ -82,13 +82,15 @@ input.error {
 .errorMessage {
   color: red;
   font-size: 0.75em;
-  display: relative;
+  display: none;
 }
 
 [type="file"] {
     /* height: 0; */
     /* overflow: hidden;
     width: 0; */
+    color: transparent;
+    margin: .5rem 0;
 }
 [type="file"] + label {
     background: #f15d22;

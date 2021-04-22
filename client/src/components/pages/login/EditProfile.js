@@ -90,12 +90,14 @@ export default class Profile extends Component {
         this.onModal = this.onModal.bind(this);
         this.onTeamModal = this.onTeamModal.bind(this);
         this.onDeleteModal = this.onDeleteModal.bind(this);
+        this.onUpdateModal = this.onUpdateModal.bind(this);
 
         this.state = {
 
             saveModal:false,
             deleteModal:false,
             teamModal:false,
+            updateModal:false,
             currentUser:[],
             StudentTeams:[],
              updateUser : {
@@ -104,7 +106,7 @@ export default class Profile extends Component {
                  password: '',
                  confirmPassword: '',
                  email: '',
-                 photo: '',
+                 photo: [],
              }
         };
     }
@@ -116,12 +118,12 @@ export default class Profile extends Component {
         console.log(currentUser);
         this.setState( { currentUser: currentUser });
         this.setState({
-           updateUser:{
-               ...this.state.updateUser,
-               username: currentUser.username,
-               surname: currentUser.surname,
-               email: currentUser.email,
-           }
+            updateUser:{
+                ...this.state.updateUser,
+                username: currentUser.username,
+                surname: currentUser.surname,
+                email: currentUser.email,
+            }
         });
 
     }
@@ -206,9 +208,16 @@ export default class Profile extends Component {
         });
     }
 
+    onUpdateModal(modal) {
+
+        this.setState({
+            updateModal:modal
+        });
+    }
 
     //Carga los ficheros multimedia del escrito
     onFileChange(e) {
+        console.log(e.target.value,e.target);
 
         if(e.target.value) {
             this.setState({
@@ -220,6 +229,40 @@ export default class Profile extends Component {
         }
     }
 
+    /*
+     onFileChange = (e) => {
+
+       if (e.target.files && e.target.files.length > 0) {
+            const file = e.target.files[0];
+           if (file.type.includes("image") || file.type.includes("video") || file.type.includes("audio")) {
+                const reader = new FileReader();
+               reader.readAsDataURL(e.target.files[0]);
+             reader.onload = () => {
+                 console.log(reader.result);
+                  this.setState({
+                      updateUser: {
+                        ...this.state.updateUser,
+                    photo: reader.result
+                  }
+                  });
+               }
+
+               var str = file.type;
+                var res = str.split("/");
+                 const dir = this.state.form.idWriter + "/" + res[0] + "/";
+              this.setState({
+                   form: {
+                       ...this.state.form,
+                       file: file,
+                       path: "http://localhost:3001/multimedia/" + dir + file.name
+                   }
+              });
+           }
+         else {
+              console.log("there was an error")
+          }
+        }
+     } */
 
     logout () {
         AuthService.logout();
@@ -227,19 +270,33 @@ export default class Profile extends Component {
 
     editProfile() {
 
-       if (this.state.updateUser.password == this.state.updateUser.confirmPassword) {
-            AuthService.editProfile(this.state.currentUser.id, this.state.updateUser.username, this.state.updateUser.surname,
-                this.state.updateUser.email,this.state.updateUser.password, this.state.updateUser.photo).then(response => {
-                   this.logout();
-                   window.location.href='/login';
-            }).catch(error => {
-                console.log(error.message);
-            })
-        }
-       else
-       {
-            alert("Ambas contraseñas no coinciden");
-       }
+     if(this.state.updateUser.surname==this.state.currentUser.surname
+         && this.state.updateUser.username==this.state.currentUser.username
+         && this.state.updateUser.password=='' && this.state.updateUser.email==this.state.currentUser.email
+         && this.state.updateUser.confirmPassword=='' && this.state.updateUser.photo.length ==0 )
+     {
+
+        this.onUpdateModal(true);
+        this.onModal(false);
+     }
+     else
+     {
+         if (this.state.updateUser.password == this.state.updateUser.confirmPassword)
+         {
+             AuthService.editProfile(this.state.currentUser.id, this.state.updateUser.username, this.state.updateUser.surname,
+                 this.state.updateUser.email,this.state.updateUser.password, this.state.updateUser.photo).then(response => {
+                 this.logout();
+                 window.location.href='/login';
+             }).catch(error => {
+                 console.log(error.message);
+             })
+         }
+         else
+         {
+             alert("Ambas contraseñas no coinciden");
+         }
+     }
+
     }
 
     deleteUser() {
@@ -273,7 +330,7 @@ export default class Profile extends Component {
         return (
             <>
                 <div className="editPerfil-left">
-                   <Button  variant="danger" onClick={()=>this.onDeleteModal(true)}>
+                   <Button  size="sm" variant="danger" onClick={()=>this.onDeleteModal(true)}>
                         Baja de cuenta
                    </Button>
                 </div>
@@ -297,7 +354,7 @@ export default class Profile extends Component {
                                                     className="form-control"
                                                     name="username"
                                                     placeholder={this.state.currentUser.username}
-                                                    value={this.state.username}
+                                                    value={this.state.updateUser.username}
                                                     onChange={this.onChangeUsername}
                                                     validations={[required, vusername]}
                                                 />
@@ -328,7 +385,7 @@ export default class Profile extends Component {
                                             </li>
                                             <li className="flex-item-file">
                                                 <label className="form-label">Foto de perfil</label>
-                                                <input type="file" name="imgCollection" onChange={this.onFileChange} multiple />
+                                                <input type="file" name="imgCollection" onChange={this.onFileChange}/>
                                             </li>
                                             <li className="flex-item">
                                                 <label className="form-label">Contraseña</label>
@@ -407,7 +464,7 @@ export default class Profile extends Component {
                                 </Modal.Body>
                                 <Modal.Footer>
                                     <Button variant="secondary" onClick={() => this.onModal(false)}>No</Button>
-                                    <Button variant="primary" onClick={() => this.editProfile()}>Aceptar los Cambios</Button>
+                                    <Button variant="primary" onClick={() => this.editProfile()}>Aceptar</Button>
                                 </Modal.Footer>
                             </Modal>
 
@@ -452,6 +509,25 @@ export default class Profile extends Component {
                                 <Button variant="primary" onClick={() => this.deleteUser()}>aceptar</Button>
                                 <Button variant="secondary" onClick={() => this.onDeleteModal(false)}>No</Button>
                             </Modal.Footer>
+                            </Modal>
+
+                            <Modal
+                                centered
+                                show={this.state.updateModal}
+                                onHide={this.state.updateModal}
+                            >
+                                <Modal.Header>
+                                    <Modal.Title>
+                                       Ups...
+                                    </Modal.Title>
+                                    <img src="triangle.png"></img>
+                                </Modal.Header>
+                                <Modal.Body>
+                                   No hay cambios que modificar
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button variant="secondary" onClick={() => this.onUpdateModal(false)}>atras</Button>
+                                </Modal.Footer>
                             </Modal>
                         </Card.Body>
                     </Card>
