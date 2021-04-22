@@ -138,7 +138,6 @@ class TeacherService {
 
     /*Edita el desafio del profesor*/
     editChallenge(idChallenge, idGroup, title, description, type, category, qualification, endDate) {
-        debugger;
         return axios.post("/teacher/editChallenge", { idChallenge: idChallenge, idGroup: idGroup, title: title, description: description, type: type, category: category, qualification: qualification, endDate: endDate }, {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
@@ -191,8 +190,6 @@ class TeacherService {
     /*Envia los archivos multimedia del profesor*/
     sendMultimediaChallenge(imgCollection, idTeacher, idChallenge, type) {
         const form = new FormData();
-        debugger;
-
         for (const key of Object.keys(imgCollection)) {
             form.append('imgCollection', imgCollection[key])
         }

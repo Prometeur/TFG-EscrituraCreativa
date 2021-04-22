@@ -3,9 +3,9 @@ import StudentService from '../../../services/student/student-service.js';
 import AuthUser from '../../../services/authenticity/auth-service.js';
 
 //Paginas
-import Writings from './Writings.js';
-import Teams from './Teams.js';
-import Challenges from './Challenges.js';
+import WritingTabs from './WritingTabs.js';
+import TeamTabs from './TeamTabs.js';
+import ChallengeTabs from './ChallengeTabs.js';
 
 //Estilos
 import '../../../styles/styleGeneral.css';
@@ -90,8 +90,13 @@ class GroupStudent extends Component {
     this.setState({ currentUser: dataUser.id });
 
     /**Obtiene todos los grupos del estudiante */
-    StudentService.getGroups(dataUser.id).then(response => {
-      this.setState({ dataGroup: response });
+    StudentService.getGroups(dataUser.id)
+    .then(response => {
+   debugger;
+      if(response.length>0){
+        this.setState({ dataGroup: response,groupSelect:response[0].idGrupo,nameGroupSelect:response[0].nombre,showChallenges:true });
+      }
+      
     })
   }
 
@@ -129,6 +134,14 @@ class GroupStudent extends Component {
     this.setState({ groupSelect: group.idGrupo, nameGroupSelect: group.nombre });
   }
 
+  disabledButton=() =>{
+    debugger;
+    if(this.state.dataGroup.length>0){
+      return false;
+    }
+    return true;
+  }
+
   render() {
     const { dataGroup, groupSelect, showChallenges, showWritings, showTeams } = this.state;
     return (
@@ -153,16 +166,18 @@ class GroupStudent extends Component {
             <td><textarea name="mensaje" rows="1" cols="10" value={this.state.nameGroupSelect} readOnly={true} style={{ resize: "none" }} ></textarea></td>
             {/* onChange={this.qualificationSelection} */}
             {/* value={this.state.form.qualification} */}
-            <select onChange={this.itemSelection} disabled={!this.state.groupSelect ? true : null} >
-              <option value="" selected disabled hidden > Seleccionar </option>
-              <option value="1" > Desafios </option>
+
+            <select onChange={this.itemSelection} disabled={ !this.state.groupSelect ? true : null} >
+            {/* <select onChange={this.itemSelection} disabled={this.disabledButton()} > */}
+              {/* <option value="" selected disabled hidden > Seleccionar </option> */}
+              <option value="1" > Crear Escrito </option>
               <option value="2" > Escritos </option>
               <option value="3" > Equipos </option>
             </select>
 
             {showChallenges ? (
               <div className="row">
-                <Challenges key={groupSelect} groupSelect={groupSelect} />
+                <ChallengeTabs key={groupSelect} groupSelect={groupSelect} />
               </div>
             ) : (
               <div></div>
@@ -170,7 +185,7 @@ class GroupStudent extends Component {
 
             {showWritings ? (
               <div className="row">
-                <Writings key={groupSelect} groupSelect={groupSelect} />
+                <WritingTabs key={groupSelect} groupSelect={groupSelect} />
               </div>
             ) : (
               <div></div>
@@ -178,8 +193,7 @@ class GroupStudent extends Component {
 
             {showTeams ? (
               <div className="row">
-                {/* // <TeamsStudent key={groupSelect} groupSelect={groupSelect} /> */}
-                <Teams key={groupSelect} groupSelect={groupSelect} />
+                <TeamTabs key={groupSelect} groupSelect={groupSelect} />
               </div>
             ) : (
               <div></div>

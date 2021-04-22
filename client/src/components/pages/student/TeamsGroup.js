@@ -14,21 +14,21 @@ import AuthUser from '../../../services/authenticity/auth-service.js';
 /**Servicios del estudiante */
 import StudentService from '../../../services/student/student-service.js';
 
-import {
-    Table,
-    Button,
-    Container,
-    Modal,
-    ModalHeader,
-    ModalBody,
-    FormGroup,
-    ModalFooter,
-} from "reactstrap";
-
+// import {
+//     Table,
+//     Button,
+//     Container,
+//     Modal,
+//     ModalHeader,
+//     ModalBody,
+//     FormGroup,
+//     ModalFooter,
+// } from "reactstrap";
 
 // Componentes estilos
-// import Table from "react-bootstrap/Table";
-// import Button from "react-bootstrap/Button";
+import Table from "react-bootstrap/Table";
+import Button from "react-bootstrap/Button";
+import Modal from 'react-bootstrap/Modal';
 
 //Estilos
 // import '../../../styles/styleGeneral.css';
@@ -51,7 +51,7 @@ class TeamsGroup extends Component {
         //Obtiene los equipos del grupo 
         StudentService.getTeamsGroup(this.props.groupSelect)
             .then(response => {
-                debugger
+             
                 this.setState({ dataTeamsGroup: response });
             }).catch(error => {
                 console.log(error.message);
@@ -82,13 +82,10 @@ class TeamsGroup extends Component {
     //Obtiene el nombre del desafio
     sendRequest = (team, cont) => {
         //Obtiene los equipos con su grupo correspondiente del estudiante  
-    
 
         //si no estoy en ningun equipo o si el equipo no esta completo
         // if (!this.state.teamStudent.idEquipo) {
         if (this.state.teamStudent === undefined) {
-     
-
             var nombre = AuthUser.getCurrentUser().username;
             var apellidos = AuthUser.getCurrentUser().surname;
             var messageBody = "te envía una petición para unirse a tu equipo";
@@ -159,7 +156,6 @@ class TeamsGroup extends Component {
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-
                         <tbody>
                             {this.state.dataTeamsGroup.map(team => {
                                 return (
@@ -181,20 +177,20 @@ class TeamsGroup extends Component {
                     {/* <td><Link to={`/teacher/createChallenge/${this.props.groupSelect}`}><button >Crear Desafio</button></Link></td> */}
                 </div>
 
-                <Modal isOpen={this.state.modalSuccesfulSendJoinTeam}>
-                    <ModalHeader>
-                    </ModalHeader>
-                    <ModalBody>
-                        <FormGroup>
+                <Modal show={this.state.modalSuccesfulSendJoinTeam}>
+                    <Modal.Header>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {/* <FormGroup> */}
                             <p> Petición enviada correctamente</p>
                             {this.closeModalSuccesfulSendJoinTeam()}
-                        </FormGroup>
+                        {/* </FormGroup> */}
 
-                    </ModalBody>
+                    </Modal.Body>
 
-                    <ModalFooter>
+                    <Modal.Footer>
 
-                    </ModalFooter>
+                    </Modal.Footer>
                 </Modal>
             </>
         );

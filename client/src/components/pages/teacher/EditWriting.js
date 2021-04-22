@@ -33,15 +33,16 @@ import Card from 'react-bootstrap/Card';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 /*Componentes de estilo Reactstrap*/
-import {
-    Modal,
-    ModalHeader,
-    ModalBody,
-    FormGroup,
-    ModalFooter,
-} from "reactstrap";
+// import {
+//     Modal,
+//     ModalHeader,
+//     ModalBody,
+//     FormGroup,
+//     ModalFooter,
+// } from "reactstrap";
 
 class EditWriting extends Component {
 
@@ -75,9 +76,7 @@ class EditWriting extends Component {
         /*Obtiene el desafio seleccionado*/
         TeacherService.getChallenge(this.props.match.params.idChallenge)
             .then(response => {
-                debugger;
                 this.setState({
-
                     challenge: response[0]
                 });
                 //Si es colaborativo
@@ -263,6 +262,14 @@ class EditWriting extends Component {
         });
     }
 
+    //Desactiva los componentes cuando el profesor no creo el desafio( o no es propietario del desafio)
+    disabledComponent= () => {
+       if(  AuthUser.getCurrentUser().id !==this.state.challenge.idProfesor)
+           return true
+       else
+       return false;
+    };
+
     /*Dibuja la pagina */
     render() {
         const { dataMediaChallenge } = this.state;
@@ -305,7 +312,7 @@ class EditWriting extends Component {
                             <div className="form-inputs">
                                 <label className='form-label'>Titulo</label>
                                 <div>
-                                    <input
+                                    <input  
                                         // className='form-input'
                                         type="text"
                                         name="title"
@@ -313,6 +320,8 @@ class EditWriting extends Component {
                                         value={this.state.form.title}
                                         // onChange={this.handleChange}
                                         onChange={this.onChangeWritingName}
+                                        //readOnly value={true}
+                                        disabled={this.disabledComponent()}
                                     />
                                 </div>
 
@@ -330,11 +339,10 @@ class EditWriting extends Component {
                                     onEditorStateChange={this.onEditorStateChange}
                                     onContentStateChange={this.onContentStateChange}
                                     onChange={this.editorChange}
+                                    readOnly={this.disabledComponent()}
                                 />
                                 {/* <EditorText onEditorStateChange={this.onEditorStateChange} onContentStateChange={this.onContentStateChange}  onChange={this.editorChange} param={this.state.editorState}/> */}
                             </div>
-
-
 
                             <div class="row-edit">
                                 <label className='form-label'>Ficheros Multimedia: </label>
@@ -355,18 +363,18 @@ class EditWriting extends Component {
 
                             <div class="row-edit">
                                 <label className='form-label'>Calificación: </label>
-                                <td><textarea rows="2" cols="10" value={this.state.form.score} onChange={this.onChangeScore} style={{ resize: "none", textAlign: "center" }} ></textarea></td>
+                                <td><textarea rows="2" cols="10" value={this.state.form.score} onChange={this.onChangeScore} style={{ resize: "none", textAlign: "center" }} disabled={this.disabledComponent()} ></textarea></td>
                             </div>
                             {/* <td><textarea name="mensaje" rows="10" cols="70" value={this.state.message.mensaje} readOnly={true} style={{ resize: "none" }} ></textarea></td> */}
 
                             <div class="row-edit">
                                 <label className='form-label'>Comentarios: </label>
-                                <td><textarea rows="10" cols="70" value={this.state.form.commentary} onChange={this.onChangeCommentary} style={{ resize: "none", justifyContent: "center" }} ></textarea></td>
+                                <td><textarea rows="10" cols="70" value={this.state.form.commentary} onChange={this.onChangeCommentary} style={{ resize: "none", justifyContent: "center" }} disabled={this.disabledComponent()} ></textarea></td>
                             </div>
 
                             <div class="row-edit">
                                 <label className='form-label'>Escrito Finalizado: </label>
-                                <select  value={this.state.form.finishWriting}  onChange={this.onChangeFinishWriting} >
+                                <select  value={this.state.form.finishWriting}  onChange={this.onChangeFinishWriting} disabled={this.disabledComponent()} >
                                     <option value="" selected disabled hidden > Seleccionar </option>
                                     <option value="1" > Si </option>
                                     <option value="0" > No </option>
@@ -385,18 +393,18 @@ class EditWriting extends Component {
                 </div>
 
                 <Modal isOpen={this.state.modalDeleteFile}>
-                    <ModalHeader>
+                    <Modal.Header>
                         <div><h5>¿Estás seguro de eliminar {this.state.nameDeleteFileMedia}?</h5> </div>
-                    </ModalHeader>
-                    <ModalBody>
-                        <FormGroup>
-                        </FormGroup>
-                    </ModalBody>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {/* <FormGroup>
+                        </FormGroup> */}
+                    </Modal.Body>
 
-                    <ModalFooter>
+                    <Modal.Footer>
                         <Button onClick={() => this.deleteFile(this.state.deleteFileMedia)}>Aceptar</Button>
                         <Button variant="danger" onClick={() => this.closeModalDeleteFile()}>Cancelar</Button>
-                    </ModalFooter>
+                    </Modal.Footer>
                 </Modal>
             </>
         );

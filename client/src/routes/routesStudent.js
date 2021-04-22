@@ -6,10 +6,13 @@ import React from 'react';
 import { BrowserRouter, Switch, Route, useRouteMatch } from 'react-router-dom';
 import Sidebar from '../components/sidebar/Sidebar.js';
 import GroupStudent from '../components/pages/student/GroupStudent.js';
-import TeamsStudent from '../components/pages/student/TeamsStudent.js';
+import Teams from '../components/pages/student/Teams.js';
+import TeamStudent from '../components/pages/student/TeamStudent.js';
+import WritingTabs from '../components/pages/student/WritingTabs.js';
+import ChallengeTabs from '../components/pages/student/ChallengeTabs.js';
 import CreateWriting from '../components/pages/student/CreateWriting.js';
 import EditWriting from '../components/pages/student/EditWriting.js';
-import ViewMultimedia from '../components/pages/student/ViewMultimedia.js';
+// import ViewMultimedia from '../components/pages/student/ViewMultimedia.js';
 import ViewWriting from '../components/pages/student/ViewWriting.js';
 import LinksStudent from '../links/links-Student.js';
 
@@ -26,25 +29,19 @@ function Routes() {
     return (
         <BrowserRouter>
             <Sidebar  links={LinksStudent} url={url}/>
-            <Switch>
-            
-                {/* <Route exact path="/student/challenges" component={GroupStudent} />  */}
+            <Switch>        
                 <Route exact path="/student/groups" component={GroupStudent} /> 
-                <Route exact path="/student/teamsStudent" component={TeamsStudent} /> 
-                {/* <Route exact path="/student/teams" component={Teams} />  */}
-                {/* <Route exact path="/student/messenger" component={Messenger} /> 
-                <Route exact path="/student/message/:idMessage" component={Message} />  */}
-                {/* <Route exact path="/student/challenges/:id/viewChallenge/:idChallenge" component={Writing} />
-                <Route exact path="/student/challenges/:id/writings/:idChallenge" component={Writings} /> */}
-                <Route exact path="/student/writing/:idGroup/:idChallenge" component={CreateWriting} />
-                {/* <Route exact path="/student/editWriting/:idGroup/:idChallenge" component={EditWriting} /> */}
-                <Route exact path="/student/editWriting/:idGroup/:idChallenge/:idWriting" component={EditWriting} />
-                <Route exact path="/student/viewMultimedia" component={ViewMultimedia} />
-                <Route exact path="/student/viewWriting/:idGroup/:idChallenge/:idWriting" component={ViewWriting} />
-
-                <Route exact path="/student/editWritingTeam/:idGroup/:idChallenge/:idWriting" component={EditWritingTeam} />
                 
-
+                <Route exact path="/student/teams" component={Teams}/> 
+                {/* <Route exact path="/student/writings" component={Writings}/>  */}
+                <Route exact path="/student/writingsTabs" component={WritingTabs}/>
+                <Route exact path="/student/ChallengesTabs" component={ChallengeTabs}/>
+                <Route exact path="/student/teamStudent/:idGroup" component={TeamStudent}/> 
+                <Route exact path="/student/writing/:idGroup/:idChallenge" component={CreateWriting} />
+                <Route exact path="/student/editWriting/:idGroup/:idChallenge/:idWriting" component={EditWriting} />
+                {/* <Route exact path="/student/viewMultimedia" component={ViewMultimedia} /> */}
+                <Route exact path="/student/viewWriting/:idGroup/:idChallenge/:idWriting" component={ViewWriting} />
+                <Route exact path="/student/editWritingTeam/:idGroup/:idChallenge/:idWriting" component={EditWritingTeam} />
             </Switch>
         </BrowserRouter>
     );

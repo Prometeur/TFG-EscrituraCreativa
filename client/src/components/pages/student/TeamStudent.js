@@ -14,33 +14,53 @@ import StudentService from '../../../services/student/student-service.js';
 /**Datos del usuario */
 import AuthUser from '../../../services/authenticity/auth-service.js';
 
-import {
-    Table,
-    Button,
-    Container,
-    Modal,
-    ModalHeader,
-    ModalBody,
-    FormGroup,
-    ModalFooter,
-} from "reactstrap";
+// import {
+//     Table,
+//     Button,
+//     Container,
+//     Modal,
+//     ModalHeader,
+//     ModalBody,
+//     FormGroup,
+//     ModalFooter,
+// } from "reactstrap";
 
+/*Componentes de estilo Bootstrap*/
+import Table from "react-bootstrap/Table";
+import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Alert from 'react-bootstrap/Alert';
 
+/*Importaciones del css*/
 import '../../../styles/styleGeneral.css';
+import '../../../styles/Challenge.css';
 
-class TeamsStudent extends Component {
+class TeamStudent extends Component {
 
     constructor(props) {
         super(props);
         // const dataUser = AuthUser.getCurrentUser();
         this.state = {
-
             modalLeaveLider: false,
             modalSuccesfulInvitation: false,
             modalSuccessCreateTeam: false,
             modalDeleteTeam: false,
             modalLeaveTeam: false,
             modalKickStudent: false,
+
+            formErrors: {
+                teamName: '',
+            },
+
+            showTeamStudent: false,
+
+            showLiderStudent: false,//muestra funciones que solo puede ver el lider como eliminar integrante/ invitar miembro
 
             //dataTeams: [],//contiene los equipos del estudiante 
             dataTeamStudentGroup: [],//equipo del estudiante
@@ -53,34 +73,45 @@ class TeamsStudent extends Component {
             idKicked: '',
             idLider: '',//idLider
             nameLider: '',//idLider
+            groupSelect:'',
         }
     }
 
     componentDidMount() {
-        /*Obtiene todos los equipos del estudiante (de distintos grupos)*/
-        // StudentService.getTeams(AuthUser.getCurrentUser().id)
-        //     .then(response => {
-        //         this.setState({ dataTeams: response });
-        //     }).catch(error => {
-        //         console.log(error.message);
-        //     })
-
+       
+        var groupSelect;
+        if (this.props.groupSelect===undefined){
+            groupSelect=this.props.match.params.idGroup;
+            this.setState({ groupSelect: groupSelect });
+        }
+        else if(this.props.match===undefined){
+            groupSelect=this.props.groupSelect;
+            this.setState({ groupSelect: groupSelect });
+        }
         /*Obtiene equipo del estudiante correspondiente a un grupo en concreto*/
-        StudentService.getTeamStudentGroup(AuthUser.getCurrentUser().id, this.props.groupSelect)
+        StudentService.getTeamStudentGroup(AuthUser.getCurrentUser().id, groupSelect)
             .then(response => {
 
-                this.setState({ dataTeamStudentGroup: response, idLider: response[0].idCreador });
+                if (response.length != 0) {
+                    if (response[0].idCreador === AuthUser.getCurrentUser().id)//si estudiante es lider del equipo
+                        this.setState({ dataTeamStudentGroup: response, idLider: response[0].idCreador, showLiderStudent: true });
+                    else {
+                        this.setState({ dataTeamStudentGroup: response, idLider: response[0].idCreador });
+                    }
+                }
+
                 //si el estudiante tiene equipo
                 if (response.length != 0) {
                     //me traigo los integrantes de un mismo equipo
                     StudentService.getMembersTeam(response[0].idEquipo)
                         .then(response => {
                             var nombre;
-                            response.filter(member1 => member1.idEstudiante === this.state.idLider).map((member) => ( 
-                                nombre = member.nombreEstudiante +" "+ member.apellidoEstudiante
+                            //si un miembro del equipo es el lider, guardo el nombre y apellido del lider 
+                            response.filter(member1 => member1.idEstudiante === this.state.idLider).map((member) => (
+                                nombre = member.nombreEstudiante + " " + member.apellidoEstudiante
                             ));
 
-                            this.setState({ dataMembersTeam: response,nameLider:nombre });
+                            this.setState({ dataMembersTeam: response, nameLider: nombre, showTeamStudent: true });
 
                         }).catch(error => {
                             console.log(error.message);
@@ -91,7 +122,7 @@ class TeamsStudent extends Component {
             })
 
         /*Obtiene estudiantes sin equipos de un grupo*/
-        StudentService.getStudentWithoutTeam(this.props.groupSelect)
+        StudentService.getStudentWithoutTeam(groupSelect)
             .then(response => {
 
                 // dataStudentWithoutTeam
@@ -106,7 +137,7 @@ class TeamsStudent extends Component {
     createTeam = () => {
         //crea un equipo
         if (this.state.teamName !== "") {
-            StudentService.createTeam(AuthUser.getCurrentUser().id, this.props.groupSelect, this.state.teamName)
+            StudentService.createTeam(AuthUser.getCurrentUser().id, this.state.groupSelect, this.state.teamName)
                 .then(response => {
                     this.showModalSuccessCreateTeam();
                     var idTeam = response;
@@ -124,8 +155,9 @@ class TeamsStudent extends Component {
                     console.log(error.message);
                 })
         }
+
         /*Obtiene equipo del estudiante correspondiente a un grupo en concreto*/
-        StudentService.getTeamStudentGroup(AuthUser.getCurrentUser().id, this.props.groupSelect)
+        StudentService.getTeamStudentGroup(AuthUser.getCurrentUser().id, this.state.groupSelect)
             .then(response => {
                 this.setState({ dataTeamStudentGroup: response });
             }).catch(error => {
@@ -238,8 +270,27 @@ class TeamsStudent extends Component {
 
     //Obtiene el nombre del equipo
     onChangeTeamName = e => {
+        e.preventDefault();
+        const { name, value } = e.target;
+        let formErrors = { ...this.state.formErrors };
+        switch (name) {
+            case "teamName":
+                formErrors.teamName =
+                    value.length < 1 ? "Campo obligatorio requerido" : "";
+                break;
+            default:
+                break;
+        }
+        // this.setState({
+        //     teamName: e.target.value
+        // });
         this.setState({
+            formErrors,
             teamName: e.target.value
+            // form: {
+            //     ...this.state.form,
+            //     [name]: value
+            // }
         });
     }
 
@@ -346,193 +397,207 @@ class TeamsStudent extends Component {
 
     /*Dibuja la pagina  */
     render() {
+        const { showTeamStudent, showLiderStudent,formErrors } = this.state;
         return (
             <>
                 <div>
-                    <Table striped bordered hover >
-                        <thead>
-                            <tr>
-                                <th>Equipo</th>
-                                <th>Grupo</th>
-                                <th>Integrantes</th>
-                                <th>Lider</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            {this.state.dataTeamStudentGroup.map(team => {
-                                return (
-                                    <tr key={team.id}>
-                                        <td>{team.nombreEquipo}</td>
-                                        <td>{team.nombreGrupo}</td>
-                                        {this.state.dataMembersTeam.map(item =>
-                                            <tr>
-                                                <td>{item.nombreEstudiante}</td>
-                                                <td>{item.apellidoEstudiante}</td>
-                                            </tr>
-                                        )}
-                                        <td>{this.state.nameLider}</td>
-                                        <td><Button variant="outline-primary" disabled={this.disabledButtonDeleteTeam()} onClick={() => this.askDeleteTeam()} >Eliminar</Button></td>
-                                    </tr>
-                                )
-                            })}
-                        </tbody>
-                    </Table>
-
-                    <table>
-                        {/* disabled={this.state.dataTeamStudentGroup.lenth>0 ? true : null} */}
-                        <td><button onClick={() => this.createTeam()} disabled={this.state.dataTeamStudentGroup.length > 0 ? true : null}>Crear Equipo</button></td>
-                        <label   > Nombre del Equipo </label>
-                        <input
-                            type="text"
-                            name="teamName"
-                            placeholder="escribe el nombre"
-                            value={this.state.teamName}
-                            onChange={this.onChangeTeamName}
-                            disabled={this.state.dataTeamStudentGroup.length > 0 ? true : null}
-                        />
-                    </table>
-
-                    <table>
-                        <div  >
-                            <label > Selecciona estudiante a invitar </label>
-                            {/* <select onChange={this.selectGuest} disabled={this.state.dataTeamStudentGroup.length === 0 ? true : null} > */}
-                            <select onChange={this.selectGuest} disabled={this.disabledButtonInvite()} >
-                                <option value="" selected disabled hidden >Seleccionar</option>
-                                {this.state.dataStudentWithoutTeam.map(elemento => (
-                                    <option key={elemento.id} value={elemento.id} > { elemento.nombre} </option>
-                                ))}
-                            </select>
-                        </div>
-                        <td><button disabled={this.disabledButtonInvite()} onClick={() => this.invite()} >Invitar</button></td>
-                    </table>
-
-                    <table>
+                    {showTeamStudent ? (
                         <div>
-                            <label > Salir del equipo </label>
-                            <td><button disabled={this.state.dataMembersTeam.length < 2 ? true : null} onClick={() => this.askLeaveTeam()} >Dejar Equipo</button></td>
-                        </div>
-                    </table>
+                            <Table striped bordered hover >
+                                <thead>
+                                    <tr>
+                                        <th>Equipo</th>
+                                        <th>Grupo</th>
+                                        <th>Integrantes</th>
+                                        <th>Lider</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
 
-                    <table>
-                        <div  >
-                            <label > Eliminar Integrante del equipo </label>
-                            <select onChange={this.selectKicked} disabled={this.disabledButtonDeleteTeam()} >
-                                <option value="" selected disabled hidden >Seleccionar</option>
-                                {this.state.dataMembersTeam.filter(member => member.idEstudiante !== AuthUser.getCurrentUser().id)
-                                    .map((elemento, index) =>
-                                        <option key={elemento.idEstudiante} value={elemento.idEstudiante} > {elemento.nombreEstudiante + " "} {elemento.apellidoEstudiante} </option>
-                                    )}
-                            </select>
+                                <tbody>
+                                    {this.state.dataTeamStudentGroup.map(team => {
+                                        return (
+                                            <tr key={team.id}>
+                                                <td>{team.nombreEquipo}</td>
+                                                <td>{team.nombreGrupo}</td>
+                                                {this.state.dataMembersTeam.map(item =>
+                                                    <tr>
+                                                        <td>{item.nombreEstudiante}</td>
+                                                        <td>{item.apellidoEstudiante}</td>
+                                                    </tr>
+                                                )}
+                                                <td>{this.state.nameLider}</td>
+                                                <td><Button variant="outline-primary" disabled={this.disabledButtonDeleteTeam()} onClick={() => this.askDeleteTeam()} >Eliminar Equipo</Button></td>
+                                                <td><Button disabled={this.state.dataMembersTeam.length < 2 ? true : null} onClick={() => this.askLeaveTeam()} >Dejar Equipo</Button>  </td>
+                                            </tr>
+                                        )
+                                    })}
+                                </tbody>
+                            </Table>
                         </div>
-                        <td><button disabled={this.disabledButtonDeleteTeam()} onClick={() => this.showModalKickStudent()} >eliminar</button></td>
-                    </table>
+                    ) : (
+                        <div>
+                            {/* disabled={this.state.dataTeamStudentGroup.lenth>0 ? true : null} */}
+
+                            <label   > Crear Equipo </label>
+                            <div>
+                                <input
+                                    className={formErrors.teamName.length > 0 ? "error" : "form-input"}
+                                    type="text"
+                                    name="teamName"
+                                    placeholder="escribe el nombre"
+                                    value={this.state.teamName}
+                                    onChange={this.onChangeTeamName}
+                                    disabled={this.state.dataTeamStudentGroup.length > 0 ? true : null}
+                                />
+                                 {formErrors.teamName.length > 0 && (
+                                    <span className="errorMessage">{formErrors.teamName}</span>
+                                )}
+                                <div><Button onClick={() => this.createTeam()} disabled={this.state.dataTeamStudentGroup.length > 0 ? true : null}>Crear Equipo</Button></div>
+                            </div>
+                        </div>
+                    )}
+
+                    {showLiderStudent ? (
+                        <div>
+                            <div>
+                                <label > Selecciona estudiante a invitar </label>
+                                <div  >
+                                    {/* <select onChange={this.selectGuest} disabled={this.state.dataTeamStudentGroup.length === 0 ? true : null} > */}
+                                    <select onChange={this.selectGuest} disabled={this.disabledButtonInvite()} >
+                                        <option value="" selected disabled hidden >Seleccionar</option>
+                                        {this.state.dataStudentWithoutTeam.map(elemento => (
+                                            <option key={elemento.id} value={elemento.id} > { elemento.nombre} </option>
+                                        ))}
+                                    </select>
+                                    <Button disabled={this.disabledButtonInvite()} onClick={() => this.invite()} >Invitar</Button>
+                                </div>
+                            </div>
+                            <div>
+                                <label > Eliminar Integrante del equipo </label>
+                                <div  >
+                                    <select onChange={this.selectKicked} disabled={this.disabledButtonDeleteTeam()} >
+                                        <option value="" selected disabled hidden >Seleccionar</option>
+                                        {this.state.dataMembersTeam.filter(member => member.idEstudiante !== AuthUser.getCurrentUser().id)
+                                            .map((elemento, index) =>
+                                                <option key={elemento.idEstudiante} value={elemento.idEstudiante} > {elemento.nombreEstudiante + " "} {elemento.apellidoEstudiante} </option>
+                                            )}
+                                    </select>
+                                    <Button disabled={this.disabledButtonDeleteTeam()} onClick={() => this.showModalKickStudent()} >eliminar</Button>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div></div>
+                    )}
+                    {/* <div>
+                        <label > Salir del equipo </label>
+                        <div>
+                            <Button disabled={this.state.dataMembersTeam.length < 2 ? true : null} onClick={() => this.askLeaveTeam()} >Dejar Equipo</Button>
+                        </div>
+                    </div> */}
                 </div>
 
-                <Modal isOpen={this.state.modalLeaveLider}>
-                    <ModalHeader>
+                <Modal show={this.state.modalLeaveLider}>
+                    <Modal.Header>
                         <div><h5>Como lider del equipo antes de abandonar el equipo es necesario asignar un lider</h5></div>
-                    </ModalHeader>
-                    <ModalBody>
-                        <FormGroup>
-                            <label> Lider:</label>
-                            {/* <input className="form-control" readOnly type="text" value={this.state.form.id} /> */}
-                            <select onChange={this.selectLider}  >
+                    </Modal.Header>
+                    <Modal.Body>
 
-                                <option value="" selected disabled hidden >Seleccionar</option>
+                        <label> Lider:</label>
+                        {/* <input className="form-control" readOnly type="text" value={this.state.form.id} /> */}
+                        <select onChange={this.selectLider}  >
 
-                                {this.state.dataMembersTeam.map(elemento => (
-                                    <option key={elemento.idEstudiante} value={elemento.idEstudiante} > { elemento.nombreEstudiante} </option>
-                                ))}
-                            </select>
-                        </FormGroup>
-                    </ModalBody>
+                            <option value="" selected disabled hidden >Seleccionar</option>
 
-                    <ModalFooter>
+                            {/* {this.state.dataMembersTeam.map(elemento => (
+                                <option key={elemento.idEstudiante} value={elemento.idEstudiante} > { elemento.nombreEstudiante} </option>
+                            ))} */}
+
+                            {this.state.dataMembersTeam.filter(student => student.idEstudiante !== AuthUser.getCurrentUser().id).map((elemento, index) =>
+                                <option key={elemento.idEstudiante} value={elemento.idEstudiante} > {elemento.nombreEstudiante} </option>
+                            )}
+                        </select>
+                    </Modal.Body>
+
+                    <Modal.Footer>
                         {/* <Button color="primary" onClick={() => this.editar(this.state.form)}>Aceptarr</Button> */}
                         <Button onClick={() => this.editTeam()}>Aceptar</Button>
                         <Button color="danger" onClick={() => this.closeModalLeaveLider()}>Cancelar</Button>
-                    </ModalFooter>
+                    </Modal.Footer>
                 </Modal>
 
-                <Modal isOpen={this.state.modalSuccesfulInvitation}>
-                    <ModalHeader>
-                    </ModalHeader>
-                    <ModalBody>
-                        <FormGroup>
-                            <p> Invitación enviada correctamente</p>
-                            {this.closeModalSuccesfulInvitation()}
-                        </FormGroup>
-                    </ModalBody>
-                    <ModalFooter>
-                    </ModalFooter>
+                <Modal show={this.state.modalSuccesfulInvitation}>
+                    <Modal.Header>
+                    </Modal.Header>
+                    <Modal.Body>
+
+                        <p> Invitación enviada correctamente</p>
+                        {this.closeModalSuccesfulInvitation()}
+
+                    </Modal.Body>
+                    <Modal.Footer>
+                    </Modal.Footer>
                 </Modal>
 
 
-                <Modal isOpen={this.state.modalSuccessCreateTeam}>
-                    <ModalHeader>
-                    </ModalHeader>
-                    <ModalBody>
-                        <FormGroup>
-                            <p> Equipo creado correctamente!</p>
-                            {this.closeModalSuccessCreateTeam()}
-                        </FormGroup>
-                    </ModalBody>
-                    <ModalFooter>
-                    </ModalFooter>
+                <Modal show={this.state.modalSuccessCreateTeam}>
+                    <Modal.Header>
+                    </Modal.Header>
+                    <Modal.Body>
+
+                        <p> Equipo creado correctamente!</p>
+                        {this.closeModalSuccessCreateTeam()}
+
+                    </Modal.Body>
+                    <Modal.Footer>
+                    </Modal.Footer>
                 </Modal>
 
-                <Modal isOpen={this.state.modalDeleteTeam}>
-                    <ModalHeader>
+                <Modal show={this.state.modalDeleteTeam}>
+                    <Modal.Header>
                         <div><h5>¿Estás seguro de eliminar el equipo?</h5></div>
-                    </ModalHeader>
-                    <ModalBody>
-                        <FormGroup>
+                    </Modal.Header>
+                    <Modal.Body>
 
-                        </FormGroup>
-                    </ModalBody>
+                    </Modal.Body>
 
-                    <ModalFooter>
+                    <Modal.Footer>
                         {/* <Button color="primary" onClick={() => this.editar(this.state.form)}>Aceptarr</Button> */}
                         <Button onClick={() => this.deleteTeam()}>Aceptar</Button>
                         <Button color="danger" onClick={() => this.closeModalDeleteTeam()}>Cancelar</Button>
-                    </ModalFooter>
+                    </Modal.Footer>
                 </Modal>
 
 
-                <Modal isOpen={this.state.modalLeaveTeam}>
-                    <ModalHeader>
+                <Modal show={this.state.modalLeaveTeam}>
+                    <Modal.Header>
                         <div><h5>¿Estás seguro de abandonar el equipo?</h5></div>
-                    </ModalHeader>
-                    <ModalBody>
-                        <FormGroup>
+                    </Modal.Header>
+                    <Modal.Body>
 
-                        </FormGroup>
-                    </ModalBody>
+                    </Modal.Body>
 
-                    <ModalFooter>
+                    <Modal.Footer>
                         {/* <Button color="primary" onClick={() => this.editar(this.state.form)}>Aceptarr</Button> */}
                         <Button onClick={() => this.leaveTeam()}>Aceptar</Button>
                         <Button color="danger" onClick={() => this.closeModalLeaveTeam()}>Cancelar</Button>
-                    </ModalFooter>
+                    </Modal.Footer>
                 </Modal>
 
-                <Modal isOpen={this.state.modalKickStudent}>
-                    <ModalHeader>
+                <Modal show={this.state.modalKickStudent}>
+                    <Modal.Header>
                         <div><h5>¿Estás seguro de querer expulsar del equipo?</h5></div>
-                    </ModalHeader>
-                    <ModalBody>
-                        <FormGroup>
+                    </Modal.Header>
+                    <Modal.Body>
 
-                        </FormGroup>
-                    </ModalBody>
+                    </Modal.Body>
 
-                    <ModalFooter>
+                    <Modal.Footer>
                         {/* <Button color="primary" onClick={() => this.editar(this.state.form)}>Aceptarr</Button> */}
                         <Button onClick={() => this.kickStudentTeam()}>Aceptar</Button>
                         <Button color="danger" onClick={() => this.closeModalKickStudent()}>Cancelar</Button>
-                    </ModalFooter>
+                    </Modal.Footer>
                 </Modal>
 
             </>
@@ -540,4 +605,4 @@ class TeamsStudent extends Component {
     }
 }
 
-export default TeamsStudent;
+export default TeamStudent;

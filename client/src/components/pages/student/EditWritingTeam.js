@@ -33,19 +33,20 @@ import Card from 'react-bootstrap/Card';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 import Chat from "./Chat"
 
-/*Componentes de estilo Reactstrap*/
-import {
-    Table,
-    Container,
-    Modal,
-    ModalHeader,
-    ModalBody,
-    FormGroup,
-    ModalFooter,
-} from "reactstrap";
+// /*Componentes de estilo Reactstrap*/
+// import {
+//     Table,
+//     Container,
+//     Modal,
+//     ModalHeader,
+//     ModalBody,
+//     FormGroup,
+//     ModalFooter,
+// } from "reactstrap";
 
 
 import socket from "../../../utils/Socket";
@@ -325,19 +326,19 @@ class EditWritingTeam extends Component {
                     </Card>
                 </div>
 
-                <Modal isOpen={this.state.modalDeleteFile}>
-                    <ModalHeader>
+                <Modal show={this.state.modalDeleteFile}>
+                    <Modal.Header>
                         <div><h5>¿Estás seguro de eliminar {this.state.nameDeleteFileMedia}?</h5> </div>
-                    </ModalHeader>
-                    <ModalBody>
-                        <FormGroup>
-                        </FormGroup>
-                    </ModalBody>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {/* <FormGroup>
+                        </FormGroup> */}
+                    </Modal.Body>
 
-                    <ModalFooter>
+                    <Modal.Footer>
                         <Button onClick={() => this.deleteFile(this.state.deleteFileMedia)}>Aceptar</Button>
                         <Button variant="danger" onClick={() => this.closeModalDeleteFile()}>Cancelar</Button>
-                    </ModalFooter>
+                    </Modal.Footer>
                 </Modal>
             </>
         );

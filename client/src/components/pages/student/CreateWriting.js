@@ -62,7 +62,7 @@ class CreateWriting extends Component {
                 /*Obtiene equipo del estudiante correspondiente a un grupo en concreto*/
                 StudentService.getTeamStudentGroup(AuthUser.getCurrentUser().id, this.props.match.params.idGroup)
                     .then(response => {
-                        debugger;
+                       
                         this.setState({
                             dataTeamStudent: response,
                             form: {
