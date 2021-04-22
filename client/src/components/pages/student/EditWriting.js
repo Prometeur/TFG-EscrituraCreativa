@@ -2,7 +2,6 @@
 *  Name_file :EditWriting.js
 *  Description: Pagina de editar Escrito
 */
-
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 
@@ -33,17 +32,21 @@ import Card from 'react-bootstrap/Card';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from 'react-bootstrap/Button';
+import Table from "react-bootstrap/Table";
+import Modal from 'react-bootstrap/Modal';
 
 /*Componentes de estilo Reactstrap*/
-import {
-    Table,
-    Container,
-    Modal,
-    ModalHeader,
-    ModalBody,
-    FormGroup,
-    ModalFooter,
-} from "reactstrap";
+// import {
+//     Table,
+//     Container,
+//     Modal,
+//     ModalHeader,
+//     ModalBody,
+//     FormGroup,
+//     ModalFooter,
+// } from "reactstrap";
+
+
 
 class EditWriting extends Component {
 
@@ -52,7 +55,6 @@ class EditWriting extends Component {
         this.onFileChange = this.onFileChange.bind(this);
         this.state = {
             imgCollection: [],//array de ficheros multimedia
-            dataTeamStudent: [],//contiene el equipo del estudiante
             contentState: null,//editor
             editorState: EditorState.createEmpty(),
             challenge: '',//contiene el desafio 
@@ -74,21 +76,13 @@ class EditWriting extends Component {
         /*Obtiene el desafio seleccionado*/
         StudentService.getChallenge(this.props.match.params.idChallenge)
             .then(response => {
-                this.setState({
-                    challenge: response[0]
-                });
+                this.setState({ challenge: response[0] });
                 //Si es colaborativo
                 if (response[0].colaborativo === 2) {
                     /*Obtiene equipo del estudiante correspondiente a un grupo en concreto*/
                     StudentService.getTeamStudentGroup(AuthUser.getCurrentUser().id, this.props.match.params.idGroup)
                         .then(response => {
-                            this.setState({
-                                dataTeamStudent: response,
-                                form: {
-                                    ...this.state.form,
-                                    idWriter: response[0].idEquipo
-                                }
-                            });
+                            this.setState({form: {...this.state.form,idWriter: response[0].idEquipo}});
                             /*Obtiene multimedia del escrito del equipo */
                             StudentService.getMultimediaWriting(this.props.match.params.idChallenge, response[0].idEquipo)
                                 .then(response => {
@@ -96,15 +90,12 @@ class EditWriting extends Component {
                                 }).catch(error => {
                                     console.log(error.message);
                                 });
-
                         }).catch(error => {
                             console.log(error.message);
                         })
-
                 }
                 else {//si es individual
                     this.setState({
-                        dataTeamStudent: response,
                         form: {
                             ...this.state.form,
                             idWriter: AuthUser.getCurrentUser().id
@@ -118,7 +109,6 @@ class EditWriting extends Component {
                         }).catch(error => {
                             console.log(error.message);
                         });
-
                 }
 
             }).catch(error => {
@@ -133,7 +123,7 @@ class EditWriting extends Component {
                 console.log(error.message);
             });
 
-        /*Obtiene el escrito del estudiante */
+        /*Obtiene el escrito */
         StudentService.getWriting(this.props.match.params.idWriting)
             .then(response => {
                 var contentState = stateFromHTML(response.data[0].texto);
@@ -262,22 +252,29 @@ class EditWriting extends Component {
         });
     }
 
+    
+    //Devuelve el tipo de desafio
+    showCollaborative = () => {
+        if (this.state.challenge.colaborativo === 1) {
+            return "Individual"
+        }
+        else {
+            return "Colaborativo"
+        }
+    }
     /*Dibuja la pagina */
     render() {
-        const { dataMediaChallenge } = this.state;
-        const { dataMediaWriting } = this.state;
-        // const { formErrors } = this.state;
+        const { dataMediaChallenge,dataMediaWriting } = this.state;
         return (
             <>
                 <div className="container">
-                    <label className='form-label'>Editar Escrito</label>
+                    <label className='form-label'>Editar Escrito {this.showCollaborative()}</label>
                     <Card className="card-edit">
                         <Card.Body>
                             <div className="row-edit">
                                 <h2 > {this.state.challenge.titulo} </h2>
                             </div>
                             <div className="row-edit">
-
                                 <label className='form-label'>Categoria</label>
                                 <p>{this.state.challenge.nombre}</p>
                             </div>
@@ -305,7 +302,6 @@ class EditWriting extends Component {
                                 <label className='form-label'>Titulo</label>
                                 <div>
                                     <input
-                                        // className='form-input'
                                         type="text"
                                         name="title"
                                         placeholder="Escribe el título"
@@ -367,19 +363,19 @@ class EditWriting extends Component {
                     </Card>
                 </div>
 
-                <Modal isOpen={this.state.modalDeleteFile}>
-                    <ModalHeader>
+                <Modal show={this.state.modalDeleteFile}>
+                    <Modal.Header>
                         <div><h5>¿Seguro que desea eliminar {this.state.nameDeleteFileMedia}?</h5> </div>
-                    </ModalHeader>
-                    <ModalBody>
-                        <FormGroup>
-                        </FormGroup>
-                    </ModalBody>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {/* <FormGroup>
+                        </FormGroup> */}
+                    </Modal.Body>
 
-                    <ModalFooter>
+                    <Modal.Footer>
                         <Button onClick={() => this.deleteFile(this.state.deleteFileMedia)}>Aceptar</Button>
                         <Button variant="danger" onClick={() => this.closeModalDeleteFile()}>Cancelar</Button>
-                    </ModalFooter>
+                    </Modal.Footer>
                 </Modal>
             </>
         );

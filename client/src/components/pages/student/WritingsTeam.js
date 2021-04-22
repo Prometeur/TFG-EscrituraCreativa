@@ -11,6 +11,7 @@ import moment from 'moment';
 // Componentes estilos
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
+
 //Estilos
 import '../../../styles/styleGeneral.css';
 
@@ -18,7 +19,6 @@ class WritingsTeam extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             dataTeamStudent: [],
             dataWritingTeam: [],
@@ -26,29 +26,65 @@ class WritingsTeam extends Component {
         }
     }
 
-
     componentDidMount() {
+        if (this.props.groupSelect === undefined) {
+ 
+            StudentService.getWritingsCollaborative(AuthUser.getCurrentUser().id)
+                .then(response => {
+                    this.setState({ dataWritingTeam: response.data });
+                }).catch(error => {
+                    console.log(error.message);
+                })
+        }
+        else {
+            /*Obtiene equipo del estudiante correspondiente a un grupo en concreto*/
+            StudentService.getTeamStudentGroup(AuthUser.getCurrentUser().id, this.props.groupSelect)
+                .then(response => {
+                    this.setState({ dataTeamStudent: response });
+                    //si el estudiante tiene equipo
+                    if (response.length != 0) {
+                        /**Obtiene los escritos del equipo del estudiante */
+                        StudentService.getWritingsTeam(response[0].idEquipo, this.props.groupSelect)
+                            .then(response => {
+                                this.setState({ dataWritingTeam: response });
+                            }).catch(error => {
+                                console.log(error.message);
+                            })
+                    }
+                }).catch(error => {
+                    console.log(error.message);
+                })
+        }
+    }
 
-        /*Obtiene equipo del estudiante correspondiente a un grupo en concreto*/
-        StudentService.getTeamStudentGroup(AuthUser.getCurrentUser().id, this.props.groupSelect)
-            .then(response => {
-                this.setState({ dataTeamStudent: response });
-                //si el estudiante tiene equipo
+    //Devuelve string de escrito finalizado
+    showWritingFinalized = (writing) => {
+        if (writing.finalizado === 1)
+            return "Si"
+        else
+            return "No"
+    }
 
-                if (response.length != 0) {
-                    /**Obtiene los escritos del equipo del estudiante */
-                    StudentService.getWritingsTeam(response[0].idEquipo, this.props.groupSelect)
-                        .then(response => {
+    //Devuelve string del desafio finalizado
+    showChallengeFinalized = (writing) => {
+        var dateActual = new Date();
+        var dateFin = new Date(writing.fechaFin)//fecha fin del desafio
+        debugger;
+        //si ya se paso la fecha del desafio, desactivar button
+        if (dateActual.getTime() > dateFin.getTime())
+            return "Si"
+        else
+            return "No"
+    }
 
-                            this.setState({ dataWritingTeam: response });
-                        }).catch(error => {
-                            console.log(error.message);
-                        })
-                }
-            }).catch(error => {
-                console.log(error.message);
-            })
-
+    challengeFinalized = (writing) => {
+        var dateActual = new Date();
+        var dateFin = new Date(writing.fechaFin)//fecha fin del desafio
+         //si ya se paso la fecha del desafio, desactivar button
+        if (dateActual.getTime() > dateFin.getTime())
+            return true;
+        else
+            return false;
     }
 
     /*Dibuja la pagina  */
@@ -61,31 +97,39 @@ class WritingsTeam extends Component {
                     <Table striped bordered hover >
                         <thead>
                             <tr>
+                                <th>Escrito</th>
+                                <th>Grupo</th>
                                 <th>Desafio</th>
+                                <th>Desafio Finalizado</th>
                                 <th>Equipo</th>
-                                <th>Puntuación</th>
                                 <th>Fecha</th>
                                 <th>Hora</th>
-
+                                {/* <th>Finalizado</th>
+                                <th>Puntuación</th> */}
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {dataWritingTeam.filter(writing1 => writing1.finalizado === 1).map((writing) => (
+                            {dataWritingTeam.map((writing) => (
                                 <tr key={writing.id} >
+                                    <td>{writing.nombreEscrito}</td>
+                                    <td>{writing.nombreGrupo}</td>
                                     <td>{writing.nombreDesafio}</td>
+                                    <td>{this.showChallengeFinalized(writing)}</td>
                                     <td>{writing.nombreEquipo}</td>
-                                    <td>{writing.puntuacion}</td>
                                     <td >{formatedDate = moment(writing.fecha).format('DD/MM/YYYY')}</td>
                                     <td >{formatedDate = moment(writing.fecha).format('LT')}</td>
-                                    <td><Link to={`/student/viewWriting/${this.props.groupSelect}/${writing.idDesafio}/${writing.id}`}><Button variant="outline-primary">Ver</Button></Link></td>
+                                    {/* <td>{this.showWritingFinalized(writing)}</td>
+                                    <td>{writing.puntuacion}</td> */}
+                                    {this.challengeFinalized(writing) ? (
+                                        <td><Link to={`/student/viewWriting/${this.props.groupSelect}/${writing.idDesafio}/${writing.id}`} ><Button variant="outline-primary" disabled={writing.finalizado === 1 ? false : true}>Ver</Button></Link></td>
+                                    ) : (
+                                        <td ><Link to={`/student/editWriting/${writing.idGrupo}/${writing.idDesafio}/${writing.id}`}><Button variant="outline-primary" disabled={this.challengeFinalized(writing)}>Editar Escrito</Button></Link></td>
+                                    )}
                                 </tr>
                             ))}
                         </tbody>
                     </Table>
-
-                    {/* <button>Cancelar</button> */}
-
                 </div>
             </>
         );

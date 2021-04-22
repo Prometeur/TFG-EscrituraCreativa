@@ -13,19 +13,20 @@ import { Link } from "react-router-dom";
 // Componentes de estilos
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
+import Modal from 'react-bootstrap/Modal';
 
 // Estilos
 import '../../../styles/styleGeneral.css';
 
 /*Componentes de estilo Reactstrap*/
-import {
-    Container,
-    Modal,
-    ModalHeader,
-    ModalBody,
-    FormGroup,
-    ModalFooter,
-} from "reactstrap";
+// import {
+//     Container,
+//     Modal,
+//     ModalHeader,
+//     ModalBody,
+//     FormGroup,
+//     ModalFooter,
+// } from "reactstrap";
 
 class Challenges extends Component {
 
@@ -162,19 +163,19 @@ class Challenges extends Component {
                     <Link to={`/teacher/createChallenge/${this.props.groupSelect}`}><Button variant="primary">Crear desafio</Button></Link>
                 </div>
 
-                <Modal isOpen={this.state.modalDeleteChallenge}>
-                    <ModalHeader>
+                <Modal show={this.state.modalDeleteChallenge}>
+                    <Modal.Header>
                         <div><h5>¿Seguro que desea eliminar {this.state.deleteChallenge.titulo}?</h5> </div>
-                    </ModalHeader>
-                    <ModalBody>
-                        <FormGroup>
-                        </FormGroup>
-                    </ModalBody>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {/* <FormGroup>
+                        </FormGroup> */}
+                    </Modal.Body>
 
-                    <ModalFooter>
+                    <Modal.Footer>
                         <Button onClick={() => this.deleteChallenge(this.state.deleteChallenge)}>Aceptar</Button>
                         <Button variant="danger" onClick={() => this.closeModalDeleteChallenge()}>Cancelar</Button>
-                    </ModalFooter>
+                    </Modal.Footer>
                 </Modal>
             </>
         );

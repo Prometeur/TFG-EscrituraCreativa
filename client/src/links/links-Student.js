@@ -5,11 +5,23 @@ const linksTeacher = [
         name: "Grupos",
         id: "challenges"
     },
-    // {
-    //     path:"/challenges",
-    //     name:"Mis desafios",
-    //     id:"challenges"
-    // }
+    {
+        path: "/challengesTabs",
+        name: "Crear Escrito",
+        id: "desafios"
+    }
+    ,
+    {
+        path: "/writingsTabs",
+        name: "Escritos",
+        id: "escritos"
+    }
+    ,
+    {
+        path: "/teams",
+        name: "Equipos",
+        id: "teams"
+    }
 ];
 
 export default linksTeacher;
