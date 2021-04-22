@@ -61,6 +61,12 @@ createGroup = () => {
 /*Dibuja la pagina  */
 render() {
 
+    let botonCrearGrupo = <div><button text='Crear Grupo' onClick={() => this.createGroup()}>Crear Grupo</button></div>;
+
+    if(this.state.groupName === ""){
+        botonCrearGrupo = <div><button disabled text='Crear Grupo' onClick={() => this.createGroup()}>Crear Grupo</button></div>;
+    }
+
     return (
 
         <div className="container">
@@ -74,7 +80,7 @@ render() {
             <label>Nombre del grupo nuevo: </label>
             <br />
             <input type="text" name="groupName" onChange={this.handleChangeName} />
-            <div><button text='Crear Grupo' onClick={() => this.createGroup()}>Crear Grupo</button></div>
+            {botonCrearGrupo}
         </div>
 
 

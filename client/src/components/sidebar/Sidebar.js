@@ -4,15 +4,16 @@ import '../../styles/styleSidebar.css';
 import '../../styles/styleGeneral.css';
 
 
+
 export default function Sidebar(props) {
 
   let {links,url} = props;
   return(
      <div className="sidebar-left">
 
-           <ul style={{ listStyleType: "none", padding: 0 }}>
+           <ul className="container-column-list">
                    {links.map((link)=>(
-                       <li>
+                       <li className="item-column-list wrap">
                            <Link key={link.id} to={`${url}${link.path}`}>{link.name}</Link>
                        </li>
                    ))}

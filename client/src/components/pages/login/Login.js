@@ -47,6 +47,7 @@ class Login extends Component {
     }
 
     componentDidMount(){
+
        if(AuthService.getCurrentUser()){
          this.props.history.push("/profile");
          window.location.reload();
@@ -76,6 +77,7 @@ class Login extends Component {
 
     this.form.validateAll();
 
+
     if (this.checkBtn.context._errors.length === 0) {
         AuthService.login(this.state.username, this.state.password)
         .then( ()=> {
@@ -102,6 +104,7 @@ class Login extends Component {
         console.log(this.state.error);
       return (
           <div className="container">
+
                   <Form  
                     onSubmit={this.handleLogin}
                     ref= {c => {
@@ -149,6 +152,7 @@ class Login extends Component {
                         />
                        </div>
                   </Form>
+              <img className="img-login" src="literaturatesis.png" ></img>
           </div>
       );
   }

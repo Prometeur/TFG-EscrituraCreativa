@@ -60,6 +60,7 @@ class WritingsStudent extends Component {
             })
     }
 
+
     componentDidUpdate(pP, pS, sS) {
         if ( this.props.idChallenge !== pP.idChallenge) {
             TeacherService.getChallenge(this.props.idChallenge)
@@ -89,6 +90,7 @@ class WritingsStudent extends Component {
                     console.log(error.message);
                 })
         }
+
     }
 
     //Obtiene el nombre del desafio/escrito

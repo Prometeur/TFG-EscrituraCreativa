@@ -1,6 +1,6 @@
 /*
-*  Name_file :ProfileScripts.js
-*  Description: Componente que contiene la lista de escritos del estudiante
+*  Name_file :ViewTeamScripts.js
+*  Description: Componente que contiene la lista de escritos del equipo
 */
 import React, { Component } from 'react';
 import TeacherService from "../../../services/teacher/teacherService.js";
@@ -27,7 +27,7 @@ class GroupTeacher extends Component {
     /*Se hacen peticiones al servidor para que me devuelva la tabla desafios, me muestra todos los desafios del grupo seleccioando 
     por el profesor*/
     peticionGet = () => {
-        TeacherService.getScriptsByStudent(this.props.idStudent).then(response => {
+        TeacherService.getScriptsByTeam(this.props.idTeam).then(response => {
             console.log(response);//muestra consola navegador
             this.setState({ data: response });
             console.log(response);
@@ -85,22 +85,26 @@ class GroupTeacher extends Component {
 
     /*Dibuja la pagina  */
     render() {
+        console.log("EL ESTADO DEL EQUIPO ES");
+        console.log(this.state);
         let cartel =<div> </div>;
         let tabla =
         <div className = "scriptList">
         
             {this.state.filteredData.map(script => {
-                return (
-                <div className ="scriptCardContainer">
-                    <Link to={`/teacher/editWriting/${script.idGrupo}/${script.idDesafio}/${script.id}/${script.idEstudiante}`}>
-                            <div className ="scriptCard">
-                                <h6>Nombre</h6>
-                                <h5>{script.nombre}</h5>
-                                <h6>Desafío</h6>
-                                <h5>{script.titulo}</h5>
-                        </div>
-                    </Link>
-                </div>
+                return (   
+                     <div className ="scriptCardContainer">
+                        <Link to={`/teacher/editWriting/${script.idGrupo}/${script.idDesafio}/${script.id}/${script.idEstudiante}`}>
+                             <div className ="scriptCard">
+                                 <h6>Nombre</h6>
+                                 <h5>{script.nombre}</h5>
+                                 <h6>Desafío</h6>
+                                 <h5>{script.titulo}</h5>
+                         </div>
+                         </Link>
+                 </div>
+
+                
                 )
             })}
 
@@ -117,12 +121,12 @@ class GroupTeacher extends Component {
 
         return (
             <>
-                <h1>Escritos del estudiante:</h1>
+                <h1>Escritos del equipo:</h1>
 
                 <div>
                 
                 <h1></h1>
-                        <label>Buscar estudiante: </label>
+                        <label>Buscar escrito: </label>
                         <br />
                         <input type="text" name="searchKey" onChange={this.handleChangeSearch} />
                         <br />

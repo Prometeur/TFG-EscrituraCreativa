@@ -26,7 +26,7 @@ export default class Profile extends Component {
     componentDidMount() {
         const currentUser = AuthService.getCurrentUser();
 
-        if (!currentUser)
+        if (!currentUser )
             this.setState({ redirect: "/home" });
 
         this.setState({ currentUser: currentUser, userReady: true });
@@ -51,7 +51,7 @@ export default class Profile extends Component {
 
         const { currentUser,role} = this.state;
 
-        console.log(this.state);
+        console.log(this.state.currentUser.foto);
 
         let foto = <Figure>
                         <Figure.Image
@@ -59,14 +59,9 @@ export default class Profile extends Component {
                             alt="171x180"
                             src="fotoperfil.jpg"
                         />
-                        <h5>
-                            {currentUser.username}
-                        </h5>
-                        <h6>
-                            {role}
-                        </h6>
                 </Figure>;
 
+        console.log(this.state.currentUser.foto);
         if(this.state.currentUser.foto != undefined)
         {
             if(this.state.currentUser.foto.data.length != 0)
@@ -78,12 +73,6 @@ export default class Profile extends Component {
                             alt="171x180"
                             src={fotoSource}
                         />
-                        <h5>
-                            {currentUser.username}
-                        </h5>
-                        <h6>
-                            {role}
-                        </h6>
                 </Figure>;
             }
         }
@@ -91,14 +80,23 @@ export default class Profile extends Component {
         return (
             <>
                 <div className="perfil-left">
-                    {foto}
-                    <ul className="flex-container wrap">
-                        <li className="item-button-icon">
-                            <img src="gear.png" alt=""/>
+
+                    <ul className="container-column-list">
+                        <li className="item-column-list wrap">
+                            {foto}
                         </li>
-                        <li className="item-button-icon">
+                        <li className="item-column-list wrap">
+                            <h6>
+                               {currentUser.username}
+                            </h6>
+                        </li>
+                        <li className="item-column-list wrap">
+                            <h6>{role}</h6>
+                        </li>
+                        <li className="item-column-list">
+                            <img src="setting.png" alt=""/>
                             <Link to={"/editProfile"}>
-                                <Button size="sm" bsPrefix="btn" variant="outline-secondary">Editar</Button>
+                                <Button size="sm" bsPrefix="btn" variant="outline-light">Editar</Button>
                             </Link>
                         </li>
                     </ul>
