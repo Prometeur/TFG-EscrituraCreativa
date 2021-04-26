@@ -199,8 +199,11 @@ class TeamStudent extends Component {
 
     //Envia una invitación a un estudiante para unirse a su equipo
     invite = () => {
-        var nombre = this.state.dataMembersTeam[0].nombreEstudiante;
-        var apellidos = this.state.dataMembersTeam[0].apellidoEstudiante;
+        debugger;
+        // var nombre = this.state.dataMembersTeam[0].nombreEstudiante;
+        // var apellidos = this.state.dataMembersTeam[0].apellidoEstudiante;
+        var nombre= AuthUser.getCurrentUser().username;
+        var apellidos = AuthUser.getCurrentUser().surname;
         var messageBody = "te envía una invitación para unirte a su equipo";
         var equipo = this.state.dataTeamStudentGroup[0].nombreEquipo;
         var grupo = this.state.dataTeamStudentGroup[0].nombreGrupo;
@@ -463,7 +466,7 @@ class TeamStudent extends Component {
                                         <select onChange={this.selectGuest} disabled={this.disabledButtonInvite()} >
                                             <option value="" selected disabled hidden >Seleccionar</option>
                                             {this.state.dataStudentWithoutTeam.map(elemento => (
-                                                <option key={elemento.id} value={elemento.id} > { elemento.nombre} </option>
+                                                <option key={elemento.id} value={elemento.id} > { elemento.nombre} { elemento.apellidos} </option>
                                             ))}
                                         </select>
                                     </li>

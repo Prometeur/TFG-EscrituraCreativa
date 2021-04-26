@@ -120,7 +120,7 @@ class Message extends Component {
                     console.log(error.message);
                 })
         }
-        else{
+        else {
             this.showModalAnswerJoinTeam();
         }
     }
@@ -181,8 +181,12 @@ class Message extends Component {
                                 {showButtons ? (
                                     <div class="message-inputs">
                                         <div>{this.state.message.mensaje}</div>
-                                        <button onClick={() => this.acceptRequest()} > Aceptar</button>
-                                        <button onClick={() => this.refuseRequest()}> Rechazar</button>
+                                        <div className="form-select">
+                                            <Button onClick={() => this.acceptRequest()} > Aceptar</Button>
+                                        </div>
+                                        <div className="form-select">
+                                            <Button onClick={() => this.refuseRequest()}> Rechazar</Button>
+                                        </div>
                                     </div>
 
                                 ) : (
@@ -212,8 +216,8 @@ class Message extends Component {
                     </Modal.Header>
                     <Modal.Body>
                         {/* <FormGroup> */}
-                            <p> Has aceptado la solicitud</p>
-                            {this.closeModalAcceptJoinTeam()}
+                        <p> Has aceptado la solicitud</p>
+                        {this.closeModalAcceptJoinTeam()}
                         {/* </FormGroup> */}
                     </Modal.Body>
                     <Modal.Footer>
@@ -225,8 +229,8 @@ class Message extends Component {
                     </Modal.Header>
                     <Modal.Body>
                         {/* <FormGroup> */}
-                            <p> Has rechazado la solicitud</p>
-                            {this.closeModalRefuseJoinTeam()}
+                        <p> Has rechazado la solicitud</p>
+                        {this.closeModalRefuseJoinTeam()}
                         {/* </FormGroup> */}
                     </Modal.Body>
                     <Modal.Footer>
@@ -238,8 +242,8 @@ class Message extends Component {
                     </Modal.Header>
                     <Modal.Body>
                         {/* <FormGroup> */}
-                            <p> Ya has respondido a la solicitud</p>
-                            {this.closeModalAnswerJoinTeam()}
+                        <p> Ya has respondido a la solicitud</p>
+                        {this.closeModalAnswerJoinTeam()}
                         {/* </FormGroup> */}
                     </Modal.Body>
                     <Modal.Footer>
