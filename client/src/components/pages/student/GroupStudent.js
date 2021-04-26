@@ -19,6 +19,7 @@ import FormControl from 'react-bootstrap/FormControl';
 import Card from 'react-bootstrap/Card';
 import Icon from '@material-ui/core/Icon';
 import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
+import Button from "../teacher/GroupTeacher";
 
 
 
@@ -92,7 +93,6 @@ class GroupStudent extends Component {
     /**Obtiene todos los grupos del estudiante */
     StudentService.getGroups(dataUser.id)
     .then(response => {
-   debugger;
       if(response.length>0){
         this.setState({ dataGroup: response,groupSelect:response[0].idGrupo,nameGroupSelect:response[0].nombre,showChallenges:true });
       }
@@ -135,7 +135,6 @@ class GroupStudent extends Component {
   }
 
   disabledButton=() =>{
-    debugger;
     if(this.state.dataGroup.length>0){
       return false;
     }
@@ -149,8 +148,7 @@ class GroupStudent extends Component {
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
         <Card className="card-long">
           <Card.Body>
-            <div className="row">
-              <Dropdown >
+              <Dropdown className="drop-down" >
                 <DropdownToggle as={CustomToggle} id="dropdown-custom-components">Selecciona grupo</DropdownToggle>
                 <DropdownMenu as={CustomMenu}>
                   {dataGroup.map((row) => (
@@ -159,11 +157,11 @@ class GroupStudent extends Component {
                   ))}
                 </DropdownMenu>
               </Dropdown>
+
+            <div className="items-column">
+              <h3>{this.state.nameGroupSelect}</h3>
             </div>
 
-            
-              
-            <td><textarea name="mensaje" rows="1" cols="10" value={this.state.nameGroupSelect} readOnly={true} style={{ resize: "none" }} ></textarea></td>
             {/* onChange={this.qualificationSelection} */}
             {/* value={this.state.form.qualification} */}
 

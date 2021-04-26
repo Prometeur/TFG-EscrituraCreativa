@@ -6,7 +6,6 @@ import '../../../styles/styleCard.css';
 import Card from 'react-bootstrap/Card';
 import Figure from 'react-bootstrap/Figure';
 import Button from 'react-bootstrap/Button';
-import ListGroup from "../user/StudentLits";
 
 
 export default class Profile extends Component {
@@ -51,8 +50,6 @@ export default class Profile extends Component {
 
         const { currentUser,role} = this.state;
 
-        console.log(this.state.currentUser.foto);
-
         let foto = <Figure>
                         <Figure.Image
                             bsPrefix="figure"
@@ -79,28 +76,29 @@ export default class Profile extends Component {
 
         return (
             <>
-                <div className="perfil-left">
+            <div className="perfil-left">
 
-                    <ul className="container-column-list">
-                        <li className="item-column-list wrap">
-                            {foto}
-                        </li>
-                        <li className="item-column-list wrap">
-                            <h6>
-                               {currentUser.username}
-                            </h6>
-                        </li>
-                        <li className="item-column-list wrap">
-                            <h6>{role}</h6>
-                        </li>
-                        <li className="item-column-list">
-                            <img src="setting.png" alt=""/>
-                            <Link to={"/editProfile"}>
-                                <Button size="sm" bsPrefix="btn" variant="outline-light">Editar</Button>
-                            </Link>
-                        </li>
-                    </ul>
-                </div>
+                <ul className="container-column-list">
+                    <li className="item-column-list wrap">
+                        {foto}
+                    </li>
+                    <li className="item-column-list wrap">
+                        <h6>
+                            {currentUser.username}
+                        </h6>
+                    </li>
+                    <li className="item-column-list wrap">
+                        <h6>{role}</h6>
+                    </li>
+                    <li className="item-column-list">
+                        <img src="setting.png" alt=""/>
+                        <Link to={"/editProfile"}>
+                            <Button size="sm"  variant="outline-light">Editar</Button>
+                        </Link>
+                    </li>
+                </ul>
+            </div>
+
                 <div className="container">
                     <Card className="card-profile">
                         <Card.Body>

@@ -10,7 +10,6 @@ export default function Sidebar(props) {
   let {links,url} = props;
   return(
      <div className="sidebar-left">
-
            <ul className="container-column-list">
                    {links.map((link)=>(
                        <li className="item-column-list wrap">

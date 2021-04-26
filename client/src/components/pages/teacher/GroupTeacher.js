@@ -20,6 +20,7 @@ import Teams from './GroupTeams';
 import Students from '../user/GroupStudents';
 import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 import Card from 'react-bootstrap/Card';
 import Icon from '@material-ui/core/Icon';
 import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
@@ -92,7 +93,8 @@ class GroupTeacher extends Component {
       showWritings: false,
       showTeams: false,
       showStudents: false,
-      newName:""
+      newName:"",
+      onRenameGroupModal:'',
     };
   }
 
@@ -163,11 +165,21 @@ class GroupTeacher extends Component {
     });
   }
 
+  /*Cambia el estado del modal*/
+  onModal(modal) {
+
+        this.setState({
+            onRenameGroupModal: modal
+        });
+  }
+
+
   /*Se hacen peticiones al servidor renombrar grupo*/
   rename = () => {
       AdminService.renameGroup(this.state.groupSelect, this.state.newName ).then(response => {
         const dataUser = AuthUser.getCurrentUser();
           this.setState({ nameGroupSelect: this.state.newName });
+          this.onModal(false);
         
       }).catch(error => {
           console.log(error.message);
@@ -250,26 +262,49 @@ class GroupTeacher extends Component {
       <div className="container">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
         <Card className="card-long">
-          <Card.Body>
-            <div className="row">
-              {/* <div className="column column-left"> */}
-              <Dropdown className="drop-down">
-                <DropdownToggle as={CustomToggle} id="dropdown-custom-components">Selecciona grupo</DropdownToggle>
-                <DropdownMenu as={CustomMenu}>
-                  {dataGroup.map((row) => (
-                    // <DropdownItem eventKey={row.id}
-                    //   onClick={() => this.handleSelect(row.id)}>{row.nombre}</DropdownItem>
-                    <DropdownItem eventKey={row.idGrupo} onClick={() => this.handleSelect(row)}>{row.nombre}</DropdownItem>
-                  ))}
-                </DropdownMenu>
-              </Dropdown>
-              {/* </div> */}
-            </div>
+             <Card.Body>
+                  {/* <div className="column column-left"> */}
+                  <Dropdown className="drop-down">
+                    <DropdownToggle as={CustomToggle} id="dropdown-custom-components">Selecciona grupo</DropdownToggle>
+                    <DropdownMenu as={CustomMenu}>
+                      {dataGroup.map((row) => (
+                        // <DropdownItem eventKey={row.id}
+                        //   onClick={() => this.handleSelect(row.id)}>{row.nombre}</DropdownItem>
+                        <DropdownItem eventKey={row.idGrupo} onClick={() => this.handleSelect(row)}>{row.nombre}</DropdownItem>
+                      ))}
+                    </DropdownMenu>
+                  </Dropdown>
+                  {/* </div> */}
+
+                <div className="items-column">
+                    <h3>{this.state.nameGroupSelect}</h3>
+                    <Button variant="primary" onClick={()=>this.onModal(true)}>Renombar grupo</Button>
+                </div>
+                <Modal
+                    show={this.state.onRenameGroupModal}
+                    onHide={this.state.onRenameGroupModal}
+                >
+                     <Modal.Header>
+                         <Modal.Title>Renombrar grupo</Modal.Title>
+                     </Modal.Header>
+                     <Modal.Body>
+                         <label>Cambiar nombre: </label>
+                         <br />
+                         <input type="text" name="newName" onChange={this.handleChangeRename} />
+                         <br />
+                     </Modal.Body>
+                     <Modal.Footer>
+                         <Button variant="secondary" onClick={()=>this.onModal(false)}>Atras</Button>
+                         <Button variant="primary" onClick={()=>this.rename()}>Acepto</Button>
+                    </Modal.Footer>
+                 </Modal>
+
+
+
 
             {/*<td><textarea name="mensaje" rows="1" cols="10" value={this.state.nameGroupSelect} readOnly={true} style={{ resize: "none" }} ></textarea></td>*/}
-            <h3>{this.state.nameGroupSelect}</h3>
 
-            {renamePanel}
+
 
             {/*<select onChange={this.itemSelection} disabled={!this.state.groupSelect ? true : null} >
               <option value="" selected disabled hidden > Seleccionar </option>
@@ -289,8 +324,6 @@ class GroupTeacher extends Component {
             {/* <div className="row">
               <Challenges key={groupSelect} groupSelect={groupSelect} />
             </div> */}
-
-            
 
             {showChallenges ? (
               <div className="row">

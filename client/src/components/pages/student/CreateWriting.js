@@ -194,7 +194,6 @@ class CreateWriting extends Component {
         const { editorState } = this.state;
         // const { formErrors } = this.state;
         return (
-            <>
                 <div className="container">
 
                     <label className='form-label'>{this.showTypeChallenge()}</label>
@@ -277,7 +276,7 @@ class CreateWriting extends Component {
                         </Card.Body>
                     </Card>
                 </div>
-            </>
+
         );
     }
 }

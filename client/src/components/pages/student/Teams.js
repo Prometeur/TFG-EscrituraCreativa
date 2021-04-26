@@ -17,10 +17,11 @@ import StudentService from '../../../services/student/student-service.js';
 /*Componentes de estilo Bootstrap*/
 import Table from "react-bootstrap/Table";
 import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 
 
 //Estilos
-// import '../../../styles/styleGeneral.css';
+ import '../../../styles/styleCard.css';
 
 class Teams extends Component {
 
@@ -93,43 +94,47 @@ class Teams extends Component {
     render() {
         const { showTeamStudent } = this.state;
         return (
-            <>
-                {showTeamStudent ? (
-                    <div className="table-margin">
-                        <Table striped bordered hover>
-                            <thead>
-                                <tr>
-                                    <th>Equipo</th>
-                                    <th>Grupo</th>
-                                    <th>Integrantes</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {this.state.dataTeams.map(team => {
-                                    return (
-                                        <tr key={team.idEquipo}>
-                                            <td>{team.nombreEquipo}</td>
-                                            <td>{team.nombreGrupo}</td>
-                                            {this.state.dataTeamStudent.filter(teamStudent => teamStudent.idEquipo === team.idEquipo).map((item, index) =>
-                                                <tr>{item.nombre} {item.apellidos}</tr>
-                                            )}
-                                            <td><Link to={`/student/teamStudent/${team.idGrupo}`}><Button  >Gestionar</Button></Link></td>
+            <div className="container">
+               <Card className="card-long">
+                   <Card.Body>
+                       <div className="items-column"><h3>Lista de equipos</h3></div>
+                        {showTeamStudent ? (
+                            <div className="table-margin">
+                                <Table striped bordered hover>
+                                    <thead>
+                                        <tr>
+                                            <th>Equipo</th>
+                                            <th>Grupo</th>
+                                            <th>Integrantes</th>
+                                            <th>Acciones</th>
                                         </tr>
-                                    )
-                                })}
-                            </tbody>
-                        </Table>
-                        {/* <td><Link to={`/teacher/createChallenge/${this.props.groupSelect}`}><button >Crear Desafio</button></Link></td> */}
-                    </div>
-                ) : (
+                                    </thead>
+                                    <tbody>
+                                        {this.state.dataTeams.map(team => {
+                                            return (
+                                                <tr key={team.idEquipo}>
+                                                    <td>{team.nombreEquipo}</td>
+                                                    <td>{team.nombreGrupo}</td>
+                                                    {this.state.dataTeamStudent.filter(teamStudent => teamStudent.idEquipo === team.idEquipo).map((item, index) =>
+                                                        <td>{item.nombre} {item.apellidos}</td>
+                                                    )}
+                                                    <td><Link to={`/student/teamStudent/${team.idGrupo}`}><Button  >Gestionar</Button></Link></td>
+                                                </tr>
+                                            )
+                                        })}
+                                    </tbody>
+                                </Table>
+                                {/* <td><Link to={`/teacher/createChallenge/${this.props.groupSelect}`}><button >Crear Desafio</button></Link></td> */}
+                            </div>
+                        ) : (
 
-                    <div className="table-margin">
-                        
-                        <p>Todavia no dispones de un equipo para mostrar</p>
-                    </div>
-                )}
-            </>
+                            <div className="table-margin">
+                                <p>Todavia no dispones de un equipo para mostrar</p>
+                            </div>
+                        )}
+                   </Card.Body>
+               </Card>
+            </div>
         );
     }
 }

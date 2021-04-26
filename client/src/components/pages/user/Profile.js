@@ -10,7 +10,14 @@ import Escritos from "./ProfileScripts";
 import Grupos from "./TeacherGroups";
 import '../../../styles/styleGeneral.css';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+
+//Estilos
 import 'react-tabs/style/react-tabs.css';
+import  Card from 'react-bootstrap/Card';
+
+//Estilos css
+import '../../../styles/styleCard.css';
+
 
 class Profile extends Component {
 t
@@ -79,16 +86,20 @@ t
         }
 
         return (
-           <div className="container-box"> 
-                <Tabs>
-                    {tabs}
-                    <TabPanel>
-                        <Datos key={idStudent} idStudent={idStudent} handler ={this.handler}/>
-                    </TabPanel>
-                    <TabPanel>
-                        {secondTab}
-                    </TabPanel>
-                </Tabs>
+           <div className="container">
+               <Card className="card-long">
+                   <Card.Body>
+                       <Tabs>
+                           {tabs}
+                           <TabPanel>
+                               <Datos key={idStudent} idStudent={idStudent} handler ={this.handler}/>
+                           </TabPanel>
+                           <TabPanel>
+                               {secondTab}
+                           </TabPanel>
+                       </Tabs>
+                   </Card.Body>
+               </Card>
            </div>
         );
 
