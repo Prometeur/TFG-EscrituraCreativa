@@ -82,9 +82,6 @@ class WritingsStudent extends Component {
         let formatedDate;
         let { data } = this.state;
         return (
-            <div className="container">
-             <Card>
-                 <Card.Body className="card-login">
                     <div className="table-margin">
                         <Table striped bordered hover >
                             <thead>
@@ -123,9 +120,7 @@ class WritingsStudent extends Component {
                             </tbody>
                         </Table>
                     </div>
-                 </Card.Body>
-             </Card>
-            </div>
+
         );
     }
 }

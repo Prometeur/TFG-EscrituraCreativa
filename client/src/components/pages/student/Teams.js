@@ -116,7 +116,7 @@ class Teams extends Component {
                                                     <td>{team.nombreEquipo}</td>
                                                     <td>{team.nombreGrupo}</td>
                                                     {this.state.dataTeamStudent.filter(teamStudent => teamStudent.idEquipo === team.idEquipo).map((item, index) =>
-                                                        <td>{item.nombre} {item.apellidos}</td>
+                                                        <tr><td>{item.nombre} {item.apellidos}</td></tr>
                                                     )}
                                                     <td><Link to={`/student/teamStudent/${team.idGrupo}`}><Button  >Gestionar</Button></Link></td>
                                                 </tr>

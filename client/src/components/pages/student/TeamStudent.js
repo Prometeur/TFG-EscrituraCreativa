@@ -467,7 +467,7 @@ class TeamStudent extends Component {
                                             ))}
                                         </select>
                                     </li>
-                                    <li className="flex-row-item">
+                                    <li className="flex-row-items">
                                         <Button disabled={this.disabledButtonInvite()} onClick={() => this.invite()} >Invitar</Button>
                                     </li>
                                 </ul>

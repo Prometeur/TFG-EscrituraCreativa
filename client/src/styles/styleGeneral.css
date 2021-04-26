@@ -402,7 +402,7 @@ select {
 
 .flex-row-items {
     padding: .3rem;
-    width: 9rem;
+    width: auto;
     margin: .2rem .1rem;
 }
 
@@ -697,7 +697,7 @@ select {
         position: fixed;
         position: fixed;
         height: 30rem;
-        top:2.5rem;
+        top:2rem;
     }
 
     .sidebar-left a {
@@ -728,8 +728,8 @@ select {
     }
 
     .img-login  {
-         width: 37rem;
-         margin: 2rem;
+        width: 36.5rem;
+        margin: 3.5rem 0 0;
      }
 
     .full-wrapper {

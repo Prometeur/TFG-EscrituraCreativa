@@ -105,6 +105,7 @@ class ChallengesStudent extends Component {
         let finish = '';
         let writingAux = '';
         return (
+
                     <div className="table-margin">
                         <Table striped bordered hover >
                             <thead>
