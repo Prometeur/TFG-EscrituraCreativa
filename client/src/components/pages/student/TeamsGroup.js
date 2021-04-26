@@ -145,7 +145,7 @@ class TeamsGroup extends Component {
     /*Dibuja la pagina  */
     render() {
         return (
-            <>
+            <div className="container">
                    <div className="table-margin">
                     <Table striped bordered hover>
                         <thead>
@@ -192,7 +192,7 @@ class TeamsGroup extends Component {
 
                     </Modal.Footer>
                 </Modal>
-            </>
+            </div>
         );
     }
 }

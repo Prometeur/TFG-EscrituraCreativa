@@ -9,8 +9,10 @@ import TeacherService from '../../../services/teacher/teacherService.js';
 import '../../../styles/styleGeneral.css';
 import '../../../styles/styleCard.css';
 import Card from 'react-bootstrap/Card';
+import Row from 'react-bootstrap/Row';
 import Button  from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Table from 'react-bootstrap/Table';
 
 class SearchStudentRes extends Component {
 
@@ -86,41 +88,47 @@ class SearchStudentRes extends Component {
     /*Dibuja la pagina  */
     render() {
         let cartel =<div> </div>;
-        let tabla = <ListGroup variant="flush">
+        let tabla = <Table striped bordered hover>
+            <thead>
 
-            {this.state.filteredData.map((student) => 
-                (
-                    <React.Fragment>
-                    <ListGroup.Item>
-                        {student.id} 
-                        <img src={"data:image/png;base64," + btoa(String.fromCharCode.apply(null, student.foto.data))} alt="" style={{width: '5%',  borderRadius: '80%'}} ></img>
-                        {student.nombre} {student.apellidos} 
-                        {student.correo}
-                        <Link key={student.id} to={`/teacher/students/viewProfile/${student.id}`}><button text='Ver Perfil'> Ver perfil </button></Link>
-                    </ListGroup.Item>
-                    </React.Fragment>
-                    
-                )
-            )}
-    </ListGroup>;
+            </thead>
+            <tbody>
+            {this.state.filteredData.map((student) => (
+                <tr>
+                    <td>{student.id}</td>
+                    <td>
+                        <img src={"data:image/png;base64," +
+                        btoa(String.fromCharCode.apply(null, student.foto.data))}
+                             alt="" style={{width: '2rem',  borderRadius: '80%'}} >
+                        </img>
+                    </td>
+                    <td>{student.nombre}{student.apellidos}</td>
+                    <td> {student.correo}</td>
+                    <td>
+                        <Link key={student.id} to={`/teacher/students/viewProfile/${student.id}`}>
+                            <Button variant={"primary"} text='Ver Perfil'> Ver perfil </Button>
+                        </Link>
+                    </td>
+                </tr>
+            ))}
+            </tbody>
+        </Table>;
+
         if(this.state.filteredData.length === 0)
         {
             cartel = <nav>
                         <h2>No hay resultados para la búsqueda realizada.</h2>
                     </nav>;
-            tabla = <div></div>;
+            tabla = <></>;
         }
 
 
         return (
-            <>
             <div className="container">
-                <Card className="card-edit">
-                    <Card.Body>
-                    <h1>Estudiantes:</h1>
-
+                <Card className="card-long">
+                   <Card.Body>
+                    <h1>Listado de estudiantes</h1>
                     <div>
-                    <h2> Resultados de buscar estudiantes con  similar a:</h2>
                             <label>Buscar estudiante: </label>
                             <br />
                             <input type="text" name="searchStudent" onChange={this.handleChangeSearch} />
@@ -131,19 +139,13 @@ class SearchStudentRes extends Component {
                                 <option value="email">Email</option>
                             </select>
                     </div>
-                    <div>
-
+                    <Row bsPrefix={"row"}>
                         {cartel}
-
-
                         {tabla}
-
-
-                    </div>
+                    </Row>
                     </Card.Body>
                 </Card>
             </div>
-          </>
         );
     }
 

@@ -6,6 +6,7 @@ import Tabs from "./Tabs";
 
 import ChallengesStudent from "./ChallengesStudent";
 import ChallengesTeam from "./ChallengesTeam";
+import Card from "react-bootstrap/Card";
 
 
 function ChallengeTabs(props) {
@@ -17,9 +18,13 @@ function ChallengeTabs(props) {
         
     return (
 
-        <>
-            <Tabs data={data} />
-        </>
+        <div className="container">
+            <Card className="card-long">
+                <Card.Body>
+                    <Tabs data={data} />
+                </Card.Body>
+            </Card>
+        </div>
 
     );
 }

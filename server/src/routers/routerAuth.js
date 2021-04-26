@@ -17,7 +17,7 @@ router.post("/signup", [ verifySignUp.checkDuplicateUsernameOrEmail, controller_
 
 router.post("/signin", controller_auth.signIn);
 
-router.post("/editProfile", controller_auth.editProfile);
+router.post("/editProfile",controller_auth.editProfile);
 
 router.post("/disableProfile",controller_auth.disableProfile);
 /*---------------------------------------------------------*/

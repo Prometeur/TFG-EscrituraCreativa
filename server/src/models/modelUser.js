@@ -370,6 +370,7 @@ class modelUser {
 
     editProfile(id, nombre, apellidos, correo, password, foto, callback) {
 
+        console.log(foto);
         this.pool.getConnection(function (err, connection) {
             if (err) {
                 callback(new Error("No se puede conectar a la base de datos."))
@@ -379,14 +380,14 @@ class modelUser {
                 let query ='';
                 let parametros='';
 
-                if(!password && !foto){
+                if(!password && foto==''){
 
                     query = "UPDATE usuario  SET correo = ?,nombre = ?, apellidos=? WHERE id= ?";
                     parametros = [correo,nombre,apellidos,id];
                 }
                 else if(!password  && foto)
                 {
-                     query = "UPDATE usuario  SET correo = ?,nombre = ?, apellidos =?, foto = LOAD_FILE(?) WHERE id= ?";
+                     query = "UPDATE usuario  SET correo = ?,nombre = ?, apellidos =?, foto =? WHERE id= ?";
                      parametros = [correo,nombre,apellidos,foto,id];
                 }
                 else if(password && !foto)
@@ -396,7 +397,7 @@ class modelUser {
                 }
                 else {
 
-                    query = "UPDATE usuario  SET correo = ?,nombre = ?, apellidos =?, password =? ,foto = LOAD_FILE(?) WHERE id= ?";
+                    query = "UPDATE usuario  SET correo = ?,nombre = ?, apellidos =?, password =? ,foto = ? WHERE id= ?";
                     parametros = [correo,nombre,apellidos, password, foto, id];
 
                 }
@@ -422,6 +423,7 @@ class modelUser {
     }
 
     disableProfile(idUser, callback) {
+
         this.pool.getConnection(function (err, connection) {
             if (err) {
                 callback(new Error("No se puede conectar a la base de datos."))
@@ -441,26 +443,6 @@ class modelUser {
         });
     }
 
-    /*Obtiene los datos del equipo*/
-    getTeam(idTeam, callback) {
-        this.pool.getConnection(function (err, connection) {
-            if (err) {
-                callback(new Error("No se puede conectar a la base de datos."))
-            }
-            else {
-                const sql = "SELECT * FROM equipo where id =  ?";
-                const valores = [idTeam];
-                connection.query(sql, valores, function (err, res) {
-                    connection.release();
-                    if (err) {
-                        callback(new Error("Error al buscar al usuario."));
-                    } else {
-                        callback(null, res);
-                    }
-                })
-            }
-        });
-    }
 
     /*Obtiene los datos del equipo*/
     getTeam(idTeam, callback) {

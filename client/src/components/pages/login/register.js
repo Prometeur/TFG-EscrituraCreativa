@@ -242,7 +242,6 @@ class Register extends Component {
                     }}
                   />
             </Form>
-            <img src="liteaturalapiz.png" alt=""/>
         </div>
       );
     }

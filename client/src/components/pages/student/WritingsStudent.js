@@ -12,8 +12,10 @@ import moment from 'moment';
 // Componentes estilos
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
 //Estilos
 import '../../../styles/styleGeneral.css';
+import '../../../styles/styleCard.css';
 
 class WritingsStudent extends Component {
 
@@ -80,46 +82,50 @@ class WritingsStudent extends Component {
         let formatedDate;
         let { data } = this.state;
         return (
-            <>
-                <div className="table-margin">
-                    <Table striped bordered hover >
-                        <thead>
-                            <tr>
-                                <th >Escrito</th>
-                                <th >Grupo</th>
-                                <th >Desafío</th>
-                                <th>Desafio Finalizado</th>
-                                <th >Estudiante</th>
-                                <th >Fecha</th>
-                                <th >Hora</th>
-                                {/* <th>Corregido</th> */}
-                                {/* <th >Puntuación</th> */}
-                                <th >Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {data.map((writing) => (
-                                < tr key={writing.id} >
-                                    <td>{writing.nombreEscrito}</td>
-                                    <td>{writing.nombreGrupo}</td>
-                                    <td>{writing.nombreDesafio}</td>
-                                    <td>{this.showChallengeFinalized(writing)}</td>
-                                    <td>{writing.nombre} {writing.apellidos}</td>
-                                    <td >{formatedDate = moment(writing.fecha).format('DD/MM/YYYY')}</td>
-                                    <td >{formatedDate = moment(writing.fecha).format('LT')}</td>
-                                    {/* <td>{this.showWritingFinalized(writing)}</td> */}
-                                    {/* <td>{writing.puntuacion}</td> */}
-                                    {this.challengeFinalized(writing) ? (
-                                        <td><Link to={`/student/viewWriting/${this.props.groupSelect}/${writing.idDesafio}/${writing.id}`} ><Button variant="outline-primary" disabled={writing.finalizado === 1 ? false : true}>Ver Escrito</Button></Link></td>
-                                    ) : (
-                                        <td ><Link to={`/student/editWriting/${writing.idGrupo}/${writing.idDesafio}/${writing.id}`}><Button variant="outline-primary" disabled={this.challengeFinalized(writing)}>Editar Escrito</Button></Link></td>
-                                    )}
+            <div className="container">
+             <Card>
+                 <Card.Body className="card-login">
+                    <div className="table-margin">
+                        <Table striped bordered hover >
+                            <thead>
+                                <tr>
+                                    <th >Escrito</th>
+                                    <th >Grupo</th>
+                                    <th >Desafío</th>
+                                    <th>Desafio Finalizado</th>
+                                    <th >Estudiante</th>
+                                    <th >Fecha</th>
+                                    <th >Hora</th>
+                                    {/* <th>Corregido</th> */}
+                                    {/* <th >Puntuación</th> */}
+                                    <th >Acciones</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </Table>
-                </div>
-            </>
+                            </thead>
+                            <tbody>
+                                {data.map((writing) => (
+                                    < tr key={writing.id} >
+                                        <td>{writing.nombreEscrito}</td>
+                                        <td>{writing.nombreGrupo}</td>
+                                        <td>{writing.nombreDesafio}</td>
+                                        <td>{this.showChallengeFinalized(writing)}</td>
+                                        <td>{writing.nombre} {writing.apellidos}</td>
+                                        <td >{formatedDate = moment(writing.fecha).format('DD/MM/YYYY')}</td>
+                                        <td >{formatedDate = moment(writing.fecha).format('LT')}</td>
+                                        {/* <td>{this.showWritingFinalized(writing)}</td> */}
+                                        {/* <td>{writing.puntuacion}</td> */}
+                                        {this.challengeFinalized(writing) ? (
+                                            <td><Link to={`/student/viewWriting/${this.props.groupSelect}/${writing.idDesafio}/${writing.id}`} ><Button variant="outline-primary" disabled={writing.finalizado === 1 ? false : true}>Ver Escrito</Button></Link></td>
+                                        ) : (
+                                            <td ><Link to={`/student/editWriting/${writing.idGrupo}/${writing.idDesafio}/${writing.id}`}><Button variant="outline-primary" disabled={this.challengeFinalized(writing)}>Editar Escrito</Button></Link></td>
+                                        )}
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                    </div>
+                 </Card.Body>
+             </Card>
+            </div>
         );
     }
 }

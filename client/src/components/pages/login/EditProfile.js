@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Redirect }from "react-router-dom";
+import React, {Component} from "react";
+import {Redirect} from "react-router-dom";
 import AuthService from "../../../services/authenticity/auth-service";
 import StudentService from "../../../services/student/student-service.js";
 import '../../../styles/styleGeneral.css';
@@ -66,7 +66,7 @@ const vpassword = value => {
     }
 };
 
-const vconfirmpassword= value => {
+const vconfirmpassword = value => {
     if (value.length < 6 || value.length > 40) {
         return (
             <Alert variant="danger" bsPrefix="alert-login">
@@ -90,22 +90,24 @@ export default class Profile extends Component {
         this.onModal = this.onModal.bind(this);
         this.onTeamModal = this.onTeamModal.bind(this);
         this.onDeleteModal = this.onDeleteModal.bind(this);
+        this.onUpdateModal = this.onUpdateModal.bind(this);
 
         this.state = {
 
-            saveModal:false,
-            deleteModal:false,
-            teamModal:false,
-            currentUser:[],
-            StudentTeams:[],
-             updateUser : {
-                 username: '',
-                 surname: '',
-                 password: '',
-                 confirmPassword: '',
-                 email: '',
-                 photo: '',
-             }
+            saveModal: false,
+            deleteModal: false,
+            teamModal: false,
+            updateModal: false,
+            currentUser: [],
+            StudentTeams: [],
+            updateUser: {
+                username: '',
+                surname: '',
+                password: '',
+                confirmPassword: '',
+                email: '',
+                photo: [],
+            }
         };
     }
 
@@ -114,21 +116,21 @@ export default class Profile extends Component {
 
         const currentUser = AuthService.getCurrentUser();
         console.log(currentUser);
-        this.setState( { currentUser: currentUser });
+        this.setState({currentUser: currentUser});
         this.setState({
-           updateUser:{
-               ...this.state.updateUser,
-               username: currentUser.username,
-               surname: currentUser.surname,
-               email: currentUser.email,
-           }
+            updateUser: {
+                ...this.state.updateUser,
+                username: currentUser.username,
+                surname: currentUser.surname,
+                email: currentUser.email,
+            }
         });
 
     }
 
     onChangeUsername(e) {
 
-        if(e.target.value != this.state.currentUser.username) {
+        if (e.target.value != this.state.currentUser.username) {
             this.setState({
                 updateUser: {
                     ...this.state.updateUser,
@@ -140,7 +142,7 @@ export default class Profile extends Component {
 
     onChangeSurname(e) {
 
-        if(e.target.value != this.state.currentUser.surname) {
+        if (e.target.value != this.state.currentUser.surname) {
             this.setState({
                 updateUser: {
                     ...this.state.updateUser,
@@ -153,7 +155,7 @@ export default class Profile extends Component {
 
     onChangeEmail(e) {
 
-        if(e.target.value != this.state.currentUser.email) {
+        if (e.target.value != this.state.currentUser.email) {
             this.setState({
                 updateUser: {
                     ...this.state.updateUser,
@@ -165,14 +167,14 @@ export default class Profile extends Component {
 
     onChangePassword(e) {
 
-         if(e.target.value != this.state.currentUser.password) {
-             this.setState({
-                 updateUser: {
-                     ...this.state.updateUser,
-                     password: e.target.value
-                 }
-             });
-         }
+        if (e.target.value != this.state.currentUser.password) {
+            this.setState({
+                updateUser: {
+                    ...this.state.updateUser,
+                    password: e.target.value
+                }
+            });
+        }
     }
 
     onChangeConfirmPassword(e) {
@@ -202,15 +204,22 @@ export default class Profile extends Component {
     onDeleteModal(modal) {
 
         this.setState({
-            deleteModal:modal
+            deleteModal: modal
         });
     }
 
+    onUpdateModal(modal) {
+
+        this.setState({
+            updateModal: modal
+        });
+    }
 
     //Carga los ficheros multimedia del escrito
     onFileChange(e) {
+        console.log(e.target.value, e.target);
 
-        if(e.target.value) {
+        if (e.target.value) {
             this.setState({
                 updateUser: {
                     ...this.state.updateUser,
@@ -220,48 +229,88 @@ export default class Profile extends Component {
         }
     }
 
+    /*
+     onFileChange = (e) => {
 
-    logout () {
+       if (e.target.files && e.target.files.length > 0) {
+            const file = e.target.files[0];
+           if (file.type.includes("image") || file.type.includes("video") || file.type.includes("audio")) {
+                const reader = new FileReader();
+               reader.readAsDataURL(e.target.files[0]);
+             reader.onload = () => {
+                 console.log(reader.result);
+                  this.setState({
+                      updateUser: {
+                        ...this.state.updateUser,
+                    photo: reader.result
+                  }
+                  });
+               }
+
+               var str = file.type;
+                var res = str.split("/");
+                 const dir = this.state.form.idWriter + "/" + res[0] + "/";
+              this.setState({
+                   form: {
+                       ...this.state.form,
+                       file: file,
+                       path: "http://localhost:3001/multimedia/" + dir + file.name
+                   }
+              });
+           }
+         else {
+              console.log("there was an error")
+          }
+        }
+     } */
+
+    logout() {
         AuthService.logout();
     }
 
     editProfile() {
 
-       if (this.state.updateUser.password == this.state.updateUser.confirmPassword) {
-            AuthService.editProfile(this.state.currentUser.id, this.state.updateUser.username, this.state.updateUser.surname,
-                this.state.updateUser.email,this.state.updateUser.password, this.state.updateUser.photo).then(response => {
-                   this.logout();
-                   window.location.href='/login';
-            }).catch(error => {
-                console.log(error.message);
-            })
+        if (this.state.updateUser.surname == this.state.currentUser.surname
+            && this.state.updateUser.username == this.state.currentUser.username
+            && this.state.updateUser.password == '' && this.state.updateUser.email == this.state.currentUser.email
+            && this.state.updateUser.confirmPassword == '' && this.state.updateUser.photo.length == 0) {
+
+            this.onUpdateModal(true);
+            this.onModal(false);
+        } else {
+            if (this.state.updateUser.password == this.state.updateUser.confirmPassword) {
+                AuthService.editProfile(this.state.currentUser.id, this.state.updateUser.username, this.state.updateUser.surname,
+                    this.state.updateUser.email, this.state.updateUser.password, this.state.updateUser.photo).then(response => {
+                    this.logout();
+                    window.location.href = '/login';
+                }).catch(error => {
+                    console.log(error.message);
+                })
+            } else {
+                alert("Ambas contraseñas no coinciden");
+            }
         }
-       else
-       {
-            alert("Ambas contraseñas no coinciden");
-       }
+
     }
 
     deleteUser() {
 
-        if(this.state.currentUser.rol=='S'){
-            StudentService.getTeams(this.state.currentUser.id).then( response => {
-                this.setState({StudentTeams:response});
+        if (this.state.currentUser.rol == 'S') {
+            StudentService.getTeams(this.state.currentUser.id).then(response => {
+                this.setState({StudentTeams: response});
                 console.log(this.state.StudentTeams);
-                if(this.state.StudentTeams.length> 0){
-                    this.setState({teamModal:true});
-                    this.setState({deleteModal:false});
+                if (this.state.StudentTeams.length > 0) {
+                    this.setState({teamModal: true});
+                    this.setState({deleteModal: false});
                 }
 
-            }).catch(error =>{
+            }).catch(error => {
                 console.log(error.message);
             })
-        }
-        else
-        {
-            AuthService.disableProfile(this.state.currentUser.id).then( response => {
+        } else {
+            AuthService.disableProfile(this.state.currentUser.id).then(response => {
                 this.logout();
-                window.location.href='/login';
+                window.location.href = '/login';
             }).catch(error => {
                 console.log(error.message);
             });
@@ -273,22 +322,22 @@ export default class Profile extends Component {
         return (
             <>
                 <div className="editPerfil-left">
-                   <Button  variant="danger" onClick={()=>this.onDeleteModal(true)}>
+                    <Button size="sm" variant="danger" onClick={() => this.onDeleteModal(true)}>
                         Baja de cuenta
-                   </Button>
+                    </Button>
                 </div>
                 <div className="container">
-                    <label className="form-label">Modificar Datos</label>
                     <Card className="card-profile">
                         <Card.Body>
-                        <div className="row">
-                            <Form
-                                onSubmit={this.handleRegister}
-                                ref={c => {
-                                    this.form = c;
-                                }}
-                            >
-                                {!this.state.successful && (
+                            <h2 className="form-title">Modificar Datos</h2>
+
+                                <Form
+                                    onSubmit={this.handleRegister}
+                                    ref={c => {
+                                        this.form = c;
+                                    }}
+                                >
+                                    {!this.state.successful && (
                                         <ul className="flex-container wrap">
                                             <li className="flex-item">
                                                 <label className="form-label">Nombre</label>
@@ -297,7 +346,7 @@ export default class Profile extends Component {
                                                     className="form-control"
                                                     name="username"
                                                     placeholder={this.state.currentUser.username}
-                                                    value={this.state.username}
+                                                    value={this.state.updateUser.username}
                                                     onChange={this.onChangeUsername}
                                                     validations={[required, vusername]}
                                                 />
@@ -328,7 +377,7 @@ export default class Profile extends Component {
                                             </li>
                                             <li className="flex-item-file">
                                                 <label className="form-label">Foto de perfil</label>
-                                                <input type="file" name="imgCollection" onChange={this.onFileChange} multiple />
+                                                <input type="file" name="imgCollection" onChange={this.onFileChange}/>
                                             </li>
                                             <li className="flex-item">
                                                 <label className="form-label">Contraseña</label>
@@ -356,40 +405,39 @@ export default class Profile extends Component {
                                             </li>
                                         </ul>
 
-                                )}
+                                    )}
 
-                                {this.state.message && (
-                                    <div className="form-group">
-                                        <div
-                                            className={
-                                                this.state.successful
-                                                    ? "alert alert-success"
-                                                    : "alert alert-danger"
-                                            }
-                                            role="alert"
-                                        >
-                                            {this.state.message}
+                                    {this.state.message && (
+                                        <div className="form-group">
+                                            <div
+                                                className={
+                                                    this.state.successful
+                                                        ? "alert alert-success"
+                                                        : "alert alert-danger"
+                                                }
+                                                role="alert"
+                                            >
+                                                {this.state.message}
+                                            </div>
                                         </div>
-                                    </div>
-                                )}
-                                <CheckButton
-                                    style={{ display: "none" }}
-                                    ref={c => {
-                                        this.checkBtn = c;
-                                    }}
-                                />
-                              </Form>
-                            </div>
-                            <div className="row-edit">
+                                    )}
+                                    <CheckButton
+                                        style={{display: "none"}}
+                                        ref={c => {
+                                            this.checkBtn = c;
+                                        }}
+                                    />
+                                </Form>
+
                                 <div className="section-card">
                                     <div className="form-select">
-                                        <Button onClick={()=> this.onModal(true)}>Guardar</Button>
+                                        <Button onClick={() => this.onModal(true)}>Guardar</Button>
                                     </div>
                                     <div className="form-select">
                                         <Button href="/profile">Cancelar</Button>
                                     </div>
                                 </div>
-                           </div>
+
                             <Modal
                                 centered
                                 show={this.state.saveModal}
@@ -402,12 +450,12 @@ export default class Profile extends Component {
                                 <Modal.Body>
                                     <p>
                                         ¿Esta seguro de aplicar estos cambios?
-                                         Deberá iniciar nuevamente sesión de su cuenta
+                                        Deberá iniciar nuevamente sesión de su cuenta
                                     </p>
                                 </Modal.Body>
                                 <Modal.Footer>
                                     <Button variant="secondary" onClick={() => this.onModal(false)}>No</Button>
-                                    <Button variant="primary" onClick={() => this.editProfile()}>Aceptar los Cambios</Button>
+                                    <Button variant="primary" onClick={() => this.editProfile()}>Aceptar</Button>
                                 </Modal.Footer>
                             </Modal>
 
@@ -416,42 +464,62 @@ export default class Profile extends Component {
                                 show={this.state.teamModal}
                                 onHide={this.state.teamModal}
                             >
-                            <Modal.Header>
-                                <Modal.Title>Aviso</Modal.Title>
-                                <img src="exclamation.png"></img>
-                            </Modal.Header>
-                            <Modal.Body>
-                                <h6>Para poder dar de baja su cuenta, debe darse de baja en los siguientes equipos</h6>
-                                <ul>
-                                    { this.state.StudentTeams.map((team, index)=>
-                                        <li>{team.nombreEquipo}</li>
-                                    )}
-                                </ul>
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <Button variant="secondary" onClick={() => this.onTeamModal(false)}>atras</Button>
-                            </Modal.Footer>
-                        </Modal>
+                                <Modal.Header>
+                                    <Modal.Title>Aviso</Modal.Title>
+                                    <img src="exclamation.png"></img>
+                                </Modal.Header>
+                                <Modal.Body>
+                                    <h6>Para poder dar de baja su cuenta, debe darse de baja en los siguientes
+                                        equipos</h6>
+                                    <ul>
+                                        {this.state.StudentTeams.map((team, index) =>
+                                            <li>{team.nombreEquipo}</li>
+                                        )}
+                                    </ul>
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button variant="secondary" onClick={() => this.onTeamModal(false)}>atras</Button>
+                                </Modal.Footer>
+                            </Modal>
 
-                        <Modal
-                            centered
-                            show={this.state.deleteModal}
-                            onHide={this.state.deleteModal}
-                        >
-                            <Modal.Header>
-                                <Modal.Title>
+                            <Modal
+                                centered
+                                show={this.state.deleteModal}
+                                onHide={this.state.deleteModal}
+                            >
+                                <Modal.Header>
+                                    <Modal.Title>
                                     ¿Esta seguro/a?
                                 </Modal.Title>
-                                <img src="triangle.png"></img>
-                            </Modal.Header>
-                            <Modal.Body>
-                                Si en algún momento quieres volver, podrás hacerlo contactando con nuestro equipo de
-                                apoyo o a tu centro de estudio.
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <Button variant="primary" onClick={() => this.deleteUser()}>aceptar</Button>
-                                <Button variant="secondary" onClick={() => this.onDeleteModal(false)}>No</Button>
-                            </Modal.Footer>
+                                    <img src="triangle.png"></img>
+                                </Modal.Header>
+                                <Modal.Body>
+                                    Si en algún momento quieres volver, podrás hacerlo contactando con nuestro equipo de
+                                    apoyo o a tu centro de estudio.
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button variant="primary" onClick={() => this.deleteUser()}>aceptar</Button>
+                                    <Button variant="secondary" onClick={() => this.onDeleteModal(false)}>No</Button>
+                                </Modal.Footer>
+                            </Modal>
+
+                            <Modal
+                                centered
+                                show={this.state.updateModal}
+                                onHide={this.state.updateModal}
+                            >
+                                <Modal.Header>
+                                    <Modal.Title>
+                                        Ups...
+                                    </Modal.Title>
+                                    <img src="triangle.png"></img>
+                                </Modal.Header>
+                                <Modal.Body>
+                                    No hay cambios que modificar
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button variant="secondary" onClick={() => this.onUpdateModal(false)}>atras</Button>
+                                </Modal.Footer>
                             </Modal>
                         </Card.Body>
                     </Card>
