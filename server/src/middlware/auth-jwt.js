@@ -73,7 +73,7 @@ function isTeacher(request, response, next) {
 function isStudent(request, response, next) {
   model_user.findOneEmail(request.correo)
   .then(user => {
-      if (user.data === "E") {
+      if (user.data === "S") {
         next();
         return;
       }
