@@ -12,7 +12,6 @@ function StudentBoard(){
     return (
        
             <RouteStudent />
-       
     );
    
 }

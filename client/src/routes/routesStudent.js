@@ -30,8 +30,7 @@ function Routes() {
         <BrowserRouter>
             <Sidebar  links={LinksStudent} url={url}/>
             <Switch>        
-                <Route exact path="/student/groups" component={GroupStudent} /> 
-                
+                <Route exact path="/student/groups" component={GroupStudent} />
                 <Route exact path="/student/teams" component={Teams}/> 
                 {/* <Route exact path="/student/writings" component={Writings}/>  */}
                 <Route exact path="/student/writingsTabs" component={WritingTabs}/>

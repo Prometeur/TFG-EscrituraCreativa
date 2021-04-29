@@ -45,7 +45,7 @@ import Modal from 'react-bootstrap/Modal';
 // } from "reactstrap";
 
 class EditWriting extends Component {
-
+    
     constructor(props) {
         super(props);
         this.onFileChange = this.onFileChange.bind(this);
@@ -73,6 +73,7 @@ class EditWriting extends Component {
     }
 
     componentDidMount() {
+        debugger;
         /*Obtiene el desafio seleccionado*/
         TeacherService.getChallenge(this.props.match.params.idChallenge)
             .then(response => {

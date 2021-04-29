@@ -76,19 +76,21 @@ input.error {
     display: flex;
     flex-direction: row;
     left: 4rem;
-    margin: 0rem 6rem;
+    margin-top: 1.5rem;
 }
 
 .errorMessage {
   color: red;
   font-size: 0.75em;
-  display: relative;
+  display: none;
 }
 
 [type="file"] {
     /* height: 0; */
     /* overflow: hidden;
     width: 0; */
+    /* color: transparent; */
+    margin: .5rem 0;
 }
 [type="file"] + label {
     background: #f15d22;
@@ -287,6 +289,16 @@ input.error {
 
 .wrapperClassName {
     /* border: 1px solid; */
+}
+
+@media screen and (min-width: 768px) {
+    .section-card {
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+        left: 4rem;
+        margin: 0rem 6rem;
+    }
 }
 
 

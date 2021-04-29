@@ -16,7 +16,6 @@ import LinksTeacher from '../links/links-Teacher.js';
 import Profile from '../components/pages/user/Profile.js';
 
 import EditWriting from '../components/pages/teacher/EditWriting.js';
-
 import GroupTeacher from '../components/pages/teacher/GroupTeacher.js';
 
 /*defino las rutas de los componentes

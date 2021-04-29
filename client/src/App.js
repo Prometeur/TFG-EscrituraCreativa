@@ -66,6 +66,8 @@ class App extends Component {
       <Router>
         <div className= "full-wrapper">
           <header>
+            <link rel="preconnect" href="https://fonts.gstatic.com"></link>
+            <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Pontano+Sans&display=swap" rel="stylesheet"></link>
               <Navbar collapseOnSelect expand="lg" >
                 <Navbar.Brand href="/home">Creativa</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />

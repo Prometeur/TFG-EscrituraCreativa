@@ -62,6 +62,7 @@ class WritingsStudent extends Component {
 
 
     componentDidUpdate(pP, pS, sS) {
+        debugger;
         if ( this.props.idChallenge !== pP.idChallenge) {
             TeacherService.getChallenge(this.props.idChallenge)
                 .then(response => {

@@ -6,7 +6,6 @@ import '../../../styles/styleCard.css';
 import Card from 'react-bootstrap/Card';
 import Figure from 'react-bootstrap/Figure';
 import Button from 'react-bootstrap/Button';
-import ListGroup from "../user/StudentLits";
 
 
 export default class Profile extends Component {
@@ -34,10 +33,10 @@ export default class Profile extends Component {
             this.setState({role:"Estudiante"});
         }
         else if (currentUser.rol==='T'){
-            this.setState({role:"Profesor"});
+            this.setState({role:"Profesor/a"});
         }
         else{
-            this.setState({role:"Administrador"});
+            this.setState({role:"Administrador/a"});
         }
         console.log(currentUser);
     }
@@ -50,8 +49,6 @@ export default class Profile extends Component {
         }
 
         const { currentUser,role} = this.state;
-
-        console.log(this.state.currentUser.foto);
 
         let foto = <Figure>
                         <Figure.Image
@@ -79,28 +76,29 @@ export default class Profile extends Component {
 
         return (
             <>
-                <div className="perfil-left">
+            <div className="perfil-left">
 
-                    <ul className="container-column-list">
-                        <li className="item-column-list wrap">
-                            {foto}
-                        </li>
-                        <li className="item-column-list wrap">
-                            <h6>
-                               {currentUser.username}
-                            </h6>
-                        </li>
-                        <li className="item-column-list wrap">
-                            <h6>{role}</h6>
-                        </li>
-                        <li className="item-column-list">
-                            <img src="setting.png" alt=""/>
-                            <Link to={"/editProfile"}>
-                                <Button size="sm" bsPrefix="btn" variant="outline-light">Editar</Button>
-                            </Link>
-                        </li>
-                    </ul>
-                </div>
+                <ul className="container-column-list">
+                    <li className="item-column-list wrap">
+                        {foto}
+                    </li>
+                    <li className="item-column-list wrap">
+                        <h6>
+                            {currentUser.username}
+                        </h6>
+                    </li>
+                    <li className="item-column-list wrap">
+                        <h6>{role}</h6>
+                    </li>
+                    <li className="item-column-list">
+                        <img src="setting.png" alt=""/>
+                        <Link to={"/editProfile"}>
+                            <Button size="sm"  variant="outline-light">Editar</Button>
+                        </Link>
+                    </li>
+                </ul>
+            </div>
+
                 <div className="container">
                     <Card className="card-profile">
                         <Card.Body>
@@ -117,7 +115,7 @@ export default class Profile extends Component {
                                 <ul className="flex-container wrap">
                                     <li className="flex-item">
                                         <p className="p-general">
-                                            Nombre: {currentUser.username} {currentUser.surname}
+                                            Nombre completo: {currentUser.username} {currentUser.surname}
                                         </p>
                                     </li>
                                     <li className="flex-item">
