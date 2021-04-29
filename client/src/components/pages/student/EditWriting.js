@@ -178,6 +178,7 @@ class EditWriting extends Component {
             contador++;
         });
         this.setState({ dataMediaWriting: arreglo });
+        
         StudentService.deleteMultimedia(writing.id, writing.ruta)
             .then(response => {
             })

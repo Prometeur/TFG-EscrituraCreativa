@@ -27,7 +27,8 @@ class ChallengesStudent extends Component {
 
         this.state = {
             data: [],//contiene desafios del estudiante
-            dataWritingStudent: []//contiene escritos del estudiante
+            dataWritingStudent: [],//contiene escritos del estudiante
+            showChallengeStudent: false,
         };
     }
 
@@ -99,7 +100,7 @@ class ChallengesStudent extends Component {
     /*Dibuja la pagina  */
     render() {
         let formatedDate;
-        const { data } = this.state;
+        const { data,showChallengeStudent } = this.state;
         let writingExist = false;
         let idWriting = '';
         let finish = '';

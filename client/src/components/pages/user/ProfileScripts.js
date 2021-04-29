@@ -31,6 +31,7 @@ class GroupTeacher extends Component {
             console.log(response);//muestra consola navegador
             this.setState({ data: response });
             console.log(response);
+            debugger;
             this.setState({ filteredData: response });
         }).catch(error => {
             console.log(error.message);
@@ -92,7 +93,7 @@ class GroupTeacher extends Component {
             {this.state.filteredData.map(script => {
                 return (
                 <div className ="scriptCardContainer">
-                    <Link to={`/teacher/editWriting/${script.idGrupo}/${script.idDesafio}/${script.id}/${script.idEstudiante}`}>
+                    <Link to={`/teacher/editWriting/${script.idGrupo}/${script.idDesafio}/${script.id}/${script.idEscritor}`}>
                             <div className ="scriptCard">
                                 <h6>Nombre</h6>
                                 <h5>{script.nombre}</h5>
