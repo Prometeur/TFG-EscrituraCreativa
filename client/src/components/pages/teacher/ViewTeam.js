@@ -9,6 +9,7 @@ import Datos from "./ViewTeamInfo";
 import Escritos from "./ViewTeamScripts";
 import '../../../styles/styleGeneral.css';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import Card from 'react-bootstrap/Card';
 import 'react-tabs/style/react-tabs.css';
 
 class ViewTeam extends Component {
@@ -59,16 +60,20 @@ t
         let secondTab = <Escritos key={idTeam} idTeam={idTeam}/>;
 
         return (
-           <div className="container-box"> 
-                <Tabs>
-                    {tabs}
-                    <TabPanel>
-                        <Datos key={idTeam} idTeam={idTeam} handler ={this.handler}/>
-                    </TabPanel>
-                    <TabPanel>
-                        {secondTab}
-                    </TabPanel>
-                </Tabs>
+           <div className="container">
+              <Card className={"card-long"}>
+                <Card.Body>
+                    <Tabs>
+                        {tabs}
+                        <TabPanel>
+                            <Datos key={idTeam} idTeam={idTeam} handler ={this.handler}/>
+                        </TabPanel>
+                        <TabPanel>
+                            {secondTab}
+                        </TabPanel>
+                    </Tabs>
+                </Card.Body>
+              </Card>
            </div>
         );
 

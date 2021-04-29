@@ -26,7 +26,7 @@ header {
 }
 
 h1,h2,h3 {
-    font-family: "Questrial&display", sans-serif;
+    font-family: "Roboto", sans-serif;
 }
 
 .h1, .h2, .h3, .h4,
@@ -261,7 +261,6 @@ h1.main-title {
     padding: 0.2rem;
 }
 
-
 select {
     border: 1px solid #e6e6e6;
 }
@@ -298,11 +297,11 @@ select {
 }
 
 .table-margin {
-    margin: 1rem 3rem;
+    margin: 0rem;
 }
 
 .drop-down {
-    margin: 1rem .4em 1rem;
+    margin-left:.5rem;
     font-size: 1.2rem;
 }
 
@@ -526,9 +525,26 @@ select {
 
 .items-column {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
-    margin:1rem .5rem 1rem;
+    margin:2rem .8rem 2rem;
+}
+
+.items-column h3 {
+    margin: 0 2rem 0;
+}
+
+.group-teams > h5 {
+    font-size: 1.1rem;
+    margin: 1rem .75rem .3rem;
+}
+
+.group-teams input[type=text] {
+    margin: .3rem .75rem .75rem;
+}
+
+.list-group {
+    margin: .3rem .75rem .3rem;
 }
 
 @media screen and (min-width: 320px) {
@@ -591,6 +607,10 @@ select {
     .form-select button.btn,
     .form-select a.btn {
         width: 7rem;
+    }
+
+    .btn {
+        font-size: .7rem;
     }
 
     .container-column-list {

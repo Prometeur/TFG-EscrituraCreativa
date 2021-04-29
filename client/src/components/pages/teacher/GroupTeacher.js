@@ -193,36 +193,36 @@ class GroupTeacher extends Component {
 
     // SISTEMA DE TABS
 
-      let tabs = <div className="container-box"> 
+      let tabs =
                       <Tabs>
-                          <TabList>
+                          <TabList className={"react-tabs__tab-list"}>
                             <Tab>DESAFIOS</Tab>
                             <Tab>ESCRITOS</Tab>
                             <Tab>EQUIPOS</Tab>
                             <Tab>ESTUDIANTES</Tab>
                           </TabList>
                           <TabPanel>
-                          <div className="row">
+
                             <Challenges key={groupSelect} groupSelect={groupSelect} />
-                          </div>
+
                           </TabPanel>
                           <TabPanel>
-                          <div className="row">
+
                             <Writings key={groupSelect} groupSelect={groupSelect} />
-                          </div>
+
                           </TabPanel>
                           <TabPanel>
-                          <div className="row">
+
                             <Teams key={groupSelect} groupSelect={groupSelect} />
-                          </div>
+
                           </TabPanel>
                           <TabPanel>
-                          <div className="row">
+
                             <Students key={groupSelect} idGroup={groupSelect} />
-                          </div>
                           </TabPanel>
-                      </Tabs>
-                </div>;
+                      </Tabs>;
+
+
 
     // SISTEMA DE TABS
 
@@ -327,33 +327,25 @@ class GroupTeacher extends Component {
             </div> */}
 
             {showChallenges ? (
-              <div className="row">
                 <Challenges key={groupSelect} groupSelect={groupSelect} />
-              </div>
             ) : (
-              <div></div>
+              <></>
             )}
 
             {showWritings ? (
-              <div className="row">
                 <Writings key={groupSelect} groupSelect={groupSelect} />
-              </div>
             ) : (
-              <div></div>
+              <></>
             )}
             {showTeams ? (
-              <div className="row">
                 <Teams key={groupSelect} groupSelect={groupSelect} />
-              </div>
             ) : (
-              <div></div>
+              <></>
             )}
             {showStudents ? (
-              <div className="row">
                 <Students key={groupSelect} idGroup={groupSelect} />
-              </div>
             ) : (
-              <div></div>
+              <></>
             )}
             {tabs}
           </Card.Body>
