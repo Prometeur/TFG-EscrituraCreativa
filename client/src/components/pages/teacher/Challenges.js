@@ -14,9 +14,11 @@ import { Link } from "react-router-dom";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Modal from 'react-bootstrap/Modal';
+import Card from 'react-bootstrap/Card';
 
 // Estilos
 import '../../../styles/styleGeneral.css';
+import '../../../styles/styleButton.css';
 
 /*Componentes de estilo Reactstrap*/
 // import {
@@ -107,9 +109,15 @@ class Challenges extends Component {
         let formatedDate;
         const { categories, data } = this.state;
         return (
-            <>
+            <Card className={"card-long"}>
+                <Card.Body>
+                <div className="button-direction-left">
+                    <Link to={`/teacher/createChallenge/${this.props.groupSelect}`}>
+                        <Button variant="primary">Crear desafio</Button>
+                    </Link>
+                </div>
                 <div className="table-margin">
-                    <Table striped bordered hover>
+                    <Table striped bordered hover responsive>
                         <thead>
                             <tr>
                                 <th>Titulo</th>
@@ -157,17 +165,13 @@ class Challenges extends Component {
                     </Table>
                 </div>
 
-                <div className="column column-rigth">
-                    <Link to={`/teacher/createChallenge/${this.props.groupSelect}`}><Button variant="primary">Crear desafio</Button></Link>
-                </div>
-
                 <Modal show={this.state.modalDeleteChallenge}>
                     <Modal.Header>
-                        <div><h5>¿Seguro que desea eliminar {this.state.deleteChallenge.titulo}?</h5> </div>
+                        <Modal.Title>Aviso</Modal.Title>
+                         <img src="../triangle.png"></img>
                     </Modal.Header>
                     <Modal.Body>
-                        {/* <FormGroup>
-                        </FormGroup> */}
+                        <h6>¿ Seguro que desea eliminar {this.state.deleteChallenge.titulo} ?</h6>
                     </Modal.Body>
 
                     <Modal.Footer>
@@ -175,7 +179,8 @@ class Challenges extends Component {
                         <Button variant="danger" onClick={() => this.closeModalDeleteChallenge()}>Cancelar</Button>
                     </Modal.Footer>
                 </Modal>
-            </>
+                </Card.Body>
+            </Card>
         );
     }
 }

@@ -5,7 +5,7 @@ import TabsWriting from "./TabsWriting";
 import TeacherService from '../../../services/teacher/teacherService.js';
 
 import WritingsStudent from "./WritingsStudent";
-// import WritingsTeam from "./WritingsTeam";
+import Card from 'react-bootstrap/Card';
 
 
 
@@ -37,8 +37,8 @@ function Writings(props) {
     };
 
     return (
-        <div>
-            <div className="row-edit">
+        <Card className={"card-edit"}>
+            <Card.Body>
                 <div className="form-select">
                     <label className='form-label'>Selecciona Desafio</label>
                     <select onChange={selectionChallenge} >
@@ -48,7 +48,7 @@ function Writings(props) {
                         )) : null}
                     </select>
                 </div>
-            </div>
+
 
             {showWritings ? (
 
@@ -62,9 +62,9 @@ function Writings(props) {
                 </div>
 
             )}
+            </Card.Body>
+        </Card>
 
-
-        </div>
     );
 
 
