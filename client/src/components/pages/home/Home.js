@@ -6,6 +6,7 @@
 
 import React, { Component } from 'react';
 import UserService from '../../../services/user/UserService';
+import '../../../styles/styleGeneral.css';
 
 class Home extends Component {
 
@@ -42,9 +43,11 @@ class Home extends Component {
         return (
 
         
-            <div className="container">
-                <img src="liteaturalapiz.png"></img>
+            <div className="container-home">
+                <h1>LA TERdkfdsfmsd</h1>
+                <img className="img-home" src="liteaturalapiz.png"></img>
             </div>
+
 
 
         );

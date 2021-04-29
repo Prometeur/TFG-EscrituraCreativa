@@ -9,29 +9,29 @@ const linksTeacher = [
     {
         path: "/groups",
         name: "Grupos",
-        icon:"",
+        icon:"group.png",
         id: "groups"
-
-    },
-    {
-        path: "/createGroup",
-        name: "Crear Grupo",
-        icon: "anadir-grupo.png",
-        id: "createGroup"
 
     },
     {
         path: "/students",
         name: "Estudiantes",
-        icon:"",
+        icon:"students.png",
         id: "Estudiantes"
     },
     {
         path: "/applicants",
         name: "Solicitantes",
-        icon:"",
+        icon:"add-user.png",
         id: "Solicitantes"
     },
+    {
+        path: "/createGroup",
+        name: "Crear Grupo",
+        icon: "add-member.png",
+        id: "createGroup"
+
+    }
 
 ];
 

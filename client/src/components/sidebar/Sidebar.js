@@ -13,7 +13,11 @@ export default function Sidebar(props) {
            <ul className="container-column-list">
                    {links.map((link)=>(
                        <li className="item-column-list wrap">
-                           <Link key={link.id} to={`${url}${link.path}`}>{link.name}</Link>
+
+                           <Link key={link.id} to={`${url}${link.path}`}>
+                               <img className={"img-icon"} src={link.icon}/>
+                               {link.name}
+                           </Link>
                        </li>
                    ))}
            </ul>

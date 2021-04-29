@@ -103,10 +103,11 @@ input[type=text]:focus
 
     .form-group-login {
         width: 20rem;
+        margin: 2.5rem 1rem 0;
     }
 
     .form-group-register {
-        margin-top: 1rem;
+        margin-top: .5rem;
     }
  }
 

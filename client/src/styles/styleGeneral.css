@@ -55,10 +55,15 @@ li {
 
 
 
-.container {
+.container{
     grid-area: main;
     /*margin: 0 2em 1em;*/
     padding: .75em 1em;
+}
+
+.container-home {
+    grid-area: main;
+    padding: 0;
 }
 
 .container-margin {
@@ -186,7 +191,7 @@ h1.main-title {
 .sidebar-left {
     grid-area: sbleft;
     top:.5rem;
-    background-image: linear-gradient(147deg, #FFE53B 0%, #ff6161 74%);
+    background-image: linear-gradient(135deg, #F05F57 10%, #360940 100%);
     border-radius: 0rem 6.3rem 6.3rem 0rem;
     position: fixed;
     overflow: auto;
@@ -222,11 +227,11 @@ h1.main-title {
 }
 
 .sidebar-left a {
-    display: block;
-    color: #1d1b17;
+    display: inline-flex;
+    color: white;
     padding: 14px;
     text-decoration: none;
-    font-family: 'Oswald', sans-serif;
+    align-items: center;
 }
 
 
@@ -244,6 +249,8 @@ h1.main-title {
     background-color: rgba(0, 0, 0, 0.46);
     color: rgb(255, 251, 255);
     width: 9rem;
+    display: inline-flex;
+    justify-content: center;
     text-align: center;
     border-radius: 9rem 2rem;
 
@@ -512,9 +519,14 @@ select {
     margin: 2rem;
 }
 
+.img-icon {
+    padding: 0;
+    margin: 0 .4rem 0;
+}
+
 .items-column {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     margin:1rem .5rem 1rem;
 }
@@ -534,14 +546,22 @@ select {
 
     .sidebar-left a {
         float: left;
+        font-size: .6rem;
     }
 
     .sidebar-left ul {
-        margin-top: 2rem;
+        margin-top: 1.5rem;
     }
 
-    .sidebar-left ul li {
-       font-size: .5rem;
+    .sidebar-left a:hover:not(.active) {
+        background-color: rgba(0, 0, 0, 0.46);
+        color: rgb(255, 251, 255);
+        width: 6.8rem;
+        display: inline-flex;
+        justify-content: center;
+        text-align: center;
+        border-radius: 9rem 2rem;
+
     }
 
     .perfil-left {
@@ -553,6 +573,12 @@ select {
     .img-login  {
         width: 20rem;
         margin: 2rem;
+    }
+
+    .img-icon {
+        padding: 0;
+        width: 2rem;
+        margin: 0 .4rem 0;
     }
 
     .flex-item-file {
@@ -576,6 +602,18 @@ select {
         display: flex;
         text-align: center;
         justify-content: center;
+        align-items: center;
+    }
+
+    .container-column-list {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        flex-flow: row wrap;
+        display: -moz-flex;
+        display: flex;
+        text-align: center;
+        justify-content: flex-start;
         align-items: center;
     }
 
@@ -610,14 +648,22 @@ select {
     .sidebar-left a {
         text-align: left;
         float: none;
+        font-size: 1rem;
     }
 
     .sidebar-left ul {
        margin-top: 2rem ;
     }
 
-    .sidebar-left ul li {
-        font-size: 1rem;
+    .sidebar-left a:hover:not(.active) {
+        background-color: rgba(0, 0, 0, 0.46);
+        color: rgb(255, 251, 255);
+        width: 9rem;
+        display: inline-flex;
+        justify-content: center;
+        text-align: center;
+        border-radius: 9rem 2rem;
+
     }
 
     .perfil-left {
@@ -646,7 +692,7 @@ select {
         display: -moz-flex;
         display: flex;
         text-align: center;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
     }
 
@@ -692,21 +738,35 @@ select {
         margin-left: 0;
     }
 
+    .container-home {
+        width: 100%;
+        margin-left: auto;
+        display: flex;
+        justify-content: flex-end;
+        align-items: normal;
+    }
+
     .sidebar-left {
         width: 13%;
         position: fixed;
         position: fixed;
         height: 30rem;
-        top:2rem;
+        top:1.2rem;
     }
 
     .sidebar-left a {
         text-align: left;
         float: none;
+        font-size: .8rem;
     }
 
     .sidebar-left ul {
         margin-top: 6rem;
+    }
+
+    .sidebar-left a:hover:not(.active) {
+
+        font-size: .7rem;
     }
 
     .perfil-left {
@@ -732,6 +792,10 @@ select {
         margin: 3.5rem 0 0;
      }
 
+    .img-home {
+        width: 42rem;
+    }
+
     .full-wrapper {
 
         grid-template-areas:
@@ -739,4 +803,15 @@ select {
                 "sbleft sbleft main main main main main main main main main main main main main main"
                 "sbleft sbleft main main main main main main main main main main main main main main";
     }
+}
+
+
+@media screen and (min-width:1200px) {
+
+
+    .sidebar-left a {
+        font-size: .9rem;
+    }
+
+
 }

@@ -263,6 +263,7 @@ class GroupTeacher extends Component {
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
         <Card className="card-long">
              <Card.Body>
+                 <div className="items-column">
                   {/* <div className="column column-left"> */}
                   <Dropdown className="drop-down">
                     <DropdownToggle as={CustomToggle} id="dropdown-custom-components">Selecciona grupo</DropdownToggle>
@@ -276,7 +277,7 @@ class GroupTeacher extends Component {
                   </Dropdown>
                   {/* </div> */}
 
-                <div className="items-column">
+
                     <h3>{this.state.nameGroupSelect}</h3>
                     <Button variant="primary" onClick={()=>this.onModal(true)}>Renombar grupo</Button>
                 </div>
