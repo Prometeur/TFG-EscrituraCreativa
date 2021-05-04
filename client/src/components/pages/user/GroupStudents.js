@@ -26,7 +26,6 @@ class GroupStudents extends Component {
             currentUserRole: '',
             searchStudent: '',
             searchType: 'nombre'
-    
         };
     }
 
@@ -91,86 +90,93 @@ class GroupStudents extends Component {
 
     /*Dibuja la pagina  */
     render() {
-        let cartel =<div> </div>;
-        let tabla = <ListGroup variant="flush">
-
+        let cartel =<> </>;
+        let tabla = <ul className={"flex-items-row-start wrap"}>
             {this.state.filteredData.map((student) => 
                 (
-                    <React.Fragment>
-                    <ListGroup.Item>
-                        {student.id} 
-                        <img src={"data:image/png;base64," + btoa(String.fromCharCode.apply(null, student.foto.data))} alt="" style={{width: '5%',  borderRadius: '80%'}} ></img>
-                        {student.nombre} {student.apellidos} 
-                        {student.correo}
-                        <Link key={student.id} to={`/admin/users/viewProfile/${student.id}`}><button text='Ver Perfil'> Ver perfil </button></Link>
-                    </ListGroup.Item>
-                    </React.Fragment>
-                    
+                   <li className={"items-row"}>
+                       <div className={"form-items-row"}>
+                            <img src={"data:image/png;base64," + btoa(String.fromCharCode.apply(null, student.foto.data))}
+                                 alt=""
+                                 style={{width: '5%',  borderRadius: '80%'}} >
+                            </img>
+                       </div>
+
+                        <div className={"form-items-row"}>
+                            {student.nombre} {student.apellidos}
+                        </div>
+                       <div className={"form-items-row"}>
+                            {student.correo}
+                       </div>
+                       <div className={"form-items-row"}>
+                            <Link key={student.id} to={`/admin/users/viewProfile/${student.id}`}>
+                                <Button variant={"outline-secondary"} text='Ver Perfil'> Ver perfil </Button>
+                            </Link>
+                       </div>
+                   </li>
                 )
             )}
-    </ListGroup>;
+        </ul>
 
-        if(this.state.currentUserRole === "T")
-        {
-            tabla = <ListGroup variant="flush">
+    if(this.state.currentUserRole === "T")
+    {
+        tabla = <ul className={"flex-items-row-start wrap"}>
 
-                        {this.state.filteredData.map((student) => 
-                            (
-                                <React.Fragment>
-                                <ListGroup.Item>
-                                    {student.id} 
-                                    <img src={"data:image/png;base64," + btoa(String.fromCharCode.apply(null, student.foto.data))} alt="" style={{width: '5%',  borderRadius: '80%'}} ></img>
-                                    {student.nombre} {student.apellidos} 
-                                    {student.correo}
-                                    <Link key={student.id} to={`/teacher/students/viewProfile/${student.id}`}><button text='Ver Perfil'> Ver perfil </button></Link>
-                                </ListGroup.Item>
-                                </React.Fragment>
-                                
-                            )
-                        )}
-                </ListGroup>;
-        }
-        if(this.state.filteredData.length === 0)
-        {
-            cartel = <nav>
-                        <h2>No hay resultados para la búsqueda realizada.</h2>
-                    </nav>;
-            tabla = <div></div>;
-        }
+                    {this.state.filteredData.map((student) =>
+                        (
+                            <li className={"items-row"}>
+                                    <div className={"form-items-row"}>
+                                        <img src={"data:image/png;base64," + btoa(String.fromCharCode.apply(null, student.foto.data))}
+                                             alt=""
+                                             style={{width: '40%',  borderRadius: '80%',margin:"0 0 0 1rem"}}
+                                        >
+                                        </img>
+                                    </div>
+                                    <div className={"form-items-row"}>
+                                        {student.nombre} {student.apellidos}
+                                    </div>
+                                    <div className={"form-items-row"}>
+                                        {student.correo}
+                                    </div>
+                                    <div className={"form-items-row"}>
+                                        <Link key={student.id} to={`/teacher/students/viewProfile/${student.id}`}>
+                                            <Button variant={"outline-secondary"} text='Ver Perfil'> Ver perfil </Button>
+                                        </Link>
+                                    </div>
+                            </li>
+                        )
+                    )}
+
+            </ul>
+    }
+    if(this.state.filteredData.length === 0)
+    {
+        cartel = <div className={"section-title"}>
+                    <h2>No hay resultados para la búsqueda realizada.</h2>
+                </div>;
+        tabla = <></>;
+    }
 
 
         return (
-            <>
-            <div className="container">
-                <Card className="card-edit">
-                    <Card.Body>
-                    <h1>Estudiantes:</h1>
 
-                    <div>
-                    <h2> Resultados de buscar estudiantes con  similar a:</h2>
-                            <label>Buscar estudiante: </label>
-                            <br />
+            <div className="container">
+                <Card className="card-long">
+                    <Card.Body>
+                    <div className={"group-teams"}>
+                            <label  className={"form-label"}>Buscar estudiante</label>
                             <input type="text" name="searchStudent" onChange={this.handleChangeSearch} />
-                            <br />
-                            <label for="searchType">Escoja cómo buscar:</label>
+                            <label className={"form-label"}>Escoja cómo buscar</label>
                             <select name="searchType" id="searchType" onChange={this.handleChangeSearchType}>
                                 <option value="nombre">Nombre</option>
                                 <option value="email">Email</option>
                             </select>
                     </div>
-                    <div>
-
                         {cartel}
-
-
                         {tabla}
-
-
-                    </div>
                     </Card.Body>
                 </Card>
             </div>
-          </>
         );
     }
 
