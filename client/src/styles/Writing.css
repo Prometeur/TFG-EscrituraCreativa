@@ -43,7 +43,7 @@
   
 }
 
-  .form-media {
+.form-media {
     width: 100%;
     height: 30px;
     padding-left: 10px;
@@ -57,10 +57,6 @@
     text-align: center;
   }
 
-  .form-label {
-    display: inline-block;
-    font-size: 1rem;
-  }
 
 .label {
     height: 50px;
@@ -116,19 +112,20 @@
 
 
 .editorClassName1{
-    border: 1px solid rgb(62, 161, 84);
+    border: 1px solid lavender;
     height: 55vh;
-    width:800px; 
+    width:  163vh;
 }
 
 
  .wrapperClassName1{
     /* border: 1px solid rgb(141, 62, 161); */
     width:800px;
-    height: 75vh;
+    margin-top: .75rem;
+    height: 68vh;
 } 
 
 .toolbarClassName1{
     /* border: 1px solid rgb(161, 62, 62); */
-    width:800px;
+    width:163vh;
 }

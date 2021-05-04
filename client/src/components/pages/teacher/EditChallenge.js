@@ -305,9 +305,13 @@ class EditChallenge extends Component {
         const { editorState, formErrors, dataMediaChallenge } = this.state;
         return (
             <div className="container">
-                <label className='form-label'>Modificar datos</label>
                 <Card className="card-edit">
                     <Card.Body>
+                        <div className={"row-edit"}>
+                            <div className={"section-title"}>
+                                <h2> Modificar desafío </h2>
+                            </div>
+                        </div>
                         <div className="row-edit">
                             <div className="form-inputs">
                                 <label className='form-label'>Título </label>
@@ -341,50 +345,67 @@ class EditChallenge extends Component {
                             />
 
                         </div>
+                        <ul className={"flex-row"}>
+                            <li className={"flex-item-form"}>
+                                <div className="form-select">
+                                    <label className='form-label'>Categoría</label>
+                                    <select value={this.state.form.idCategory} onChange={this.handleSelectionCategory}>
+                                        {this.state.categories.map(elemento => (
+                                            <option key={elemento.id} value={elemento.id}>{elemento.nombre}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </li>
+                            <li className={"flex-item-form"}>
+                                <div className="form-select">
+                                    <label className='form-label'>Tipo de desafio</label>
+                                    <select value={this.state.form.type} onChange={this.handleSelectionChange}>
+                                        {/* <option value="" selected disabled hidden>Choose here</option> */}
+                                        {/* <option value = {this.state.form.type} selected>{this.state.form.type} </option> */}
+                                        <option value="1">Individual</option>
+                                        <option value="2">Colaborativo</option>
+                                    </select>
+                                </div>
+                            </li>
+                            <li className={"flex-item-form"}>
+                                <div className="form-select">
+                                    <label className='form-label'> Tipo de Calificación </label>
+                                    <select value={this.state.form.typeQualification} onChange={this.qualificationSelection} >
+                                        <option value="1"> Numerica</option>
+                                        <option value="2"> Conceptual</option>
+                                    </select>
+                                </div>
+                            </li>
+                        </ul>
+
                         <div className="row-edit">
-                            <div className="form-select">
-                                <label className='form-label'>Categoría</label>
-                                <select value={this.state.form.idCategory} onChange={this.handleSelectionCategory}>
-                                    {this.state.categories.map(elemento => (
-                                        <option key={elemento.id} value={elemento.id}>{elemento.nombre}</option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div class="form-select">
-                                <label className='form-label'>Tipo de desafio</label>
-                                <select value={this.state.form.type} onChange={this.handleSelectionChange}>
-                                    {/* <option value="" selected disabled hidden>Choose here</option> */}
-                                    {/* <option value = {this.state.form.type} selected>{this.state.form.type} </option> */}
-                                    <option value="1">Individual</option>
-                                    <option value="2">Colaborativo</option>
-                                </select>
-                            </div>
-                            <div className="form-select">
-                                <label className='form-label'> Tipo de Calificación </label>
-                                <select value={this.state.form.typeQualification} onChange={this.qualificationSelection} >
-                                    <option value="1"> Numerica</option>
-                                    <option value="2"> Conceptual</option>
-                                </select>
-                            </div>
+                            <label className='form-label'> Fecha y hora de fin del desafío </label>
                         </div>
-                        <div className="row-edit">
-                            <div className="form-select">
-                                <label className='form-label'> Fecha y Hora </label>
-                                <Dates handleDateChange={this.handleDateChange} param={this.state.form.date} />
-                            </div>
+                        <div className="form-select">
+                            <Dates handleDateChange={this.handleDateChange} param={this.state.form.date} />
                         </div>
+
                         <div className="row-edit">
                             <label className='form-label'> Ficheros Multimedia: </label>
                             <table>
                                 <tbody>
-                                    <div style={{ width: "500px", height: "250px", overflow: "scroll", behavior: "smooth" }}>
+                                    <div className={"table-multi"}>
                                         {dataMediaChallenge.map((mediaChallenge) => (
                                             <tr key={mediaChallenge.id}>
-                                                <td> {this.showTitle(mediaChallenge)} </td>
-                                                {/* <td>< a href={challenge.ruta}> Ver </a></td> */}
-                                                <td><Button onClick={() => window.open(mediaChallenge.ruta)}>Ver</Button></td>
+                                                <td>
+                                                     {this.showTitle(mediaChallenge)}
+                                                </td>
+                                                <td>
+                                                    <div className="form-button">
+                                                        <Button onClick={() => window.open(mediaChallenge.ruta)}>Ver</Button>
+                                                    </div>
+                                                </td>
                                                 {/* <td>< button onClick={() => this.deleteFile(mediaChallenge)}>Eliminar</button></td> */}
-                                                <td><Button onClick={() => this.askDeleteFile(mediaChallenge)}>Eliminar</Button></td>
+                                                <td>
+                                                    <div className="form-button">
+                                                        <Button onClick={() => this.askDeleteFile(mediaChallenge)}>Eliminar</Button>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         ))}
                                     </div>
@@ -392,69 +413,55 @@ class EditChallenge extends Component {
                             </table>
                         </div>
 
-                        {/* <div className="row-edit">
-                            <div className="form">
-                                {
-                                    this.state.imgNamesCollection == 0 ? (
-                                        <Alert variant='info'>
-                                            No hay Archivos cargados.
-                                        </Alert>
-                                    ) : (
-                                        <ListGroup>
-                                            {this.state.imgNamesCollection.map((row, index) => (
-                                                <ListGroup.Item action variant="info" key={index}>
-                                                    <i className="form-select">{row.name}</i>
-                                                    <IconButton
-                                                        className="form-select"
-                                                        aria-label="delete"
-                                                        onClick={() => this.onDeleteMultimedia(index)}>
-                                                        <DeleteIcon fontSize="small" />
-                                                    </IconButton>
-                                                </ListGroup.Item>
-                                            ))}
-                                        </ListGroup>
-                                    )
-                                }
-                                <input id="file" type="file" name="imgCollection" onChange={this.onFileChange} multiple />
-                                <label htmlFor="file" className="btn-1">upload file</label>
-                            </div>
-                        </div> */}
-
-                        <div class="row-edit">
-                            <label className='form-label'>Puedes agregar un fichero multimedia si lo deseas (imagen,video o audio): </label>
-                            <div className="form">
+                        <div className="row-edit">
+                            <div className={"form-select"}>
+                                <label className='form-label'>
+                                    Puedes agregar un fichero multimedia si lo deseas (imagen,video o audio)
+                                </label>
                                 <input type="file" name="imgCollection" onChange={this.onFileChange} multiple />
                             </div>
                         </div>
 
-                        <div className="form-select">
-                            <Button onClick={() => this.onModalSave(true)}>Guardar</Button>
-                        </div>
-                        <div className="form-select">
-                            <Button onClick={() => this.changeView()}>Cancelar</Button>
+                        <div className={"row-edit"}>
+                            <div className="form-button">
+                                <Button onClick={() => this.onModalSave(true)}>Guardar</Button>
+                            </div>
+                            <div className="form-button">
+                                <Button onClick={() => this.changeView()}>Cancelar</Button>
+                            </div>
                         </div>
 
-                        <Modal size="lg" aria-labelledby="contained-modal-title-vcenter" centered show={this.state.stateModal} onHide={this.state.stateModal}>
+                        <Modal
+                               centered
+                               show={this.state.stateModal}
+                               onHide={this.state.stateModal}
+                        >
                             <Modal.Header >
-                                {/* <Modal.Title id="contained-modal-title-vcenter">Modal heading</Modal.Title> */}
+                                <Modal.Title>Aviso</Modal.Title>
+                                <img src={"../../../exclamation.png"}/>
                             </Modal.Header>
                             <Modal.Body>
-                                {/* <h4>Centered Modal</h4> */}
-                                <p>¿Desea guardar los cambios?</p>
+                                ¿Desea guardar los cambios?
                             </Modal.Body>
                             <Modal.Footer>
                                 <Button onClick={() => this.sendChallenge()}>Aceptar</Button>
-                                <Button onClick={() => this.onModal(false)}>Cancelar</Button>
+                                <Button onClick={() => this.onModalSave(false)}>Cancelar</Button>
                             </Modal.Footer>
                         </Modal>
 
-                        <Modal size="lg" aria-labelledby="contained-modal-title-vcenter" centered show={this.state.modalDeleteFile} onHide={this.state.modalDeleteFile}>
+                        <Modal
+                               centered
+                               show={this.state.modalDeleteFile}
+                               onHide={this.state.modalDeleteFile}
+                        >
                             <Modal.Header >
-                                {/* <Modal.Title id="contained-modal-title-vcenter">Modal heading</Modal.Title> */}
+                                <Modal.Title>
+                                    Aviso
+                                    <img src={"../../../triangle.png"}/>
+                                </Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
-                                {/* <h4>Centered Modal</h4> */}
-                                <p>¿Seguro que desea eliminar {this.state.nameDeleteFileMedia}?</p>
+                                ¿Desea eliminar {this.state.nameDeleteFileMedia}?
                             </Modal.Body>
                             <Modal.Footer>
                                 <Button onClick={() => this.deleteFile(this.state.deleteFileMedia)}>Aceptar</Button>

@@ -71,8 +71,8 @@ input[type=text]:focus
 }
 
 .react-tabs {
-    margin: .75rem;
-    font-size: .9rem;
+    margin: 4rem .75rem 2rem;
+    font-size: 1rem;
 }
 
 

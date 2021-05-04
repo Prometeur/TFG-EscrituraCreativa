@@ -1,22 +1,26 @@
-/*
+/**
 *  Name_file :Login.js
 *  Description: Pagina de inicio de sesion, contiene la vista del Login
-*    
 */
+
 import React, { Component } from 'react';
 import { Redirect, Link }from "react-router-dom";
 import AuthService  from "../../../services/authenticity/auth-service";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
+
+/**Componente externos de estilo**/
+import Alert from "react-bootstrap/Alert";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+
+/**Estilo CSS */
 import '../../../styles/styleGeneral.css';
 import '../../../styles/styleButton.css';
 import '../../../styles/styleCard.css';
-import Card from "react-bootstrap/Card";
-import Alert from "react-bootstrap/Alert";
-import Button from '@material-ui/core/Button'
 
-
+/** Variable alerta de validacion **/
 const required = value => {
     if (!value) {
       return (
@@ -36,6 +40,7 @@ class Login extends Component {
         this.handleLogin = this.handleLogin.bind(this);
         this.onChangeUsername = this.onChangeUsername.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
+        this.onModal = this.onModal.bind(this);
     
         this.state = {
           username: "",
@@ -43,6 +48,7 @@ class Login extends Component {
           loading: false,
           message: "",
           error: false,
+          onModal: false
         };
     }
 
@@ -66,7 +72,12 @@ class Login extends Component {
         });
     }
     
-    
+    onModal(modal) {
+        this.setState({
+            onModal:modal
+        });
+    }
+
    handleLogin(e) {
     e.preventDefault();
 
@@ -89,6 +100,7 @@ class Login extends Component {
             this.setState({
                 error:true,
             });
+            this.onModal(this.state.error);
         });
       } 
       else 
@@ -99,12 +111,12 @@ class Login extends Component {
         console.log("error");
       }
     }
+
     
   render() {
         console.log(this.state.error);
       return (
           <div className="container">
-
                   <Form  
                     onSubmit={this.handleLogin}
                     ref= {c => {
@@ -153,6 +165,20 @@ class Login extends Component {
                        </div>
                   </Form>
               <img className="img-login" src="literaturatesis.png" ></img>
+              <Modal
+                  show={this.state.onModal}
+                  onHide={this.state.onModal}
+              >
+                  <Modal.Header>
+                      <Modal.Title>Ups...</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                      Tu correo o contraseña no son correctos.
+                  </Modal.Body>
+                  <Modal.Footer>
+                      <Button variant="secondary" onClick={()=>this.onModal(false)}>Atras</Button>
+                  </Modal.Footer>
+              </Modal>
           </div>
       );
   }

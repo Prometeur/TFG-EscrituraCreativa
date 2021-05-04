@@ -36,6 +36,7 @@ h4, h5, h6 {
     margin: .5rem 0rem .5rem;
     font-weight: 500;
     line-height: 1.2;
+    letter-spacing: .05rem;
 }
 
 
@@ -234,6 +235,13 @@ h1.main-title {
     align-items: center;
 }
 
+.section-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
 
 .section-container {
     display: flex;
@@ -268,9 +276,10 @@ select {
 
 .row-edit{
     justify-content: space-between;
-    margin-bottom: .75em;
-    margin-right: 0.5em;
-    margin-left: .5em;
+    margin-top: .75rem;
+    margin-bottom: 1.2rem;
+    margin-right: 1.75em;
+    margin-left: 1.75em;
 }
 
 .column {
@@ -297,8 +306,17 @@ select {
 }
 
 .table-margin {
-    margin: 0rem;
+    margin:  1rem 0 .75rem
 }
+
+.table-margin .img-icon {
+    cursor: pointer;
+}
+
+.table-margin a:link {
+    text-decoration: none;
+}
+
 
 .drop-down {
     margin-left:.5rem;
@@ -386,7 +404,7 @@ select {
     display: -moz-flex;
     display: -webkit-flex;
     display: flex;
-    justify-content: center;
+    justify-content:center;
     align-items: center;
 }
 
@@ -412,6 +430,15 @@ select {
     margin: .2rem .1rem;
 }
 
+
+.flex-item-form {
+    padding: 1rem .75rem;
+    width: auto;
+    margin: 0rem 3.4rem 1rem 0.75rem;
+    line-height: 3rem;
+}
+
+
 .container-column-list {
     padding: 0;
     margin: 0;
@@ -430,7 +457,6 @@ select {
 
 
 .wrap {
-
     -webkit-flex-wrap: wrap;
     flex-wrap: wrap;
 }
@@ -523,12 +549,30 @@ select {
     margin: 0 .4rem 0;
 }
 
-.items-column {
+.flex-items-row-start {
+    flex-direction: row;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin:2rem .8rem 2rem;
+    flex-flow: column wrap;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-content: space-around;
+    margin: 1rem .8rem 1rem;
 }
+
+.flex-items-row-space {
+    flex-direction: row;
+    display: flex;
+    flex-flow: row wrap;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-content: baseline;
+    margin: 2rem .75rem 2rem;
+}
+
+.items-row {
+    flex-basis: auto;
+}
+
 
 .items-column h3 {
     margin: 0 2rem 0;
@@ -544,7 +588,7 @@ select {
 }
 
 .list-group {
-    margin: .3rem .75rem .3rem;
+    margin: .3rem 1.25rem  1.75rem .3rem;
 }
 
 @media screen and (min-width: 320px) {
@@ -597,6 +641,7 @@ select {
         margin: 0 .4rem 0;
     }
 
+
     .flex-item-file {
         width: 23rem;
         line-height: 2rem;
@@ -646,6 +691,13 @@ select {
     }
 
   }
+
+ .table-multi {
+     width: auto;
+     height: 12rem;
+     overflow: scroll;
+     overflow-x: auto;
+ }
 
 @media screen and (min-width:768px) {
 

@@ -20,16 +20,6 @@ import Card from 'react-bootstrap/Card';
 import '../../../styles/styleGeneral.css';
 import '../../../styles/styleButton.css';
 
-/*Componentes de estilo Reactstrap*/
-// import {
-//     Container,
-//     Modal,
-//     ModalHeader,
-//     ModalBody,
-//     FormGroup,
-//     ModalFooter,
-// } from "reactstrap";
-
 class Challenges extends Component {
 
     constructor(props) {
@@ -113,7 +103,7 @@ class Challenges extends Component {
                 <Card.Body>
                 <div className="button-direction-left">
                     <Link to={`/teacher/createChallenge/${this.props.groupSelect}`}>
-                        <Button variant="primary">Crear desafio</Button>
+                        <Button variant="outline-secondary">Crear desafio</Button>
                     </Link>
                 </div>
                 <div className="table-margin">
@@ -125,7 +115,6 @@ class Challenges extends Component {
                                 <th>Tipo</th>
                                 <th>Fecha</th>
                                 <th>Hora</th>
-
                             </tr>
                         </thead>
                         <tbody>
@@ -156,9 +145,9 @@ class Challenges extends Component {
                                     <td className="challenge-td">{formatedDate = moment(challenge.fechaFin).format('DD/MM/YYYY')}</td>
                                     <td className="challenge-td">{formatedDate = moment(challenge.fechaFin).format('LT')}</td>
                                     {/* <td>{challenge.activo}</td> */}
-                                    <td ><Link to={`/teacher/editChallenge/${this.props.groupSelect}/${challenge.id}`}><Button variant="outline-primary" size="sm">Editar</Button></Link></td>
+                                    <td ><Link to={`/teacher/editChallenge/${this.props.groupSelect}/${challenge.id}`}><img src={"../edit.png"} alt={"editar"}></img> Editar</Link></td>
                                     {/* <td ><Button variant="outline-primary" size="sm" onClick={() => this.deleteChallenge(challenge)}>Eliminar</Button></td> */}
-                                    <td ><Button variant="outline-primary" size="sm" onClick={() => this.askDeleteChallenge(challenge)}>Eliminar</Button></td>
+                                    <td><img className={"img-icon"} src="../delete.png" alt="delete"></img><Link onClick={() => this.askDeleteChallenge(challenge)}>Borrar</Link></td>
                                 </tr>
                             )}
                         </tbody>
@@ -171,9 +160,8 @@ class Challenges extends Component {
                          <img src="../triangle.png"></img>
                     </Modal.Header>
                     <Modal.Body>
-                        <h6>¿ Seguro que desea eliminar {this.state.deleteChallenge.titulo} ?</h6>
+                        ¿Seguro que desea eliminar {this.state.deleteChallenge.titulo}?
                     </Modal.Body>
-
                     <Modal.Footer>
                         <Button onClick={() => this.deleteChallenge(this.state.deleteChallenge)}>Aceptar</Button>
                         <Button variant="danger" onClick={() => this.closeModalDeleteChallenge()}>Cancelar</Button>

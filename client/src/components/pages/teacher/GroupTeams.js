@@ -65,24 +65,25 @@ class GroupTeams extends Component {
     /*Dibuja la pagina  */
     render() {
         let cartel =<> </>;
-        let tabla = <ListGroup  bsPrefix={"list-group"} variant={'flush'}>
-
+        let tabla = <ul className={"flex-items-row-start wrap"}>
             {this.state.filteredData.map((team) => 
                 (
-                    <React.Fragment>
-                        <ListGroup.Item>
-                            <div className={"items-column"}>
-                                <h5>{team.nombre}</h5>
-                                <Link key={team.id} to={`/teacher/viewTeam/${team.id}`}>
-                                    <Button  bsPrefix="btn" text='Ver Equipo'>Ver equipo</Button>
-                                </Link>
-                            </div>
+                    <li className={"items-row"}>
+                        <br/>
+                        <div className={"form-items-row"}>
+                            <h5>{team.nombre}</h5>
+                        </div>
+                        <div className={"form-items-row"}>
+                            <Link key={team.id} to={`/teacher/viewTeam/${team.id}`}>
+                                <Button  variant={"outline-secondary"} text='Ver Equipo'>Ver equipo</Button>
+                            </Link>
+                        </div>
+                        <hr></hr>
+                    </li>
 
-                        </ListGroup.Item>
-                    </React.Fragment>
                 )
             )}
-    </ListGroup>;
+    </ul>;
         if(this.state.filteredData.length === 0)
         {
             cartel = <div className={"group-teams"}>
@@ -99,10 +100,8 @@ class GroupTeams extends Component {
                             <label className={"form-label"}>Buscar equipo</label>
                             <input type="text" name="searchKey" onChange={this.handleChangeSearch} />
                             <div className={"form-select"}><img src={"../search.png"}></img></div>
-                            <div>
                                 {cartel}
                                 {tabla}
-                            </div>
                         </div>
                     </Card.Body>
                 </Card>

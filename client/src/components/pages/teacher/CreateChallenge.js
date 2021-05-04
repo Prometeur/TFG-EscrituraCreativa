@@ -4,7 +4,7 @@
 */
 import React, { Component } from 'react';
 
-/*Importaciones del editor */
+/**Importaciones del editor **/
 import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -19,13 +19,13 @@ import AuthUser from '../../../services/authenticity/auth-service.js';
 /**Servicios del profesor */
 import TeacherService from '../../../services/teacher/teacherService';
 
-/*Importaciones del css*/
+/**Importaciones del css*/
 import '../../../styles/Challenge.css';
 import '../../../styles/styleGeneral.css';
 import '../../../styles/styleCard.css';
 import '../../../styles/Writing.css';
 
-/*Componentes de estilo Bootstrap*/
+/**Componentes de estilo Bootstrap*/
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -208,15 +208,18 @@ class CreateChallenge extends Component {
         const { editorState } = this.state;
         return (
             <div className="container">
-                <label className='form-label'>Crear desafio</label>
                 <Card className="card-edit">
                     <Card.Body>
-                        <div className="row-edit">
-                            <div className="form-inputs">
+                        <div className={"row-edit"}>
+                            <div className={"section-title"}>
+                                <h2>Crear desafío</h2>
+                            </div>
+                        </div>
+                        <div className={"row-edit"}>
                                 <label className='form-label'>Titulo</label>
                                 <input
                                     // className='form-input'
-                                    className={formErrors.title.length > 0 ? "error" : "form-input"}
+                                    className={formErrors.title.length > 0 ? "error" : "form-control"}
                                     type="text"
                                     name="title"
                                     placeholder="Escribe el título"
@@ -226,10 +229,9 @@ class CreateChallenge extends Component {
                                 {formErrors.title.length > 0 && (
                                     <span className="errorMessage">{formErrors.title}</span>
                                 )}
-                            </div>
                         </div>
-                        <div className="row-edit">
 
+                        <div className="row-edit">
                             <label className='form-label'>Descripción</label>
                             <Editor
                                 editorState={editorState}
@@ -252,102 +254,65 @@ class CreateChallenge extends Component {
                                 }
                             />
                         </div>
+
+                        <ul className={"flex-row"}>
+                            <li className={"flex-item-form"}>
+                                <div className="form-select">
+                                    <label className='form-label'> Tipo de Desafío </label>
+                                    <select onChange={this.handleSelectionChange}>
+                                        <option value="" selected disabled hidden> Seleccionar</option>
+                                        <option value="1"> Individual</option>
+                                        <option value="2"> Colaborativo</option>
+                                    </select>
+                                </div>
+                            </li>
+                            <li className={"flex-item-form"}>
+                                <div className="form-select">
+                                    <label className='form-label'>Categoría</label>
+                                    <select onChange={this.handleSelectionCategory} >
+                                        <option value="" selected disabled hidden > Seleccionar</option>
+                                        {this.state.categories.map(elemento => (
+                                            <option key={elemento.id} value={elemento.id} > { elemento.nombre} </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </li>
+                            <li className={"flex-item-form"}>
+                                <div className="form-select">
+                                    <label className='form-label'> Tipo de Calificación </label>
+                                    <select onChange={this.qualificationSelection}>
+                                        <option value="" selected disabled hidden>Seleccionar</option>
+                                        <option value="1"> Numerica</option>
+                                        <option value="2"> Conceptual</option>
+                                    </select>
+                                </div>
+                            </li>
+                        </ul>
                         <div className="row-edit">
-                            <div className="form-select">
-                                <label className='form-label'>Categoría</label>
-                                <select onChange={this.handleSelectionCategory} >
-                                    <option value="" selected disabled hidden > Seleccionar</option>
-                                    {this.state.categories.map(elemento => (
-                                        <option key={elemento.id} value={elemento.id} > { elemento.nombre} </option>
-                                    ))}
-                                </select>
-                            </div>
-                            {/* <Form className="form-select">
-                                <Form.Group as={Col}>
-                                    <Form.Label>Tipo de desafío</Form.Label>
-                                    <Col sm={1}>
-                                        <Form.Check
-                                            type="radio"
-                                            label="Individual"
-                                            name="formHorizontalRadios"
-                                            id="formHorizontalRadios1"
-                                        />
-                                        <Form.Check
-                                            type="radio"
-                                            label="Colaborativo"
-                                            name="formHorizontalRadios"
-                                            id="formHorizontalRadios2"
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Form> */}
-                            <div class="form-select" >
-                                <label className='form-label' > Tipo de Desafío </label>
-                                <select onChange={this.handleSelectionChange} >
-                                    <option value="" selected disabled hidden > Seleccionar </option>
-                                    <option value="1" > Individual </option>
-                                    <option value="2" > Colaborativo </option>
-                                </select>
-                            </div>
-
-                            <div className="form-select">
-                                <label className='form-label'> Tipo de Calificación </label>
-                                <select onChange={this.qualificationSelection}>
-                                    <option value="" selected disabled hidden>Seleccionar</option>
-                                    <option value="1"> Numerica</option>
-                                    <option value="2"> Conceptual</option>
-                                </select>
-                            </div>
+                            <label className='form-label'>Selecciona la fecha y hora final </label>
                         </div>
-                        <div className="row-edit">
-                            <div className="form-select">
-                                <label className='form-label'>Selecciona la fecha y hora final </label>
-                                <Dates
-                                    handleDateChange={this.handleDateChange}
-                                    param={this.state.form.date}
-                                />
-                            </div>
+                        <div className="form-select">
+                            <Dates
+                                handleDateChange={this.handleDateChange}
+                                param={this.state.form.date}
+                            />
                         </div>
-
-                        {/* <div className="row-edit">
-                            <div className="form">
-                                {
-                                    this.state.imgNamesCollection == 0 ? (
-                                        <Alert variant='info'>
-                                            No hay Archivos cargados.
-                                        </Alert>
-                                    ) : (
-
-                                        <ListGroup>
-                                            {this.state.imgNamesCollection.map((row, index) => (
-                                                <ListGroup.Item action variant="info" key={index}>
-                                                    <i className="form-select">{row.name}</i>
-                                                    <IconButton className="form-select" aria-label="delete" onClick={() => this.onDeleteMultimedia(index)}>
-                                                        <DeleteIcon fontSize="small" />
-                                                    </IconButton>
-                                                </ListGroup.Item>
-                                            ))}
-                                        </ListGroup>
-
-                                    )
-                                }
-                                <input id="file" type="file" name="imgCollection" onChange={this.onFileChange} multiple />
-                                <label htmlFor="file" className="btn-1">upload file</label>
-                            </div>
-                        </div> */}
-
                         <div class="row-edit">
-                            <label className='form-label'>Puedes agregar un fichero multimedia si lo deseas (imagen,video o audio): </label>
-                            <div className="form">
+                            <div className="form-select">
+                                <label className='form-label'>Puedes agregar un fichero multimedia si lo deseas (imagen,video o audio): </label>
                                 <input type="file" name="imgCollection" onChange={this.onFileChange} multiple />
                             </div>
                         </div>
-                        <div className="form-select">
-                            <Button onClick={() => this.onModal(true)}>Enviar</Button>
+
+                        <div className="row-edit">
+                            <div className="form-button">
+                                <Button onClick={() => this.onModal(true)}>Enviar</Button>
+                            </div>
+                            <div className="form-button">
+                                <Button onClick={() => this.changeView()}>Cancelar</Button>
+                            </div>
                         </div>
-                        <div className="form-select">
-                            <Button onClick={() => this.changeView()}>Cancelar</Button>
-                        </div>
+
                         <Modal size="lg" aria-labelledby="contained-modal-title-vcenter" centered show={this.state.stateModal} onHide={this.state.stateModal}>
                             <Modal.Header >
                                 <Modal.Title id="contained-modal-title-vcenter">
@@ -355,7 +320,7 @@ class CreateChallenge extends Component {
                                 </Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
-                                <h5>¿ Esta seguro de enviar este desafio ?</h5>
+                                ¿Esta seguro de enviar este desafio?
                             </Modal.Body>
                             <Modal.Footer>
                                 <Button onClick={() => this.sendChallenge()}>Si</Button>
