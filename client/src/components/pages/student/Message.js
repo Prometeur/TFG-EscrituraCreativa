@@ -81,27 +81,50 @@ class Message extends Component {
             })
     }
 
+
+    askAcceptRequest = () => {
+        debugger;
+        if(this.state.message.tipo===2){
+            this.acceptRequest();
+        }
+        else if(this.state.message.tipo===0){
+            this.showModalAnswerJoinTeam();
+        }
+
+    }
+
     acceptRequest = () => {
-        if (this.state.message.tipo === 2) {//si el mensaje es una solicitud de unirse a un equipo
+        //si el mensaje es una solicitud de unirse a un equipo
+        if (this.state.message.tipo === 2) {
+            var idMessage=this.state.message.id;
+            var idGroup=this.state.message.idGrupo;
+            var idIssuer=this.state.message.idEmisor;
+            var idReceiver=this.state.message.idReceptor;
+            var idCreatorTeam= this.state.message.idCreador;
+            var mensaje=this.state.message.mensaje;
+            var date=this.state.message.fecha;
+            var active=this.state.message.activo;
+            let dataMessage = [{ id: idMessage, idGrupo:idGroup, idEmisor:idIssuer,idReceptor:idReceiver,idCreador:idCreatorTeam,mensaje:mensaje,tipo:0,fecha:date,activo:active }];
+            this.setState({message: dataMessage[0]});
             var idMember;
             //Obtengo el id del futuro miembro del equipo, identificar si el idEmisor/idReceptor
             //es el futuro miembro
-            this.showModalAcceptJoinTeam();
-            if (this.state.message.idCreador === this.state.message.idEmisor) {
-                idMember = this.state.message.idReceptor;
+            if (dataMessage[0].idCreador === dataMessage[0].idEmisor) {
+                idMember = dataMessage[0].idReceptor;
             }
             else {
-                idMember = this.state.message.idEmisor;
+                idMember = dataMessage[0].idEmisor;
             }
-
             StudentService.joinTeam(this.state.team.id, idMember)
                 .then(response => {
-                    StudentService.editMessage(this.state.message.id)
+                    this.showModalAcceptJoinTeam();
+                    //modifico el tipo de mensaje 
+                    StudentService.editMessage(dataMessage[0].id)
                         .then(response => {
+                            
                         }).catch(error => {
                             console.log(error.message);
                         })
-                    // window.location.href = "/student/messenger";
                 }).catch(error => {
                     console.log(error.message);
                 })
@@ -131,40 +154,31 @@ class Message extends Component {
             //   form: dato,
             modalAcceptJoinTeam: true,
         });
-    };
-
-    closeModalAcceptJoinTeam = () => {
         setTimeout(
             () => this.setState({ modalAcceptJoinTeam: false }),
-            3000
+            2000
         );
     };
 
     showModalAnswerJoinTeam = () => {
+        debugger;
         this.setState({
             //   form: dato,
             modalAnswerJoinTeam: true,
         });
-    };
-
-    closeModalAnswerJoinTeam = () => {
         setTimeout(
             () => this.setState({ modalAnswerJoinTeam: false }),
-            3000
+            2000
         );
     };
-
 
     showModalRefuseJoinTeam = () => {
         this.setState({
             modalRefuseJoinTeam: true,
         });
-    };
-
-    closeModalRefuseJoinTeam = () => {
         setTimeout(
             () => this.setState({ modalRefuseJoinTeam: false }),
-            3000
+            2000
         );
     };
 
@@ -182,7 +196,7 @@ class Message extends Component {
                                     <div class="message-inputs">
                                         <div>{this.state.message.mensaje}</div>
                                         <div className="form-select">
-                                            <Button onClick={() => this.acceptRequest()} > Aceptar</Button>
+                                            <Button onClick={() => this.askAcceptRequest()} > Aceptar</Button>
                                         </div>
                                         <div className="form-select">
                                             <Button onClick={() => this.refuseRequest()}> Rechazar</Button>
@@ -215,10 +229,7 @@ class Message extends Component {
                     <Modal.Header>
                     </Modal.Header>
                     <Modal.Body>
-                        {/* <FormGroup> */}
                         <p> Has aceptado la solicitud</p>
-                        {this.closeModalAcceptJoinTeam()}
-                        {/* </FormGroup> */}
                     </Modal.Body>
                     <Modal.Footer>
                     </Modal.Footer>
@@ -228,23 +239,17 @@ class Message extends Component {
                     <Modal.Header>
                     </Modal.Header>
                     <Modal.Body>
-                        {/* <FormGroup> */}
                         <p> Has rechazado la solicitud</p>
-                        {this.closeModalRefuseJoinTeam()}
-                        {/* </FormGroup> */}
                     </Modal.Body>
                     <Modal.Footer>
                     </Modal.Footer>
                 </Modal>
 
-                <Modal isOpen={this.state.modalAnswerJoinTeam}>
+                <Modal show={this.state.modalAnswerJoinTeam}>
                     <Modal.Header>
                     </Modal.Header>
                     <Modal.Body>
-                        {/* <FormGroup> */}
                         <p> Ya has respondido a la solicitud</p>
-                        {this.closeModalAnswerJoinTeam()}
-                        {/* </FormGroup> */}
                     </Modal.Body>
                     <Modal.Footer>
                     </Modal.Footer>

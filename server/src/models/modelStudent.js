@@ -5,6 +5,8 @@ class modelStudent {
         this.pool = pool;
     }
 
+    //-----------------------------------------------------GROUPS----------------------------------------------------------------//
+    
     /*Obtiene los grupos del estudiante*/
     getGroups(student, callback) {
         const sqlSelect = "SELECT grupoestudiante.idGrupo, grupoestudiante.idEstudiante, grupo.nombre, grupo.idProfesor FROM grupoestudiante INNER JOIN grupo ON grupoestudiante.idGrupo = grupo.id WHERE grupoestudiante.idEstudiante=?";
@@ -18,8 +20,7 @@ class modelStudent {
         });
     }
 
-    //-----------------------------------------------------CHALLENGE----------------------------------------------------------------//
-
+    //-----------------------------------------------------CHALLENGES----------------------------------------------------------------//
 
     /*Obtiene el desafio del estudiante segun su grupo*/
     getChallenge(idChallenge, callback) {
@@ -51,7 +52,7 @@ class modelStudent {
     /*Obtiene los desafios del estudiante segun su grupo*/
     getChallengesIndividual(idStudent, type, callback) {
         // const sqlSelect = "SELECT desafio.id,desafio.idGrupo,desafio.titulo,desafio.descripcion,desafio.tipoCalificacion,categoria.nombre,desafio.colaborativo,desafio.fechaIni,desafio.fechaFin, desafio.activo FROM desafio INNER JOIN categoria ON desafio.idCategoria = categoria.id WHERE desafio.idGrupo = ? ";
-        const sqlSelect = "SELECT c.nombre as nombreCategoria, g.nombre as nombreGrupo, d.id,d.idGrupo,d.titulo,d.descripcion,d.tipoCalificacion, d.idCategoria ,d.colaborativo,d.fechaIni,d.fechaFin, d.activo FROM desafio as d  INNER JOIN grupo as g ON g.id=d.idGrupo INNER JOIN grupoestudiante as gs ON gs.idGrupo = g.id  INNER JOIN categoria as c ON d.idCategoria = c.id WHERE gs.idEstudiante = ? AND d.colaborativo=? AND d.activo = ? ";
+        const sqlSelect = "SELECT c.nombre as nombreCategoria, g.nombre as nombreGrupo, d.id,d.idGrupo,d.titulo,d.descripcion,d.tipoCalificacion, d.idCategoria ,d.colaborativo,d.fechaIni,d.fechaFin, d.activo FROM desafio as d  INNER JOIN grupo as g ON g.id=d.idGrupo INNER JOIN grupoestudiante as gs ON gs.idGrupo = g.id INNER JOIN categoria as c ON d.idCategoria = c.id WHERE gs.idEstudiante = ? AND d.colaborativo=? AND d.activo = ? ";
         this.pool.query(sqlSelect, [idStudent, type, 1], (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
@@ -61,6 +62,8 @@ class modelStudent {
             }
         });
     }
+
+    //---------------------------------------------MULTIMEDIA-CHALLENGES----------------------------------------------------------------//
 
     /*Obtiene los ficheros multimedia del desafio*/
     getMultimediaChallenge(idChallenge, callback) {
@@ -91,7 +94,6 @@ class modelStudent {
         });
     }
 
-
     /*Obtiene todos los escritos colaborativos activos del equipo del estudiante*/
     getWritingsCollaborative(idStudent, callback) {
         //const sqlSelect = "SELECT u.nombre ,u.apellidos, c.titulo as nombreDesafio, w.id,w.idGrupo,w.idDesafio,w.idEscritor,w.puntuacion,w.comentario,w.colaborativo,w.finalizado,w.fecha,w.activo FROM escrito as w INNER JOIN usuario as u ON w.idEscritor= u.id INNER JOIN desafio as c ON w.idDesafio= c.id where w.idEscritor= ? AND w.activo=?;";
@@ -106,7 +108,6 @@ class modelStudent {
             }
         });
     }
-
 
     /*Obtiene el escrito del estudiante segun su grupo*/
     getWriting(idWriting, callback) {
@@ -187,6 +188,22 @@ class modelStudent {
         });
     }
 
+    /*Edito el escrito del estudiante */
+    editWritingTeam(idWriting, idGroup, idChallenge, idWriter, title, text, log, type, callback) {
+        const sqlInsert = "UPDATE escrito SET idGrupo = ?,idDesafio = ?, idEscritor = ?, nombre=?,texto = ?, registro=?,colaborativo = ? WHERE id=?";
+        this.pool.query(sqlInsert, [idGroup, idChallenge, idWriter, title, text, log, type, idWriting], (err, result) => {
+            if (err) {
+                console.log("Error");
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+            }
+        });
+    }
+
+    //---------------------------------------------MULTIMEDIA-WRITING----------------------------------------------------------------//
+
     /*Obtiene los ficheros multimedia del escrito del estudiante*/
     getMultimedia(idChallenge, idWriter, callback) {
         const sqlSelect = "SELECT * FROM multimediaescrito where idEscritor= ? AND idDesafio=?";
@@ -226,12 +243,26 @@ class modelStudent {
         });
     }
 
-    //-------------------------------------------------TEAM------------------------------------------------------------------//
+    //-------------------------------------------------TEAMS------------------------------------------------------------------//
+
+    /*Crea un equipo*/
+    createTeam(idCreator, idGroup, teamName, callback) {
+        const sqlInsert = "INSERT INTO equipo (nombre,idCreador,idGrupo,activo) VALUES (?,?,?,?)";
+        this.pool.query(sqlInsert, [teamName, idCreator, idGroup, 1], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+            }
+        });
+    }
+
     /*Obtiene todos los equipos del estudiante*/
     getTeams(idStudent, callback) {
         // const sqlSelect = "SELECT * FROM equipoestudiante INNER JOIN equipo ON equipoestudiante.idEquipo = equipo.id INNER JOIN grupo ON equipo.idGrupo = grupo.id where idEstudiante= ?";
 
-        const sqlSelect = "SELECT ts.idEquipo as idEquipo,t.nombre as nombreEquipo , g.nombre as nombreGrupo, g.id as idGrupo FROM equipoestudiante AS ts INNER JOIN equipo AS t ON ts.idEquipo = t.id INNER JOIN grupo AS g ON t.idGrupo = g.id where ts.idEstudiante= ?";
+        const sqlSelect = "SELECT ts.idEquipo as idEquipo,t.nombre as nombreEquipo ,t.idCreador, g.nombre as nombreGrupo, g.id as idGrupo FROM equipoestudiante AS ts INNER JOIN equipo AS t ON ts.idEquipo = t.id INNER JOIN grupo AS g ON t.idGrupo = g.id where ts.idEstudiante= ?";
         this.pool.query(sqlSelect, idStudent, (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
@@ -254,7 +285,6 @@ class modelStudent {
             }
         });
     }
-
 
     /*Obtiene los equipos del grupo*/
     getTeamsGroup(idGroup, callback) {
@@ -283,7 +313,6 @@ class modelStudent {
         });
     }
 
-
     /*Obtengo la tabla entera de equipoestudiante*/
     getTeamStudent(callback) {
         const sqlSelect = "SELECT ts.id as id, ts.idEquipo as idEquipo, ts.idEstudiante as idEstudiante, u.nombre as nombre,u.apellidos, u.correo as correo FROM equipoestudiante as ts INNER JOIN usuario as u ON ts.idEstudiante=u.id";
@@ -297,11 +326,14 @@ class modelStudent {
         });
     }
 
-    /*Se une a un equipo el estudiante*/
-    joinTeam(idTeam, idStudent, callback) {
-        //const sqlInsert = "INSERT INTO escrito (idGrupo,idDesafio,idEscritor,texto,colaborativo,activo) VALUES (?,?,?,?,?,?)";
-        const sqlInsert = "INSERT INTO equipoestudiante (idEquipo,idEstudiante) VALUES (?,?) ";
-        this.pool.query(sqlInsert, [idTeam, idStudent], (err, result) => {
+    //Obtiene estudiantes sin equipos del grupo
+    getStudentWithoutTeam(idGroup, callback) {
+        // var rol="S";
+        // const sqlSelect = "SELECT desafio.id,desafio.idGrupo,desafio.titulo,desafio.descripcion,desafio.tipoCalificacion,categoria.nombre,desafio.colaborativo,desafio.fechaIni,desafio.fechaFin, desafio.activo FROM desafio INNER JOIN categoria ON desafio.idCategoria = categoria.id WHERE desafio.idGrupo = ? ";
+        //  const sqlSelect = "SELECT * from equipoestudiante as ts INNER JOIN usuario as u ON ts.idEstudiante <> u.id AND u.rol = ?   ";
+        const sqlSelect = "SELECT u.id, u.nombre,u.apellidos  from usuario as u INNER JOIN grupoestudiante as gs ON u.id=gs.idEstudiante WHERE gs.idGrupo = ?  AND NOT EXISTS (SELECT * FROM equipoestudiante as ts INNER JOIN equipo as t ON ts.idEquipo = t.id WHERE ts.idEStudiante = u.id AND t.idGrupo = ?)";
+        // this.pool.query(sqlSelect, [rol,idGroup], (err, result) => {
+        this.pool.query(sqlSelect, [idGroup, idGroup], (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }
@@ -310,10 +342,14 @@ class modelStudent {
             }
         });
     }
-    /*Crea un equipo*/
-    createTeam(idCreator, idGroup, teamName, callback) {
-        const sqlInsert = "INSERT INTO equipo (nombre,idCreador,idGrupo,activo) VALUES (?,?,?,?)";
-        this.pool.query(sqlInsert, [teamName, idCreator, idGroup, 1], (err, result) => {
+
+    /*Obtiene los integrantes de un equipo */
+    getMembersTeam(idTeam, callback) {
+        // const sqlSelect = "SELECT desafio.id,desafio.idGrupo,desafio.titulo,desafio.descripcion,desafio.tipoCalificacion,categoria.nombre,desafio.colaborativo,desafio.fechaIni,desafio.fechaFin, desafio.activo FROM desafio INNER JOIN categoria ON desafio.idCategoria = categoria.id WHERE desafio.idGrupo = ? ";
+        // const sqlSelect = "SELECT * from equipoestudiante as ts INNER JOIN usuario as u ON ts.idEstudiante <> u.id AND u.rol = ?  INNER JOIN grupoestudiante as gs ON gs.idEstudiante = u.id WHERE gs.idGrupo=? ";
+        const sqlSelect = "SELECT ts.idEquipo, ts.idEstudiante ,u.nombre as nombreEstudiante, u.apellidos as apellidoEstudiante from equipoestudiante as ts INNER JOIN usuario as u ON ts.idEstudiante = u.id WHERE ts.idEquipo =?   ";
+        // this.pool.query(sqlSelect, [rol,idGroup], (err, result) => {
+        this.pool.query(sqlSelect, idTeam, (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }
@@ -363,6 +399,20 @@ class modelStudent {
         });
     }
 
+    /*Se une a un equipo el estudiante*/
+    joinTeam(idTeam, idStudent, callback) {
+        //const sqlInsert = "INSERT INTO escrito (idGrupo,idDesafio,idEscritor,texto,colaborativo,activo) VALUES (?,?,?,?,?,?)";
+        const sqlInsert = "INSERT INTO equipoestudiante (idEquipo,idEstudiante) VALUES (?,?) ";
+        this.pool.query(sqlInsert, [idTeam, idStudent], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+            }
+        });
+    }
+
     /*Elimina un estudiante de un equipo*/
     leaveStudentTeam(idTeam, idStudent, callback) {
         //  const sqlDelete = "DELETE FROM multimediaescrito WHERE id=?";
@@ -377,46 +427,12 @@ class modelStudent {
         });
     }
 
-    //Obtiene estudiantes sin equipos del grupo
-    getStudentWithoutTeam(idGroup, callback) {
-        // var rol="S";
-        // const sqlSelect = "SELECT desafio.id,desafio.idGrupo,desafio.titulo,desafio.descripcion,desafio.tipoCalificacion,categoria.nombre,desafio.colaborativo,desafio.fechaIni,desafio.fechaFin, desafio.activo FROM desafio INNER JOIN categoria ON desafio.idCategoria = categoria.id WHERE desafio.idGrupo = ? ";
-        //  const sqlSelect = "SELECT * from equipoestudiante as ts INNER JOIN usuario as u ON ts.idEstudiante <> u.id AND u.rol = ?   ";
-        const sqlSelect = "SELECT u.id, u.nombre,u.apellidos  from usuario as u INNER JOIN grupoestudiante as gs ON u.id=gs.idEstudiante WHERE gs.idGrupo = ?  AND NOT EXISTS (SELECT * FROM equipoestudiante as ts INNER JOIN equipo as t ON ts.idEquipo = t.id WHERE ts.idEStudiante = u.id AND t.idGrupo = ?)";
-        // this.pool.query(sqlSelect, [rol,idGroup], (err, result) => {
-        this.pool.query(sqlSelect, [idGroup, idGroup], (err, result) => {
-            if (err) {
-                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
-            }
-            else {
-                callback(null, result);
-            }
-        });
-    }
-
-    /*Obtiene los integrantes de un equipo */
-    getMembersTeam(idTeam, callback) {
-
-        // const sqlSelect = "SELECT desafio.id,desafio.idGrupo,desafio.titulo,desafio.descripcion,desafio.tipoCalificacion,categoria.nombre,desafio.colaborativo,desafio.fechaIni,desafio.fechaFin, desafio.activo FROM desafio INNER JOIN categoria ON desafio.idCategoria = categoria.id WHERE desafio.idGrupo = ? ";
-        // const sqlSelect = "SELECT * from equipoestudiante as ts INNER JOIN usuario as u ON ts.idEstudiante <> u.id AND u.rol = ?  INNER JOIN grupoestudiante as gs ON gs.idEstudiante = u.id WHERE gs.idGrupo=? ";
-        const sqlSelect = "SELECT ts.idEquipo, ts.idEstudiante ,u.nombre as nombreEstudiante, u.apellidos as apellidoEstudiante from equipoestudiante as ts INNER JOIN usuario as u ON ts.idEstudiante = u.id WHERE ts.idEquipo =?   ";
-        // this.pool.query(sqlSelect, [rol,idGroup], (err, result) => {
-        this.pool.query(sqlSelect, idTeam, (err, result) => {
-            if (err) {
-                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
-            }
-            else {
-                callback(null, result);
-            }
-        });
-    }
-
     //----------------------------------------------MESSAGE----------------------------------------------------------------//
 
     /*Obtiene los mensajes del estudiante*/
     getMessages(idStudent, callback) {
         // const sqlSelect = "SELECT * FROM equipoestudiante INNER JOIN equipo ON equipoestudiante.idEquipo = equipo.id INNER JOIN grupo ON equipo.idGrupo = grupo.id where idEstudiante= ?";
-        const sqlSelect = "SELECT m.id,u.nombre as nombreEmisor, u.correo ,m.mensaje, m.fecha FROM mensajeria AS m INNER JOIN usuario AS u ON  m.idEmisor = u.id WHERE m.idReceptor = ? AND m.activo=1";
+        const sqlSelect = "SELECT g.nombre as nombreGrupo,m.id,u.nombre as nombreEmisor, u.correo ,m.mensaje, m.fecha FROM mensajeria AS m INNER JOIN usuario AS u ON  m.idEmisor = u.id INNER JOIN grupo as g ON g.id=m.idGrupo WHERE m.idReceptor = ? AND m.activo=1";
         this.pool.query(sqlSelect, idStudent, (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
@@ -441,6 +457,21 @@ class modelStudent {
         });
     }
 
+    
+    /*busca mensaje del estudiante*/
+    searchMessage(idGroup,idIssuer,idCreatorTeam, callback) {
+        // const sqlSelect = "SELECT m.id as id, m.idEmisor as idEmisor, m.mensaje as mensaje, u.nombre as nombreEmisor FROM mensajeria AS m INNER JOIN usuario AS u ON m.idEmisor = u.id WHERE m.id = ? ";
+        const sqlSelect = "SELECT * FROM mensajeria WHERE idGrupo = ? AND idEmisor=? AND idCreador=?";
+        this.pool.query(sqlSelect, [idGroup,idIssuer,idCreatorTeam], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+            }
+        });
+    }
+
     /*cambia el tipo de mensaje*/
     editMessage(idMessage, callback) {
         //   const sqlInsert = "UPDATE escrito SET idGrupo = ?,idDesafio = ?, idEscritor = ?, texto = ?, colaborativo = ? WHERE id=?";
@@ -456,10 +487,10 @@ class modelStudent {
         });
     }
 
-    /*Envia mensaje de un usuario*/
-    sendMessage(idSender, idReceiver, idCreator, message, type, callback) {
-        const sqlInsert = "INSERT INTO mensajeria (idEmisor,idReceptor, idCreador,mensaje,tipo,activo) VALUES (?,?,?,?,?,?)";
-        this.pool.query(sqlInsert, [idSender, idReceiver, idCreator, message, type, 1], (err, result) => {
+    /*Elimina el fichero multimedia del desafio*/
+    deleteMessage(idMessage, callback) {
+        const sqlDelete = "DELETE FROM mensajeria WHERE id=?";
+        this.pool.query(sqlDelete, idMessage, (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }
@@ -469,6 +500,18 @@ class modelStudent {
         });
     }
 
+    /*Envia mensaje de un usuario*/
+    sendMessage(idGroup,idSender, idReceiver, idCreator, message, type, callback) {
+        const sqlInsert = "INSERT INTO mensajeria (idGrupo,idEmisor,idReceptor, idCreador,mensaje,tipo,activo) VALUES (?,?,?,?,?,?,?)";
+        this.pool.query(sqlInsert, [idGroup,idSender, idReceiver, idCreator, message, type, 1], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+            }
+        });
+    }
 }
 
 //Data export
