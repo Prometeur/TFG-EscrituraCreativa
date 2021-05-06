@@ -40,25 +40,6 @@ class Challenges extends Component {
         };
     }
 
-    deleteChallenge = (challenge) => {
-        this.closeModalDeleteChallenge();
-        var contador = 0;
-        var arreglo = this.state.data;
-        arreglo.map((registro) => {
-            if (challenge.id === registro.id) {
-                arreglo.splice(contador, 1);
-            }
-            contador++;
-        });
-        this.setState({ data: arreglo });
-
-        TeacherService.deleteChallenge(challenge.id).then(response => {
-        }).catch(error => {
-            console.log(error.message);
-        })
-
-    }
-
     componentDidMount() {
         //Obtiene los desafios del grupo seleccionado por el profesor
         TeacherService.getChallenges(this.props.groupSelect)
@@ -75,9 +56,24 @@ class Challenges extends Component {
             }).catch(error => {
                 console.log(error.message);
             })
-
     }
 
+    deleteChallenge = (challenge) => {
+        this.closeModalDeleteChallenge();
+        var contador = 0;
+        var arreglo = this.state.data;
+        arreglo.map((registro) => {
+            if (challenge.id === registro.id) {
+                arreglo.splice(contador, 1);
+            }
+            contador++;
+        });
+        this.setState({ data: arreglo });
+        TeacherService.deleteChallenge(challenge.id).then(response => {
+        }).catch(error => {
+            console.log(error.message);
+        })
+    }
 
     //Obtiene el nombre del desafio/escrito
     showCollaborative = (challenge) => {

@@ -51,7 +51,6 @@ class Teams extends Component {
         //Me traigo la tabla entera de equipoestudiante
         StudentService.getTeamStudent()
             .then(response => {
-
                 this.setState({ dataTeamStudent: response });
 
             }).catch(error => {
@@ -127,9 +126,8 @@ class Teams extends Component {
                                 {/* <td><Link to={`/teacher/createChallenge/${this.props.groupSelect}`}><button >Crear Desafio</button></Link></td> */}
                             </div>
                         ) : (
-
                             <div className="table-margin">
-                                <p>Todavia no dispones de un equipo para mostrar</p>
+                                <p>No dispones de equipos para mostrar</p>
                             </div>
                         )}
                    </Card.Body>

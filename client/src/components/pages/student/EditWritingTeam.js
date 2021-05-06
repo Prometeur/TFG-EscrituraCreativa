@@ -37,16 +37,7 @@ import Modal from 'react-bootstrap/Modal';
 
 import Chat from "./Chat"
 
-// /*Componentes de estilo Reactstrap*/
-// import {
-//     Table,
-//     Container,
-//     Modal,
-//     ModalHeader,
-//     ModalBody,
-//     FormGroup,
-//     ModalFooter,
-// } from "reactstrap";
+
 
 
 import socket from "../../../utils/Socket";
@@ -58,7 +49,6 @@ class EditWritingTeam extends Component {
         this.onFileChange = this.onFileChange.bind(this);
         this.state = {
             imgCollection: [],//array de ficheros multimedia
-            dataTeamStudent: [],//contiene el equipo del estudiante
             contentState: null,//editor
             editorState: EditorState.createEmpty(),
             challenge: '',//contiene el desafio 
@@ -67,9 +57,12 @@ class EditWritingTeam extends Component {
             modalDeleteFile: false,
             deleteFileMedia: '',//fichero multimedia del escrito que desea ser borrado
             nameDeleteFileMedia: '',//nomnbre del fichero multimedia del escrito que desea ser borrado
+            writing: '',
+            log: '',
             form: {
                 idWriter: '',
-                escrito: ''
+                title: '',
+                escrito: '',
             }
         }
     }
@@ -85,7 +78,6 @@ class EditWritingTeam extends Component {
                     StudentService.getTeamStudentGroup(AuthUser.getCurrentUser().id, this.props.match.params.idGroup)
                         .then(response => {
                             this.setState({
-                                dataTeamStudent: response,
                                 form: {
                                     ...this.state.form,
                                     idWriter: response[0].idEquipo
@@ -116,14 +108,19 @@ class EditWritingTeam extends Component {
         /*Obtiene el escrito del estudiante */
         StudentService.getWriting(this.props.match.params.idWriting)
             .then(response => {
+
                 var contentState = stateFromHTML(response.data[0].texto);
                 let editorState = EditorState.createWithContent(contentState);
                 // this.setState({ editorState: editorState });
                 this.setState({
+                    writing: response.data[0],
                     editorState: editorState,
+                    log: response.data[0].registro,
                     form: {
                         ...this.state.form,
+                        title: response.data[0].nombre,
                         escrito: response.data[0].texto
+
                     }
                 });
             }).catch(error => {
@@ -133,8 +130,9 @@ class EditWritingTeam extends Component {
 
     //Envia el escrito editado 
     editWriting = () => {
+
         /*Edita escrito del estudiante*/
-        StudentService.editWriting(this.props.match.params.idWriting, this.props.match.params.idGroup, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.escrito, this.state.challenge.colaborativo)
+        StudentService.editWritingTeam(this.props.match.params.idWriting, this.props.match.params.idGroup, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.title, this.state.form.escrito, this.state.log, this.state.challenge.colaborativo)
             .then(response => {
                 if (this.state.imgCollection.length > 0) {
                     StudentService.sendMultimedia(this.state.imgCollection, this.state.form.idWriter, this.props.match.params.idChallenge, this.state.challenge.colaborativo)
@@ -179,7 +177,9 @@ class EditWritingTeam extends Component {
         this.setState({ imgCollection: e.target.files });
     }
 
-    //convierte la descripción del escrito a html y lo guarda en el form
+
+
+    //Editor -->convierte la descripción del escrito a html y lo guarda en el form
     editorChange = () => {
         this.setState({
             form: {
@@ -189,12 +189,14 @@ class EditWritingTeam extends Component {
         });
     };
 
+    /**Editor -->almacena el estado del editor(cada vez que se edita el editor)*/
     onEditorStateChange = (editorState) => {
         this.setState({
             editorState
         });
     };
 
+    /**Editor-->almacena todo el contenido que hay en el editor */
     onContentStateChange = contentState => {
         this.setState({
             contentState
@@ -231,25 +233,75 @@ class EditWritingTeam extends Component {
         this.setState({ modalDeleteFile: false });
     };
 
+    //actualiza el titulo del escrito
+    onChangeWritingName = e => {
+        this.setState({
+            form: {
+                ...this.state.form,
+                title: e.target.value
+            }
+        });
+    }
+
+    //Devuelve una cadena de tipo de desafio
+    showCollaborative = () => {
+        if (this.state.challenge.colaborativo === 1) {
+            return "Individual"
+        }
+        else {
+            return "Colaborativo"
+        }
+    }
+
+    /* */
+    pruebaChange = (nombre, mensaje, mensajes) => {
+        debugger;
+        // mensajes.push([nombre,mensaje])
+        // let dataMessage = { nombre: nombre, mensaje: mensaje };
+        // mensajes.push(dataMessage)
+
+        // mensajes.map((e, i) => (
+        //     this.setState({
+        //         // log: mensajes
+        //         log: this.state.log + "<p>" + "<strong>" + e.nombre + "</strong>" + "<br/>" + e.mensaje + "<br/>" + "</p>"
+        //     })
+        // ))
+
+        //   this.setState({
+        //     log: this.state.log + "<p>"+ "<strong>"+ nombre + "</strong>"+"<br/>" + mensaje + "<br/>" + "</p>"
+        // }) 
+        
+        for (var i=0; i<mensajes.length; i++){
+                 this.setState({
+                // log: mensajes
+                log: this.state.log + "<p>" + "<strong>" + mensajes[i].nombre + "</strong>" + "<br/>" + mensajes[i].mensaje + "<br/>" + "</p>"
+            })
+        }
+    };
 
     /*Dibuja la pagina */
     render() {
-        const { dataMediaChallenge } = this.state;
-        const { dataMediaWriting } = this.state;
+        const { dataMediaChallenge, dataMediaWriting } = this.state;
         // const { formErrors } = this.state;
         return (
             <>
                 <div className="container">
-                    <label className='form-label'>Editar Escrito</label>
+                    <label className='form-label'>Editar Escrito {this.showCollaborative()}</label>
                     <Card className="card-edit">
                         <Card.Body>
                             <div className="row-edit">
                                 <h2 > {this.state.challenge.titulo} </h2>
                             </div>
                             <div className="row-edit">
-                                <label className='form-label'>{this.state.challenge.nombre}</label>
+                                <label className='form-label'>Categoria</label>
+                                <p>{this.state.challenge.nombre}</p>
                             </div>
-                            <div className="challenge-inputs" dangerouslySetInnerHTML={{ __html: this.state.challenge.descripcion }}></div>
+
+                            <div className="row-edit">
+                                <label className='form-label'>Leer la descripción del Desafío</label>
+                                <div className="challenge-inputs" dangerouslySetInnerHTML={{ __html: this.state.challenge.descripcion }}></div>
+                            </div>
+
                             <div className="row-edit">
                                 <label className='form-label'>Ficheros Multimedia: </label>
                                 <table>
@@ -264,6 +316,20 @@ class EditWritingTeam extends Component {
                                         </div>
                                     </tbody>
                                 </table>
+                            </div>
+
+                            <div className="form-inputs">
+                                <label className='form-label'>Titulo</label>
+                                <div>
+                                    <input
+                                        type="text"
+                                        name="title"
+                                        placeholder="Escribe el título"
+                                        value={this.state.form.title}
+                                        // onChange={this.handleChange}
+                                        onChange={this.onChangeWritingName}
+                                    />
+                                </div>
                             </div>
 
                             <div className="row-edit">
@@ -287,10 +353,6 @@ class EditWritingTeam extends Component {
                                 </div>
                             </div>
 
-                            {/* style="width:100px; height:115px; overflow: scroll;" */
-
-
-                            }
                             <div class="row-edit">
                                 <label className='form-label' >Ficheros Multimedia: </label>
                                 <table>
@@ -303,15 +365,14 @@ class EditWritingTeam extends Component {
                                                     <td><Button variant="danger" onClick={() => this.askDeleteFile(writing)}>Eliminar</Button></td>
                                                 </tr>
                                             ))}
-
                                         </div>
-
                                     </tbody>
                                 </table>
                             </div>
 
                             <div class="row-edit">
-                                <Chat nombre={AuthUser.getCurrentUser().username} />
+                                <Chat pruebaChange={this.pruebaChange} nombre={AuthUser.getCurrentUser().username} />
+                                {/* <Chat  nombre={this.state.manual} /> */}
                             </div>
 
 
@@ -321,7 +382,6 @@ class EditWritingTeam extends Component {
                             <div className="form-select">
                                 <Button onClick={() => window.location.href = '/student'}>Cancelar</Button>
                             </div>
-
                         </Card.Body>
                     </Card>
                 </div>

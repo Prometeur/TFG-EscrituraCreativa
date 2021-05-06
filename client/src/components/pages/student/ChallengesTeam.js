@@ -12,11 +12,14 @@ import { Link } from "react-router-dom";
 /**Datos del usuario */
 import AuthUser from '../../../services/authenticity/auth-service.js';
 
-
 /**Estilos*/
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
+
+//Estilos
 import '../../../styles/styleGeneral.css';
+import '../../../styles/styleCard.css';
 
 class ChallengesTeam extends Component {
 
@@ -24,50 +27,89 @@ class ChallengesTeam extends Component {
         super(props);
 
         this.state = {
+            dataTeams: [],//Contiene los equipos del estudiante
             dataTeamStudent: [],//Contiene el equipo del estudiante
             data: [],//contiene desafios del estudiante
             dataWritingTeam: [],//contiene escritos del equipo del estudiante
+            showChallenges: false,
         };
     }
 
     componentDidMount() {
         if (this.props.groupSelect === undefined) {
             //obtener desafios idUser y type(individual=1 o colaborativo=2)
-            StudentService.getChallengesIndividual(AuthUser.getCurrentUser().id, 2)
-                .then(response => {
-                    this.setState({ data: response });
+            // StudentService.getChallengesIndividual(AuthUser.getCurrentUser().id, 2)
+            //     .then(response => {
+            //         if (response.length !== 0) {
+            //             this.setState({ data: response, showChallenges: true });
+            //         }
+            //     }).catch(error => {
+            //         console.log(error.message);
+            //     })
+
+            StudentService.getTeams(AuthUser.getCurrentUser().id)
+                .then(responseTeams => {
+                    //si el usuario tiene equipos puede ver  desafios
+                    if (responseTeams.length != 0) {
+                        this.setState({ dataTeams: responseTeams });
+                        StudentService.getChallengesIndividual(AuthUser.getCurrentUser().id, 2)
+                            .then(responseChallenges => {
+                                //si existen desafios colaborativos
+                                if (responseChallenges.length !== 0) {
+                                    this.setState({ data: responseChallenges, showChallenges: true });
+                                    //obtiene los escritos colaborativos del estudiante
+                                    StudentService.getWritingsCollaborative(AuthUser.getCurrentUser().id)
+                                        .then(responseWritings => {
+                                            this.setState({ dataWritingTeam: responseWritings.data });
+                                        })
+                                }
+                            }).catch(error => {
+                                console.log(error.message);
+                            })
+                    }
+                    else {
+                        this.setState({ showChallenges: false });
+                    }
+
                 }).catch(error => {
                     console.log(error.message);
                 })
-            //obtiene los escritos colaborativos del estudiante
-            StudentService.getWritingsCollaborative(AuthUser.getCurrentUser().id)
-                .then(response => {
-                 
-                    this.setState({ dataWritingTeam: response.data });
-                })
+
+
+            // //obtiene los escritos colaborativos del estudiante
+            // StudentService.getWritingsCollaborative(AuthUser.getCurrentUser().id)
+            //     .then(responseWritings => {
+            //         this.setState({ dataWritingTeam: responseWritings.data });
+            //     })
         }
         else {
             /**Obtiene los desafios del estudiante segun su grupo */
             StudentService.getChallenges(this.props.groupSelect, 2).then(response => {
-                this.setState({ data: response });
+                if (response.length !== 0) {
+                    this.setState({ data: response, showChallenges: true });
+                }
             }).catch(error => {
                 console.log(error.message);
             })
 
+            
             /*Obtiene equipo del estudiante correspondiente a un grupo en concreto*/
             StudentService.getTeamStudentGroup(AuthUser.getCurrentUser().id, this.props.groupSelect)
-                .then(response => {
-                    this.setState({ dataTeamStudent: response });
+                .then(respuesta => {
+                   
                     //si el estudiante tiene equipo
-                    if (response.length != 0) {
+                    if (respuesta.length != 0) {
+                        this.setState({ dataTeams: respuesta });
                         /**Obtiene los escritos del equipo del estudiante */
-                        StudentService.getWritingsTeam(response[0].idEquipo, this.props.groupSelect)
+                        StudentService.getWritingsTeam(respuesta[0].idEquipo, this.props.groupSelect)
                             .then(response => {
                                 this.setState({ dataWritingTeam: response });
                             }).catch(error => {
                                 console.log(error.message);
                             })
-
+                    }
+                    else {
+                        this.setState({ showChallenges: false });
                     }
                 }).catch(error => {
                     console.log(error.message);
@@ -91,7 +133,13 @@ class ChallengesTeam extends Component {
             return true;
     };
 
-    disabledButtonCreate = (challenge, n) => {     
+    disabledButtonCreate = (challenge, n, existsTeam) => {
+
+
+        //si no tiene equipo en el grupo de ese desafio
+        if (!existsTeam) {
+            return true;
+        }
         var dateActual = new Date();
         var dateFin = new Date(challenge.fechaFin)
 
@@ -115,12 +163,6 @@ class ChallengesTeam extends Component {
         }
     }
 
-    //Devuelve el nombre del equipo
-    // showNameTeam = () => {
-    //     if (this.state.dataTeamStudent.length > 0) {
-    //         return this.state.dataTeamStudent[0].nombreEquipo
-    //     }
-    // }
 
     showNameTeam = () => {
         if (this.state.dataWritingTeam.length > 0) {
@@ -138,56 +180,88 @@ class ChallengesTeam extends Component {
             return "No"
     }
 
+
     /*Dibuja la pagina  */
     render() {
-        let formatedDate;
-        const { data } = this.state;
+        const { data, showChallenges, dataWritingTeam, dataTeams } = this.state;
         let existsWriting = false;
+        let existsTeam = false;
         let idWriting = '';
+        let formatedDate;
+        let writingAux = '';
         return (
-            <div className="table-margin">
-                <Table striped bordered hover >
-                    <thead>
-                        <tr>
-                            <th>Desafio</th>
-                            <th>Grupo</th>
-                            {/* <th>Equipo</th> */}
-                            <th>Categoria</th>
-                            <th>Tipo</th>
-                            <th>Fecha</th>
-                            <th>Hora</th>
-                            <th>Finalizado</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data.map((challenge) => (
-                            <tr key={challenge.id}>
-                                <td>{challenge.titulo}</td>
-                                <td>{challenge.nombreGrupo}</td>
-                                {/* <td>{this.showNameTeam()}</td> */}
-                                <td>{challenge.nombreCategoria}</td>
-                                <td>{this.showCollaborative(challenge)}</td>
-                                <td>{formatedDate = moment(challenge.fechaFin).format('DD/MM/YYYY')}</td>
-                                <td>{formatedDate = moment(challenge.fechaFin).format('LT')}</td>
-                                <td >{this.showChallengeFinalized(challenge)}</td>
+            <div className="container">
+                <Card className="card-long">
+                    <Card.Body>
+                        <div className="items-column"><h3>Lista de escritos</h3></div>
+                        {showChallenges ? (
+                            <div className="table-margin">
+                                <Table striped bordered hover >
+                                    <thead>
+                                        <tr>
+                                            <th>Desafio</th>
+                                            <th>Grupo</th>
+                                            {/* <th>Equipo</th> */}
+                                            <th>Categoria</th>
+                                            <th>Tipo</th>
+                                            <th>Fecha</th>
+                                            <th>Hora</th>
+                                            <th>Finalizado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {data.map((challenge) => (
+                                            <tr key={challenge.id}>
+                                                <td>{challenge.titulo}</td>
+                                                <td>{challenge.nombreGrupo}</td>
+                                                {/* <td>{this.showNameTeam()}</td> */}
+                                                <td>{challenge.nombreCategoria}</td>
+                                                <td>{this.showCollaborative(challenge)}</td>
+                                                <td>{formatedDate = moment(challenge.fechaFin).format('DD/MM/YYYY')}</td>
+                                                <td>{formatedDate = moment(challenge.fechaFin).format('LT')}</td>
+                                                <td >{this.showChallengeFinalized(challenge)}</td>
 
-                                {existsWriting = false}
-                                {/* Si el desafio tiene un escrito*/}
-                                {this.state.dataWritingTeam.filter(writing => writing.idDesafio === challenge.id)
-                                    .map((item, index) => {
-                                        existsWriting = true;
-                                        idWriting = item.id;
-                                    }
-                                    )}
-                                <td><Link to={`/student/writing/${challenge.idGrupo}/${challenge.id}`}><Button variant="outline-primary" disabled={this.disabledButtonCreate(challenge, existsWriting)}>Crear Escrito</Button></Link></td>
+                                                {existsWriting = false}
+                                                {existsTeam = false}
+                                                {/* Si el desafio tiene un escrito*/}
+                                                {dataWritingTeam.filter(writing => writing.idDesafio === challenge.id)
+                                                    .map((item, index) => {
+                                                        existsWriting = true;
+                                                        idWriting = item.id;
+                                                        writingAux = item;
+                                                    }
+                                                    )}
+                                                {dataTeams.filter(team => team.idGrupo === challenge.idGrupo)
+                                                    .map((item, index) => {
+                                                        existsTeam = true;
+                                                    }
+                                                    )}
 
-                                {/* <td><Link to={`/student/writing/${challenge.idGrupo}/${challenge.id}`}><Button variant="outline-primary" disabled={this.disabledButtonCreate(challenge, n)}>Nuevo Escrito</Button></Link></td>
+                                                {/* <td><Link to={`/student/writing/${challenge.idGrupo}/${challenge.id}`}><Button variant="outline-primary" disabled={this.disabledButtonCreate(challenge, existsWriting, existsTeam)}>Crear Escrito</Button></Link></td> */}
+                                                {existsTeam ? (
+                                                    <td><Link to={`/student/writing/${challenge.idGrupo}/${challenge.id}`}><Button variant="outline-primary" disabled={this.disabledButtonCreate(challenge, existsWriting, existsTeam)}>Crear Escrito</Button></Link></td>
+                                                ) : (
+                                                    <></>
+
+                                                )}
+
+                                                {/* <td><Link to={`/student/writing/${challenge.idGrupo}/${challenge.id}`}><Button variant="outline-primary" disabled={this.disabledButtonCreate(challenge, n)}>Nuevo Escrito</Button></Link></td>
                                 <td><Link to={`/student/editWriting/${challenge.idGrupo}/${challenge.id}/${idWriting}`}><Button variant="outline-primary" disabled={this.disabledButtonEdit(challenge, n)}>Editar Escrito</Button></Link></td>
                                 <td><Link to={`/student/editWritingTeam/${challenge.idGrupo}/${challenge.id}/${idWriting}`}><Button variant="outline-primary" disabled={this.disabledButtonEdit(challenge, n)}>Editar Escrito Team Beta</Button></Link></td> */}
-                            </tr>
-                        ))}
-                    </tbody>
-                </Table>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </Table>
+                            </div>
+
+                        ) : (
+
+                            <div className="table-margin">
+                                <p>Todavia no dispones de desafios para mostrar o no dispones de equipo</p>
+                            </div>
+                        )}
+                    </Card.Body>
+                </Card>
             </div>
         );
     }
