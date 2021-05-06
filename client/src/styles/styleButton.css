@@ -33,3 +33,10 @@
     background-color: #555555;
     color: white;
 }
+
+.button-direction-left {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+

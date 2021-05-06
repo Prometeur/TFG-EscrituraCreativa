@@ -1,6 +1,6 @@
 .form {
     background: #ffffff;
-    margin: 2rem;
+    margin: 1rem 2rem 1rem;
 }
 
 .form-btn {
@@ -34,6 +34,19 @@
     padding: 0 0.2rem;
 }
 
+.form-items-row {
+    margin: .3rem .4rem;
+    display: table-cell;
+    padding: 0 0.2rem;
+    width: 10rem;
+}
+
+.form-button {
+    margin: 2rem .75rem .75rem;
+    display: inline-grid;
+    padding: 0 0.2rem;
+}
+
 .image p {
 
     margin-top: 0;
@@ -52,13 +65,14 @@
 
 .form-label {
 
-    font-size: 14px;
+    font-size: .9rem;
     margin: 0.4rem 0;
-    font-weight: bold;
-    color: #a79f9f;
+    font-weight: bolder;
+    color: #615f5f;
+    font-family: 'Pontano Sans';
     text-transform: uppercase;
-}
 
+}
 
 .MuiGrid-root{
     margin-top: 6px;
@@ -275,20 +289,6 @@ input.error {
 .form h2 {
     font-size: 1.5rem;
     text-align: center;
-}
-
-.wrapperClassName{
-    border: 1px solid;
-}
-
-.editorClassName {
-    /* border: 1px solid rgb(62, 161, 84); */
-    /* height: 55vh;
-    width:60vw; */
-}
-
-.wrapperClassName {
-    /* border: 1px solid; */
 }
 
 @media screen and (min-width: 768px) {

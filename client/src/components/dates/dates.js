@@ -1,6 +1,12 @@
+/**
+ *  Name_file :dates.js
+ *  Description: Componente sobre selecion de fechas
+ */
+
+
 import React from 'react';
 
-/*Importaciones del time*/
+/**Importaciones del time*/
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -9,14 +15,15 @@ import {
     KeyboardDatePicker,
 } from '@material-ui/pickers';
 
+/**Estilos CSS*/
 import '../../styles/styleGeneral.css';
 
 const Dates = ({ handleDateChange,param}) => {
     return (
-        <div className='section-container'>
+        <ul className={"flex-row"}>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Grid container justify="space-around">
-                  <div className="form-select">
+                  <li className={"flex-item-form"}>
                     <KeyboardDatePicker
                         disableToolbar
                         variant="inline"
@@ -30,8 +37,8 @@ const Dates = ({ handleDateChange,param}) => {
                             'aria-label': 'change date',
                         }}
                     />
-                  </div>
-                  <div className="form-select">
+                  </li>
+                  <li className={"flex-item-form"}>
                     <KeyboardTimePicker
                         margin="normal"
                         id="time-picker"
@@ -42,10 +49,10 @@ const Dates = ({ handleDateChange,param}) => {
                             'aria-label': 'change time',
                         }}
                     />
-                  </div>
+                  </li>
                 </Grid>
             </MuiPickersUtilsProvider>
-        </div>
+        </ul>
     )
 };
 

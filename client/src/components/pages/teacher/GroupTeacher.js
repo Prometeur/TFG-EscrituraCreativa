@@ -25,14 +25,22 @@ import Card from 'react-bootstrap/Card';
 import Icon from '@material-ui/core/Icon';
 import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
 import AdminService from '../../../services/admin/adminService.js';
-
+import Alert from "react-bootstrap/Alert";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
-
 import Accordion from 'react-bootstrap/Accordion';
 
 
+const required = value => {
+    if (!value) {
+        return (
+            <Alert variant="danger" bsPrefix="alert-login">
+                ¡Todos los campos son obligatorios!
+            </Alert>
 
+        );
+    }
+};
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
   <a
@@ -95,6 +103,7 @@ class GroupTeacher extends Component {
       showStudents: false,
       newName:"",
       onRenameGroupModal:'',
+      onAlert:false,
     };
   }
 
@@ -173,17 +182,28 @@ class GroupTeacher extends Component {
         });
   }
 
+  onAlert(modal) {
+      this.setState({
+          onAlert: modal
+      });
+  }
 
   /*Se hacen peticiones al servidor renombrar grupo*/
   rename = () => {
-      AdminService.renameGroup(this.state.groupSelect, this.state.newName ).then(response => {
-        const dataUser = AuthUser.getCurrentUser();
-          this.setState({ nameGroupSelect: this.state.newName });
-          this.onModal(false);
-        
-      }).catch(error => {
-          console.log(error.message);
-      })
+    if(this.state.newName!='') {
+        AdminService.renameGroup(this.state.groupSelect, this.state.newName).then(response => {
+            const dataUser = AuthUser.getCurrentUser();
+            this.setState({nameGroupSelect: this.state.newName});
+            this.onModal(false);
+
+        }).catch(error => {
+            console.log(error.message);
+        })
+    }
+    else {
+
+        this.onAlert(true)
+    }
   }
 
   /*Dibuja la pagina  */
@@ -193,36 +213,36 @@ class GroupTeacher extends Component {
 
     // SISTEMA DE TABS
 
-      let tabs = <div className="container-box"> 
+      let tabs =
                       <Tabs>
-                          <TabList>
+                          <TabList className={"react-tabs__tab-list"}>
                             <Tab>DESAFIOS</Tab>
                             <Tab>ESCRITOS</Tab>
                             <Tab>EQUIPOS</Tab>
                             <Tab>ESTUDIANTES</Tab>
                           </TabList>
                           <TabPanel>
-                          <div className="row">
+
                             <Challenges key={groupSelect} groupSelect={groupSelect} />
-                          </div>
+
                           </TabPanel>
                           <TabPanel>
-                          <div className="row">
+
                             <Writings key={groupSelect} groupSelect={groupSelect} />
-                          </div>
+
                           </TabPanel>
                           <TabPanel>
-                          <div className="row">
+
                             <Teams key={groupSelect} groupSelect={groupSelect} />
-                          </div>
+
                           </TabPanel>
                           <TabPanel>
-                          <div className="row">
+
                             <Students key={groupSelect} idGroup={groupSelect} />
-                          </div>
                           </TabPanel>
-                      </Tabs>
-                </div>;
+                      </Tabs>;
+
+
 
     // SISTEMA DE TABS
 
@@ -244,7 +264,7 @@ class GroupTeacher extends Component {
                 <div>
                   <label>Cambiar nombre: </label>
                   <br />
-                  <input type="text" name="newName" onChange={this.handleChangeRename} />
+                  <input type="text" name="newName" onChange={this.handleChangeRename}  />
                   <br />
                 </div>
                 {botonRenombrar}
@@ -263,23 +283,27 @@ class GroupTeacher extends Component {
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
         <Card className="card-long">
              <Card.Body>
-                  {/* <div className="column column-left"> */}
-                  <Dropdown className="drop-down">
-                    <DropdownToggle as={CustomToggle} id="dropdown-custom-components">Selecciona grupo</DropdownToggle>
-                    <DropdownMenu as={CustomMenu}>
-                      {dataGroup.map((row) => (
-                        // <DropdownItem eventKey={row.id}
-                        //   onClick={() => this.handleSelect(row.id)}>{row.nombre}</DropdownItem>
-                        <DropdownItem eventKey={row.idGrupo} onClick={() => this.handleSelect(row)}>{row.nombre}</DropdownItem>
-                      ))}
-                    </DropdownMenu>
-                  </Dropdown>
-                  {/* </div> */}
+                 <ul className={"flex-items-row-space"}>
+                     <li className={"items-row"}>
+                         <Dropdown className="drop-down">
+                             <DropdownToggle as={CustomToggle} id="dropdown-custom-components">Selecciona grupo</DropdownToggle>
+                             <DropdownMenu as={CustomMenu}>
+                                 {dataGroup.map((row) => (
+                                     // <DropdownItem eventKey={row.id}
+                                     //   onClick={() => this.handleSelect(row.id)}>{row.nombre}</DropdownItem>
+                                     <DropdownItem eventKey={row.idGrupo} onClick={() => this.handleSelect(row)}>{row.nombre}</DropdownItem>
+                                 ))}
+                             </DropdownMenu>
+                         </Dropdown>
+                     </li>
+                     <li className={"items-row"}>
+                         <h3>{this.state.nameGroupSelect}</h3>
+                     </li>
+                     <li className={"items-row"}>
+                         <Button variant="primary" onClick={()=>this.onModal(true)}>Renombar grupo</Button>
+                     </li>
+                 </ul>
 
-                <div className="items-column">
-                    <h3>{this.state.nameGroupSelect}</h3>
-                    <Button variant="primary" onClick={()=>this.onModal(true)}>Renombar grupo</Button>
-                </div>
                 <Modal
                     show={this.state.onRenameGroupModal}
                     onHide={this.state.onRenameGroupModal}
@@ -290,69 +314,36 @@ class GroupTeacher extends Component {
                      <Modal.Body>
                          <label>Cambiar nombre: </label>
                          <br />
-                         <input type="text" name="newName" onChange={this.handleChangeRename} />
+                         <input type="text" className="form-control" name="newName" onChange={this.handleChangeRename} />
+                         <Alert show={this.state.onAlert}>Hola</Alert>
                          <br />
                      </Modal.Body>
                      <Modal.Footer>
-                         <Button variant="secondary" onClick={()=>this.onModal(false)}>Atras</Button>
                          <Button variant="primary" onClick={()=>this.rename()}>Acepto</Button>
+                         <Button variant="secondary" onClick={()=>this.onModal(false)}>Atras</Button>
                     </Modal.Footer>
                  </Modal>
 
-
-
-
-            {/*<td><textarea name="mensaje" rows="1" cols="10" value={this.state.nameGroupSelect} readOnly={true} style={{ resize: "none" }} ></textarea></td>*/}
-
-
-
-            {/*<select onChange={this.itemSelection} disabled={!this.state.groupSelect ? true : null} >
-              <option value="" selected disabled hidden > Seleccionar </option>
-              <option value="1" > Desafios </option>
-              <option value="2" > Escritos </option>
-              <option value="3" > Equipos </option>
-              <option value="4" > Estudiantes </option>
-              </select>*/}
-
-            {/* <div className="column column-rigth">
-               
-                <Link to={`/teacher/createChallenge/${groupSelect}`}>
-                  <Button variant="primary">Crear desafio</Button>
-                </Link>
-              </div> */}
-
-            {/* <div className="row">
-              <Challenges key={groupSelect} groupSelect={groupSelect} />
-            </div> */}
-
             {showChallenges ? (
-              <div className="row">
                 <Challenges key={groupSelect} groupSelect={groupSelect} />
-              </div>
             ) : (
-              <div></div>
+              <></>
             )}
 
             {showWritings ? (
-              <div className="row">
                 <Writings key={groupSelect} groupSelect={groupSelect} />
-              </div>
             ) : (
-              <div></div>
+              <></>
             )}
             {showTeams ? (
-              <div className="row">
                 <Teams key={groupSelect} groupSelect={groupSelect} />
-              </div>
             ) : (
-              <div></div>
+              <></>
             )}
             {showStudents ? (
-              <div className="row">
                 <Students key={groupSelect} idGroup={groupSelect} />
-              </div>
             ) : (
-              <div></div>
+              <></>
             )}
             {tabs}
           </Card.Body>

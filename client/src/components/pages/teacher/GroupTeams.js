@@ -5,10 +5,9 @@
 */
 import React, { Component } from 'react';
 import { Link} from "react-router-dom";
-import TeacherService from '../../../services/teacher/teacherService.js';
-import AdminService from '../../../services/admin/adminService.js';
 import '../../../styles/styleGeneral.css';
 import '../../../styles/styleCard.css';
+import '../../../styles/Challenge.css';
 import Card from 'react-bootstrap/Card';
 import Button  from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -65,57 +64,47 @@ class GroupTeams extends Component {
 
     /*Dibuja la pagina  */
     render() {
-        let cartel =<div> </div>;
-        let tabla = <ListGroup variant="flush">
-
+        let cartel =<> </>;
+        let tabla = <ul className={"flex-items-row-start wrap"}>
             {this.state.filteredData.map((team) => 
                 (
-                    <React.Fragment>
-                    <ListGroup.Item>
-                        {team.nombre}
-                        <Link key={team.id} to={`/teacher/viewTeam/${team.id}`}><button text='Ver Equipo'> Ver equipo </button></Link>
-                    </ListGroup.Item>
-                    </React.Fragment>
-                    
+                    <li className={"items-row"}>
+                        <br/>
+                        <div className={"form-items-row"}>
+                            <h5>{team.nombre}</h5>
+                        </div>
+                        <div className={"form-items-row"}>
+                            <Link key={team.id} to={`/teacher/viewTeam/${team.id}`}>
+                                <Button  variant={"outline-secondary"} text='Ver Equipo'>Ver equipo</Button>
+                            </Link>
+                        </div>
+                        <hr></hr>
+                    </li>
+
                 )
             )}
-    </ListGroup>;
+    </ul>;
         if(this.state.filteredData.length === 0)
         {
-            cartel = <nav>
+            cartel = <div className={"group-teams"}>
                         <h2>No hay resultados para la búsqueda realizada.</h2>
-                    </nav>;
-            tabla = <div></div>;
+                    </div>;
+            tabla = <></>;
         }
 
 
         return (
-            <>
-            <div className="container">
-                <Card className="card-edit">
+                <Card className="card-long">
                     <Card.Body>
-                    <h1>Equipos:</h1>
-
-                    <div>
-                    <h2> Resultados de buscar equipos con nombre similar a:</h2>
-                            <label>Buscar equipo: </label>
-                            <br />
+                        <div className={"group-teams"}>
+                            <label className={"form-label"}>Buscar equipo</label>
                             <input type="text" name="searchKey" onChange={this.handleChangeSearch} />
-                            <br />
-                    </div>
-                    <div>
-
-                        {cartel}
-
-
-                        {tabla}
-
-
-                    </div>
+                            <div className={"form-select"}><img src={"../search.png"}></img></div>
+                                {cartel}
+                                {tabla}
+                        </div>
                     </Card.Body>
                 </Card>
-            </div>
-          </>
         );
     }
 

@@ -26,7 +26,7 @@ header {
 }
 
 h1,h2,h3 {
-    font-family: "Questrial&display", sans-serif;
+    font-family: "Roboto", sans-serif;
 }
 
 .h1, .h2, .h3, .h4,
@@ -36,6 +36,7 @@ h4, h5, h6 {
     margin: .5rem 0rem .5rem;
     font-weight: 500;
     line-height: 1.2;
+    letter-spacing: .05rem;
 }
 
 
@@ -55,10 +56,15 @@ li {
 
 
 
-.container {
+.container{
     grid-area: main;
     /*margin: 0 2em 1em;*/
     padding: .75em 1em;
+}
+
+.container-home {
+    grid-area: main;
+    padding: 0;
 }
 
 .container-margin {
@@ -186,7 +192,7 @@ h1.main-title {
 .sidebar-left {
     grid-area: sbleft;
     top:.5rem;
-    background-image: linear-gradient(147deg, #FFE53B 0%, #ff6161 74%);
+    background-image: linear-gradient(135deg, #F05F57 10%, #360940 100%);
     border-radius: 0rem 6.3rem 6.3rem 0rem;
     position: fixed;
     overflow: auto;
@@ -222,13 +228,20 @@ h1.main-title {
 }
 
 .sidebar-left a {
-    display: block;
-    color: #1d1b17;
+    display: inline-flex;
+    color: white;
     padding: 14px;
     text-decoration: none;
-    font-family: 'Oswald', sans-serif;
+    align-items: center;
 }
 
+.section-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
 
 .section-container {
     display: flex;
@@ -244,6 +257,8 @@ h1.main-title {
     background-color: rgba(0, 0, 0, 0.46);
     color: rgb(255, 251, 255);
     width: 9rem;
+    display: inline-flex;
+    justify-content: center;
     text-align: center;
     border-radius: 9rem 2rem;
 
@@ -254,7 +269,6 @@ h1.main-title {
     padding: 0.2rem;
 }
 
-
 select {
     border: 1px solid #e6e6e6;
 }
@@ -262,9 +276,10 @@ select {
 
 .row-edit{
     justify-content: space-between;
-    margin-bottom: .75em;
-    margin-right: 0.5em;
-    margin-left: .5em;
+    margin-top: .75rem;
+    margin-bottom: 1.2rem;
+    margin-right: 1.75em;
+    margin-left: 1.75em;
 }
 
 .column {
@@ -291,11 +306,20 @@ select {
 }
 
 .table-margin {
-    margin: 1rem 3rem;
+    margin:  1rem 0 .75rem
 }
 
+.table-margin .img-icon {
+    cursor: pointer;
+}
+
+.table-margin a:link {
+    text-decoration: none;
+}
+
+
 .drop-down {
-    margin: 1rem .4em 1rem;
+    margin-left:.5rem;
     font-size: 1.2rem;
 }
 
@@ -380,7 +404,7 @@ select {
     display: -moz-flex;
     display: -webkit-flex;
     display: flex;
-    justify-content: center;
+    justify-content:center;
     align-items: center;
 }
 
@@ -406,6 +430,15 @@ select {
     margin: .2rem .1rem;
 }
 
+
+.flex-item-form {
+    padding: 1rem .75rem;
+    width: auto;
+    margin: 0rem 3.4rem 1rem 0.75rem;
+    line-height: 3rem;
+}
+
+
 .container-column-list {
     padding: 0;
     margin: 0;
@@ -424,7 +457,6 @@ select {
 
 
 .wrap {
-
     -webkit-flex-wrap: wrap;
     flex-wrap: wrap;
 }
@@ -512,11 +544,51 @@ select {
     margin: 2rem;
 }
 
-.items-column {
+.img-icon {
+    padding: 0;
+    margin: 0 .4rem 0;
+}
+
+.flex-items-row-start {
+    flex-direction: row;
     display: flex;
+    flex-flow: column wrap;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-content: space-around;
+    margin: 1rem .8rem 1rem;
+}
+
+.flex-items-row-space {
+    flex-direction: row;
+    display: flex;
+    flex-flow: row wrap;
+    flex-wrap: nowrap;
     justify-content: space-between;
-    align-items: center;
-    margin:1rem .5rem 1rem;
+    align-content: baseline;
+    margin: 2rem .75rem 2rem;
+}
+
+.items-row {
+    flex-basis: auto;
+}
+
+
+.items-column h3 {
+    margin: 0 2rem 0;
+}
+
+.group-teams > h5 {
+    font-size: 1.1rem;
+    margin: 1rem .75rem .3rem;
+}
+
+.group-teams input[type=text] {
+    margin: .3rem .75rem .75rem;
+}
+
+.list-group {
+    margin: .3rem 1.25rem  1.75rem .3rem;
 }
 
 @media screen and (min-width: 320px) {
@@ -534,14 +606,22 @@ select {
 
     .sidebar-left a {
         float: left;
+        font-size: .6rem;
     }
 
     .sidebar-left ul {
-        margin-top: 2rem;
+        margin-top: 1.5rem;
     }
 
-    .sidebar-left ul li {
-       font-size: .5rem;
+    .sidebar-left a:hover:not(.active) {
+        background-color: rgba(0, 0, 0, 0.46);
+        color: rgb(255, 251, 255);
+        width: 6.8rem;
+        display: inline-flex;
+        justify-content: center;
+        text-align: center;
+        border-radius: 9rem 2rem;
+
     }
 
     .perfil-left {
@@ -555,6 +635,13 @@ select {
         margin: 2rem;
     }
 
+    .img-icon {
+        padding: 0;
+        width: 2rem;
+        margin: 0 .4rem 0;
+    }
+
+
     .flex-item-file {
         width: 23rem;
         line-height: 2rem;
@@ -565,6 +652,10 @@ select {
     .form-select button.btn,
     .form-select a.btn {
         width: 7rem;
+    }
+
+    .btn {
+        font-size: .7rem;
     }
 
     .container-column-list {
@@ -579,6 +670,18 @@ select {
         align-items: center;
     }
 
+    .container-column-list {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        flex-flow: row wrap;
+        display: -moz-flex;
+        display: flex;
+        text-align: center;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
     .full-wrapper {
         grid-template-rows: 0fr 2fr;
         grid-template-areas:
@@ -588,6 +691,13 @@ select {
     }
 
   }
+
+ .table-multi {
+     width: auto;
+     height: 12rem;
+     overflow: scroll;
+     overflow-x: auto;
+ }
 
 @media screen and (min-width:768px) {
 
@@ -610,14 +720,22 @@ select {
     .sidebar-left a {
         text-align: left;
         float: none;
+        font-size: 1rem;
     }
 
     .sidebar-left ul {
        margin-top: 2rem ;
     }
 
-    .sidebar-left ul li {
-        font-size: 1rem;
+    .sidebar-left a:hover:not(.active) {
+        background-color: rgba(0, 0, 0, 0.46);
+        color: rgb(255, 251, 255);
+        width: 9rem;
+        display: inline-flex;
+        justify-content: center;
+        text-align: center;
+        border-radius: 9rem 2rem;
+
     }
 
     .perfil-left {
@@ -646,7 +764,7 @@ select {
         display: -moz-flex;
         display: flex;
         text-align: center;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
     }
 
@@ -692,21 +810,35 @@ select {
         margin-left: 0;
     }
 
+    .container-home {
+        width: 100%;
+        margin-left: auto;
+        display: flex;
+        justify-content: flex-end;
+        align-items: normal;
+    }
+
     .sidebar-left {
         width: 13%;
         position: fixed;
         position: fixed;
         height: 30rem;
-        top:2rem;
+        top:1.2rem;
     }
 
     .sidebar-left a {
         text-align: left;
         float: none;
+        font-size: .8rem;
     }
 
     .sidebar-left ul {
         margin-top: 6rem;
+    }
+
+    .sidebar-left a:hover:not(.active) {
+
+        font-size: .7rem;
     }
 
     .perfil-left {
@@ -732,6 +864,10 @@ select {
         margin: 3.5rem 0 0;
      }
 
+    .img-home {
+        width: 42rem;
+    }
+
     .full-wrapper {
 
         grid-template-areas:
@@ -739,4 +875,15 @@ select {
                 "sbleft sbleft main main main main main main main main main main main main main main"
                 "sbleft sbleft main main main main main main main main main main main main main main";
     }
+}
+
+
+@media screen and (min-width:1200px) {
+
+
+    .sidebar-left a {
+        font-size: .9rem;
+    }
+
+
 }
