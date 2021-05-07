@@ -18,6 +18,7 @@ import '../../../styles/styleGeneral.css';
 class WritingsStudent extends Component {
 
     constructor(props) {
+        debugger;
         super(props);
         this.state = {
             changeState: false,

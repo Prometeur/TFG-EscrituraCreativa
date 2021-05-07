@@ -311,8 +311,8 @@ class EditWriting extends Component {
                                         onChange={this.onChangeWritingName}
                                     />
                                 </div>
-
                             </div>
+                            
                             <div className="row-edit">
                                 <label className='form-label' >Descripción </label>
                                 <Editor

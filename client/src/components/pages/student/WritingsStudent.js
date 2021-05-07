@@ -23,15 +23,20 @@ class WritingsStudent extends Component {
         super(props);
         this.state = {
             data: [],
+            showWritings: false,
         }
     }
+
+
 
     componentDidMount() {
         //obtiene los escritos del estudiante
         if (this.props.groupSelect === undefined) {
             StudentService.getWritings(AuthUser.getCurrentUser().id)
                 .then(response => {
-                    this.setState({ data: response.data });
+                    if (response.data.length !== 0) {
+                        this.setState({ data: response.data, showWritings: true });
+                    }
                 })
                 .catch(error => {
                     console.log(error.message);
@@ -40,13 +45,17 @@ class WritingsStudent extends Component {
         else {
             StudentService.getWritingsStudent(AuthUser.getCurrentUser().id, this.props.groupSelect)
                 .then(response => {
-                    this.setState({ data: response });
+                    if (response.length !== 0) {
+                        this.setState({ data: response, showWritings: true });
+                    }
                 })
                 .catch(error => {
                     console.log(error.message);
                 })
         }
     }
+
+
 
     //Devuelve string del escrito finalizado
     showWritingFinalized = (writing) => {
@@ -70,7 +79,7 @@ class WritingsStudent extends Component {
     challengeFinalized = (writing) => {
         var dateActual = new Date();
         var dateFin = new Date(writing.fechaFin)//fecha fin del desafio
-         //si ya se paso la fecha del desafio, desactivar button
+        //si ya se paso la fecha del desafio, desactivar button
         if (dateActual.getTime() > dateFin.getTime())
             return true;
         else
@@ -80,46 +89,60 @@ class WritingsStudent extends Component {
     /*Dibuja la pagina  */
     render() {
         let formatedDate;
-        let { data } = this.state;
+        let { data, showWritings } = this.state;
         return (
-                    <div className="table-margin">
-                        <Table striped bordered hover >
-                            <thead>
-                                <tr>
-                                    <th >Escrito</th>
-                                    <th >Grupo</th>
-                                    <th >Desafío</th>
-                                    <th>Desafio Finalizado</th>
-                                    <th >Estudiante</th>
-                                    <th >Fecha</th>
-                                    <th >Hora</th>
-                                    {/* <th>Corregido</th> */}
-                                    {/* <th >Puntuación</th> */}
-                                    <th >Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {data.map((writing) => (
-                                    < tr key={writing.id} >
-                                        <td>{writing.nombreEscrito}</td>
-                                        <td>{writing.nombreGrupo}</td>
-                                        <td>{writing.nombreDesafio}</td>
-                                        <td>{this.showChallengeFinalized(writing)}</td>
-                                        <td>{writing.nombre} {writing.apellidos}</td>
-                                        <td >{formatedDate = moment(writing.fecha).format('DD/MM/YYYY')}</td>
-                                        <td >{formatedDate = moment(writing.fecha).format('LT')}</td>
-                                        {/* <td>{this.showWritingFinalized(writing)}</td> */}
-                                        {/* <td>{writing.puntuacion}</td> */}
-                                        {this.challengeFinalized(writing) ? (
-                                            <td><Link to={`/student/viewWriting/${this.props.groupSelect}/${writing.idDesafio}/${writing.id}`} ><Button variant="outline-primary" disabled={writing.finalizado === 1 ? false : true}>Ver Escrito</Button></Link></td>
-                                        ) : (
-                                            <td ><Link to={`/student/editWriting/${writing.idGrupo}/${writing.idDesafio}/${writing.id}`}><Button variant="outline-primary" disabled={this.challengeFinalized(writing)}>Editar Escrito</Button></Link></td>
-                                        )}
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </Table>
-                    </div>
+            <div className="container">
+                <Card className="card-long">
+                    <Card.Body>
+                        <div className="items-column"><h3>Lista de escritos</h3></div>
+                        {showWritings ? (
+                            <div className="table-margin">
+                                <Table striped bordered hover >
+                                    <thead>
+                                        <tr>
+                                            <th >Escrito</th>
+                                            <th >Grupo</th>
+                                            <th >Desafío</th>
+                                            <th>Desafio Finalizado</th>
+                                            <th >Estudiante</th>
+                                            <th >Fecha</th>
+                                            <th >Hora</th>
+                                            {/* <th>Corregido</th> */}
+                                            {/* <th >Puntuación</th> */}
+                                            <th >Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {data.map((writing) => (
+                                            < tr key={writing.id} >
+                                                <td>{writing.nombreEscrito}</td>
+                                                <td>{writing.nombreGrupo}</td>
+                                                <td>{writing.nombreDesafio}</td>
+                                                <td>{this.showChallengeFinalized(writing)}</td>
+                                                <td>{writing.nombre} {writing.apellidos}</td>
+                                                <td >{formatedDate = moment(writing.fecha).format('DD/MM/YYYY')}</td>
+                                                <td >{formatedDate = moment(writing.fecha).format('LT')}</td>
+                                                {/* <td>{this.showWritingFinalized(writing)}</td> */}
+                                                {/* <td>{writing.puntuacion}</td> */}
+                                                {this.challengeFinalized(writing) ? (
+                                                    <td><Link to={`/student/viewWriting/${this.props.groupSelect}/${writing.idDesafio}/${writing.id}`} ><Button variant="outline-primary" disabled={writing.finalizado === 1 ? false : true}>Ver Escrito</Button></Link></td>
+                                                ) : (
+                                                    <td ><Link to={`/student/editWriting/${writing.idGrupo}/${writing.idDesafio}/${writing.id}`}><Button variant="outline-primary" disabled={this.challengeFinalized(writing)}>Editar Escrito</Button></Link></td>
+                                                )}
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </Table>
+                            </div>
+                        ) : (
+
+                            <div className="table-margin">
+                                <p>Todavia no dispones de escritos para mostrar</p>
+                            </div>
+                        )}
+                    </Card.Body>
+                </Card>
+            </div>
 
         );
     }

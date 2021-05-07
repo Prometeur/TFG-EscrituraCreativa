@@ -23,35 +23,29 @@ const io = socketio(server);
 //Funcionalidad de socket.io en el servidor
 io.on("connection", (socket) => {
   let nombre;
-  // socket.on("conectado", () => {
-  //   console.log("Hola amigo Luis");
+  
+  //Se ejecuta en el Server cuando el Cliente emite "conectado"
+  socket.on("conectado", (nomb) => {
+    nombre = nomb;
+    //Se ejecuta en el Cliente cuando el Server emite "mensajes"
+    socket.broadcast.emit("mensajes", {
+      // nombre: nombre,
+      // mensaje: `${nombre} ha entrado en el desafio colaborativo`,
+    });
+  });
 
+  //Se ejecuta en el Server cuando el Cliente emite "mensaje"
+  socket.on("mensaje", (nombre, mensaje) => {
+    //Se ejecuta en el Cliente cuando el Server emite "mensajes"
+    io.emit("mensajes", { nombre, mensaje });
+  });
+
+  // socket.on("disconnect", () => {
+  //   io.emit("mensajes", {
+  //     server: "Servidor",
+  //     mensaje: `${nombre} ha abandonado el desafio colaborativo`,
+  //   });
   // });
-
-    //cada vez que se conecte  un cliente se ejecutara socket.on 
-    socket.on("conectado", (nomb) => {
-      nombre = nomb;
-      //socket.broadcast.emit manda el mensaje a todos los clientes excepto al que ha enviado el mensaje
-      socket.broadcast.emit("mensajes", {
-        nombre: nombre,
-        mensaje: `${nombre} ha entrado en el desafio colaborativo`,
-      });
-    });
-
-    socket.on("mensaje", (nombre, mensaje) => {
-      //io.emit manda el mensaje a todos los clientes conectados al chat
-      
-      io.emit("mensajes", { nombre, mensaje });
-    });
-
-    socket.on("disconnect", () => {
-      io.emit("mensajes", {
-        server: "Servidor",
-        mensaje: `${nombre} ha abandonado el desafio colaborativo`,
-      });
-    });
-
-
 });
 // server.listen(3001, () => console.log("Servidor inicializado"));
 

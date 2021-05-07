@@ -21,7 +21,10 @@ import socket from "../../../utils/Socket";
 import AuthUser from '../../../services/authenticity/auth-service.js';
 import '../../../styles/App.css';
 
-const Chat = ({ nombre}) => {
+import Button from 'react-bootstrap/Button';
+
+// const Chat = ({ nombre,prueba}) => {
+  const Chat = ({pruebaChange,nombre}) => {
 
   const [mensaje, setMensaje] = useState("");
   const [mensajes, setMensajes] = useState([]);
@@ -35,6 +38,7 @@ const Chat = ({ nombre}) => {
   //Captura cuando el servidor envia mensajes
   useEffect(() => {
     socket.on("mensajes", (mensaje) => {
+      
       setMensajes([...mensajes, mensaje]);//... indica que se añadira al final del array
     });
     return () => {
@@ -45,20 +49,23 @@ const Chat = ({ nombre}) => {
   //para que el scroolbar se baje solo cuando el textArea este lleno
   const divRef = useRef(null);
   
-  useEffect(() => {
-    divRef.current.scrollIntoView({ behavior: "smooth" });
-  });
+  // useEffect(() => {
+  //   // divRef.current.scrollIntoView({ behavior: "smooth" });
+  // });
 
 
   //cuando se envia el formulario
   const submit = (e) => {
     e.preventDefault();//para impedir la recarga de la pagina
     socket.emit("mensaje", nombre, mensaje);
+  
+    pruebaChange(nombre,mensaje,mensajes);
     setMensaje("");//cuando se envia el mensaje se borra el textArea
   };
 
   return (
     <div>
+      <label htmlFor="">Borrador</label>
       <div className="chat">
         {mensajes.map((e, i) => (
           <div key={i}>
@@ -67,14 +74,15 @@ const Chat = ({ nombre}) => {
           </div>
         ))}
 
-        <div ref={divRef}></div>
+        {/* <div ref={divRef}></div> */}
 
       </div>
 
       <form onSubmit={submit}>
-        <label htmlFor="">Escriba su mensaje</label>
-        <textarea name=""  id=""  cols="30"  rows="10"  value={mensaje}  onChange={(e) => setMensaje(e.target.value)}></textarea>
-        <button>Enviar</button>
+        <label htmlFor="">Escribe en el borrador</label>
+        <div>
+        <textarea name=""  id=""  cols="30"  rows="10"  value={mensaje}  onChange={(e) => setMensaje(e.target.value)}></textarea></div>
+        <button>Escribir</button>
       </form>
     </div>
   );

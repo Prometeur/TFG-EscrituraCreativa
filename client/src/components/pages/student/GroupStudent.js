@@ -86,20 +86,37 @@ class GroupStudent extends Component {
   }
 
   componentDidMount() {
-   
+
     const dataUser = AuthUser.getCurrentUser();
     this.setState({ currentUser: dataUser.id });
 
     /**Obtiene todos los grupos del estudiante */
     StudentService.getGroups(dataUser.id)
-    .then(response => {
-      if(response.length>0){
-        this.setState({ dataGroup: response,groupSelect:response[0].idGrupo,nameGroupSelect:response[0].nombre,showChallenges:true });
-      }
-      
-    })
+      .then(response => {
+        if (response.length > 0) {
+          this.setState({ dataGroup: response, groupSelect: response[0].idGrupo, nameGroupSelect: response[0].nombre, showChallenges: true });
+        }
+
+      })
   }
 
+  componentDidUpdate(pP, pS, sS) {
+
+    // if (pS.dataTeamStudentGroup !== this.state.dataTeamStudentGroup) {
+    //     debugger;
+    //     console.log("hacer algo");
+    // }
+
+    var u = 1
+    u = u + 1
+    console.log("hola------>", u++);
+    // if (pP !== this.props) {
+    //     debugger;
+    //     console.log("hacer algo");
+    // }
+
+  }
+  
   itemSelection = event => {
     if (event.target.value === "1") {
       this.setState({
@@ -134,8 +151,8 @@ class GroupStudent extends Component {
     this.setState({ groupSelect: group.idGrupo, nameGroupSelect: group.nombre });
   }
 
-  disabledButton=() =>{
-    if(this.state.dataGroup.length>0){
+  disabledButton = () => {
+    if (this.state.dataGroup.length > 0) {
       return false;
     }
     return true;
@@ -148,15 +165,15 @@ class GroupStudent extends Component {
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
         <Card className="card-long">
           <Card.Body>
-              <Dropdown className="drop-down" >
-                <DropdownToggle as={CustomToggle} id="dropdown-custom-components">Selecciona grupo</DropdownToggle>
-                <DropdownMenu as={CustomMenu}>
-                  {dataGroup.map((row) => (
-                    // <DropdownItem eventKey={row.idGrupo} onClick={() => this.handleSelect(row.idGrupo)}>{row.nombre}</DropdownItem>
-                    <DropdownItem eventKey={row.idGrupo} onClick={() => this.handleSelect(row)}>{row.nombre}</DropdownItem>
-                  ))}
-                </DropdownMenu>
-              </Dropdown>
+            <Dropdown className="drop-down" >
+              <DropdownToggle as={CustomToggle} id="dropdown-custom-components">Selecciona grupo</DropdownToggle>
+              <DropdownMenu as={CustomMenu}>
+                {dataGroup.map((row) => (
+                  // <DropdownItem eventKey={row.idGrupo} onClick={() => this.handleSelect(row.idGrupo)}>{row.nombre}</DropdownItem>
+                  <DropdownItem eventKey={row.idGrupo} onClick={() => this.handleSelect(row)}>{row.nombre}</DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
 
             <div className="items-column">
               <h3>{this.state.nameGroupSelect}</h3>
@@ -165,8 +182,8 @@ class GroupStudent extends Component {
             {/* onChange={this.qualificationSelection} */}
             {/* value={this.state.form.qualification} */}
 
-            <select onChange={this.itemSelection} disabled={ !this.state.groupSelect ? true : null} >
-            {/* <select onChange={this.itemSelection} disabled={this.disabledButton()} > */}
+            <select onChange={this.itemSelection} disabled={!this.state.groupSelect ? true : null} >
+              {/* <select onChange={this.itemSelection} disabled={this.disabledButton()} > */}
               {/* <option value="" selected disabled hidden > Seleccionar </option> */}
               <option value="1" > Crear Escrito </option>
               <option value="2" > Escritos </option>
@@ -196,7 +213,7 @@ class GroupStudent extends Component {
             ) : (
               <div></div>
             )}
-           
+
           </Card.Body>
         </Card>
       </div>
