@@ -96,9 +96,10 @@ class GroupStudents extends Component {
                 (
                    <li className={"items-row"}>
                        <div className={"form-items-row"}>
-                            <img src={"data:image/png;base64," + btoa(String.fromCharCode.apply(null, student.foto.data))}
+                            <img src={(student.foto.data.length != 0) ? ("data:image/png;base64," +
+                                        btoa(String.fromCharCode.apply(null, student.foto.data))) : "/chicaliteratura.png"}
                                  alt=""
-                                 style={{width: '5%',  borderRadius: '80%'}} >
+                                 style={{width: '40%',  borderRadius: '80%'}} >
                             </img>
                        </div>
 
@@ -126,7 +127,8 @@ class GroupStudents extends Component {
                         (
                             <li className={"items-row"}>
                                     <div className={"form-items-row"}>
-                                        <img src={"data:image/png;base64," + btoa(String.fromCharCode.apply(null, student.foto.data))}
+                                        <img src={(student.foto.data.length != 0) ? ("data:image/png;base64," +
+                                        btoa(String.fromCharCode.apply(null, student.foto.data))) : "/chicaliteratura.png" }
                                              alt=""
                                              style={{width: '40%',  borderRadius: '80%',margin:"0 0 0 1rem"}}
                                         >

@@ -7,13 +7,13 @@ class TeacherService {
 
     /*Obtiene los  grupos del profesor */
     getGroups(idTeacher) {
-        console.log(idTeacher);
         return axios.post("/teacher/groups", { idTeacher: idTeacher }, {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
-            console.log(response);
             return response.data;
-            console.log(response.data);
+        }).catch(error => {
+            console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -24,6 +24,7 @@ class TeacherService {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -34,6 +35,7 @@ class TeacherService {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
 
     }
@@ -45,6 +47,7 @@ class TeacherService {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -58,6 +61,7 @@ class TeacherService {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
 
     }
@@ -70,6 +74,7 @@ class TeacherService {
             return response.data;
         }).catch(error => {
             console.log(error.message);
+            window.location.href = '/500';
         })
 
     }
@@ -82,6 +87,7 @@ class TeacherService {
              return response.data;
        }).catch(error => {
            console.log(error.message);
+           window.location.href = '/500';
        })
 
     }
@@ -93,6 +99,7 @@ class TeacherService {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
 
     }
@@ -104,6 +111,7 @@ class TeacherService {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -112,6 +120,7 @@ class TeacherService {
             return response.data;
         }).catch(error => {
             console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -120,6 +129,7 @@ class TeacherService {
             return response.data;
         }).catch(error => {
             console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -132,6 +142,9 @@ class TeacherService {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
             return response.data;
+        }).catch(error => {
+            console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -141,6 +154,9 @@ class TeacherService {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
             return response;
+        }).catch(error => {
+            console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -150,6 +166,9 @@ class TeacherService {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
             return response.data;
+        }).catch(error => {
+            console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -159,6 +178,9 @@ class TeacherService {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
             return response.data;
+        }).catch(error => {
+            console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -169,6 +191,9 @@ class TeacherService {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
             return response.data;
+        }).catch(error => {
+            console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -178,7 +203,9 @@ class TeacherService {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
             return response.data;
-
+        }).catch(error => {
+            console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -192,6 +219,7 @@ class TeacherService {
                 return response;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -211,6 +239,7 @@ class TeacherService {
             return response.data;
         }).catch(error => {
             console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -220,6 +249,9 @@ class TeacherService {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
             return response.data;
+        }).catch(error => {
+            console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -245,6 +277,7 @@ class TeacherService {
                 return response;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -256,6 +289,7 @@ class TeacherService {
             return response.data;
         }).catch(error => {
             console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -267,6 +301,7 @@ class TeacherService {
             return response.data;
         }).catch(error => {
             console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -280,6 +315,7 @@ class TeacherService {
                 return response;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -292,6 +328,7 @@ class TeacherService {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -301,6 +338,7 @@ class TeacherService {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -311,6 +349,7 @@ class TeacherService {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -321,6 +360,7 @@ class TeacherService {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 

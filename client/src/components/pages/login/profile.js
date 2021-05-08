@@ -54,7 +54,7 @@ export default class Profile extends Component {
                         <Figure.Image
                             bsPrefix="figure"
                             alt="171x180"
-                            src="fotoperfil.jpg"
+                            src="/chicaliteratura_sizebig.png"
                         />
                 </Figure>;
 
