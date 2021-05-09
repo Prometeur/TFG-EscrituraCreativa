@@ -97,8 +97,9 @@ class SearchStudentRes extends Component {
                 <tr>
                     <td>{student.id}</td>
                     <td>
-                        <img src={"data:image/png;base64," +
-                        btoa(String.fromCharCode.apply(null, student.foto.data))}
+                        
+                        <img src={(student.foto.data.length != 0) ? ("data:image/png;base64," +
+                        btoa(String.fromCharCode.apply(null, student.foto.data))) : "/chicaliteratura.png" }
                              alt="" style={{width: '2rem',  borderRadius: '80%'}} >
                         </img>
                     </td>

@@ -23,6 +23,9 @@ import './styles/styleNavBar.css';
 import Messenger from './components/pages/student/Messenger.js';
 import Message from './components/pages/student/Message.js';
 
+import NoMatch from "./components/pages/errors/404";
+import InternalEror from "./components/pages/errors/500";
+
 class App extends Component {
 
   constructor(props) {
@@ -107,6 +110,8 @@ class App extends Component {
                     <Route exact path="/student/messenger" component={Messenger} />
                     <Route exact path="/student/message/:idMessage" component={Message} />
                     <Route exact path='/student' component={StudentBoard} />
+                    <Route exact path='/500' component={InternalEror} /> {/*Esta dirección sirve para el error 500 (interno del servidor).*/}
+                    <Route path='*' component={NoMatch}/> {/*Esta dirección sirve para el error 404.*/}
                  </Switch>
              </div>
       </Router>

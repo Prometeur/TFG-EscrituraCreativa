@@ -172,7 +172,7 @@ class ProfileInfo extends Component {
      /*Se hacen peticiones al servidor para invitar al estudiante al grupo*/
      inviteToGroup = (idGroup) => {
         TeacherService.inviteToGroup(idGroup,this.props.idStudent).then(response =>{
-            if(this.state.currentUserRole ="A")
+            if(this.state.currentUserRole =="A")
             {
                 this.peticionGetAllGroups();
             }
@@ -190,7 +190,7 @@ class ProfileInfo extends Component {
     kickFromGroup = (idGroup) => {
          
         TeacherService.kickFromGroup(idGroup,this.props.idStudent).then(response => {
-            if(this.state.currentUserRole ="A")
+            if(this.state.currentUserRole =="A")
             {
                 this.peticionGetAllGroups();
             }
@@ -363,14 +363,18 @@ class ProfileInfo extends Component {
             botonDesactivar = <div></div>;
         }
 
-        let fotoSource = "";
-        let imagenUser = <div></div>
+        let fotoSource = "/chicaliteratura_sizebig.png";
+        let imagenUser = <img src={fotoSource} alt="" style={{width: '100px'}}  ></img>
 
         if(this.state.data.foto != undefined)
         {
+            if(this.state.data.foto.data.length != 0)
+            {
             fotoSource = "data:image/png;base64," + btoa(String.fromCharCode.apply(null, this.state.data.foto.data));
             imagenUser = <img src={fotoSource} alt="" style={{width: '100px'}}  ></img>
+            }
         }
+
 
 
         return (

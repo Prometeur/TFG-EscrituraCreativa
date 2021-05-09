@@ -96,9 +96,10 @@ class GroupStudents extends Component {
                 (
                    <li className={"items-row"}>
                        <div className={"form-items-row"}>
-                            <img src={"data:image/png;base64," + btoa(String.fromCharCode.apply(null, student.foto.data))}
+                            <img src={(student.foto.data.length != 0) ? ("data:image/png;base64," +
+                                        btoa(String.fromCharCode.apply(null, student.foto.data))) : "/chicaliteratura.png"}
                                  alt=""
-                                 style={{width: '5%',  borderRadius: '80%'}} >
+                                 style={{width: '40%',  borderRadius: '80%'}} >
                             </img>
                        </div>
 
@@ -124,9 +125,9 @@ class GroupStudents extends Component {
                     {this.state.filteredData.map((student) =>
                         (
                             <li className={"items-row"}>
+                                        <img src={(student.foto.data.length != 0) ? ("data:image/png;base64," +
+                                        btoa(String.fromCharCode.apply(null, student.foto.data))) : "/chicaliteratura.png" }
                                 <ul className={"container-column-list wrap"}>
-                                    <li className={"flex-item-list"}>
-                                        <img src={"data:image/png;base64," + btoa(String.fromCharCode.apply(null, student.foto.data))}
                                              alt=""
                                              style={{width: '60px',  borderRadius: '80%',margin:"0 1rem 0 1rem"}}
                                         >

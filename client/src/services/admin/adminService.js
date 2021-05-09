@@ -17,6 +17,7 @@ class AdminService {
             return response.data;
         }).catch(error => {
             console.log(error.message);
+            window.location.href = '/500';
         })
 
     }
@@ -28,6 +29,7 @@ class AdminService {
             return response.data;
         }).catch(error => {
             console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -38,6 +40,7 @@ class AdminService {
              return response.data;
         }).catch(error => {
             console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -48,6 +51,7 @@ class AdminService {
             return response.data;
         }).catch(error => {
             console.log(error.message);
+            window.location.href = '/500';
         })
 
     }
@@ -57,6 +61,7 @@ class AdminService {
             return response.data;
         }).catch(error => {
             console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -65,6 +70,7 @@ class AdminService {
             return response.data;
         }).catch(error => {
             console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -74,6 +80,7 @@ class AdminService {
             return response.data;
         }).catch(error => {
             console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -82,6 +89,7 @@ class AdminService {
             return response.data;
         }).catch(error => {
             console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -90,6 +98,7 @@ class AdminService {
             return response.data;
         }).catch(error => {
             console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -98,6 +107,7 @@ class AdminService {
             return response.data;
         }).catch(error => {
             console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -106,6 +116,7 @@ class AdminService {
             return response.data;
         }).catch(error => {
             console.log(error.message);
+            window.location.href = '/500';
         })
     }
 

@@ -42,7 +42,7 @@ function signUp(request, response) {
        
       if(err)
       {
-         response.status(500);
+         response.status(500).send({ error: err.message });
       }
       else
       {

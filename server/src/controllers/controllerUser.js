@@ -25,36 +25,24 @@ const modelUser = new modelo(pool);
                     //next(err);
                     console.log("No se puede conectar a la base de datos");
                 }
-                res.status(200);
-                /*response.render("perfil", {
-                    error: err.message
-                });*/
+                res.status(500).send({ error: err.message });
                 console.log(err.message);
             } 
             else if (result == null) 
             {
-                res.status(200);
-                /*response.render("perfil", {
-                    error: "El usuario no existe."
-                });*/
+                res.status(500).send({ error: "El grupo es nulo" });
                 console.log("El grupo es nulo");
             } 
             else
             {
                 res.status(200);
-                /*
-                response.render("perfil", {
-                    error: null,
-                    usuarioPerfil: usuarioPerfil
-                });
-                */
                res.send(JSON.stringify(result));
             }
         });
     }
     else 
     {
-        res.status(200);
+        res.status(500);
         console.log("El id es nulo");
     }
 }
@@ -73,36 +61,24 @@ function getStudentGroups(req, res) {
                     //next(err);
                     console.log("No se puede conectar a la base de datos");
                 }
-                res.status(200);
-                /*response.render("perfil", {
-                    error: err.message
-                });*/
+                res.status(500).send({ error: err.message });
                 console.log(err.message);
             } 
             else if (result == null) 
             {
-                res.status(200);
-                /*response.render("perfil", {
-                    error: "El usuario no existe."
-                });*/
+                res.status(500).send({ error: "El conjunto de grupos es nulo" });
                 console.log("El consjunto de grupos es nulo");
             } 
             else
             {
                 res.status(200);
-                /*
-                response.render("perfil", {
-                    error: null,
-                    usuarioPerfil: usuarioPerfil
-                });
-                */
                res.send(JSON.stringify(result));
             }
         });
     }
     else 
     {
-        res.status(200);
+        res.status(500);
         console.log("El id es nulo");
     }
 }
@@ -118,21 +94,12 @@ function getStudentGroups(req, res) {
                 //next(err);
                 console.log("No se puede conectar a la base de datos");
             }
-            res.status(200);
-            /*response.render("perfil", {
-                error: err.message
-            });*/
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         } 
         else
         {
             res.status(200);
-            /*
-            response.render("perfil", {
-                error: null,
-                usuarioPerfil: usuarioPerfil
-            });
-            */
            res.send(JSON.stringify(result));
         }
     });
@@ -157,18 +124,12 @@ function searchStudent(request, response, next){
                 //next(err);
                 console.log("No se puede conectar a la base de datos");
             }
-            response.status(500);
-            /*response.render("perfil", {
-                error: err.message
-            });*/
+            response.status(500).send({ error: err.message });
             console.log(err.message);
         }
         else if (studentList == null) 
         {
-            response.status(200);
-            /*response.render("perfil", {
-                error: "No hay estudiantes con los parámetros escogidos."
-            });*/
+            response.status(500).send({ error: "No hay estudiantes con esos parámetros" });
             console.log("No hay estudiantes con los parámetros escogidos.");
         } 
         else 
@@ -196,18 +157,12 @@ function searchUsers(request, response, next){
                 //next(err);
                 console.log("No se puede conectar a la base de datos");
             }
-            response.status(500);
-            /*response.render("perfil", {
-                error: err.message
-            });*/
+            response.status(500).send({ error: err.message });
             console.log(err.message);
         }
         else if (studentList == null) 
         {
-            response.status(200);
-            /*response.render("perfil", {
-                error: "No hay estudiantes con los parámetros escogidos."
-            });*/
+            response.status(500).send({ error: "No hay usuarios con los parámetros escogidos" });
             console.log("No hay usuarios con los parámetros escogidos.");
         } 
         else 
@@ -237,18 +192,12 @@ function searchApplicant(request, response, next){
                 //next(err);
                 console.log("No se puede conectar a la base de datos");
             }
-            response.status(500);
-            /*response.render("perfil", {
-                error: err.message
-            });*/
+            response.status(500).send({ error: err.message });
             console.log(err.message);
         }
         else if (studentList == null) 
         {
-            response.status(200);
-            /*response.render("perfil", {
-                error: "No hay estudiantes con los parámetros escogidos."
-            });*/
+            response.status(500).send({ error: "No hay estudiantes solicitantes con los parámetros escogidos." });
             console.log("No hay estudiantes solicitantes con los parámetros escogidos.");
         } 
         else 
@@ -273,10 +222,7 @@ function acceptApplicant(request, response, next){
                 //next(err);
                 console.log("No se puede conectar a la base de datos");
             }
-            response.status(500);
-            /*response.render("perfil", {
-                error: err.message
-            });*/
+            response.status(500).send({ error: err.message });
             console.log(err.message);
         }
         else 
@@ -301,18 +247,12 @@ function searchStudentOfGroup(request, response, next){
                 //next(err);
                 console.log("No se puede conectar a la base de datos");
             }
-            response.status(500);
-            /*response.render("perfil", {
-                error: err.message
-            });*/
+            response.status(500).send({ error: err.message });
             console.log(err.message);
         }
         else if (studentList == null) 
         {
-            response.status(200);
-            /*response.render("perfil", {
-                error: "No hay estudiantes con los parámetros escogidos."
-            });*/
+            response.status(500).send({ error: "No hay estudiantes con los parámetros escogidos." });
             console.log("No hay estudiantes con los parámetros escogidos.");
         } 
         else 
@@ -337,18 +277,12 @@ function getTeamsOfGroup(request, response, next){
                 //next(err);
                 console.log("No se puede conectar a la base de datos");
             }
-            response.status(500);
-            /*response.render("perfil", {
-                error: err.message
-            });*/
+            response.status(500).send({ error: err.message });
             console.log(err.message);
         }
         else if (studentList == null) 
         {
-            response.status(200);
-            /*response.render("perfil", {
-                error: "No hay estudiantes con los parámetros escogidos."
-            });*/
+            response.status(500).send({ error: "No hay equipos con los parámetros escogidos." });
             console.log("No hay equipos con los parámetros escogidos.");
         } 
         else 
@@ -374,36 +308,24 @@ function getTeamsOfGroup(request, response, next){
                     //next(err);
                     console.log("No se puede conectar a la base de datos");
                 }
-                res.status(200);
-                /*response.render("perfil", {
-                    error: err.message
-                });*/
+                res.status(500).send({ error: err.message });
                 console.log(err.message);
             } 
             else if (result == null) 
             {
-                res.status(200);
-                /*response.render("perfil", {
-                    error: "El usuario no existe."
-                });*/
+                res.status(500).send({ error: "El usuairo no existe" });
                 console.log("El usuario no existe");
             } 
             else
             {
                 res.status(200);
-                /*
-                response.render("perfil", {
-                    error: null,
-                    usuarioPerfil: usuarioPerfil
-                });
-                */
                res.send(JSON.stringify(result[0]));
             }
         });
     }
     else 
     {
-        res.status(200);
+        res.status(500);
         console.log("El id es nulo");
     }
 }
@@ -421,36 +343,24 @@ function getGroupData(req, res) {
                     //next(err);
                     console.log("No se puede conectar a la base de datos");
                 }
-                res.status(200);
-                /*response.render("perfil", {
-                    error: err.message
-                });*/
+                res.status(500).send({ error: err.message });
                 console.log(err.message);
             } 
             else if (result == null) 
             {
-                res.status(200);
-                /*response.render("perfil", {
-                    error: "El usuario no existe."
-                });*/
+                res.status(500).send({ error: "El grupo no existe" });
                 console.log("El grupo no existe");
             } 
             else
             {
                 res.status(200);
-                /*
-                response.render("perfil", {
-                    error: null,
-                    usuarioPerfil: usuarioPerfil
-                });
-                */
                res.send(JSON.stringify(result[0]));
             }
         });
     }
     else 
     {
-        res.status(200);
+        res.status(500);
         console.log("El id es nulo");
     }
 }
@@ -468,10 +378,7 @@ function deleteChallenge(request, response, next){
                 //next(err);
                 console.log("No se puede conectar a la base de datos");
             }
-            response.status(500);
-            /*response.render("perfil", {
-                error: err.message
-            });*/
+            response.status(500).send({ error: err.message });
             console.log(err.message);
         }
         else 
@@ -496,18 +403,12 @@ function getScriptsByStudent(request, response, next){
                 //next(err);
                 console.log("No se puede conectar a la base de datos");
             }
-            response.status(500);
-            /*response.render("perfil", {
-                error: err.message
-            });*/
+            response.status(500).send({ error: err.message });
             console.log(err.message);
         }
         else if (scriptList == null) 
         {
-            response.status(200);
-            /*response.render("perfil", {
-                error: "No hay estudiantes con los parámetros escogidos."
-            });*/
+            response.status(500).send({ error: "No hay escritos disponibles" });
             console.log("No escritos disponibles.");
         } 
         else 
@@ -532,18 +433,12 @@ function getScriptsByTeam(request, response, next){
                 //next(err);
                 console.log("No se puede conectar a la base de datos");
             }
-            response.status(500);
-            /*response.render("perfil", {
-                error: err.message
-            });*/
+            response.status(500).send({ error: err.message });
             console.log(err.message);
         }
         else if (scriptList == null) 
         {
-            response.status(200);
-            /*response.render("perfil", {
-                error: "No hay estudiantes con los parámetros escogidos."
-            });*/
+            response.status(500).send({ error: "No hay escritos disponibles" });
             console.log("No escritos disponibles.");
         } 
         else 
@@ -569,36 +464,24 @@ function getScriptsByTeam(request, response, next){
                     //next(err);
                     console.log("No se puede conectar a la base de datos");
                 }
-                res.status(200);
-                /*response.render("perfil", {
-                    error: err.message
-                });*/
+                response.status(500).send({ error: err.message });
                 console.log(err.message);
             } 
             else if (result == null) 
             {
-                res.status(200);
-                /*response.render("perfil", {
-                    error: "El usuario no existe."
-                });*/
+                response.status(500).send({ error: "El usuario no existe" });
                 console.log("El usuario no existe");
             } 
             else
             {
                 res.status(200);
-                /*
-                response.render("perfil", {
-                    error: null,
-                    usuarioPerfil: usuarioPerfil
-                });
-                */
                res.send(JSON.stringify(result[0]));
             }
         });
     }
     else 
     {
-        res.status(200);
+        res.status(500);
         console.log("El id es nulo");
     }
 }

@@ -136,7 +136,8 @@ class SearchStudentRes extends Component {
                     <React.Fragment>
                     <ListGroup.Item>
                         {student.id} 
-                        <img src={"data:image/png;base64," + btoa(String.fromCharCode.apply(null, student.foto.data))} alt="" style={{width: '5%',  borderRadius: '80%'}} ></img>
+                        <img src={(student.foto.data.length != 0) ? ("data:image/png;base64," +
+                        btoa(String.fromCharCode.apply(null, student.foto.data))) : "/chicaliteratura.png" } alt="" style={{width: '5%',  borderRadius: '80%'}} ></img>
                         {student.nombre} {student.apellidos} 
                         {student.correo}
                         <Link key={student.id} to={`/teacher/students/viewProfile/${student.id}`}><button text='Ver Perfil'> Ver perfil </button></Link>
@@ -158,7 +159,8 @@ class SearchStudentRes extends Component {
                     <React.Fragment>
                     <ListGroup.Item>
                         {student.id} 
-                        <img src={"data:image/png;base64," + btoa(String.fromCharCode.apply(null, student.foto.data))} alt="" style={{width: '5%',  borderRadius: '80%'}} ></img>
+                        <img src={(student.foto.data.length != 0) ? ("data:image/png;base64," +
+                        btoa(String.fromCharCode.apply(null, student.foto.data))) : "/chicaliteratura.png" } alt="" style={{width: '5%',  borderRadius: '80%'}} ></img>
                         {student.nombre} {student.apellidos} 
                         {student.correo}
                         <Link key={student.id} to={`/admin/users/viewProfile/${student.id}`}><button text='Ver Perfil'> Ver perfil </button></Link>
