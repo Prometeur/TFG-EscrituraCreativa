@@ -85,14 +85,14 @@ class CreateChallenge extends Component {
                 if (this.state.imgCollection.length > 0) {
                     TeacherService.sendMultimediaChallenge(this.state.imgCollection, AuthUser.getCurrentUser().id, idChallenge, this.state.form.type)
                         .then(response => {
-                            window.location.href = '/teacher';
+                            window.location.href = '/teacher/groups';
                         })
                         .catch(error => {
                             console.log(error.message);
                         });
                 }
                 else {
-                    window.location.href = '/teacher';
+                    window.location.href = '/teacher/groups';
                 }
             })
             .catch(error => {
@@ -141,7 +141,7 @@ class CreateChallenge extends Component {
 
     changeView = () => {
         //debugger;
-        window.location.href = "/teacher";
+        window.location.href = "/teacher/groups";
     }
 
     onModal(modal) {

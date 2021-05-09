@@ -39,19 +39,20 @@ function Writings(props) {
     return (
         <Card className={"card-edit"}>
             <Card.Body>
-                <div className="form-select">
-                    <label className='form-label'>Selecciona Desafio</label>
-                    <select onChange={selectionChallenge} >
-                        <option value="" selected disabled hidden > Seleccionar</option>
-                        {dataChallenges.length > 0 ? dataChallenges[0].map(elemento => (
-                            <option key={elemento.id} value={elemento.id} > { elemento.titulo} </option>
-                        )) : null}
-                    </select>
+                <div className={"row-edit"}>
+                    <div className="form-select">
+                        <label className='form-label'>Selecciona Desafio</label>
+                        <select onChange={selectionChallenge} >
+                            <option value="" selected disabled hidden > Seleccionar</option>
+                            {dataChallenges.length > 0 ? dataChallenges[0].map(elemento => (
+                                <option key={elemento.id} value={elemento.id} > { elemento.titulo} </option>
+                            )) : null}
+                        </select>
+                    </div>
                 </div>
 
-
             {showWritings ? (
-                <div className="row">
+                <div className="row-edit">
                     <WritingsStudent key={props.groupSelect} groupSelect={props.groupSelect} idChallenge={idChallenge} />
                 </div>
             ) : (

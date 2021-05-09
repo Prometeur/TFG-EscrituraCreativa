@@ -125,9 +125,10 @@ class GroupStudents extends Component {
                     {this.state.filteredData.map((student) =>
                         (
                             <li className={"items-row"}>
-                                        <img src={(student.foto.data.length != 0) ? ("data:image/png;base64," +
-                                        btoa(String.fromCharCode.apply(null, student.foto.data))) : "/chicaliteratura.png" }
                                 <ul className={"container-column-list wrap"}>
+                                    <li className={"flex-item-list"}>
+                                        <img src={(student.foto.data.length != 0) ? ("data:image/png;base64," +
+                                            btoa(String.fromCharCode.apply(null, student.foto.data))) : "/chicaliteratura.png" }
                                              alt=""
                                              style={{width: '60px',  borderRadius: '80%',margin:"0 1rem 0 1rem"}}
                                         >
@@ -164,7 +165,6 @@ class GroupStudents extends Component {
 
         return (
 
-            <div className="container">
                 <Card className="card-long">
                     <Card.Body>
                     <ul className={"container-column-list"}>
@@ -192,7 +192,7 @@ class GroupStudents extends Component {
                         {tabla}
                     </Card.Body>
                 </Card>
-            </div>
+
         );
     }
 

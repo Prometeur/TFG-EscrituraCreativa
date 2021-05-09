@@ -7,21 +7,26 @@ import React, { Component } from 'react';
 import TeacherService from '../../../services/teacher/teacherService.js';
 import Datos from "./ViewTeamInfo";
 import Escritos from "./ViewTeamScripts";
-import '../../../styles/styleGeneral.css';
+
+/** Estilos*/
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Card from 'react-bootstrap/Card';
+import Alert from 'react-bootstrap/Alert';
+
+/**Estilos CSS*/
 import 'react-tabs/style/react-tabs.css';
+import '../../../styles/styleGeneral.css';
 
 class ViewTeam extends Component {
 t
     constructor(props){
         super(props);
-
+        this.handler = this.handler.bind(this)
         this.state = {
             ventana: 1,
             data: [],
         }
-        this.handler = this.handler.bind(this)
+
     }
 
     //Permite refrescar la página desde abajo
@@ -52,10 +57,11 @@ t
     render() {
         
        let idTeam = this.props.match.params.idTeam;
-       let tabs =   <TabList>
-                        <Tab>MIEMBROS</Tab>
-                        <Tab>ESCRITOS</Tab>
-                    </TabList>;
+       let tabs =
+               <TabList>
+                    <Tab>MIEMBROS</Tab>
+                    <Tab>ESCRITOS</Tab>
+                </TabList>;
         
         let secondTab = <Escritos key={idTeam} idTeam={idTeam}/>;
 
@@ -67,16 +73,23 @@ t
                         <div className={"section-title"}>
                             <h2>Infomación del equipo</h2>
                         </div>
+                        <br/>
+                        <Alert variant={"info"}>
+                            <img src="/info.png" alt=""/>
+                            Desde este espacio puede ver a los miembros y escritos de un equipo.
+                        </Alert>
                     </div>
-                    <Tabs>
-                        {tabs}
-                        <TabPanel>
-                            <Datos key={idTeam} idTeam={idTeam} handler ={this.handler}/>
-                        </TabPanel>
-                        <TabPanel>
-                            {secondTab}
-                        </TabPanel>
-                    </Tabs>
+                    <div className={"row-edit"}>
+                        <Tabs>
+                            {tabs}
+                            <TabPanel>
+                                <Datos key={idTeam} idTeam={idTeam} handler ={this.handler}/>
+                            </TabPanel>
+                            <TabPanel>
+                                {secondTab}
+                            </TabPanel>
+                        </Tabs>
+                    </div>
                 </Card.Body>
               </Card>
            </div>
