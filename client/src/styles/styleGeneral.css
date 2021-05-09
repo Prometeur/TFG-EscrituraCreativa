@@ -139,6 +139,7 @@ h1.main-title {
     flex-basis: 70%;
 }
 
+
 .form-content {
     flex-basis: 70%;
 }
@@ -432,7 +433,7 @@ select {
 .flex-item-form {
     padding: 1rem .75rem;
     width: auto;
-    margin: 0rem 3.4rem 1rem 0.75rem;
+    margin: 0rem 3rem 1rem 1rem;
     line-height: 3rem;
 }
 
@@ -572,6 +573,7 @@ select {
 
 .items-row {
     flex-basis: auto;
+    margin: 0 .5rem 0;
 }
 
 .items-column {
@@ -581,6 +583,11 @@ select {
 
 .items-column h3 {
     margin: 0 2rem 0;
+}
+
+.group-teams {
+    margin: .2rem;
+    padding: 0rem 2rem 0rem;
 }
 
 .group-teams > h5 {
@@ -598,9 +605,16 @@ select {
 
 .table-multi {
     width: auto;
-    height: 12rem;
+    height: 7rem;
     overflow: scroll;
     overflow-x: auto;
+}
+
+.text-area {
+    overflow: auto;
+    padding: 0rem;
+    width: 6rem;
+    height: 3rem;
 }
 
 /*Responsive con minimo de 320px -movile*/
@@ -608,6 +622,10 @@ select {
 
     header {
         position: fixed;
+    }
+
+    select {
+        font-size: .55rem;
     }
 
     .sidebar-left {
@@ -653,6 +671,21 @@ select {
         width: 1rem;
     }
 
+    .flex-row {
+
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -moz-flex;
+        display: -webkit-flex;
+        display: flex;
+        flex-flow: column wrap;
+        justify-content: flex-start;
+        align-items: baseline;
+    }
 
     .flex-item-file {
         width: 23rem;
@@ -962,7 +995,16 @@ select {
         display: flex;
         text-align: center;
         justify-content: flex-start;
-        align-items: flex-start;
+        align-items: center;
+    }
+
+    .flex-item-list {
+
+        width: 9rem;
+        margin: .3rem .2rem 0;
+        color: black;
+        font-size: .9rem;
+        font-family: 'Roboto','sans-serif';
     }
 
     .items-column {

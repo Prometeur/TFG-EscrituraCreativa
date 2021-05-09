@@ -35,12 +35,13 @@ t
 
     /*Se hacen peticiones al servidor para que me devuelva los datos del estudiante*/
     peticionGet() {
-       
+
         TeacherService.getTeam(this.props.match.params.idTeam).then(response => {
               this.setState({data:response});
         }).catch(error => {
             console.log(error.message);
         })
+
     }
 
     componentDidMount() {
@@ -51,9 +52,8 @@ t
     render() {
         
        let idTeam = this.props.match.params.idTeam;
-
        let tabs =   <TabList>
-                        <Tab>DATOS</Tab>
+                        <Tab>MIEMBROS</Tab>
                         <Tab>ESCRITOS</Tab>
                     </TabList>;
         
@@ -63,6 +63,11 @@ t
            <div className="container">
               <Card className={"card-long"}>
                 <Card.Body>
+                    <div className={"row-edit"}>
+                        <div className={"section-title"}>
+                            <h2>Infomación del equipo</h2>
+                        </div>
+                    </div>
                     <Tabs>
                         {tabs}
                         <TabPanel>
@@ -76,8 +81,6 @@ t
               </Card>
            </div>
         );
-
-
     }
 
 

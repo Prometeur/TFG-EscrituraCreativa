@@ -51,16 +51,12 @@ function Writings(props) {
 
 
             {showWritings ? (
-
-                // <TabsWriting data={data} />
                 <div className="row">
                     <WritingsStudent key={props.groupSelect} groupSelect={props.groupSelect} idChallenge={idChallenge} />
                 </div>
             ) : (
-                <div>
-
-                </div>
-
+                <>
+                </>
             )}
             </Card.Body>
         </Card>

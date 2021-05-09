@@ -37,12 +37,12 @@
 .form-items-row {
     margin: .3rem .4rem;
     display: table-cell;
-    padding: 0 0.2rem;
-    width: 10rem;
+    padding: 0 1rem 0;
+    width:12rem;
 }
 
 .form-button {
-    margin: 2rem .75rem .75rem;
+    margin: .25rem .75rem .25rem;
     display: inline-grid;
     padding: 0 0.2rem;
 }
@@ -214,12 +214,6 @@ input.error {
     height: 80%;
     background: #ffffff;
     margin: auto;
-}
-
-.challenge-inputs {
-    width: 80%;
-    padding: 5rem;
-    border: 2px solid rgb(0, 0, 0);
 }
 
 .challenge-td {

@@ -300,8 +300,7 @@ class EditChallenge extends Component {
 
     /*Dibuja la pagina */
     render() {
-        // const { editorState } = this.state;
-        // const { formErrors } = this.state;
+
         const { editorState, formErrors, dataMediaChallenge } = this.state;
         return (
             <div className="container">
@@ -329,7 +328,6 @@ class EditChallenge extends Component {
                             </div>
                         </div>
                         <div className="row-edit">
-
                             <label className='form-label'>Descripción</label>
                             <Editor
                                 editorState={editorState}

@@ -18,7 +18,6 @@ import '../../../styles/styleGeneral.css';
 class WritingsStudent extends Component {
 
     constructor(props) {
-        debugger;
         super(props);
         this.state = {
             changeState: false,
@@ -63,7 +62,7 @@ class WritingsStudent extends Component {
 
 
     componentDidUpdate(pP, pS, sS) {
-        debugger;
+
         if ( this.props.idChallenge !== pP.idChallenge) {
             TeacherService.getChallenge(this.props.idChallenge)
                 .then(response => {
@@ -113,14 +112,10 @@ class WritingsStudent extends Component {
         console.log(this.state);
         let formatedDate;
         let { dataWritings, showTableStudent } = this.state;
-        // const { showWritings,showTableStudent } = this.state;
         return (
             <>
                 {showTableStudent ? (
                     <div className="table-margin">
-                        <div className="row-edit">
-                            <label className='form-label'>fdafadf</label>
-                        </div>
                         <Table striped bordered hover >
                             <thead>
                                 <tr>

@@ -121,57 +121,72 @@ class GroupStudents extends Component {
     if(this.state.currentUserRole === "T")
     {
         tabla = <ul className={"flex-items-row-start wrap"}>
-
                     {this.state.filteredData.map((student) =>
                         (
                             <li className={"items-row"}>
-                                    <div className={"form-items-row"}>
+                                <ul className={"container-column-list wrap"}>
+                                    <li className={"flex-item-list"}>
                                         <img src={"data:image/png;base64," + btoa(String.fromCharCode.apply(null, student.foto.data))}
                                              alt=""
-                                             style={{width: '40%',  borderRadius: '80%',margin:"0 0 0 1rem"}}
+                                             style={{width: '60px',  borderRadius: '80%',margin:"0 1rem 0 1rem"}}
                                         >
                                         </img>
-                                    </div>
-                                    <div className={"form-items-row"}>
-                                        {student.nombre} {student.apellidos}
-                                    </div>
-                                    <div className={"form-items-row"}>
+                                    </li>
+                                    <li className={"flex-item-list"}>
+                                        {student.nombre}
+                                    </li>
+                                    <li className={"flex-item-list"}>
+                                        {student.apellidos}
+                                    </li>
+                                    <li className={"flex-item-list"}>
                                         {student.correo}
-                                    </div>
-                                    <div className={"form-items-row"}>
+                                    </li>
+                                    <li className={"flex-item-list"}>
                                         <Link key={student.id} to={`/teacher/students/viewProfile/${student.id}`}>
-                                            <Button variant={"outline-secondary"} text='Ver Perfil'> Ver perfil </Button>
+                                            <Button size={"sm"} variant={"outline-secondary"} text='Ver Perfil'> Ver perfil </Button>
                                         </Link>
-                                    </div>
+                                    </li>
+                                </ul>
+                                <hr></hr>
                             </li>
                         )
                     )}
-
             </ul>
     }
     if(this.state.filteredData.length === 0)
     {
         cartel = <div className={"section-title"}>
-                    <h2>No hay resultados para la búsqueda realizada.</h2>
-                </div>;
+                    <h3>No hay resultados para la búsqueda realizada.</h3>
+                  </div>;
         tabla = <></>;
     }
-
 
         return (
 
             <div className="container">
                 <Card className="card-long">
                     <Card.Body>
-                    <div className={"group-teams"}>
+                    <ul className={"container-column-list"}>
+                        <li className={"items-row"}>
                             <label  className={"form-label"}>Buscar estudiante</label>
+                        </li>
+                        <li className={"items-row"}>
                             <input type="text" name="searchStudent" onChange={this.handleChangeSearch} />
+                        </li>
+                        <li className={"items-row"}>
+                            <img src="../../search.png" alt=""/>
+                        </li>
+                        <li className={"items-row"}>
                             <label className={"form-label"}>Escoja cómo buscar</label>
+                        </li>
+                        <li className={"items-row"}>
                             <select name="searchType" id="searchType" onChange={this.handleChangeSearchType}>
                                 <option value="nombre">Nombre</option>
                                 <option value="email">Email</option>
                             </select>
-                    </div>
+                        </li>
+                    </ul>
+                    <br/>
                         {cartel}
                         {tabla}
                     </Card.Body>

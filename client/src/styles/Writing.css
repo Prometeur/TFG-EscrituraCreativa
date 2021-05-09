@@ -29,9 +29,10 @@
 }
 
 .challenge-inputs {
-    width: 80%;
-    padding: 5rem;
-    border: 2px solid rgb(0, 0, 0);
+    width: 100%;
+    padding: .5rem;
+    margin: 0 0 2rem;
+    border: 2px solid #dedede;
 }
 
 .form-input{
@@ -129,3 +130,18 @@
     /* border: 1px solid rgb(161, 62, 62); */
     width:163vh;
 }
+
+
+@media screen and (min-width: 320px) {
+    .toolbarClassName1 {
+        width: 67vh;
+    }
+
+    .editorClassName1 {
+        border: 1px solid lavender;
+        height: 50vh;
+        width: 67vh;
+    }
+
+}
+
