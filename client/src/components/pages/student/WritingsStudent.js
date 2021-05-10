@@ -13,6 +13,8 @@ import moment from 'moment';
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
+import Alert from 'react-bootstrap/Alert';
+
 //Estilos
 import '../../../styles/styleGeneral.css';
 import '../../../styles/styleCard.css';
@@ -91,13 +93,12 @@ class WritingsStudent extends Component {
         let formatedDate;
         let { data, showWritings } = this.state;
         return (
-            <div className="container">
                 <Card className="card-long">
                     <Card.Body>
-                        <div className="items-column"><h3>Lista de escritos</h3></div>
                         {showWritings ? (
                             <div className="table-margin">
-                                <Table striped bordered hover >
+                                <h4>Lista de escritos</h4>
+                                <Table striped bordered hover responsive>
                                     <thead>
                                         <tr>
                                             <th >Escrito</th>
@@ -136,13 +137,14 @@ class WritingsStudent extends Component {
                             </div>
                         ) : (
 
-                            <div className="table-margin">
-                                <p>Todavia no dispones de escritos para mostrar</p>
+                            <div className="row-edit">
+                                <Alert variant={"danger"}>
+                                    Todavia no dispones de escritos para mostrar
+                                </Alert>
                             </div>
                         )}
                     </Card.Body>
                 </Card>
-            </div>
 
         );
     }

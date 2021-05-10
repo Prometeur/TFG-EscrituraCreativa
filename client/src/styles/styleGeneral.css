@@ -10,7 +10,7 @@ html, body {
 }
 
 body {
-    background-color: #f9f9f9;
+    background:#fafafb!important;
 }
 
 header {
@@ -211,7 +211,7 @@ h1.main-title {
 
 .editPerfil-left {
     grid-area: sbleft;
-    background-color: #ffffff;
+    background-color: #fafafb;;
     margin: 3.75rem auto 0;
     padding: .75rem .75em 0;
     width: 75%;
@@ -577,6 +577,15 @@ img.figure-profile {
     margin: 2rem .75rem 2rem;
 }
 
+
+.flex-items-row-evenly {
+    flex-direction: row;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
 .items-row {
     flex-basis: auto;
     margin: 0 .5rem 0;
@@ -821,6 +830,7 @@ img.figure-profile {
 
     .editPerfil-left {
         margin: 5rem .75rem 0;
+        background-color: #fafafb;
     }
 
 
@@ -941,7 +951,7 @@ img.figure-profile {
         position: fixed;
         position: fixed;
         height: 30rem;
-        top:1.2rem;
+        top:2rem;
     }
 
     .sidebar-left a {
@@ -982,7 +992,7 @@ img.figure-profile {
 
     .editPerfil-left {
         grid-area: sbleft;
-        background-color: #ffffff;
+        background-color: #fafafb;
         margin: 3.75rem auto 0;
         padding: .75rem .75em 0;
         display: block;

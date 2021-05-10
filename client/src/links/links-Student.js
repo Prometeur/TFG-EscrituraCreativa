@@ -3,26 +3,26 @@ const linksTeacher = [
 
         path: "/groups",
         name: "Grupos",
-        icon:"group.png",
+        icon:"/group.png",
         id: "challenges"
     },
     {
         path: "/writingsTabs",
         name: "Escritos",
-        icon:"writing.png",
+        icon:"/writing.png",
         id: "escritos"
     }
     ,
     {
         path: "/challengesTabs",
         name: "Crear Escrito",
-        icon:"create-new.png",
+        icon:"/create-new.png",
         id: "desafios"
     },
     {
         path: "/teams",
         name: "Equipos",
-        icon:"team.png",
+        icon:"/team.png",
         id: "teams"
     }
 ];

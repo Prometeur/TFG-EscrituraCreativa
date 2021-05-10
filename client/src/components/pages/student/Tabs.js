@@ -47,10 +47,10 @@ class Tabs extends Component {
         const { tabs, activeTab } = this.state;
         const tabToShow = activeTab - 1;
         return (
-            <div>
+            <>
                 {tabs && this.renderTabs()}
                 {tabs && tabs[tabToShow].content()}
-            </div>
+            </>
         );
     }
 

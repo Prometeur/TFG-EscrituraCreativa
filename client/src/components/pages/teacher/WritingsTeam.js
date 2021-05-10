@@ -58,8 +58,6 @@ class WritingsTeam extends Component {
         const { showWritings } = this.state;
         return (
             <>
-
-
                 <div className="table-margin">
                     <div className="row-edit">
                         <label className='form-label'>{this.state.idChallenge}</label>
@@ -91,8 +89,6 @@ class WritingsTeam extends Component {
                         </tbody>
                     </Table>
                 </div>
-
-
 
             </>
         );

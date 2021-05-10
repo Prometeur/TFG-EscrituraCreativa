@@ -138,12 +138,12 @@ class SearchStudentRes extends Component {
                    <Card.Body>
                        <div className={"row-edit"}>
                            <div className={"section-title"}>
-                               <h2>Lista de Estudiantes</h2>
+                               <h2>Lista de estudiantes</h2>
                            </div>
                            <br/>
                            <Alert variant={"info"}>
                                <img src="/info.png" alt=""/>
-                               Desde este espacio puede ver las solicitudes para acceder a la plataforma Creactiva.
+                               Desde este espacio puede ver la lista de sus estudiantes participantes.
                            </Alert>
                        </div>
                         <div className={"row-edit"}>
@@ -158,7 +158,7 @@ class SearchStudentRes extends Component {
                                     <img src="../../search.png" alt=""/>
                                 </li>
                                 <li className={"items-row"}>
-                                    <label htmlFor="searchType">Escoja cómo buscar:</label>
+                                    <label className={"form-label"} htmlFor="searchType">Escoja cómo buscar:</label>
                                 </li>
                                 <li className={"items-row"}>
                                     <select name="searchType" id="searchType" onChange={this.handleChangeSearchType}>
