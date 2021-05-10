@@ -166,14 +166,14 @@ class TeamsGroup extends Component {
     render() {
         const { showTeams, dataTeamsGroup, dataTeamStudent } = this.state;
         return (
-            <>
-                <div className="container">
                     <Card className="card-long">
                         <Card.Body>
-                            <div className="items-column"><h3>Lista de equipos</h3></div>
+                            <br/>
                             {showTeams ? (
-                                <div className="table-margin">
-                                    <Table striped bordered hover>
+                                <>
+                                    <h5>Lista de equipos</h5>
+                                    <br/>
+                                    <Table striped bordered hover responsive>
                                         <thead>
                                             <tr>
                                                 <th>Equipo</th>
@@ -188,45 +188,45 @@ class TeamsGroup extends Component {
                                                     <tr key={team.idEquipo}>
                                                         <td>{team.nombreEquipo}</td>
                                                         <td>{team.nombreGrupo}</td>
+                                                        <td>
                                                         {dataTeamStudent.filter(teamStudent => teamStudent.idEquipo === team.idEquipo).map((item, index) =>
-                                                            <tr> {item.nombre} {item.apellidos}</tr>
+                                                            <div>{item.nombre} {item.apellidos}</div>
                                                         )}
+                                                        </td>
                                                         <td ><Button onClick={() => this.askSendRequest(team)} disabled={this.disabledButtonJoin()}>Enviar Solicitud</Button></td>
                                                     </tr>
                                                 )
                                             })}
                                         </tbody>
                                     </Table>
-                                    {/* <td><Link to={`/teacher/createChallenge/${this.props.groupSelect}`}><button >Crear Desafio</button></Link></td> */}
-                                </div>
+                                  </>
                             ) : (
-                                <div className="table-margin">
-                                    <p>Todavia no hay equipos para mostrar</p>
+                                <div className="row-edit">
+                                    <h4>Todavia no hay equipos para mostrar</h4>
                                 </div>
                             )}
-                        </Card.Body>
-                    </Card>
-                </div>
-                <Modal show={this.state.modalSuccesfulSendJoinTeam}>
-                    <Modal.Header>
-                    </Modal.Header>
-                    <Modal.Body>
-                         <p> Petición enviada correctamente</p>
-                    </Modal.Body>
-                    <Modal.Footer>
-                    </Modal.Footer>
-                </Modal>
 
-                <Modal show={this.state.modalErrorSendRequest}>
-                    <Modal.Header>
-                    </Modal.Header>
-                    <Modal.Body>
-                         <p> Ya has enviado una solicitud anteriormente</p>
-                    </Modal.Body>
-                    <Modal.Footer>
-                    </Modal.Footer>
-                </Modal>
-            </>
+                    <Modal show={this.state.modalSuccesfulSendJoinTeam}>
+                        <Modal.Header>
+                        </Modal.Header>
+                        <Modal.Body>
+                             <h4> Petición enviada correctamente</h4>
+                        </Modal.Body>
+                        <Modal.Footer>
+                        </Modal.Footer>
+                    </Modal>
+
+                    <Modal show={this.state.modalErrorSendRequest}>
+                        <Modal.Header>
+                        </Modal.Header>
+                        <Modal.Body>
+                             <h4> Ya has enviado una solicitud anteriormente</h4>
+                        </Modal.Body>
+                        <Modal.Footer>
+                        </Modal.Footer>
+                    </Modal>
+                </Card.Body>
+            </Card>
         );
     }
 }

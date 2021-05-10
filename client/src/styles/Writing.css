@@ -29,9 +29,10 @@
 }
 
 .challenge-inputs {
-    width: 80%;
-    padding: 5rem;
-    border: 2px solid rgb(0, 0, 0);
+    width: 100%;
+    padding: .5rem;
+    margin: 0 0 2rem;
+    border: 2px solid #dedede;
 }
 
 .form-input{
@@ -112,7 +113,7 @@
 
 
 .editorClassName1{
-    border: 1px solid lavender;
+    border: 1px solid  #a39d9d;
     height: 55vh;
     width:  163vh;
 }
@@ -120,12 +121,76 @@
 
  .wrapperClassName1{
     /* border: 1px solid rgb(141, 62, 161); */
-    width:800px;
+    width:auto;
     margin-top: .75rem;
     height: 68vh;
+     margin-bottom: 2.5rem;
 } 
 
 .toolbarClassName1{
     /* border: 1px solid rgb(161, 62, 62); */
     width:163vh;
+}
+
+
+@media screen and (min-width: 320px) {
+    .toolbarClassName1 {
+        width: 35vh;
+    }
+
+    .editorClassName1 {
+        border: 1px solid  #a39d9d;
+        height: 45vh;
+        width: 35vh;
+    }
+
+    .wrapperClassName1{
+        width:auto;
+        height: 80vh;
+        margin-top: .75rem;
+        margin-bottom: 2rem;
+    }
+
+}
+
+
+@media screen and (min-width: 768px) {
+    .toolbarClassName1 {
+        width: 98vh;
+    }
+
+    .editorClassName1 {
+        border: 1px solid lavender;
+        height: 50vh;
+        width: 98vh;
+    }
+
+    .wrapperClassName1{
+        width:auto;
+        height: 80vh;
+        margin-top: .75rem;
+        margin-bottom: 2rem;
+    }
+
+}
+
+
+@media screen and (min-width: 1024px) {
+    .toolbarClassName1 {
+        width: 161vh;
+    }
+
+    .editorClassName1 {
+        border: 1px solid lavender;
+        height: 55vh;
+        width: 161vh;
+    }
+
+    .wrapperClassName1{
+        width:auto;
+        height: 65vh;
+        margin-top: .75rem;
+        margin-bottom: 2rem;
+    }
+
 }

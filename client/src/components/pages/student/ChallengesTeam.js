@@ -16,6 +16,7 @@ import AuthUser from '../../../services/authenticity/auth-service.js';
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
+import Alert from 'react-bootstrap/Alert';
 
 //Estilos
 import '../../../styles/styleGeneral.css';
@@ -193,9 +194,9 @@ class ChallengesTeam extends Component {
             <div className="container">
                 <Card className="card-long">
                     <Card.Body>
-                        <div className="items-column"><h3>Lista de escritos</h3></div>
                         {showChallenges ? (
                             <div className="table-margin">
+                                <h3>Lista de escritos</h3>
                                 <Table striped bordered hover >
                                     <thead>
                                         <tr>
@@ -255,9 +256,10 @@ class ChallengesTeam extends Component {
                             </div>
 
                         ) : (
-
-                            <div className="table-margin">
-                                <p>Todavia no dispones de desafios para mostrar o no dispones de equipo</p>
+                            <div className="row-edit">
+                                <Alert variant={"danger"}>
+                                    Todavia no dispones de desafios para mostrar o no dispones de equipo.
+                                </Alert>
                             </div>
                         )}
                     </Card.Body>

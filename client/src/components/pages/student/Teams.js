@@ -18,7 +18,7 @@ import StudentService from '../../../services/student/student-service.js';
 import Table from "react-bootstrap/Table";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-
+import Alert from 'react-bootstrap/Alert';
 
 //Estilos
  import '../../../styles/styleCard.css';
@@ -96,38 +96,54 @@ class Teams extends Component {
             <div className="container">
                <Card className="card-long">
                    <Card.Body>
-                       <div className="items-column"><h3>Lista de equipos</h3></div>
+                       <div className={"row-edit"}>
+                           <div className={"section-title"}>
+                               <h2>Listado de equipos</h2>
+                           </div>
+                       </div>
+                       <br/>
                         {showTeamStudent ? (
-                            <div className="table-margin">
-                                <Table striped bordered hover>
-                                    <thead>
-                                        <tr>
-                                            <th>Equipo</th>
-                                            <th>Grupo</th>
-                                            <th>Integrantes</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {this.state.dataTeams.map(team => {
-                                            return (
-                                                <tr key={team.idEquipo}>
-                                                    <td>{team.nombreEquipo}</td>
-                                                    <td>{team.nombreGrupo}</td>
-                                                    {this.state.dataTeamStudent.filter(teamStudent => teamStudent.idEquipo === team.idEquipo).map((item, index) =>
-                                                        <tr><td>{item.nombre} {item.apellidos}</td></tr>
-                                                    )}
-                                                    <td><Link to={`/student/teamStudent/${team.idGrupo}`}><Button  >Gestionar</Button></Link></td>
-                                                </tr>
-                                            )
-                                        })}
-                                    </tbody>
-                                </Table>
-                                {/* <td><Link to={`/teacher/createChallenge/${this.props.groupSelect}`}><button >Crear Desafio</button></Link></td> */}
-                            </div>
+                            <>
+                                <div className="row-edit">
+                                    <Alert variant={"info"}>
+                                        <img src="/info.png" alt=""/>
+                                        Desde aquí puedes gestionar todo sobre tus equipos.
+                                    </Alert>
+                                </div>
+                                <div className="row-edit">
+                                    <Table striped bordered hover>
+                                        <thead>
+                                            <tr>
+                                                <th>Equipo</th>
+                                                <th>Grupo</th>
+                                                <th>Integrantes</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {this.state.dataTeams.map(team => {
+                                                return (
+                                                    <tr key={team.idEquipo}>
+                                                        <td>{team.nombreEquipo}</td>
+                                                        <td>{team.nombreGrupo}</td>
+                                                        <td>
+                                                        {this.state.dataTeamStudent.filter(teamStudent => teamStudent.idEquipo === team.idEquipo).map((item, index) =>
+                                                            <div>{item.nombre} {item.apellidos}</div>
+                                                        )}
+                                                        </td>
+                                                        <td><Link to={`/student/teamStudent/${team.idGrupo}`}><Button>Gestionar</Button></Link></td>
+                                                    </tr>
+                                                )
+                                            })}
+                                        </tbody>
+                                    </Table>
+                                </div>
+                            </>
                         ) : (
-                            <div className="table-margin">
-                                <p>No dispones de equipos para mostrar</p>
+                            <div className="row-edit">
+                                <Alert variant={"danger"}>
+                                    No dispones de equipos para mostrar.
+                                </Alert>
                             </div>
                         )}
                    </Card.Body>

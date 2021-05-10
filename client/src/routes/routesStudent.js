@@ -2,6 +2,7 @@
 *  Name_file :routesStudent.js
 *  Description: contiene rutas asociadas a componentes del Student
 */
+
 import React from 'react';
 import { BrowserRouter, Switch, Route, useRouteMatch } from 'react-router-dom';
 import Sidebar from '../components/sidebar/Sidebar.js';
@@ -15,7 +16,6 @@ import EditWriting from '../components/pages/student/EditWriting.js';
 // import ViewMultimedia from '../components/pages/student/ViewMultimedia.js';
 import ViewWriting from '../components/pages/student/ViewWriting.js';
 import LinksStudent from '../links/links-Student.js';
-
 import EditWritingTeam from '../components/pages/student/EditWritingTeam.js';
 // import Teams from '../components/pages/student/Teams.js';
 // import Messenger from '../components/pages/student/Messenger.js';

@@ -66,12 +66,12 @@ input[type=text]:focus
 .card-profile {
     padding: 0;
     margin: 0;
-  width: 100%;
-  height: auto;
+    width: 100%;
+   height: auto;
 }
 
 .react-tabs {
-    margin: 4rem .75rem 2rem;
+    margin: 2rem .75rem 2rem;
     font-size: 1rem;
 }
 
@@ -114,5 +114,13 @@ input[type=text]:focus
     .form-group-register {
         margin-top: .5rem;
     }
- }
+
+    .card-profile {
+        padding: 0;
+        margin: 0  0 0 .5rem;
+        width: 100%;
+        height: auto;
+    }
+
+}
 

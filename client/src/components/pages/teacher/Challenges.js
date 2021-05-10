@@ -103,7 +103,7 @@ class Challenges extends Component {
                     </Link>
                 </div>
                 <div className="table-margin">
-                    <Table striped bordered hover responsive>
+                    <Table bordered hover responsive>
                         <thead>
                             <tr>
                                 <th>Titulo</th>
@@ -111,6 +111,8 @@ class Challenges extends Component {
                                 <th>Tipo</th>
                                 <th>Fecha</th>
                                 <th>Hora</th>
+                                <th></th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>

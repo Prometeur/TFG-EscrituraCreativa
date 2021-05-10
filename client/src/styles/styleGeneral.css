@@ -10,8 +10,7 @@ html, body {
 }
 
 body {
-    background-color: #F5F5F5;
-    background-color:white;
+    background:#fafafb!important;
 }
 
 header {
@@ -29,6 +28,8 @@ h1,h2,h3 {
     font-family: "Roboto", sans-serif;
 }
 
+
+
 .h1, .h2, .h3, .h4,
 .h5, .h6, h1, h2, h3,
 h4, h5, h6 {
@@ -36,7 +37,6 @@ h4, h5, h6 {
     margin: .5rem 0rem .5rem;
     font-weight: 500;
     line-height: 1.2;
-    letter-spacing: .05rem;
 }
 
 
@@ -58,7 +58,6 @@ li {
 
 .container{
     grid-area: main;
-    /*margin: 0 2em 1em;*/
     padding: .75em 1em;
 }
 
@@ -140,6 +139,7 @@ h1.main-title {
     flex-basis: 70%;
 }
 
+
 .form-content {
     flex-basis: 70%;
 }
@@ -211,7 +211,7 @@ h1.main-title {
 
 .editPerfil-left {
     grid-area: sbleft;
-    background-color: #ffffff;
+    background-color: #fafafb;;
     margin: 3.75rem auto 0;
     padding: .75rem .75em 0;
     width: 75%;
@@ -239,7 +239,7 @@ h1.main-title {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0;
+    margin: 2rem 0 1rem;
     padding: 0;
 }
 
@@ -351,17 +351,23 @@ select {
 }
 
 .figure {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     background: darkgray;
     border-radius: 8rem;
-    margin: 2em 2.3em 1em 2.3em;
+    margin: 2rem 2rem 1rem 2rem;
 }
 
 .figure img {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     border-radius: 50px;
+}
+
+img.figure-profile {
+    width: 10rem;
+    height: 10rem;
+    border-radius: 8rem;
 }
 
 .status.img {
@@ -372,14 +378,12 @@ select {
 .perfil-left h5 {
     text-align: center;
     text-transform: uppercase;
-    padding: .5em;
 }
 
 .perfil-left h6 {
     text-align: center;
-    font-style: italic;
-    padding: 0.4rem;
-    margin: .2rem 1.5rem;
+    padding: 0;
+    margin: 0;
 }
 
 .label-icon {
@@ -397,6 +401,7 @@ select {
     padding: 0;
     margin: 0;
     list-style: none;
+    flex-flow: column wrap;
     -ms-box-orient: horizontal;
     display: -webkit-box;
     display: -moz-box;
@@ -434,7 +439,7 @@ select {
 .flex-item-form {
     padding: 1rem .75rem;
     width: auto;
-    margin: 0rem 3.4rem 1rem 0.75rem;
+    margin: 0rem 3rem .1rem 1rem;
     line-height: 3rem;
 }
 
@@ -467,7 +472,7 @@ select {
 
 
 .flex-item {
-    width: 23rem;
+    width: 20rem;
     line-height: 3rem;
     color: black;
     font-weight: bold;
@@ -546,11 +551,14 @@ select {
 
 .img-icon {
     padding: 0;
-    margin: 0 .4rem 0;
+}
+
+.img-icon-perfil {
+    padding: 0;
+    width: 2rem;
 }
 
 .flex-items-row-start {
-    flex-direction: row;
     display: flex;
     flex-flow: column wrap;
     flex-wrap: nowrap;
@@ -569,13 +577,32 @@ select {
     margin: 2rem .75rem 2rem;
 }
 
-.items-row {
-    flex-basis: auto;
+
+.flex-items-row-evenly {
+    flex-direction: row;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
+.items-row {
+    flex-basis: auto;
+    margin: 0 .5rem 0;
+}
+
+.items-column {
+   margin: 0 0 .75rem;
+    padding: 0;
+}
 
 .items-column h3 {
     margin: 0 2rem 0;
+}
+
+.group-teams {
+    margin: .2rem;
+    padding: 0rem 2rem 0rem;
 }
 
 .group-teams > h5 {
@@ -591,10 +618,45 @@ select {
     margin: .3rem 1.25rem  1.75rem .3rem;
 }
 
+.table-multi {
+    width: auto;
+    height: 7rem;
+    overflow: scroll;
+    overflow-x: auto;
+}
+
+.text-area {
+    overflow: auto;
+    padding: 0rem;
+    width: 7rem;
+    height: 5rem;
+    margin: .75rem;
+    border: 1px solid #a39d9d;
+}
+
+.text-area-comment {
+    overflow: auto;
+    padding: .5rem;
+    width: 14rem;
+    height: 15rem;
+    margin: .75rem;
+    border: 1px solid #a39d9d;
+}
+
+.email-profile {
+    margin: .5rem 4rem 0 ;
+}
+
+/*Responsive con minimo de 320px -movile*/
 @media screen and (min-width: 320px) {
 
     header {
         position: fixed;
+    }
+
+    select {
+        word-wrap: normal;
+        width: 12rem;
     }
 
     .sidebar-left {
@@ -606,28 +668,29 @@ select {
 
     .sidebar-left a {
         float: left;
-        font-size: .6rem;
+        font-size: .9rem;
+        padding: .68rem;
     }
 
     .sidebar-left ul {
-        margin-top: 1.5rem;
+        margin-top: .55rem;
     }
 
     .sidebar-left a:hover:not(.active) {
         background-color: rgba(0, 0, 0, 0.46);
         color: rgb(255, 251, 255);
-        width: 6.8rem;
+        width: 8rem;
         display: inline-flex;
         justify-content: center;
         text-align: center;
         border-radius: 9rem 2rem;
-
+        font-size: .8rem;
     }
 
     .perfil-left {
          color: white;
-         margin: 6rem .8rem 0;
-         padding: .5rem
+         margin: 6rem 1.75rem 0rem 1.75rem;
+         padding: .2rem 0 1.5rem;
      }
 
     .img-login  {
@@ -636,17 +699,36 @@ select {
     }
 
     .img-icon {
-        padding: 0;
-        width: 2rem;
-        margin: 0 .4rem 0;
+        width: 1rem;
     }
 
+    .flex-row {
+
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -moz-flex;
+        display: -webkit-flex;
+        display: flex;
+        flex-flow: column wrap;
+        justify-content: flex-start;
+        align-items: center;
+    }
 
     .flex-item-file {
         width: 23rem;
         line-height: 2rem;
         font-size: .8rem;
         margin-left: 2rem;
+    }
+
+    .flex-item-form {
+        padding: 1rem 0rem;
+        width: auto;
+        margin: 0rem 1rem 0rem 1rem;
     }
 
     .form-select button.btn,
@@ -658,11 +740,22 @@ select {
         font-size: .7rem;
     }
 
+    .figure {
+        width: 150px;
+        height: 150px;
+    }
+
+    .figure img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50px;
+    }
+
     .container-column-list {
-        padding: 0;
+        padding: 0 0 .7rem;
         margin: 0;
         list-style: none;
-        flex-flow: row wrap;
+        flex-flow: column wrap;
         display: -moz-flex;
         display: flex;
         text-align: center;
@@ -670,17 +763,10 @@ select {
         align-items: center;
     }
 
-    .container-column-list {
-        padding: 0;
-        margin: 0;
-        list-style: none;
-        flex-flow: row wrap;
-        display: -moz-flex;
-        display: flex;
-        text-align: center;
-        justify-content: flex-start;
-        align-items: center;
-    }
+   /* ::-webkit-scrollbar {
+        display: none;
+    }*/
+
 
     .full-wrapper {
         grid-template-rows: 0fr 2fr;
@@ -690,15 +776,9 @@ select {
                 "main main main main main main main main main main main main main main main main";
     }
 
-  }
+}
 
- .table-multi {
-     width: auto;
-     height: 12rem;
-     overflow: scroll;
-     overflow-x: auto;
- }
-
+/*Responsive con minimo de 768px -tables*/
 @media screen and (min-width:768px) {
 
     header {
@@ -720,7 +800,7 @@ select {
     .sidebar-left a {
         text-align: left;
         float: none;
-        font-size: 1rem;
+        font-size: .9rem;
     }
 
     .sidebar-left ul {
@@ -735,38 +815,46 @@ select {
         justify-content: center;
         text-align: center;
         border-radius: 9rem 2rem;
+        font-size: .8rem;
 
     }
 
     .perfil-left {
 
         border-radius: 4rem;
-        margin: 5rem auto 0;
-        padding: .5rem;
+        margin: 2rem auto 0;
+        padding: 0;
         width: 95%;
         margin-top: 5rem;
     }
 
     .editPerfil-left {
         margin: 5rem .75rem 0;
+        background-color: #fafafb;
     }
+
 
     .img-login  {
         width: 25rem;
         margin: 2rem;
     }
 
-    .container-column-list {
-        padding: 0;
-        margin: 0;
-        list-style: none;
-        flex-flow: row wrap;
-        display: -moz-flex;
-        display: flex;
-        text-align: center;
-        justify-content: flex-start;
-        align-items: center;
+    .img-icon {
+        width: 2rem;
     }
+
+
+    .container-column-list {
+         padding: 0;
+         margin: 0;
+         list-style: none;
+         flex-flow: row wrap;
+         display: -moz-flex;
+         display: flex;
+         text-align: center;
+         justify-content: center;
+         align-items: center;
+     }
 
     .full-wrapper {
         grid-template-rows: 0fr 2fr;
@@ -786,6 +874,7 @@ select {
         font-size: 16px;
     }
 
+
     .img-login  {
         width: 34rem;
     }
@@ -797,8 +886,48 @@ select {
         margin: 5px 20px;
         font-size: .8rem;
     }
+
+    .flex-container {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        flex-flow: row wrap;
+        -ms-box-orient: horizontal;
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -moz-flex;
+        display: -webkit-flex;
+        display: flex;
+        justify-content:center;
+        align-items: center;
+    }
+
+    .items-column {
+        margin: 0  .75rem 0;
+        padding: 0;
+    }
+
+    .items-column h1 {
+        font-size: 2rem;
+    }
+
+    .figure {
+        width: 100px;
+        height: 100px;
+        margin: 1rem 0rem 1rem 3rem;
+    }
+
+    .figure img {
+        width: 100px;
+        height: 100px;
+        border-radius: 35px;
+    }
+
+
 }
 
+/*Responsive con minimo de 1024px-Desktop*/
 @media screen and (min-width:1024px) {
 
     header {
@@ -807,7 +936,6 @@ select {
 
     .container {
         width: 100%;
-        margin-left: 0;
     }
 
     .container-home {
@@ -823,13 +951,13 @@ select {
         position: fixed;
         position: fixed;
         height: 30rem;
-        top:1.2rem;
+        top:2rem;
     }
 
     .sidebar-left a {
         text-align: left;
         float: none;
-        font-size: .8rem;
+        font-size: .7rem;
     }
 
     .sidebar-left ul {
@@ -837,9 +965,16 @@ select {
     }
 
     .sidebar-left a:hover:not(.active) {
-
+        background-color: rgba(0, 0, 0, 0.46);
+        color: rgb(255, 251, 255);
+        width: 8rem;
+        display: inline-flex;
+        justify-content: center;
+        text-align: center;
+        border-radius: 9rem 2rem;
         font-size: .7rem;
     }
+
 
     .perfil-left {
         width: 100%;
@@ -849,9 +984,15 @@ select {
 
     }
 
+    .perfil-left h6 {
+        text-align: center;
+        padding: 0;
+        margin: 0 0 .75rem;
+    }
+
     .editPerfil-left {
         grid-area: sbleft;
-        background-color: #ffffff;
+        background-color: #fafafb;
         margin: 3.75rem auto 0;
         padding: .75rem .75em 0;
         display: block;
@@ -868,6 +1009,62 @@ select {
         width: 42rem;
     }
 
+    .img-icon {
+        width: 2rem;
+    }
+
+    .figure {
+        width: 90px;
+        height: 90px;
+        margin: 2.5rem .75rem 1rem .75rem;
+    }
+
+    .figure img {
+        width: 90px;
+        height: 90px;
+        border-radius: 35px;
+    }
+
+    .container-column-list {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        flex-flow: row wrap;
+        display: -moz-flex;
+        display: flex;
+        text-align: center;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .flex-item-list {
+
+        width: 9rem;
+        margin: .3rem .2rem 0;
+        color: black;
+        font-size: .9rem;
+        font-family: 'Roboto','sans-serif';
+    }
+
+    .flex-item-profile {
+        width: 12rem;
+        margin: .3rem .2rem 0;
+        color: black;
+        font-size: .9rem;
+        font-family: 'Roboto','sans-serif';
+    }
+
+    .flex-item-form {
+        padding: 1rem 0rem;
+        width: auto;
+        margin: 0rem 5rem .75rem 1.5rem;
+    }
+
+    .items-column {
+        margin: 0 0.7rem .2rem 0.9rem;
+        padding: 0;
+    }
+
     .full-wrapper {
 
         grid-template-areas:
@@ -875,15 +1072,35 @@ select {
                 "sbleft sbleft main main main main main main main main main main main main main main"
                 "sbleft sbleft main main main main main main main main main main main main main main";
     }
+
+    .perfil-left h1 {
+        font-size: 1.75rem;
+    }
+
+    .perfil-left h6 {
+       font-size: .8rem;
+    }
 }
 
-
+/*Responsive con minimo de 1200px*/
 @media screen and (min-width:1200px) {
-
-
     .sidebar-left a {
+        text-align: left;
+        float: none;
         font-size: .9rem;
     }
 
+    .text-area-comment {
+        overflow: auto;
+        width: 61rem;
+        height: 15rem;
+    }
+}
 
+/*Responsive con minimo de 1444px*/
+@media screen and (min-width: 1444px){
+    .items-column {
+        margin: 0 1.9rem 0.2rem 2rem;
+        padding: 0;
+    }
 }

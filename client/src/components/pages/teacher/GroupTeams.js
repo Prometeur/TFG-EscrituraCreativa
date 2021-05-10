@@ -70,14 +70,19 @@ class GroupTeams extends Component {
                 (
                     <li className={"items-row"}>
                         <br/>
-                        <div className={"form-items-row"}>
-                            <h5>{team.nombre}</h5>
-                        </div>
-                        <div className={"form-items-row"}>
-                            <Link key={team.id} to={`/teacher/viewTeam/${team.id}`}>
-                                <Button  variant={"outline-secondary"} text='Ver Equipo'>Ver equipo</Button>
-                            </Link>
-                        </div>
+                        <ul className={"container-column-list wrap"}>
+                            <li className={"flex-item-list"}>
+                                <img src="../../team_black.png" alt=""/>
+                            </li>
+                            <li className={"flex-item-list"}>
+                                <h6>{team.nombre}</h6>
+                            </li>
+                            <li className={"flex-item-list"}>
+                                <Link key={team.id} to={`/teacher/viewTeam/${team.id}`}>
+                                    <Button size={"sm"} variant={"outline-secondary"} text='Ver Equipo'>Ver equipo</Button>
+                                </Link>
+                            </li>
+                        </ul>
                         <hr></hr>
                     </li>
 
@@ -96,13 +101,19 @@ class GroupTeams extends Component {
         return (
                 <Card className="card-long">
                     <Card.Body>
-                        <div className={"group-teams"}>
-                            <label className={"form-label"}>Buscar equipo</label>
-                            <input type="text" name="searchKey" onChange={this.handleChangeSearch} />
-                            <div className={"form-select"}><img src={"../search.png"}></img></div>
-                                {cartel}
-                                {tabla}
-                        </div>
+                        <ul className={"container-column-list"}>
+                            <li className={"items-row"}>
+                                <label  className={"form-label"}>Buscar estudiante</label>
+                            </li>
+                            <li className={"items-row"}>
+                                <input type="text" name="searchStudent" onChange={this.handleChangeSearch} />
+                            </li>
+                            <li className={"items-row"}>
+                                <img src="../../search.png" alt=""/>
+                            </li>
+                        </ul>
+                        {cartel}
+                        {tabla}
                     </Card.Body>
                 </Card>
         );

@@ -18,7 +18,6 @@ import '../../../styles/styleGeneral.css';
 class WritingsStudent extends Component {
 
     constructor(props) {
-        debugger;
         super(props);
         this.state = {
             changeState: false,
@@ -63,7 +62,7 @@ class WritingsStudent extends Component {
 
 
     componentDidUpdate(pP, pS, sS) {
-        debugger;
+
         if ( this.props.idChallenge !== pP.idChallenge) {
             TeacherService.getChallenge(this.props.idChallenge)
                 .then(response => {
@@ -113,15 +112,11 @@ class WritingsStudent extends Component {
         console.log(this.state);
         let formatedDate;
         let { dataWritings, showTableStudent } = this.state;
-        // const { showWritings,showTableStudent } = this.state;
         return (
             <>
                 {showTableStudent ? (
                     <div className="table-margin">
-                        <div className="row-edit">
-                            <label className='form-label'>fdafadf</label>
-                        </div>
-                        <Table striped bordered hover >
+                        <Table bordered hover responsive>
                             <thead>
                                 <tr>
                                     <th >Desafío</th>
@@ -144,7 +139,7 @@ class WritingsStudent extends Component {
                                         <td>{writing.puntuacion}</td>
                                         <td >{formatedDate = moment(writing.fecha).format('DD/MM/YYYY')}</td>
                                         <td >{formatedDate = moment(writing.fecha).format('LT')}</td>
-                                        <td className="challenge-td"><Link to={`/teacher/editWriting/${this.props.groupSelect}/${writing.idDesafio}/${writing.idEscrito}/${writing.idEstudiante}`}><Button variant="outline-primary" >Editar Escrito</Button></Link></td>
+                                        <td className="challenge-td"><Link to={`/teacher/editWriting/${this.props.groupSelect}/${writing.idDesafio}/${writing.idEscrito}/${writing.idEstudiante}`}><img src={"../edit.png"} />Editar</Link></td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -156,7 +151,7 @@ class WritingsStudent extends Component {
                         <div className="row-edit">
                             <label className='form-label'>fafafa</label>
                         </div>
-                        <Table striped bordered hover >
+                        <Table  bordered hover responsive>
                             <thead>
                                 <tr>
                                     <th >Desafío</th>

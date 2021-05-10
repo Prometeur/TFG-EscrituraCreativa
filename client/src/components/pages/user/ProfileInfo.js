@@ -3,12 +3,19 @@
 *  Description: Contiene los datos de un usuario segun un ID dado.
 *    
 */
+
 import React, { Component } from 'react';
-import authHeader from '../../../services/authenticity/auth-header.js';
 import AuthUser from '../../../services/authenticity/auth-service.js';
 import TeacherService from '../../../services/teacher/teacherService.js';
 import AdminService from '../../../services/admin/adminService.js';
 
+/**Estilos */
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+
+/**Estilos CSS*/
+import '../../../styles/styleGeneral.css';
+import '../../../styles/styleCard.css';
 
 class ProfileInfo extends Component {
     
@@ -16,7 +23,6 @@ class ProfileInfo extends Component {
         super(props);
 
         this.state = {
-            
             data: [],
             teacherGroupData: [],
             studentGroupData: [],
@@ -224,183 +230,227 @@ class ProfileInfo extends Component {
 
     /*Dibuja la pagina  */
     render() {
-        console.log(this.props.idStudent);
-        let cartel =<div> </div>;
-        let contenido = <div>
-                        <h3>ID: {this.state.data.id}</h3>
-                        <h3>Nombre: {this.state.data.nombre}</h3>
-                        <h3>Apellidos: {this.state.data.apellidos}</h3>
-                        <h3>Correo: {this.state.data.correo}</h3>
-                    </div>;
-
-        let invitaGrupo = 
-        <div>
-            <label for="groupSelect">Invitar a un grupo:</label>
-            <select name="groupSelect" id="groupSelect" onChange={this.handleChangeGroupSelect}>
-                <option value= "-1" >Elija un grupo</option>
-                {this.state.finalGroupData.map(group => {
-                    return (
-                            <option value={group.id}>{group.nombre}</option>
-                    )
-                })}
-            </select> 
-        </div>;
-        let botonInvitaGrupo =  <div><button text='Invitar a grupo' onClick={() => this.inviteToGroup(this.state.groupSelect)}>Invitar a grupo</button></div>;
-
-        if(this.state.groupSelect === "-1"){
-            botonInvitaGrupo= <div><button disabled text='Invitar a grupo' onClick={() => this.inviteToGroup(this.state.groupSelect)}>Invitar a grupo</button></div>;
-            invitaGrupo = 
-            <div>
-                <label for="groupSelect">Invitar a un grupo:</label>
-                <select name="groupSelect" id="groupSelect" onChange={this.handleChangeGroupSelect}>
-                    <option selected value= "-1" selected>Elija un grupo</option>
-                    {this.state.finalGroupData.map(group => {
-                        return (
-                                <option value={group.id}>{group.nombre}</option>
-                        )
-                    })}
-                </select> 
-            </div>;
-        }
-
-        let echaGrupo = 
-        <div>
-            <label for="groupKickSelect">Expulsar de un grupo:</label>
-            <select name="groupKickSelect" id="groupKickSelect" onChange={this.handleChangeGroupKickSelect}>
-                <option value= "-1" >Elija un grupo</option>
-                {this.state.finalGroupKickData.map(group => {
-                    return (
-                            <option value={group.id}>{group.nombre}</option>
-                    )
-                })}
-            </select> 
-        </div>;
-        let botonEchaGrupo =  <div><button text='Expulsar del grupo' onClick={() => this.kickFromGroup(this.state.groupKickSelect)}>Expulsar del grupo</button></div>;
-
-        if(this.state.groupKickSelect === "-1"){
-            botonEchaGrupo= <div><button disabled text='Expulsar del grupo' onClick={() => this.kickFromGroup(this.state.groupKickSelect)}>Expulsar del grupo</button></div>;
-            echaGrupo = 
-                <div>
-                    <label for="groupKickSelect">Expulsar de un grupo:</label>
-                    <select name="groupKickSelect" id="groupKickSelect" onChange={this.handleChangeGroupKickSelect}>
-                        <option selected value= "-1" >Elija un grupo</option>
-                        {this.state.finalGroupKickData.map(group => {
-                            return (
-                                    <option value={group.id}>{group.nombre}</option>
-                            )
-                        })}
-                    </select> 
-                </div>;
-        }
-
-        let botonDesactivar = <div></div>;
-        let botonEliminar = <div></div>;
-
-
-            //      RESTRICCIONES POR USUARIO LOGUEADO
-
-            if(this.state.currentUserRole == "A")
-            {
-
-                botonDesactivar = <div><button text='Desactivar usuario' onClick={() => this.deactivateUser(this.state.data.id)}>Desactivar usuario</button></div>;
-                botonEliminar = <div><button text='Eliminar usuario' onClick={() => 
-                {if(window.confirm('El usuario '+ this.state.data.nombre + ' '+ this.state.data.apellidos +' y todos sus grupos, escritos, equipos y desafíos se eliminarán de forma permanente de la base de datos. ESTA ACCIÓN ES IRREVERSIBLE. ¿Eliminar usuario?'))
-                {this.deleteUser(this.state.data.id)};}}>Eliminar usuario</button></div>;
-
-            }
-            if(this.state.currentUserRole == "S")
-            {
-                invitaGrupo = <nav></nav>;
-                botonInvitaGrupo = <nav></nav>;
-
-                echaGrupo = <nav></nav>;
-                botonEchaGrupo = <nav></nav>;
-            }
-
-
-            //      RESTRICCIONES POR EL USUARIO QUE VEO
-
-        if(this.state.data.rol == "A")//SI EL USUARIO QUE VEO ES ADMIN NO LO PUEDO MODIFICAR
-        {
-            invitaGrupo = <nav></nav>;
-            botonInvitaGrupo = <nav></nav>;
-
-            echaGrupo = <nav></nav>;
-            botonEchaGrupo = <nav></nav>;
-            botonDesactivar = <nav></nav>;
-            botonEliminar =<nav></nav>;
-        }
-        if(this.state.data.rol == "T")//SI EL USUARIO QUE VEO ES PROFESOR NO PUEDO MODIFICAR A QUE GRUPOS PERTENECE
-        {
-            invitaGrupo = <nav></nav>;
-            botonInvitaGrupo = <nav></nav>;
-
-            echaGrupo = <nav></nav>;
-            botonEchaGrupo = <nav></nav>;
-        }
-
-        //      RESTRICCIONES PARA SOLICITANTES
-
-        if(this.state.data.activo === 0)
-        {
-            cartel = <nav>
-                        <h2> Este estudiante aún no ha sido aceptado por un profesor.</h2>
-                    </nav>;
-            contenido = <div>
-                        <h3>ID: {this.state.data.id}</h3>
-                        <h3>Nombre: {this.state.data.nombre}</h3>
-                        <h3>Apellidos: {this.state.data.apellidos}</h3>
-                        <h3>Correo: {this.state.data.correo}</h3>
-                        <div><button text='Aceptar solicitud' onClick={() => this.acceptApplicant(this.state.data.id)}>Aceptar solicitud</button></div>
-            </div>;
-
-            invitaGrupo = <nav></nav>;
-            botonInvitaGrupo = <nav></nav>;
-
-            echaGrupo = <nav></nav>;
-            botonEchaGrupo = <nav></nav>;
-
-            botonDesactivar = <div></div>;
-        }
 
         let fotoSource = "/chicaliteratura_sizebig.png";
-        let imagenUser = <img src={fotoSource} alt="" style={{width: '100px'}}  ></img>
+        let imagenUser = <img src={fotoSource} alt="" className={"figure-profile"} ></img>
 
         if(this.state.data.foto != undefined)
         {
             if(this.state.data.foto.data.length != 0)
             {
-            fotoSource = "data:image/png;base64," + btoa(String.fromCharCode.apply(null, this.state.data.foto.data));
-            imagenUser = <img src={fotoSource} alt="" style={{width: '100px'}}  ></img>
+                fotoSource = "data:image/png;base64," + btoa(String.fromCharCode.apply(null, this.state.data.foto.data));
+                imagenUser = <img src={fotoSource} alt="" className={"figure-profile"} ></img>
             }
         }
 
+        let cartel =<></>;
+        let contenido = <div className={"row-edit"}>
+                            <br/>
+                             <ul className={"flex-row"}>
+                                <li className={"items-row"}>
+                                    {imagenUser}
+                                 </li>
+                                 <li className={"items-row"}>
+                                     <ul className={"container-column-list wrap"}>
+                                        <li className={"flex-item-list"}>
+                                            <h3>{this.state.data.nombre}</h3>
+                                        </li>
+                                         <li className={"flex-item-list"}>
+                                             <h3>{this.state.data.apellidos}</h3>
+                                         </li>
+                                     </ul>
+                                     <div className={"email-profile"}>
+                                         <h5>{this.state.data.correo}</h5>
+                                     </div>
+                                 </li>
+                             </ul>
+                        </div>;
 
+        let invitaGrupo = <div className={"row-edit"}>
+            <ul className={"container-column-list wrap"}>
+                <li className={"flex-item-profile"}>
+                    <label className={"form-label"} htmlFor="groupSelect">Invitar a un grupo</label>
+                </li>
+                <li className={"flex-item-profile"}>
+                    <select name="groupSelect" id="groupSelect" onChange={this.handleChangeGroupSelect}>
+                        <option value= "-1" >Elija un grupo</option>
+                        {this.state.finalGroupData.map(group => {
+                            return (
+                                <option value={group.id}>{group.nombre}</option>
+                            )
+                        })}
+                    </select>
+                </li>
+                <li className={"flex-item-profile"}>
+                    <Button text='Invitar a grupo' onClick={() => this.inviteToGroup(this.state.groupSelect)}>
+                        Invitar
+                    </Button>
+                </li>
+            </ul>
+        </div>;
+
+
+        if(this.state.groupSelect === "-1"){
+            invitaGrupo =
+            <div className={"row-edit"}>
+                <ul className={"container-column-list wrap"}>
+                    <li className={"flex-item-profile"}>
+                        <label className={"form-label"} htmlFor="groupSelect">Invitar a un grupo</label>
+                    </li>
+                    <li className={"flex-item-profile"}>
+                        <select name="groupSelect" id="groupSelect" onChange={this.handleChangeGroupSelect}>
+                            <option selected value= "-1" selected>Elija un grupo</option>
+                            {this.state.finalGroupData.map(group => {
+                                return (
+                                    <option value={group.id}>{group.nombre}</option>
+                                )
+                            })}
+                        </select>
+                    </li>
+                    <li className={"flex-item-profile"}>
+                        <Button disabled text='Invitar a grupo' onClick={() => this.inviteToGroup(this.state.groupSelect)}>
+                            Invitar
+                        </Button>
+                    </li>
+                </ul>
+            </div>;
+        }
+
+        let echaGrupo = 
+        <div className={"row-edit"}>
+            <ul className={"container-column-list wrap"}>
+                <li className={"flex-item-profile"}>
+                    <label className={"form-label"} htmlFor="groupKickSelect">Expulsar de un grupo</label>
+                </li>
+                <li className={"flex-item-profile"}>
+                    <select name="groupKickSelect" id="groupKickSelect" onChange={this.handleChangeGroupKickSelect}>
+                        <option value= "-1" >Elija un grupo</option>
+                        {this.state.finalGroupKickData.map(group => {
+                            return (
+                                <option value={group.id}>{group.nombre}</option>
+                            )
+                        })}
+                    </select>
+                </li>
+                <li className={"flex-item-profile"}>
+                    <Button text='Expulsar del grupo' onClick={() => this.kickFromGroup(this.state.groupKickSelect)}>
+                        Expulsar
+                    </Button>
+                </li>
+            </ul>
+        </div>;
+
+        if(this.state.groupKickSelect === "-1"){
+            echaGrupo = 
+                <div className={"row-edit"}>
+                    <ul className={"container-column-list wrap"}>
+                        <li className={"flex-item-profile"}>
+                            <label className={"form-label"} htmlFor="groupKickSelect">Expulsar del grupo</label>
+                        </li>
+                        <li className={"flex-item-profile"}>
+                            <select name="groupKickSelect" id="groupKickSelect" onChange={this.handleChangeGroupKickSelect}>
+                                <option selected value= "-1" >Elija un grupo</option>
+                                {this.state.finalGroupKickData.map(group => {
+                                    return (
+                                        <option value={group.id}>{group.nombre}</option>
+                                    )
+                                })}
+                            </select>
+                        </li>
+                        <li className={"flex-item-profile"}>
+                            <Button disabled text='Expulsar del grupo' onClick={() => this.kickFromGroup(this.state.groupKickSelect)}>
+                                Expulsar
+                            </Button>
+                        </li>
+                    </ul>
+                </div>;
+        }
+
+        let botonDesactivar = <></>;
+        let botonEliminar = <></>;
+
+
+        //      RESTRICCIONES POR USUARIO LOGUEADO
+
+        if(this.state.currentUserRole == "A")
+        {
+
+            botonDesactivar =
+                <div>
+                    <button text='Desactivar usuario' onClick={() => this.deactivateUser(this.state.data.id)}>
+                        Desactivar usuario
+                    </button>
+                </div>;
+
+            botonEliminar =
+                <div>
+                    <button text='Eliminar usuario' onClick={() =>
+                        {if(window.confirm('El usuario '+ this.state.data.nombre + ' '+ this.state.data.apellidos +' y todos sus grupos, escritos, equipos y desafíos se eliminarán de forma permanente de la base de datos. ESTA ACCIÓN ES IRREVERSIBLE. ¿Eliminar usuario?'))
+                        {this.deleteUser(this.state.data.id)};}}>
+                        Eliminar usuario
+                    </button>
+                </div>;
+
+        }
+        if(this.state.currentUserRole == "S")
+        {
+            invitaGrupo = <nav></nav>;
+
+
+            echaGrupo = <nav></nav>;
+        }
+
+        //      RESTRICCIONES POR EL USUARIO QUE VEO
+
+        if(this.state.data.rol == "A")
+            //SI EL USUARIO QUE VEO ES ADMIN NO LO PUEDO MODIFICAR
+        {
+            invitaGrupo = <></>;
+            echaGrupo = <></>;
+            botonDesactivar = <></>;
+            botonEliminar =<></>;
+        }
+
+        if(this.state.data.rol == "T")
+            //SI EL USUARIO QUE VEO ES PROFESOR NO PUEDO MODIFICAR A QUE GRUPOS PERTENECE
+        {
+            invitaGrupo = <></>;
+
+
+            echaGrupo = <></>;
+        }
+
+        // RESTRICCIONES PARA SOLICITANTES
+        if(this.state.data.activo === 0)
+        {
+            cartel = <>
+                        <h2> Este estudiante aún no ha sido aceptado por un profesor.</h2>
+                     </>;
+            contenido = <div>
+                        <h3>Nombre: {this.state.data.nombre}</h3>
+                        <h3>Apellidos: {this.state.data.apellidos}</h3>
+                        <h3>Correo: {this.state.data.correo}</h3>
+                        <div>
+                            <button text='Aceptar solicitud' onClick={() => this.acceptApplicant(this.state.data.id)}>Aceptar solicitud</button>
+                        </div>
+            </div>;
+
+            invitaGrupo = <></>;
+            echaGrupo = <></>;
+            botonDesactivar = <></>;
+        }
 
         return (
-            <>
-                <h1>Perfil:</h1>
-            
-                <div>
-                
-                    {cartel}
-
-                    {imagenUser}
-
-                    {contenido}
-
-
-                    {invitaGrupo}
-                    {botonInvitaGrupo}
-
-                    {echaGrupo}
-                    {botonEchaGrupo}
-
-                    {botonDesactivar}
-                    {botonEliminar}
-
-                </div>
-            </>
+            <Card className={"card-long"}>
+                <Card.Body>
+                        {cartel}
+                        {contenido}
+                        {invitaGrupo}
+                        {echaGrupo}
+                        {botonDesactivar}
+                        {botonEliminar}
+                </Card.Body>
+            </Card>
         );
     }
 

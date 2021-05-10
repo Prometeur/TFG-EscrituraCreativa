@@ -17,6 +17,8 @@ import AuthUser from '../../../services/authenticity/auth-service.js';
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
+import Alert from 'react-bootstrap/Alert';
+
 //Estilos
 import '../../../styles/styleGeneral.css';
 import '../../../styles/styleCard.css';
@@ -114,9 +116,9 @@ class ChallengesStudent extends Component {
             <div className="container">
                 <Card className="card-long">
                     <Card.Body>
-                        <div className="items-column"><h3>Lista de desafios</h3></div>
                         {showChallenges ? (
                             <div className="table-margin">
+                               <h3>Lista de desafios</h3>
                                 <Table striped bordered hover >
                                     <thead>
                                         <tr>
@@ -149,30 +151,16 @@ class ChallengesStudent extends Component {
                                                     }
                                                     )}
                                                 <td ><Link to={`/student/writing/${challenge.idGrupo}/${challenge.id}`}><Button variant="outline-primary" disabled={this.disabledButton(challenge) || writingExist}>Crear Escrito</Button></Link></td>
-
-                                                {/*
-                                        {writingExist ? (
-                                            <td ><Link to={`/student/editWriting/${challenge.idGrupo}/${challenge.id}/${idWriting}`}><Button variant="outline-primary" disabled={this.disabledButton(challenge)}>Editar Escrito</Button></Link></td>
-                                        ) : (
-                                            <td ><Link to={`/student/writing/${challenge.idGrupo}/${challenge.id}`}><Button variant="outline-primary" disabled={this.disabledButton(challenge)}>Nuevo Escrito</Button></Link></td>
-                                        )}
-
-                                        {writingExist && this.disabledButton(challenge) ? (
-                                            <td><Link to={`/student/viewWriting/${challenge.idGrupo}/${challenge.id}/${idWriting}`} ><Button variant="outline-primary" disabled={!this.disabledButton(challenge)}>Ver</Button></Link></td>
-                                        ) : (
-                                            <></>
-                                        )} */}
-
-
                                             </tr>
                                         ))}
                                     </tbody>
                                 </Table>
                             </div >
                         ) : (
-
-                            <div className="table-margin">
-                                <p>Todavia no dispones de desafios para mostrar</p>
+                            <div className="row-edit">
+                                <Alert variant={"danger"}>
+                                    Todavia no dispones de desafios para mostrar.
+                                </Alert>
                             </div>
                         )}
                     </Card.Body>
