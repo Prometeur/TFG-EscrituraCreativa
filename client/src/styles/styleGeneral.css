@@ -63,7 +63,6 @@ li {
 
 .container-home {
     grid-area: main;
-    padding: 0;
 }
 
 .container-margin {
@@ -80,6 +79,10 @@ li {
     grid-area: main;
     /*margin: 0 2em 1em;*/
     padding: .75em 1em;
+}
+
+.main-wrapper {
+    background-color: white !important;
 }
 
 .main-wrapper,
@@ -647,6 +650,7 @@ img.figure-profile {
     margin: .5rem 4rem 0 ;
 }
 
+
 /*Responsive con minimo de 320px -movile*/
 @media screen and (min-width: 320px) {
 
@@ -1006,7 +1010,8 @@ img.figure-profile {
      }
 
     .img-home {
-        width: 42rem;
+        width: 40rem;
+        height: 30rem;
     }
 
     .img-icon {

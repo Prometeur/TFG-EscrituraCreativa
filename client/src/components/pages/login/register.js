@@ -150,7 +150,7 @@ class Register extends Component {
   
     render() {
       return (
-        <div className="container">
+        <div className="container-home">
                 <Form
                   onSubmit={this.handleRegister}
                   ref={c => {
@@ -242,6 +242,7 @@ class Register extends Component {
                     }}
                   />
             </Form>
+            <img className="img-home" src="liteaturalapiz.png"></img>
         </div>
       );
     }

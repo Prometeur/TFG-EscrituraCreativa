@@ -104,12 +104,8 @@ class HomeAdmin extends Component {
                                     </tr>
                                 )
                             })}
-
                     </tbody>
-
                 </table>
-
-
             </div>
         </>);
     }
