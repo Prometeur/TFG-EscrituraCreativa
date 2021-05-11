@@ -28,10 +28,7 @@ class GroupTeacher extends Component {
     por el profesor*/
     peticionGet = () => {
         TeacherService.getScriptsByStudent(this.props.idStudent).then(response => {
-            console.log(response);//muestra consola navegador
             this.setState({ data: response });
-            console.log(response);
-            debugger;
             this.setState({ filteredData: response });
         }).catch(error => {
             console.log(error.message);

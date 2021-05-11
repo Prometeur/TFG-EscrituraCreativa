@@ -202,8 +202,10 @@ class SearchStudentRes extends Component {
                     <option value="nombre">Nombre</option>
                     <option value="email">Email</option>
                 </select>
+
             </li>
         </ul>;
+
 
         if(this.state.currentUserRole == "A")
         {
@@ -272,7 +274,6 @@ class SearchStudentRes extends Component {
             </div>
         );
     }
-
 
 }
 

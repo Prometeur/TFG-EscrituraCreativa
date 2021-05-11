@@ -12,6 +12,7 @@ import AuthUser from '../../../services/authenticity/auth-service.js';
 import WritingTabs from './WritingTabs.js';
 import TeamTabs from './TeamTabs.js';
 import ChallengeTabs from './ChallengeTabs.js';
+import Tabs from "./Tabs";
 
 //Estilos
 import '../../../styles/styleGeneral.css';
@@ -25,8 +26,6 @@ import FormControl from 'react-bootstrap/FormControl';
 import Card from 'react-bootstrap/Card';
 import Icon from '@material-ui/core/Icon';
 import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
-
-
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
   <a
@@ -78,6 +77,8 @@ class GroupStudent extends Component {
     super(props);
 
     this.state = {
+
+
       dataGroup: [],//contiene todos los grupos del estudiante
       currentUser: { id: "" },
       groupSelect: "",
@@ -86,6 +87,12 @@ class GroupStudent extends Component {
       showChallenges: false,
       showWritings: false,
       showTeams: false,
+
+      data: [
+        { id: 1, name: "Crear Escrito", content: () => <ChallengeTabs key={this.state.groupSelect} groupSelect={this.state.groupSelect} />, state: "active" },
+        { id: 2, name: "Escritos", content: () => <WritingTabs key={this.state.groupSelect} groupSelect={this.state.groupSelect} />, state: "inactive" },
+        { id: 3, name: "Equipos", content: () => <TeamTabs key={this.state.groupSelect} groupSelect={this.state.groupSelect} />, state: "inactive" },
+      ],
     };
   }
 
@@ -127,6 +134,10 @@ class GroupStudent extends Component {
       });
     }
   };
+
+  // handleSelect(groupId) {
+  //   this.setState({ groupSelect: groupId });
+  // }
 
   handleSelect(group) {
     this.setState({ groupSelect: group.idGrupo, nameGroupSelect: group.nombre });
@@ -199,14 +210,16 @@ class GroupStudent extends Component {
                 <TeamTabs key={groupSelect} groupSelect={groupSelect} />
               </div>
             ) : (
+            {/*<Tabs data={this.state.data} />*/}
               <></>
             )}
-
           </Card.Body>
         </Card>
       </div>
     );
   }
 }
-
 export default GroupStudent;
+
+{/* <select onChange={this.itemSelection} disabled={this.disabledButton()} > */ }
+{/* <option value="" selected disabled hidden > Seleccionar </option> */ }

@@ -1,5 +1,5 @@
-import React, {Component} from "react";
-import {Redirect} from "react-router-dom";
+import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import AuthService from "../../../services/authenticity/auth-service";
 import StudentService from "../../../services/student/student-service.js";
 import '../../../styles/styleGeneral.css';
@@ -13,7 +13,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Alert from "react-bootstrap/Alert";
-import {isEmail} from "validator";
+import { isEmail } from "validator";
 
 
 const required = value => {
@@ -107,24 +107,31 @@ export default class Profile extends Component {
                 confirmPassword: '',
                 email: '',
                 photo: [],
+                file: '',
+                reader: '',
+                name:'',//nombre fichero
             }
         };
     }
 
 
     componentDidMount() {
+        var str = AuthService.getCurrentUser().ruta;
+        var res = str.split("/");
 
         const currentUser = AuthService.getCurrentUser();
-        console.log(currentUser);
-        this.setState({currentUser: currentUser});
+        this.setState({ currentUser: currentUser });
         this.setState({
             updateUser: {
                 ...this.state.updateUser,
                 username: currentUser.username,
                 surname: currentUser.surname,
                 email: currentUser.email,
+                name:res[6],
             }
         });
+        
+       
 
     }
 
@@ -217,8 +224,6 @@ export default class Profile extends Component {
 
     //Carga los ficheros multimedia del escrito
     onFileChange(e) {
-        console.log(e.target.value, e.target);
-
         if (e.target.value) {
             this.setState({
                 updateUser: {
@@ -229,51 +234,57 @@ export default class Profile extends Component {
         }
     }
 
-    /*
-     onFileChange = (e) => {
-
-       if (e.target.files && e.target.files.length > 0) {
+    onFileChange2 = (e) => {
+      
+        if (e.target.files && e.target.files.length > 0) {
             const file = e.target.files[0];
-           if (file.type.includes("image") || file.type.includes("video") || file.type.includes("audio")) {
+            if (file.type.includes("image")) {
                 const reader = new FileReader();
-               reader.readAsDataURL(e.target.files[0]);
-             reader.onload = () => {
-                 console.log(reader.result);
-                  this.setState({
-                      updateUser: {
-                        ...this.state.updateUser,
-                    photo: reader.result
-                  }
-                  });
-               }
+                reader.readAsDataURL(e.target.files[0]);
+                reader.onload = () => {
+                    console.log(reader.result);
+                    this.setState({
+                        updateUser: {
+                            ...this.state.updateUser,
+                            reader: reader.result
+                        }
+                    });
+                }
 
-               var str = file.type;
-                var res = str.split("/");
-                 const dir = this.state.form.idWriter + "/" + res[0] + "/";
-              this.setState({
-                   form: {
-                       ...this.state.form,
-                       file: file,
-                       path: "http://localhost:3001/multimedia/" + dir + file.name
-                   }
-              });
-           }
-         else {
-              console.log("there was an error")
-          }
+                debugger;
+                // var str = file.n
+                // var res = str.split("/");
+                this.setState({
+                    updateUser: {
+                        ...this.state.updateUser,
+                        file: file,
+                        name:file.name,
+                    }
+                });
+                // this.onUpdateModal(true);
+                // this.onModal(false);
+            }
+            else {
+                console.log("there was an error")
+            }
         }
-     } */
+    }
 
     logout() {
         AuthService.logout();
     }
 
     editProfile() {
+       
+        var str = this.state.currentUser.ruta;
+        var res = str.split("/");
+        //res[6] nombre de la foto
 
         if (this.state.updateUser.surname == this.state.currentUser.surname
             && this.state.updateUser.username == this.state.currentUser.username
             && this.state.updateUser.password == '' && this.state.updateUser.email == this.state.currentUser.email
-            && this.state.updateUser.confirmPassword == '' && this.state.updateUser.photo.length == 0) {
+            && this.state.updateUser.confirmPassword == '' && this.state.updateUser.photo.length == 0 &&
+            this.state.updateUser.name == res[6]) {
 
             this.onUpdateModal(true);
             this.onModal(false);
@@ -281,11 +292,27 @@ export default class Profile extends Component {
             if (this.state.updateUser.password == this.state.updateUser.confirmPassword) {
                 AuthService.editProfile(this.state.currentUser.id, this.state.updateUser.username, this.state.updateUser.surname,
                     this.state.updateUser.email, this.state.updateUser.password, this.state.updateUser.photo).then(response => {
-                    this.logout();
-                    window.location.href = '/login';
-                }).catch(error => {
-                    console.log(error.message);
-                })
+                        this.logout();
+                        window.location.href = '/login';
+                    }).catch(error => {
+                        console.log(error.message);
+                    })
+
+                   //Si ha seleccionado una imagen, actualiza foto
+                    if (this.state.updateUser.file !== "") {    
+                        AuthService.updatePhoto(this.state.currentUser.id,this.state.updateUser.file,3)
+                        .then(response => { 
+                            debugger;
+                            console.log("todo correcto");
+
+                         }).catch(error => {
+                            console.log(error.message);
+                        })
+                    }
+                    else{
+                        this.onUpdateModal(true);
+                        this.onModal(false);
+                    }
             } else {
                 alert("Ambas contraseñas no coinciden");
             }
@@ -297,11 +324,11 @@ export default class Profile extends Component {
 
         if (this.state.currentUser.rol == 'S') {
             StudentService.getTeams(this.state.currentUser.id).then(response => {
-                this.setState({StudentTeams: response});
+                this.setState({ StudentTeams: response });
                 console.log(this.state.StudentTeams);
                 if (this.state.StudentTeams.length > 0) {
-                    this.setState({teamModal: true});
-                    this.setState({deleteModal: false});
+                    this.setState({ teamModal: true });
+                    this.setState({ deleteModal: false });
                 }
 
             }).catch(error => {
@@ -319,6 +346,13 @@ export default class Profile extends Component {
     }
 
     render() {
+
+        let media1 = "";
+        if (this.state.updateUser.file.type !== undefined) {//si hemos previsualizado un archivo
+            if (this.state.updateUser.file.type.includes("image"))
+                media1 = <img className="image" src={this.state.updateUser.reader} />;
+        }
+       
         return (
             <>
                 <div className="editPerfil-left">
@@ -331,112 +365,121 @@ export default class Profile extends Component {
                         <Card.Body>
                             <h2 className="form-title">Modificar Datos</h2>
 
-                                <Form
-                                    onSubmit={this.handleRegister}
-                                    ref={c => {
-                                        this.form = c;
-                                    }}
-                                >
-                                    {!this.state.successful && (
-                                        <ul className="flex-container wrap">
-                                            <li className="flex-item">
-                                                <label className="form-label">Nombre</label>
-                                                <Input
-                                                    type="text"
-                                                    className="form-control"
-                                                    name="username"
-                                                    placeholder={this.state.currentUser.username}
-                                                    value={this.state.updateUser.username}
-                                                    onChange={this.onChangeUsername}
-                                                    validations={[required, vusername]}
-                                                />
-                                            </li>
-                                            <li className="flex-item">
-                                                <label className="form-label">Apellidos</label>
-                                                <Input
-                                                    type="text"
-                                                    className="form-control"
-                                                    name="surname"
-                                                    placeholder={this.state.currentUser.surname}
-                                                    value={this.state.updateUser.surname}
-                                                    onChange={this.onChangeSurname}
-                                                    validations={[required, vsurname]}
-                                                />
-                                            </li>
-                                            <li className="flex-item">
-                                                <label className="form-label">Correo</label>
-                                                <Input
-                                                    type="text"
-                                                    className="form-control"
-                                                    name="email"
-                                                    placeholder={this.state.currentUser.email}
-                                                    value={this.state.updateUser.email}
-                                                    onChange={this.onChangeEmail}
-                                                    validations={[required, email]}
-                                                />
-                                            </li>
-                                            <li className="flex-item-file">
-                                                <label className="form-label">Foto de perfil</label>
-                                                <input type="file" name="imgCollection" onChange={this.onFileChange}/>
-                                            </li>
-                                            <li className="flex-item">
-                                                <label className="form-label">Contraseña</label>
-                                                <Input
-                                                    type="password"
-                                                    className="form-control"
-                                                    name="password"
-                                                    placeholder="Nueva contraseña"
-                                                    value={this.state.updateUser.password}
-                                                    onChange={this.onChangePassword}
-                                                    validations={[required, vpassword]}
-                                                />
-                                            </li>
-                                            <li className="flex-item">
-                                                <label className="form-label">Confirmar contraseña</label>
-                                                <Input
-                                                    type="password"
-                                                    className="form-control"
-                                                    name="confirmpassword"
-                                                    placeholder="Confirmar nueva contraseña"
-                                                    value={this.state.updateUser.confirmPassword}
-                                                    onChange={this.onChangeConfirmPassword}
-                                                    validations={[required, vconfirmpassword]}
-                                                />
-                                            </li>
-                                        </ul>
+                            <Form
+                                onSubmit={this.handleRegister}
+                                ref={c => {
+                                    this.form = c;
+                                }}
+                            >
+                                {!this.state.successful && (
+                                    <ul className="flex-container wrap">
+                                        <li className="flex-item">
+                                            <label className="form-label">Nombre</label>
+                                            <Input
+                                                type="text"
+                                                className="form-control"
+                                                name="username"
+                                                placeholder={this.state.currentUser.username}
+                                                value={this.state.updateUser.username}
+                                                onChange={this.onChangeUsername}
+                                                validations={[required, vusername]}
+                                            />
+                                        </li>
+                                        <li className="flex-item">
+                                            <label className="form-label">Apellidos</label>
+                                            <Input
+                                                type="text"
+                                                className="form-control"
+                                                name="surname"
+                                                placeholder={this.state.currentUser.surname}
+                                                value={this.state.updateUser.surname}
+                                                onChange={this.onChangeSurname}
+                                                validations={[required, vsurname]}
+                                            />
+                                        </li>
+                                        <li className="flex-item">
+                                            <label className="form-label">Correo</label>
+                                            <Input
+                                                type="text"
+                                                className="form-control"
+                                                name="email"
+                                                placeholder={this.state.currentUser.email}
+                                                value={this.state.updateUser.email}
+                                                onChange={this.onChangeEmail}
+                                                validations={[required, email]}
+                                            />
+                                        </li>
 
-                                    )}
 
-                                    {this.state.message && (
-                                        <div className="form-group">
-                                            <div
-                                                className={
-                                                    this.state.successful
-                                                        ? "alert alert-success"
-                                                        : "alert alert-danger"
-                                                }
-                                                role="alert"
-                                            >
-                                                {this.state.message}
-                                            </div>
+                                        {/* <li className="flex-item-file">
+                                            <label className="form-label">Foto de perfil</label>
+                                            <input type="file" name="imgCollection" onChange={this.onFileChange} />
+                                        </li> */}
+
+                                        <li className="flex-item-file">
+                                            <label className="form-label">Foto de perfil</label>
+                                            {media1}
+                                            <input type="file" name="photo" onChange={this.onFileChange2} />
+                                        </li>
+
+                                        <li className="flex-item">
+                                            <label className="form-label">Contraseña</label>
+                                            <Input
+                                                type="password"
+                                                className="form-control"
+                                                name="password"
+                                                placeholder="Nueva contraseña"
+                                                value={this.state.updateUser.password}
+                                                onChange={this.onChangePassword}
+                                                validations={[required, vpassword]}
+                                            />
+                                        </li>
+                                        <li className="flex-item">
+                                            <label className="form-label">Confirmar contraseña</label>
+                                            <Input
+                                                type="password"
+                                                className="form-control"
+                                                name="confirmpassword"
+                                                placeholder="Confirmar nueva contraseña"
+                                                value={this.state.updateUser.confirmPassword}
+                                                onChange={this.onChangeConfirmPassword}
+                                                validations={[required, vconfirmpassword]}
+                                            />
+                                        </li>
+                                    </ul>
+
+                                )}
+
+                                {this.state.message && (
+                                    <div className="form-group">
+                                        <div
+                                            className={
+                                                this.state.successful
+                                                    ? "alert alert-success"
+                                                    : "alert alert-danger"
+                                            }
+                                            role="alert"
+                                        >
+                                            {this.state.message}
                                         </div>
-                                    )}
-                                    <CheckButton
-                                        style={{display: "none"}}
-                                        ref={c => {
-                                            this.checkBtn = c;
-                                        }}
-                                    />
-                                </Form>
+                                    </div>
+                                )}
+                                <CheckButton
+                                    style={{ display: "none" }}
+                                    ref={c => {
+                                        this.checkBtn = c;
+                                    }}
+                                />
+                            </Form>
 
-                                <div className="section-card">
-                                    <div className="form-select">
-                                        <Button onClick={() => this.onModal(true)}>Guardar</Button>
-                                    </div>
-                                    <div className="form-select">
-                                        <Button href="/profile">Cancelar</Button>
-                                    </div>
+                            <div className="section-card">
+                                <div className="form-select">
+                                    <Button onClick={() => this.onModal(true)}>Guardar</Button>
                                 </div>
+                                <div className="form-select">
+                                    <Button href="/profile">Cancelar</Button>
+                                </div>
+                            </div>
 
                             <Modal
                                 centered
@@ -489,7 +532,7 @@ export default class Profile extends Component {
                             >
                                 <Modal.Header>
                                     <Modal.Title>
-                                    ¿Esta seguro/a?
+                                        ¿Esta seguro/a?
                                 </Modal.Title>
                                     <img src="triangle.png"></img>
                                 </Modal.Header>

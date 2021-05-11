@@ -271,6 +271,38 @@ function getMultimediaWriting(req, res) {
     });
 }
 
+
+/*Envia los ficheros multimedia del escrito del estudiante*/
+function sendMultimedia(req, res) {
+    const idWriter = req.body.idWriter;
+    const idChallenge = req.body.idChallenge;
+    const reqFiles = [];
+    var typeChallenge;
+
+    if (req.query.type == 1) {
+        typeChallenge = "users";
+    }
+    else if (req.query.type == 2) {
+        typeChallenge = "teams";
+    }
+    for (var i = 0; i < req.files.length; i++) {
+        var str = req.files[i].mimetype;
+        var type = str.split("/");
+        //dir->idWriter/idChallenge/tipo/
+        const dir = idWriter + "/" + idChallenge + "/" + type[0] + "/";
+        // let path = "http://localhost:3001/multimedia/" + typeChallenge +"/"+ dir + req.files[i].filename;
+        let path = "http://" + req.headers.host + "/multimedia/" + typeChallenge + "/" + dir + req.files[i].filename;
+        reqFiles.push([idWriter, idChallenge, path])
+    }
+    modelStudent.sendMultimedia(reqFiles, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
+        res.send(result);
+    });
+}
+
+
 /*Elimina  fichero multimedia del escrito*/
 function deleteFile(req, res) {
     const idMultimedia = req.body.idMultimedia;
@@ -323,8 +355,8 @@ function createTeam(req, res) {
 
 /*Obtiene el equipo del remitente/emisor*/
 function getTeam(req, res) {
-    const idSender = req.query.idSender;
-    modelStudent.getTeam(idSender, function (err, result) {
+    const idTeam = req.query.idTeam;
+    modelStudent.getTeam(idTeam, function (err, result) {
         if (err) {
             res.status(500).send({ error: err.message });
             console.log(err.message);
@@ -552,11 +584,24 @@ function getMessages(req, res) {
 }
 
 /*Obtiene el mensaje del estudiante*/
-function searchMessage(req, res) {
+function searchMessageByIssuer(req, res) {
     const idGroup = req.query.idGroup;
     const idIssuer = req.query.idIssuer;
     const idCreatorTeam = req.query.idCreatorTeam;
-    modelStudent.searchMessage(idGroup,idIssuer,idCreatorTeam, function (err, result) {
+    modelStudent.searchMessageByIssuer(idGroup, idIssuer, idCreatorTeam, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
+        res.send(result);
+    });
+}
+
+/*busca mensaje del estudiante por receptor*/
+function searchMessageByReceiver(req, res) {
+    const idGroup = req.query.idGroup;
+    const idReceiver = req.query.idReceiver;
+    const idCreatorTeam = req.query.idCreatorTeam;
+    modelStudent.searchMessageByReceiver(idGroup, idReceiver, idCreatorTeam, function (err, result) {
         if (err) {
             res.status(500).send({ error: err.message });
             console.log(err.message);
@@ -567,6 +612,8 @@ function searchMessage(req, res) {
         }   
     });
 }
+
+
 
 /*Edita el tipo de mensaje*/
 function editMessage(req, res) {
@@ -604,7 +651,7 @@ function sendMessage(req, res) {
     const idCreator = req.body.idCreator;
     const message = req.body.message;
     const type = req.body.type;
-    modelStudent.sendMessage(idGroup,idSender, idReceiver, idCreator, message, type, function (err, result) {
+    modelStudent.sendMessage(idGroup, idSender, idReceiver, idCreator, message, type, function (err, result) {
         if (err) {
             res.status(500).send({ error: err.message });
             console.log(err.message);
@@ -618,38 +665,6 @@ function sendMessage(req, res) {
     });
 }
 
-/*Envia los ficheros multimedia del escrito del estudiante*/
-function sendMultimedia(req, res) {
-    const idWriter = req.body.idWriter;
-    const idChallenge = req.body.idChallenge;
-    const reqFiles = [];
-    var typeChallenge;
-
-    if (req.query.type == 1) {
-        typeChallenge = "users";
-    }
-    else if (req.query.type == 2) {
-        typeChallenge = "teams";
-    }
-    for (var i = 0; i < req.files.length; i++) {
-        var str = req.files[i].mimetype;
-        var type = str.split("/");
-        //dir->idWriter/idChallenge/tipo/
-        const dir = idWriter + "/" + idChallenge + "/" + type[0] + "/";
-        // let path = "http://localhost:3001/multimedia/" + typeChallenge +"/"+ dir + req.files[i].filename;
-        let path = "http://" + req.headers.host + "/multimedia/" + typeChallenge + "/" + dir + req.files[i].filename;
-        reqFiles.push([idWriter, idChallenge, path])
-    }
-    modelStudent.sendMultimedia(reqFiles, function (err, result) {
-        if (err) {
-            res.status(500).send({ error: err.message });
-            console.log(err.message);
-        }
-        else{
-            res.send(result);
-        }   
-    });
-}
 
 module.exports = {
     //Groups
@@ -694,5 +709,6 @@ module.exports = {
     getMessage: getMessage,
     editMessage: editMessage,
     deleteMessage: deleteMessage,
-    searchMessage:searchMessage,
+    searchMessageByIssuer: searchMessageByIssuer,
+    searchMessageByReceiver: searchMessageByReceiver,
 };

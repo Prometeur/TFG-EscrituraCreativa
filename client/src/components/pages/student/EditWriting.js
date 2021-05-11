@@ -241,7 +241,6 @@ class EditWriting extends Component {
         });
     }
 
-    
     //Devuelve el tipo de desafio
     showCollaborative = () => {
         if (this.state.challenge.colaborativo === 1) {

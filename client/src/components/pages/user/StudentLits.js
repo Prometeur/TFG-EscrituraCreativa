@@ -88,12 +88,12 @@ class SearchStudentRes extends Component {
 
     }
 
-
     /*Dibuja la pagina  */
     render() {
         let cartel =<div> </div>;
         let tabla = <ul className={"flex-items-row-start wrap"}>
             {this.state.filteredData.map((student) => (
+
                 <li className={"items-row"}>
                     <ul className={"container-column-list wrap"}>
                         <li className={"flex-item-list"}>
@@ -119,6 +119,7 @@ class SearchStudentRes extends Component {
                     </ul>
                     <hr/>
                 </li>
+
             ))}
         </ul>;
 
@@ -130,7 +131,6 @@ class SearchStudentRes extends Component {
                     </div>;
             tabla = <></>;
         }
-
 
         return (
             <div className="container">
@@ -184,7 +184,6 @@ class SearchStudentRes extends Component {
             </div>
         );
     }
-
 
 }
 
