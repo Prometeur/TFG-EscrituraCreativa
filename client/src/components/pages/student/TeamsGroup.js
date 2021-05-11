@@ -165,7 +165,7 @@ class TeamsGroup extends Component {
     /*Dibuja la pagina  */
     render() {
         const { showTeams, dataTeamsGroup, dataTeamStudent } = this.state;
-        return ( <>
+        return ( 
                     <Card className="card-long">
                         <Card.Body>
                             <br/>
