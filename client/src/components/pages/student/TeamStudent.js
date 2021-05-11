@@ -175,6 +175,7 @@ class TeamStudent extends Component {
     editTeam = () => {
         let arreglo = [];
         //this.setState({ dataTeamStudentGroup: arreglo, showTeamStudent: false, showLiderStudent: false, modalDeleteTeam: false, modalLeaveLider: false });
+
         StudentService.editTeam(this.state.dataTeamStudentGroup[0].idEquipo, this.state.dataTeamStudentGroup[0].nombreEquipo, this.state.idLider, this.state.dataTeamStudentGroup[0].idGrupo)
             .then(response => {
                 StudentService.leaveStudentTeam(this.state.dataTeamStudentGroup[0].idEquipo, AuthUser.getCurrentUser().id)
