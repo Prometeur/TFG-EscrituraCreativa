@@ -60,7 +60,7 @@ export default class Profile extends Component {
                         <Figure.Image
                             bsPrefix="figure"
                             alt="171x180"
-                            src="fotoperfil.jpg"
+                            src="/chicaliteratura_sizebig.png"
                         />
                 </Figure>;
 
@@ -93,24 +93,29 @@ export default class Profile extends Component {
         return (
             <>
             <div className="perfil-left">
-
-                <ul className="container-column-list">
-                    <li className="item-column-list wrap">
+                <ul className="flex-container wrap">
+                    <li className="items-column">
                         {foto}
                     </li>
-                    <li className="item-column-list wrap">
-                        <h6>
+                    <li className="items-column">
+                        <h1>
                             {currentUser.username}
-                        </h6>
+                        </h1>
                     </li>
-                    <li className="item-column-list wrap">
+                    <li className="items-column">
                         <h6>{role}</h6>
                     </li>
-                    <li className="item-column-list">
-                        <img src="setting.png" alt=""/>
-                        <Link to={"/editProfile"}>
-                            <Button size="sm"  variant="outline-light">Editar</Button>
-                        </Link>
+                    <li className="items-column">
+                       <ul className={"flex-row"}>
+                            <li className={"flex-row-item"}>
+                                <img  className={"img-icon-perfil"} src="setting.png" alt=""/>
+                           </li>
+                           <li className={"flex-row-item"}>
+                               <Link to={"/editProfile"}>
+                                   <Button size="sm"  variant="outline-light">Editar</Button>
+                               </Link>
+                           </li>
+                       </ul>
                     </li>
                 </ul>
             </div>

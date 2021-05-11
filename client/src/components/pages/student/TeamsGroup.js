@@ -172,14 +172,14 @@ class TeamsGroup extends Component {
     render() {
         const { showTeams, dataTeamsGroup, dataTeamStudent } = this.state;
         return (
-            <>
-                <div className="container">
                     <Card className="card-long">
                         <Card.Body>
-                            <div className="items-column"><h3>Lista de equipos</h3></div>
+                            <br/>
                             {showTeams ? (
-                                <div className="table-margin">
-                                    <Table striped bordered hover>
+                                <>
+                                    <h5>Lista de equipos</h5>
+                                    <br/>
+                                    <Table striped bordered hover responsive>
                                         <thead>
                                             <tr>
                                                 <th>Equipo</th>
@@ -194,22 +194,24 @@ class TeamsGroup extends Component {
                                                     <tr key={team.idEquipo}>
                                                         <td>{team.nombreEquipo}</td>
                                                         <td>{team.nombreGrupo}</td>
+                                                        <td>
                                                         {dataTeamStudent.filter(teamStudent => teamStudent.idEquipo === team.idEquipo).map((item, index) =>
-                                                            <tr> {item.nombre} {item.apellidos}</tr>
+                                                            <div>{item.nombre} {item.apellidos}</div>
                                                         )}
+                                                        </td>
                                                         <td ><Button onClick={() => this.askSendRequest(team)} disabled={this.disabledButtonJoin()}>Enviar Solicitud</Button></td>
                                                     </tr>
                                                 )
                                             })}
                                         </tbody>
                                     </Table>
-                                    {/* <td><Link to={`/teacher/createChallenge/${this.props.groupSelect}`}><button >Crear Desafio</button></Link></td> */}
-                                </div>
+                                  </>
                             ) : (
-                                <div className="table-margin">
-                                    <p>Todavia no hay equipos para mostrar</p>
+                                <div className="row-edit">
+                                    <h4>Todavia no hay equipos para mostrar</h4>
                                 </div>
                             )}
+
                         </Card.Body>
                     </Card>
                 </div>
@@ -243,6 +245,7 @@ class TeamsGroup extends Component {
                     </Modal.Footer>
                 </Modal>
             </>
+
         );
     }
 }

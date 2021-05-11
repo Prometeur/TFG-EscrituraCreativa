@@ -120,7 +120,8 @@ class SearchStudentRes extends Component {
                     <React.Fragment>
                     <ListGroup.Item>
                         {user.id} 
-                        <img src={"data:image/png;base64," + btoa(String.fromCharCode.apply(null, user.foto.data))} alt="" style={{width: '5%',  borderRadius: '80%'}} ></img>
+                        <img src={(user.foto.data.length != 0) ? ("data:image/png;base64," +
+                        btoa(String.fromCharCode.apply(null, user.foto.data))) : "/chicaliteratura.png" } alt="" style={{width: '5%',  borderRadius: '80%'}} ></img>
                         {user.nombre} {user.apellidos} 
                         {user.correo}
                         <Link key={user.id} to={`/admin/users/viewProfile/${user.id}`}><button text='Ver Perfil'> Ver perfil </button></Link>

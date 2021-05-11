@@ -347,7 +347,7 @@ class modelStudent {
     getMembersTeam(idTeam, callback) {
         // const sqlSelect = "SELECT desafio.id,desafio.idGrupo,desafio.titulo,desafio.descripcion,desafio.tipoCalificacion,categoria.nombre,desafio.colaborativo,desafio.fechaIni,desafio.fechaFin, desafio.activo FROM desafio INNER JOIN categoria ON desafio.idCategoria = categoria.id WHERE desafio.idGrupo = ? ";
         // const sqlSelect = "SELECT * from equipoestudiante as ts INNER JOIN usuario as u ON ts.idEstudiante <> u.id AND u.rol = ?  INNER JOIN grupoestudiante as gs ON gs.idEstudiante = u.id WHERE gs.idGrupo=? ";
-        const sqlSelect = "SELECT ts.idEquipo, ts.idEstudiante ,u.nombre as nombreEstudiante, u.apellidos as apellidoEstudiante from equipoestudiante as ts INNER JOIN usuario as u ON ts.idEstudiante = u.id WHERE ts.idEquipo =?   ";
+        const sqlSelect = "SELECT u.foto, ts.idEquipo, ts.idEstudiante ,u.nombre as nombreEstudiante, u.apellidos as apellidoEstudiante from equipoestudiante as ts INNER JOIN usuario as u ON ts.idEstudiante = u.id WHERE ts.idEquipo =?   ";
         // this.pool.query(sqlSelect, [rol,idGroup], (err, result) => {
         this.pool.query(sqlSelect, idTeam, (err, result) => {
             if (err) {

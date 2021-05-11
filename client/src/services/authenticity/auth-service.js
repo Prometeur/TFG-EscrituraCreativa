@@ -19,7 +19,10 @@ class AuthService {
         
             return response.data;
       
-         });
+         }).catch(error => {
+            console.log(error.message);
+            window.location.href = '/500';
+        });
     }
 
     logout() {
@@ -38,7 +41,10 @@ class AuthService {
                 {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
-        } );
+        } ).catch(error => {
+            console.log(error.message);
+            window.location.href = '/500';
+        });
     }
 
     editProfile(id,username,surname,email,password,foto) {
@@ -56,6 +62,9 @@ class AuthService {
                 {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
+            }).catch(error => {
+                console.log(error.message);
+                window.location.href = '/500';
             });
     }
 
@@ -84,7 +93,10 @@ class AuthService {
                 {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
-             });
+             }).catch(error => {
+                console.log(error.message);
+                window.location.href = '/500';
+            });
     }
 
     getCurrentUser() {

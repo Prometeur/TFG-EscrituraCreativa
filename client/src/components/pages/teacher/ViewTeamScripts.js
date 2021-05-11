@@ -103,8 +103,6 @@ class GroupTeacher extends Component {
                          </div>
                          </Link>
                  </div>
-
-                
                 )
             })}
 
@@ -112,40 +110,42 @@ class GroupTeacher extends Component {
     ;
         if(this.state.filteredData.length === 0)
         {
-            cartel = <nav>
+            cartel = <div className={"row-edit"}>
+                         <br/>
                         <h2>No hay resultados para la búsqueda realizada.</h2>
-                    </nav>;
-            tabla = <div></div>;
+                    </div>;
+            tabla = <></>;
         }
 
 
         return (
             <>
-                <h1>Escritos del equipo:</h1>
-
-                <div>
-                
-                <h1></h1>
-                        <label>Buscar escrito: </label>
-                        <br />
+                <br/>
+                <ul className={"container-column-list"}>
+                    <li className={"items-row"}>
+                        <label className={"form-label"}>Buscar escrito</label>
+                    </li>
+                    <li className={"items-row"}>
                         <input type="text" name="searchKey" onChange={this.handleChangeSearch} />
-                        <br />
-                        <label for="searchType">Escoja cómo buscar:</label>
+                    </li>
+                    <li className={"items-row"}>
+                        <img src="../../search.png" alt=""/>
+                    </li>
+                    <li className={"items-row"}>
+                        <label className={"form-label"} htmlFor="searchType">Escoja cómo buscar</label>
+                    </li>
+                    <li className={"items-row"}>
                         <select name="searchType" id="searchType" onChange={this.handleChangeSearchType}>
                             <option value="nombre">Nombre</option>
                             <option value="titulo">Título</option>
-                        </select> 
-                        <h2> Resultados de buscar escritos con {this.state.searchType} similar a {this.state.searchKey}:</h2>
+                        </select>
+                    </li>
+                </ul>
+                <div className={"row-edit"}>
+                    <h4> Resultados de buscar escritos por {this.state.searchType} similar a {this.state.searchKey}</h4>
                 </div>
-                <div>
-                
                     {cartel}
-                
-
                     {tabla}
-
-
-                </div>
             </>
         );
     }

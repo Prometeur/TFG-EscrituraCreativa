@@ -14,27 +14,11 @@ import StudentService from '../../../services/student/student-service.js';
 /**Datos del usuario */
 import AuthUser from '../../../services/authenticity/auth-service.js';
 
-// import {
-//     Table,
-//     Button,
-//     Container,
-//     Modal,
-//     ModalHeader,
-//     ModalBody,
-//     FormGroup,
-//     ModalFooter,
-// } from "reactstrap";
-
 /*Componentes de estilo Bootstrap*/
 import Table from "react-bootstrap/Table";
 import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import ListGroup from 'react-bootstrap/ListGroup';
 import Alert from 'react-bootstrap/Alert';
 
 /*Importaciones del css*/
@@ -489,7 +473,6 @@ class TeamStudent extends Component {
     render() {
         const { showCreateTeam, showTeamStudent, showLiderStudent, formErrors, dataTeamStudentGroup, dataMembersTeam } = this.state;
         return (
-            <div className="container">
                 <Card className="card-long">
                     <Card.Body>
                         <div className="items-column"><h3>Lista de equipos</h3></div>
@@ -532,8 +515,8 @@ class TeamStudent extends Component {
                         )}
 
                         {showCreateTeam ? (<>
-                            <div >
-                                <label> Crear Equipo </label>
+                            <div className={"row-edit"}>
+                                <h4> Crear Equipo </h4>
                                 <input
                                     className={formErrors.teamName.length > 0 ? "error" : "form-input"}
                                     type="text"
@@ -546,7 +529,9 @@ class TeamStudent extends Component {
                                 {formErrors.teamName.length > 0 && (
                                     <span className="errorMessage">{formErrors.teamName}</span>
                                 )}
-                                <div><Button onClick={() => this.showModalCreateTeam()} disabled={this.state.dataTeamStudentGroup.length > 0 ? true : null}>Crear Equipo</Button></div>
+                                <div className={"form-button-column"}>
+                                   <Button size="sm" onClick={() => this.showModalCreateTeam()} disabled={this.state.dataTeamStudentGroup.length > 0 ? true : null}>Crear Equipo</Button>
+                                </div>
                             </div>
                         </>
 
@@ -556,6 +541,7 @@ class TeamStudent extends Component {
 
                         {showLiderStudent ? (
                             <>
+
                                 <label className="label-subtitle"> Selecciona estudiante a invitar </label>
                                 <ul className="flex-row">
                                     <li className="flex-row-items">
@@ -574,32 +560,110 @@ class TeamStudent extends Component {
                                 </ul>
 
                                 <label className="label-subtitle"> Eliminar Integrante del equipo </label>
+
+                                <h5>Opciones</h5>
+
                                 <ul className="flex-row">
                                     <li className="flex-row-items">
-                                        <select onChange={this.selectKicked} disabled={this.disabledButtonKickMembersTeam()} >
-                                            <option value="" selected disabled hidden >Seleccionar</option>
-                                            {this.state.dataMembersTeam.filter(member => member.idEstudiante !== AuthUser.getCurrentUser().id)
-                                                .map((elemento, index) =>
-                                                    <option key={elemento.idEstudiante} value={elemento.idEstudiante} > {elemento.nombreEstudiante + " "} {elemento.apellidoEstudiante} </option>
-                                                )}
-                                        </select>
+                                        <div className={"form-select"}>
+                                            <label className="form-label"> Selecciona estudiante a invitar </label>
+                                            <select onChange={this.selectGuest} disabled={this.disabledButtonInvite()} >
+                                                <option value="" selected disabled hidden >Seleccionar</option>
+                                                {/* {this.state.dataStudentWithoutTeam */}
+                                                {this.state.dataStudentWithoutTeam.filter(member => member.id !== AuthUser.getCurrentUser().id)
+                                                    .map(elemento => (
+                                                        <option key={elemento.id} value={elemento.id} > { elemento.nombre} { elemento.apellidos} </option>
+                                                    ))}
+                                            </select>
+                                        </div>
+                                        <div className={"form-button-column"}>
+                                            <Button  size="sm" disabled={this.disabledButtonInvite()} onClick={() => this.invite()} >Invitar</Button>
+                                        </div>
                                     </li>
                                     <li className="flex-row-items">
-                                        <Button disabled={this.disabledButtonKickMembersTeam()} onClick={() => this.showModalKickStudent()} >eliminar</Button>
+                                        <div className={"form-select"}>
+                                                <label className="form-label"> Eliminar Integrante </label>
+                                                <select onChange={this.selectKicked} disabled={this.disabledButtonKickMembersTeam()} >
+                                                    <option value="" selected disabled hidden >Seleccionar</option>
+                                                    {this.state.dataMembersTeam.filter(member => member.idEstudiante !== AuthUser.getCurrentUser().id)
+                                                        .map((elemento, index) =>
+                                                            <option key={elemento.idEstudiante} value={elemento.idEstudiante} > {elemento.nombreEstudiante + " "} {elemento.apellidoEstudiante} </option>
+                                                        )}
+                                                </select>
+                                        </div>
+                                        <div className={"form-button-column"}>
+                                            <Button size="sm" disabled={this.disabledButtonKickMembersTeam()} onClick={() => this.showModalKickStudent()} >eliminar</Button>
+                                        </div>
                                     </li>
                                 </ul>
+                                <br/>
                             </>
                         ) : (
                             <></>
                         )}
+
+                        {showTeamStudent ? (
+                            <>
+                                <br/>
+                                <h5>Listado de equipos</h5>
+                                <br/>
+                                <Table striped bordered hover responsive>
+                                    <thead>
+                                    <tr>
+                                        <th>Equipo</th>
+                                        <th>Grupo</th>
+                                        <th>Integrantes</th>
+                                        <th>Lider</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    {dataTeamStudentGroup.map(team => {
+                                        return (
+                                            <tr key={team.id}>
+                                                <td>{team.nombreEquipo}</td>
+                                                <td>{team.nombreGrupo}</td>
+                                                <td>
+                                                    {dataMembersTeam.map(item =>
+                                                        <div>
+                                                            {item.nombreEstudiante + " "}
+                                                            {item.apellidoEstudiante}
+                                                        </div>
+                                                    )}
+                                                </td>
+                                                <td>{this.state.nameLider}</td>
+                                                <td>
+                                                    <Button variant="outline-primary" disabled={this.disabledButtonDeleteTeam()} onClick={() => this.askDeleteTeam()} >Eliminar Equipo</Button>
+                                                </td>
+                                                <td>
+                                                    <Button disabled={this.state.dataMembersTeam.length < 2 ? true : null} onClick={() => this.askLeaveTeam()} >Dejar Equipo</Button>
+                                                </td>
+                                            </tr>
+                                        )
+                                    })}
+                                    </tbody>
+                                </Table>
+                            </>
+                        ) : (
+                            <div className="row-edit">
+                                <Alert  variant={"danger"}>
+                                    No dispones de equipos para mostrar.
+                                </Alert>
+                            </div>
+                        )}
+
                         <Modal show={this.state.modalCreateTeam}>
                             <Modal.Header>
-                                <div><h5>¿Estás seguro de crear el equipo {this.state.teamName} ?</h5></div>
+                                <Modal.Title>
+                                    Aviso
+                                </Modal.Title>
+                                <img src="/triangle.png" alt=""/>
                             </Modal.Header>
                             <Modal.Body>
+                                <h5>¿Estás seguro de crear el equipo {this.state.teamName} ?</h5>
                             </Modal.Body>
                             <Modal.Footer>
-                                {/* <Button color="primary" onClick={() => this.editar(this.state.form)}>Aceptarr</Button> */}
                                 <Button onClick={() => this.createTeam()}>Aceptar</Button>
                                 <Button color="danger" onClick={() => this.setState({ modalCreateTeam: false })}>Cancelar</Button>
                             </Modal.Footer>
@@ -607,20 +671,20 @@ class TeamStudent extends Component {
 
                         <Modal show={this.state.modalLeaveLider}>
                             <Modal.Header>
-                                <div><h5>Como lider del equipo antes de abandonar el equipo es necesario asignar un lider</h5></div>
+                                <Modal.Title>
+                                    Como lider del equipo antes de abandonar el equipo es necesario asignar un lider
+                                </Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
-                                <label> Lider:</label>
-                                {/* <input className="form-control" readOnly type="text" value={this.state.form.id} /> */}
-                                <select onChange={this.selectLider}  >
-                                    <option value="" selected disabled hidden >Seleccionar</option>
-                                    {/* {this.state.dataMembersTeam.map(elemento => (
-                                        <option key={elemento.idEstudiante} value={elemento.idEstudiante} > { elemento.nombreEstudiante} </option>
-                                    ))} */}
-                                    {this.state.dataMembersTeam.filter(student => student.idEstudiante !== AuthUser.getCurrentUser().id).map((elemento, index) =>
-                                        <option key={elemento.idEstudiante} value={elemento.idEstudiante} > {elemento.nombreEstudiante + " "} {elemento.apellidoEstudiante}</option>
-                                    )}
-                                </select>
+                                <div className={"form-select"}>
+                                    <label className={"form-label"}>Escoger como lider a  </label>
+                                    <select onChange={this.selectLider}  >
+                                        <option value="" selected disabled hidden >Seleccionar</option>
+                                        {this.state.dataMembersTeam.filter(student => student.idEstudiante !== AuthUser.getCurrentUser().id).map((elemento, index) =>
+                                            <option key={elemento.idEstudiante} value={elemento.idEstudiante} > {elemento.nombreEstudiante + " "} {elemento.apellidoEstudiante}</option>
+                                        )}
+                                    </select>
+                                </div>
                             </Modal.Body>
                             <Modal.Footer>
                                 {/* <Button color="primary" onClick={() => this.editar(this.state.form)}>Aceptarr</Button> */}
@@ -631,9 +695,11 @@ class TeamStudent extends Component {
 
                         <Modal show={this.state.modalSuccesfulInvitation}>
                             <Modal.Header>
+                                <Modal.Title>Aviso</Modal.Title>
+                                <img src="/info.png" alt=""/>
                             </Modal.Header>
                             <Modal.Body>
-                                <p> Invitación enviada correctamente</p>
+                                <h5> Invitación enviada correctamente</h5>
                             </Modal.Body>
                             <Modal.Footer>
                             </Modal.Footer>
@@ -641,10 +707,11 @@ class TeamStudent extends Component {
 
                         <Modal show={this.state.modalSuccessCreateTeam}>
                             <Modal.Header>
+                                <Modal.Title>Aviso</Modal.Title>
+                                <img src="/info.png" alt=""/>
                             </Modal.Header>
                             <Modal.Body>
-                                <p> Equipo creado correctamente!</p>
-                                {/* {this.closeModalSuccessCreateTeam()} */}
+                                <h5> Equipo creado correctamente!</h5>
                             </Modal.Body>
                             <Modal.Footer>
                             </Modal.Footer>
@@ -652,9 +719,11 @@ class TeamStudent extends Component {
 
                         <Modal show={this.state.modalDeleteTeam}>
                             <Modal.Header>
-                                <div><h5>¿Estás seguro de eliminar el equipo?</h5></div>
+                                <Modal.Title>Aviso</Modal.Title>
+                                <img src="/triangle.png" alt=""/>
                             </Modal.Header>
                             <Modal.Body>
+                                <h5>¿Estás seguro de eliminar el equipo?</h5>
                             </Modal.Body>
                             <Modal.Footer>
                                 {/* <Button color="primary" onClick={() => this.editar(this.state.form)}>Aceptarr</Button> */}
@@ -665,9 +734,11 @@ class TeamStudent extends Component {
 
                         <Modal show={this.state.modalLeaveTeam}>
                             <Modal.Header>
-                                <div><h5>¿Estás seguro de abandonar el equipo?</h5></div>
+                                <Modal.Title>Aviso</Modal.Title>
+                                <img src="/triangle.png" alt=""/>
                             </Modal.Header>
                             <Modal.Body>
+                                <h5>¿Estás seguro de abandonar el equipo?</h5>
                             </Modal.Body>
                             <Modal.Footer>
                                 {/* <Button color="primary" onClick={() => this.editar(this.state.form)}>Aceptarr</Button> */}
@@ -678,9 +749,11 @@ class TeamStudent extends Component {
 
                         <Modal show={this.state.modalKickStudent}>
                             <Modal.Header>
-                                <div><h5>¿Estás seguro de querer expulsar del equipo?</h5></div>
+                                <Modal.Title>Aviso</Modal.Title>
+                                <img src="/triangle.png" alt=""/>
                             </Modal.Header>
                             <Modal.Body>
+                                <h5>¿Estás seguro de querer expulsar del equipo?</h5>
                             </Modal.Body>
                             <Modal.Footer>
                                 <Button onClick={() => this.kickStudentTeam()}>Aceptar</Button>
@@ -709,7 +782,6 @@ class TeamStudent extends Component {
                         </Modal>
                     </Card.Body>
                 </Card>
-            </div>
         );
     }
 }

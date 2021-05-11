@@ -37,11 +37,12 @@ app.use(bodyParser.json());
 // Save user in the database after this has been verified.
 function signUp(request, response) {
 
-  model_user.create(request.body.username, request.body.surname,
-    request.body.email, bcrypt.hashSync(request.body.password, 8), function (err, rel) {
-
-      if (err) {
-        response.status(500);
+ model_user.create(request.body.username,request.body.surname,
+  request.body.email, bcrypt.hashSync(request.body.password, 8), function(err, rel){
+       
+      if(err)
+      {
+         response.status(500).send({ error: err.message });
       }
       else {
         response.status(200).send({ message: "Hola nuevo usuario!" });

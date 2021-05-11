@@ -463,7 +463,7 @@ class modelUser {
                     if (err) {
                         callback(new Error("Error al buscar al usuario."));
                     } else {
-                        callback(null, res);
+                       callback(null, res);
                     }
                 })
             }

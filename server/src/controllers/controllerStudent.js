@@ -14,9 +14,13 @@ function getGroups(req, res) {
     const student = req.body.idStudent;
     modelStudent.getGroups(student, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send(JSON.stringify(result));
+        else
+        {
+            res.send(JSON.stringify(result));
+        }
     });
 }
 
@@ -27,9 +31,13 @@ function getChallenge(req, res) {
     const idChallenge = req.query.idChallenge;
     modelStudent.getChallenge(idChallenge, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send(result);
+        else
+        {
+            res.send(result);
+        }
     });
 }
 
@@ -39,9 +47,13 @@ function getChallenges(req, res) {
     const type = req.query.type;
     modelStudent.getChallenges(idGroup, type, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send(result);
+        else
+        {
+            res.send(result);
+        }
     });
 }
 
@@ -51,9 +63,13 @@ function getChallengesIndividual(req, res) {
     const type = req.query.type;
     modelStudent.getChallengesIndividual(idStudent, type, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send(result);
+        else
+        {
+            res.send(result);
+        }
     });
 }
 
@@ -64,9 +80,13 @@ function getMultimediaChallenge(req, res) {
     const idChallenge = req.query.idChallenge;
     modelStudent.getMultimediaChallenge(idChallenge, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send(result);
+        else
+        {
+            res.send(result);
+        }
     });
 }
 
@@ -82,9 +102,13 @@ function sendWriting(req, res) {
     const type = req.body.type;
     modelStudent.sendWriting(idGroup, desafio, idWriter, title, texto, type, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send(result);
+        else
+        {
+            res.send(result);
+        }
     });
 }
 
@@ -94,9 +118,13 @@ function getWriting(req, res) {
 
     modelStudent.getWriting(idWriting, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send(result);
+        else
+        {
+            res.send(result);
+        }
     });
 }
 
@@ -106,9 +134,13 @@ function getWritings(req, res) {
 
     modelStudent.getWritings(idStudent, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send(result);
+        else
+        {
+            res.send(result);
+        }
     });
 }
 
@@ -118,9 +150,13 @@ function getWritingsCollaborative(req, res) {
 
     modelStudent.getWritingsCollaborative(idStudent, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send(result);
+        else
+        {
+            res.send(result);
+        }
     });
 }
 
@@ -132,9 +168,13 @@ function getWritingWriter(req, res) {
 
     modelStudent.getWritingWriter(idGroup, idChallenge, idWriter, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send(result);
+        else
+        {
+            res.send(result);
+        }
     });
 }
 
@@ -144,9 +184,13 @@ function getWritingsTeam(req, res) {
     const idGroup = req.query.idGroup;
     modelStudent.getWritingsTeam(idTeam, idGroup, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send(result);
+        else
+        {
+            res.send(result);
+        }
     });
 }
 
@@ -156,9 +200,13 @@ function getWritingsStudent(req, res) {
     const idGroup = req.query.idGroup;
     modelStudent.getWritingsStudent(idStudent, idGroup, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send(result);
+        else
+        {
+            res.send(result);
+        }
     });
 }
 
@@ -173,9 +221,13 @@ function editWriting(req, res) {
     const type = req.body.type;
     modelStudent.editWriting(idWriting, idGroup, idChallenge, idWriter, title, text, type, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send(result);
+        else
+        {
+            res.send(result);
+        }
     });
 }
 
@@ -191,9 +243,13 @@ function editWritingTeam(req, res) {
     const type = req.body.type;
     modelStudent.editWritingTeam(idWriting, idGroup, idChallenge, idWriter, title, text, log, type, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send(result);
+        else
+        {
+            res.send(result);
+        }
     });
 }
 
@@ -205,9 +261,13 @@ function getMultimediaWriting(req, res) {
     const idWriter = req.query.idWriter;
     modelStudent.getMultimedia(idChallenge, idWriter, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send(result);
+        else
+        {
+            res.send(result);
+        }
     });
 }
 
@@ -255,15 +315,20 @@ function deleteFile(req, res) {
     var filePath = "public/" + path.replace('http://' + req.headers.host + "/", '');
     fs.unlink(filePath, (err) => {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.error(err)
             return
         }
     });
     modelStudent.deleteFile(idMultimedia, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send(result);
+        else
+        {
+            res.send(result);
+        }
     });
 }
 
@@ -276,11 +341,15 @@ function createTeam(req, res) {
     const teamName = req.body.teamName;
     modelStudent.createTeam(idCreator, idGroup, teamName, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
         // res.send(result);
         // res.status(200).send("todo perfecto");
-        res.status(200).send((result.insertId).toString());
+        else
+        {
+            res.status(200).send((result.insertId).toString());
+        }
     });
 }
 
@@ -289,9 +358,13 @@ function getTeam(req, res) {
     const idTeam = req.query.idTeam;
     modelStudent.getTeam(idTeam, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send(result);
+        else
+        {
+            res.send(result);
+        }
     });
 }
 /*Obtiene los equipos del estudiante*/
@@ -300,9 +373,13 @@ function getTeams(req, res) {
 
     modelStudent.getTeams(idStudent, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send(result);
+        else
+        {
+            res.send(result);
+        }
     });
 }
 
@@ -311,9 +388,13 @@ function getTeamsGroup(req, res) {
     const idGroup = req.query.idGroup;
     modelStudent.getTeamsGroup(idGroup, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send(result);
+        else
+        {
+            res.send(result);
+        }
     });
 }
 
@@ -323,9 +404,13 @@ function getTeamStudentGroup(req, res) {
     const idGroup = req.query.idGroup;
     modelStudent.getTeamStudentGroup(idStudent, idGroup, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send(result);
+        else
+        {
+            res.send(result);
+        }
     });
 }
 
@@ -333,9 +418,13 @@ function getTeamStudentGroup(req, res) {
 function getTeamStudent(req, res) {
     modelStudent.getTeamStudent(function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send(result);
+        else
+        {
+            res.send(result);
+        }
     });
 }
 
@@ -344,9 +433,13 @@ function getStudentWithoutTeam(req, res) {
     const idGroup = req.query.idGroup;
     modelStudent.getStudentWithoutTeam(idGroup, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send(result);
+        else
+        {
+            res.send(result);
+        }
         // console.log("------>", result[0].id);
         // res.status(200).send({
 
@@ -363,9 +456,13 @@ function getMembersTeam(req, res) {
     const idTeam = req.query.idTeam;
     modelStudent.getMembersTeam(idTeam, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send(result);
+        else
+        {
+            res.send(result);
+        }
     });
 }
 
@@ -378,11 +475,13 @@ function editTeam(req, res) {
 
     modelStudent.editTeam(idTeam, name, idCreator, idGroup, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        // res.send(result);
-        // res.status(200).send("todo perfecto");
-        res.status(200).send("Successful");
+        else
+        {
+            res.status(200).send("Successful");   
+        }
     });
 }
 
@@ -392,11 +491,15 @@ function deleteTeam(req, res) {
     const idTeam = req.body.idTeam;
     modelStudent.deleteTeam(idTeam, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
         // res.send(result);
         // res.status(200).send("todo perfecto");
-        res.status(200).send("Successful");
+        else
+        {
+            res.status(200).send("Successful");
+        }
     });
 }
 
@@ -407,9 +510,13 @@ function addStudentTeam(req, res) {
 
     modelStudent.addStudentTeam(idTeam, idStudent, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.status(200).send("Success");
+        else
+        {
+            res.status(200).send("Success");
+        }
     });
 }
 
@@ -419,9 +526,12 @@ function joinTeam(req, res) {
     const idStudent = req.query.idStudent;
     modelStudent.joinTeam(idTeam, idStudent, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send("todo correcto");
+        else{
+            res.send("todo correcto");
+        }
     });
 }
 
@@ -431,9 +541,13 @@ function leaveStudentTeam(req, res) {
     const idStudent = req.body.idStudent;
     modelStudent.leaveStudentTeam(idTeam, idStudent, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.status(200).send("Success");
+        else
+        {
+            res.status(200).send("Success");
+        }
     });
 }
 
@@ -443,9 +557,13 @@ function getMessage(req, res) {
     const idMessage = req.query.idMessage;
     modelStudent.getMessage(idMessage, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send(result);
+        else
+        {
+            res.send(result);
+        }   
     });
 }
 
@@ -455,9 +573,13 @@ function getMessages(req, res) {
     const idStudent = req.query.idStudent;
     modelStudent.getMessages(idStudent, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send(result);
+        else
+        {
+            res.send(result);
+        }   
     });
 }
 
@@ -481,9 +603,13 @@ function searchMessageByReceiver(req, res) {
     const idCreatorTeam = req.query.idCreatorTeam;
     modelStudent.searchMessageByReceiver(idGroup, idReceiver, idCreatorTeam, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send(result);
+        else
+        {
+            res.send(result);
+        }   
     });
 }
 
@@ -494,9 +620,12 @@ function editMessage(req, res) {
     const idMessage = req.body.idMessage;
     modelStudent.editMessage(idMessage, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.status(200).send("todo perfecto");
+        else{
+            res.status(200).send("todo perfecto");
+        }
     });
 }
 
@@ -505,9 +634,12 @@ function deleteMessage(req, res) {
     const idMessage = req.body.idMessage;
     modelStudent.deleteMessage(idMessage, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        res.send(result);
+        else{
+            res.send(result);
+        }
     });
 }
 
@@ -521,12 +653,18 @@ function sendMessage(req, res) {
     const type = req.body.type;
     modelStudent.sendMessage(idGroup, idSender, idReceiver, idCreator, message, type, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
         // res.send(result);
-        res.status(200).send("Success");
+        else
+        {
+            res.status(200).send("Success");
+        }
+        
     });
 }
+
 
 module.exports = {
     //Groups

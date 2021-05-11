@@ -20,27 +20,15 @@ function getGroups(req, res) {
                 //next(err);
                 console.log("No se puede conectar a la base de datos");
             }
-            res.status(200);
-            /*response.render("perfil", {
-                error: err.message
-            });*/
-            console.log(err.message);
+            res.status(500).send({ error: err.message });
+            console.log(err);
         }
         else if (result == null) {
-            res.status(200);
-            /*response.render("perfil", {
-                error: "El usuario no existe."
-            });*/
+            res.status(500).send({ error: "El grupo es nulo." });
             console.log("El grupo es nulo");
         }
         else {
             res.status(200);
-            /*
-            response.render("perfil", {
-                error: null,
-                usuarioPerfil: usuarioPerfil
-            });
-            */
             res.send(JSON.stringify(result));
         }
     });
@@ -57,17 +45,11 @@ function inviteStudentToGroup(request, response, next) {
                 //next(err);
                 console.log("No se puede conectar a la base de datos");
             }
-            response.status(500);
-            /*response.render("perfil", {
-                error: err.message
-            });*/
+            response.status(500).send({ error: err.message });
             console.log(err.message);
         }
         else if (res == null) {
-            response.status(200);
-            /*response.render("perfil", {
-                error: "No hay estudiantes con los parámetros escogidos."
-            });*/
+            response.status(500).send({ error: "No se ha podido invitar el estudiante al grupo." });
             console.log("No se ha podido invitar el estudiante al grupo.");
         }
         else {
@@ -87,17 +69,11 @@ function inviteStudentToGroup(request, response, next) {
                 //next(err);
                 console.log("No se puede conectar a la base de datos");
             }
-            response.status(500);
-            /*response.render("perfil", {
-                error: err.message
-            });*/
+            response.status(500).send({ error: err.message });
             console.log(err.message);
         }
         else if (res == null) {
-            response.status(200);
-            /*response.render("perfil", {
-                error: "No hay estudiantes con los parámetros escogidos."
-            });*/
+            response.status(500).send({ error: 'No se ha podido expulsar el estudiante del grupo.' });
             console.log("No se ha podido expulsar el estudiante del grupo.");
         }
         else {
@@ -119,17 +95,11 @@ function kickStudentFromGroup(request, response, next) {
                 //next(err);
                 console.log("No se puede conectar a la base de datos");
             }
-            response.status(500);
-            /*response.render("perfil", {
-                error: err.message
-            });*/
+            response.status(500).send({ error: err.message });
             console.log(err.message);
         }
         else if (res == null) {
-            response.status(200);
-            /*response.render("perfil", {
-                error: "No hay estudiantes con los parámetros escogidos."
-            });*/
+            response.status(500).send({ error: 'No se ha podido expulsar el estudiante del grupo.' });
             console.log("No se ha podido expulsar el estudiante del grupo.");
         }
         else {
@@ -153,18 +123,12 @@ function createGroup(request, response, next){
                 //next(err);
                 console.log("No se puede conectar a la base de datos");
             }
-            response.status(500);
-            /*response.render("perfil", {
-                error: err.message
-            });*/
+            response.status(500).send({ error: err.message });
             console.log(err.message);
         }
         else if (res == null) 
         {
-            response.status(200);
-            /*response.render("perfil", {
-                error: "No hay estudiantes con los parámetros escogidos."
-            });*/
+            response.status(500).send({ error: "No se ha podido crear el grupo." });
             console.log("No se ha podido crear el grupo.");
         } 
         else 
@@ -183,6 +147,7 @@ function getCategories(req, res) {
     modelTeacher.getCategories(function (err, result) {
         if (err) {
             console.log(err.message);
+            res.status(500).send({ error: err.message });
         }
         res.send(result);
     });
@@ -201,6 +166,7 @@ function createChallenge(req, res) {
     modelTeacher.createChallenge(idGroup, title, description, qualification, category, type, date, function (err, result) {
         if (err) {
             console.log(err.message);
+            res.status(500).send({ error: err.message });
         }
         // console.log(result.insertId);
         res.status(200).send((result.insertId).toString());
@@ -221,6 +187,7 @@ function editChallenge(req, res) {
 
     modelTeacher.editChallenge(idChallenge, idGroup, title, description, qualification, category, type, date, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
         res.send(result);
@@ -233,6 +200,7 @@ function deleteChallenge(req, res) {
 
     modelTeacher.deleteChallenge(idChallenge, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
         res.send(result);
@@ -244,6 +212,7 @@ function getChallenge(req, res) {
     const idChallenge = req.query.idChallenge;
     modelTeacher.getChallenge(idChallenge, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
         res.send(result);
@@ -255,6 +224,7 @@ function getChallenges(req, res) {
     const group = req.query.idGroup;
     modelTeacher.getChallenges(group, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
         res.send(result);
@@ -284,6 +254,7 @@ function sendMultimediaChallenge(req, res) {
 
     modelTeacher.sendMultimediaChallenge(reqFiles, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
         res.send(result);
@@ -304,6 +275,7 @@ function deleteFile(req, res) {
     });
     modelTeacher.deleteFile(idMultimedia, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
         res.send(result);
@@ -315,6 +287,7 @@ function getMultimediaChallenge(req, res) {
     const idChallenge = req.query.idChallenge;
     modelTeacher.getMultimediaChallenge(idChallenge, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
         res.send(result);
@@ -330,6 +303,7 @@ function getWritingsStudent(req, res) {
 
     modelTeacher.getWritingsStudent(idGroup, idChallenge, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
         res.send(result);
@@ -343,6 +317,7 @@ function getWritingsTeam(req, res) {
 
     modelTeacher.getWritingsTeam(idGroup, idChallenge, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
         res.send(result);
@@ -355,6 +330,7 @@ function getWriting(req, res) {
   
     modelTeacher.getWriting(idWriting, function (err, result) {
         if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
         res.send(result);
@@ -376,6 +352,7 @@ function editWriting(req, res) {
     modelTeacher.editWriting(idWriting, idGroup, idChallenge, idWriter, title,text, score,commentary,type,finish, function (err, result) {
         if (err) {
             console.log(err.message);
+            res.status(500).send({ error: err.message });
         }
         res.send(result);
     });
@@ -390,6 +367,7 @@ function getMultimediaWriting(req, res) {
     modelTeacher.getMultimediaWriting(idChallenge, idWriter, function (err, result) {
         if (err) {
             console.log(err.message);
+            res.status(500).send({ error: err.message });
         }
         res.send(result);
     });
@@ -403,6 +381,7 @@ function getTeamStudentGroup(req, res) {
     modelTeacher.getTeamStudentGroup(idStudent, idGroup, function (err, result) {
         if (err) {
             console.log(err.message);
+            res.status(500).send({ error: err.message });
         }
         res.send(result);
     });
@@ -424,18 +403,12 @@ function searchApplicant(request, response, next){
                 //next(err);
                 console.log("No se puede conectar a la base de datos");
             }
-            response.status(500);
-            /*response.render("perfil", {
-                error: err.message
-            });*/
+            response.status(500).send({ error: err.message });
             console.log(err.message);
         }
         else if (studentList == null) 
         {
-            response.status(200);
-            /*response.render("perfil", {
-                error: "No hay estudiantes con los parámetros escogidos."
-            });*/
+            response.status(500).send({ error: "No hay estudiantes solicitantes con los parámetros escogidos." });
             console.log("No hay estudiantes solicitantes con los parámetros escogidos.");
         } 
         else 
@@ -460,10 +433,7 @@ function acceptApplicant(request, response, next){
                 //next(err);
                 console.log("No se puede conectar a la base de datos");
             }
-            response.status(500);
-            /*response.render("perfil", {
-                error: err.message
-            });*/
+            response.status(500).send({ error: err.message });
             console.log(err.message);
         }
         else 

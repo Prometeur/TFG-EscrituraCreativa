@@ -23,6 +23,9 @@ import './styles/styleNavBar.css';
 import Messenger from './components/pages/student/Messenger.js';
 import Message from './components/pages/student/Message.js';
 
+import NoMatch from "./components/pages/errors/404";
+import InternalEror from "./components/pages/errors/500";
+
 class App extends Component {
 
   constructor(props) {
@@ -78,10 +81,10 @@ class App extends Component {
                               <Nav.Link bsPrefix="nav-link" href="/admin">Dashboard</Nav.Link>
                           )}
                           {showStudent && (
-                              <Nav.Link  bsPrefix="nav-link" href="/student">Dashboard</Nav.Link>
+                              <Nav.Link  bsPrefix="nav-link" href="/student/groups">Dashboard</Nav.Link>
                           )}
                           {showTeacher && (
-                              <Nav.Link  bsPrefix="nav-link" href="/teacher">Dashboard</Nav.Link>
+                              <Nav.Link  bsPrefix="nav-link" href="/teacher/groups">Dashboard</Nav.Link>
                           )}
                           <Nav.Link bsPrefix="nav-link" href="/profile"> {currentUser.username}</Nav.Link>
                           <Nav.Link bsPrefix="nav-link" href="/student/messenger"> Mensajeria</Nav.Link>
@@ -103,11 +106,12 @@ class App extends Component {
                     <Route exact path='/profile' component={Profile} />
                     <Route exact path='/admin' component={AdminBoard} />
                     <Route exact path='/editProfile' component={EditProfile} />
-                    <Route exact path='/teacher' component={TeacherBoard} />
+                    <Route path='/teacher' component={TeacherBoard} />
                     <Route exact path="/student/messenger" component={Messenger} />
                     <Route exact path="/student/message/:idMessage" component={Message} />
-                    <Route exact path='/teacher' component={TeacherBoard} />
-                    <Route exact path='/student' component={StudentBoard} />
+                    <Route path='/student' component={StudentBoard} />
+                    <Route exact path='/500' component={InternalEror} /> {/*Esta dirección sirve para el error 500 (interno del servidor).*/}
+                    <Route path='*' component={NoMatch}/> {/*Esta dirección sirve para el error 404.*/}
                  </Switch>
              </div>
       </Router>
