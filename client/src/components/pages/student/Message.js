@@ -62,11 +62,13 @@ class Message extends Component {
         //Obtiene el mensaje 
         StudentService.getMessage(this.props.match.params.idMessage)
             .then(response => {
+
                 var aux = false;
                 if (response[0].tipo === 0 || response[0].tipo === 2) {
                     aux = true;
                 }
                 this.setState({ message: response[0], showButtons: aux });
+
                 //Obtiene el equipo del creador del equipo
                 StudentService.getTeam(this.state.message.idCreador)
                     .then(response => {
@@ -79,32 +81,31 @@ class Message extends Component {
             })
     }
 
+
     askAcceptRequest = () => {
+        debugger;
         if(this.state.message.tipo===2){
             this.acceptRequest();
         }
         else if(this.state.message.tipo===0){
             this.showModalAnswerJoinTeam();
         }
+
     }
 
     acceptRequest = () => {
         //si el mensaje es una solicitud de unirse a un equipo
         if (this.state.message.tipo === 2) {
-            debugger;
             var idMessage=this.state.message.id;
             var idGroup=this.state.message.idGrupo;
             var idIssuer=this.state.message.idEmisor;
             var idReceiver=this.state.message.idReceptor;
-
             var idCreatorTeam= this.state.message.idCreador;
             var mensaje=this.state.message.mensaje;
             var date=this.state.message.fecha;
             var active=this.state.message.activo;
-
             let dataMessage = [{ id: idMessage, idGrupo:idGroup, idEmisor:idIssuer,idReceptor:idReceiver,idCreador:idCreatorTeam,mensaje:mensaje,tipo:0,fecha:date,activo:active }];
             this.setState({message: dataMessage[0]});
-
             var idMember;
             //Obtengo el id del futuro miembro del equipo, identificar si el idEmisor/idReceptor
             //es el futuro miembro
@@ -114,7 +115,6 @@ class Message extends Component {
             else {
                 idMember = dataMessage[0].idEmisor;
             }
-            //estudiante se une al equipo
             StudentService.joinTeam(this.state.team.id, idMember)
                 .then(response => {
                     this.showModalAcceptJoinTeam();
@@ -161,6 +161,7 @@ class Message extends Component {
     };
 
     showModalAnswerJoinTeam = () => {
+        debugger;
         this.setState({
             //   form: dato,
             modalAnswerJoinTeam: true,
@@ -208,13 +209,20 @@ class Message extends Component {
                                         <td><textarea name="mensaje" rows="10" cols="70" value={this.state.message.mensaje} readOnly={true} style={{ resize: "none" }} ></textarea></td>
 
                                     </div>
-                                )}    
+                                )}
+                                {/* <div class="message-inputs">
+                                 <label className='message-label' > Mensaje </label>
+                                        <td><textarea name="mensaje" rows="10" cols="70" value={this.state.message.mensaje} readOnly={true} style={{ resize: "none" }} ></textarea></td>
+
+                                 </div> */}
+
                                 <div className="form-select">
                                     <Button onClick={() => window.location.href = "/student/messenger"}>Volver</Button>
                                 </div>
                             </div>
                         </Card.Body>
                     </Card>
+                    {/* <td><Link to={`/teacher/createChallenge/${this.props.groupSelect}`}><button >Crear Desafio</button></Link></td> */}
                 </div>
 
                 <Modal show={this.state.modalAcceptJoinTeam}>

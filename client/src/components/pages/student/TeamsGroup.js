@@ -30,7 +30,6 @@ class TeamsGroup extends Component {
         this.state = {
             modalSuccesfulSendJoinTeam: false,
             modalErrorSendRequest: false,//modal que informa de un error al enviar una solicitud para unirse a un equipo
-            modalErrorReceiveRequest: false,
             dataTeamsGroup: [],//contiene los equipos del grupo
             dataTeamStudent: [],//contiene tabla entera de equipoestudiante
             teamStudent: '',
@@ -45,6 +44,7 @@ class TeamsGroup extends Component {
                 //si existen equipos en el grupo
                 if (response.length != 0) {
                     this.setState({ dataTeamsGroup: response, showTeams: true });
+
                     /*Obtiene equipo del estudiante correspondiente a un grupo en concreto*/
                     /**Esto lo hago para saber si tengo un equipo en el grupo*/
                     StudentService.getTeamStudentGroup(AuthUser.getCurrentUser().id, this.props.groupSelect)
@@ -64,7 +64,7 @@ class TeamsGroup extends Component {
                         }).catch(error => {
                             console.log(error.message);
                         })
-
+                        
                 }
             }).catch(error => {
                 console.log(error.message);
@@ -75,62 +75,44 @@ class TeamsGroup extends Component {
         var u = 1
         u = u + 1
         console.log("hola------>", u++);
-        if (pS.dataTeamStudent != this.state.dataTeamStudent) {
+        if(pS.dataTeamStudent != this.state.dataTeamStudent){
             console.log("algo ha cambiado");
         }
     }
 
-    //Evalúa si se envia el mensaje
-    askSendRequest = (team) => {
-        //Comprueba si ya se envio una solicitud anteriormente a ese equipo
-        studentService.searchMessageByIssuer(this.props.groupSelect, AuthUser.getCurrentUser().id, team.idEquipo)
-            .then(response => {
-                if (response.length === 0) {//no ha enviado solicitudes anteriormente
-                    //Comprueba si recibio una solicitud de invitación anteriormente de ese equipo
-                    studentService.searchMessageByReceiver(this.props.groupSelect, AuthUser.getCurrentUser().id,team.idEquipo)
-                        .then(response => {
-                            if (response.length === 0) //no ha recibido solicitudes anteriormente
-                                this.sendRequest(team);//envia la solicitud
-                            else 
-                                this.showModalErrorReceiveRequest();
-                        })
-                        .catch(error => {
-                            console.log(error.message);
-                        })
-                }
-                else {
-                    this.showModalErrorSendRequest();
-                }
-            })
-            .catch(error => {
-                console.log(error.message);
-            })
-    };
-
-    //Envio el mensaje de solicitud solicitud
+    //Envia una solicitud
     sendRequest = (team) => {
-        var nombre = AuthUser.getCurrentUser().username;
-        var apellidos = AuthUser.getCurrentUser().surname;
-        var messageBody = "te envía una petición para unirse a tu equipo";
-        var equipo = team.nombreEquipo;
-        var grupo = team.nombreGrupo;
-        var idGroup = this.props.groupSelect;
-        var message = nombre + " " + apellidos + " " + messageBody + " " + equipo + " del Grupo de " + grupo;
-        //Envio el mensaje de solicitud 
-        StudentService.sendMessage(idGroup, AuthUser.getCurrentUser().id, team.idCreador, team.idEquipo, message, 2)
-            .then(response => {
-                this.showModalSuccesfulSendJoinTeam();//muestra modal de exito del envio del mensaje
+        //si no estoy en ningun equipo o si el equipo no esta completo
+        if (this.state.teamStudent === "") {
+            var nombre = AuthUser.getCurrentUser().username;
+            var apellidos = AuthUser.getCurrentUser().surname;
+            var messageBody = "te envía una petición para unirse a tu equipo";
+            var equipo = team.nombreEquipo;
+            var grupo = team.nombreGrupo;
+            var idGroup=this.props.groupSelect;
+            var message = nombre + " " + apellidos + " " + messageBody + " " + equipo + " del Grupo de " + grupo;
+            
+            //si soy el creador
+            if (team.idCreador === AuthUser.getCurrentUser().id) {
+                console.log("Soy el creador");
+            }
+            else {//no soy el creador
+                StudentService.sendMessage( idGroup,AuthUser.getCurrentUser().id, team.idCreador, team.idCreador, message, 2)
+                    .then(response => {
+                        this.showModalSuccesfulSendJoinTeam();
 
-            }).catch(error => {
-                console.log(error.message);
-            })
+                    }).catch(error => {
+                        console.log(error.message);
+                    })
+            }
+        }
     }
 
     //activa/desactiva el boton de unirse a un equipo
     disabledButtonJoin = () => {
-        //si tengo equipo
+        //si no tengo equipo, desactivar boton unirse  o si el equipo esta completo
         if ((this.state.teamStudent !== ""))
-            return true;//desactiva el boton de enviar solicitud
+            return true;
         else
             return null;
     }
@@ -157,21 +139,33 @@ class TeamsGroup extends Component {
         );
     };
 
-    showModalErrorReceiveRequest = () => {
-        this.setState({
-            modalErrorReceiveRequest: true,
-        });
-        //cierra el modal despues de 3 segundos
-        setTimeout(
-            () => this.setState({ modalErrorReceiveRequest: false }),
-            2000
-        );
+    //Comprueba 
+    askSendRequest = (team) => {
+        var idGroup=this.props.groupSelect
+        var idIssuer=AuthUser.getCurrentUser().id;
+        var idCreatorTeam=team.idCreador;//creador del equipo
+        //var idTeam=this.state.teamStudent.idEquipo;
+        
+        studentService.searchMessage(idGroup,idIssuer,idCreatorTeam).then(response => { 
+         
+            if(response.length === 0){
+                console.log("se puede enviar solicitud");
+                this.sendRequest(team)
+            }
+            else{
+                this.showModalErrorSendRequest();
+            }
+
+       })
+      .catch(error => {
+          console.log(error.message);
+      })
     };
 
     /*Dibuja la pagina  */
     render() {
         const { showTeams, dataTeamsGroup, dataTeamStudent } = this.state;
-        return (
+        return ( <>
                     <Card className="card-long">
                         <Card.Body>
                             <br/>
@@ -212,40 +206,27 @@ class TeamsGroup extends Component {
                                 </div>
                             )}
 
-                        </Card.Body>
-                    </Card>
-                </div>
-                <Modal show={this.state.modalSuccesfulSendJoinTeam}>
-                    <Modal.Header>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <p> Petición enviada correctamente</p>
-                    </Modal.Body>
-                    <Modal.Footer>
-                    </Modal.Footer>
-                </Modal>
+                    <Modal show={this.state.modalSuccesfulSendJoinTeam}>
+                        <Modal.Header>
+                        </Modal.Header>
+                        <Modal.Body>
+                             <h4> Petición enviada correctamente</h4>
+                        </Modal.Body>
+                        <Modal.Footer>
+                        </Modal.Footer>
+                    </Modal>
 
-                <Modal show={this.state.modalErrorSendRequest}>
-                    <Modal.Header>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <p> Ya has enviado una solicitud anteriormente</p>
-                    </Modal.Body>
-                    <Modal.Footer>
-                    </Modal.Footer>
-                </Modal>
-
-                <Modal show={this.state.modalErrorReceiveRequest}>
-                    <Modal.Header>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <p>Ya Tienes una solicitud pendiente de este equipo</p>
-                    </Modal.Body>
-                    <Modal.Footer>
-                    </Modal.Footer>
-                </Modal>
-            </>
-
+                    <Modal show={this.state.modalErrorSendRequest}>
+                        <Modal.Header>
+                        </Modal.Header>
+                        <Modal.Body>
+                             <h4> Ya has enviado una solicitud anteriormente</h4>
+                        </Modal.Body>
+                        <Modal.Footer>
+                        </Modal.Footer>
+                    </Modal>
+                </Card.Body>
+            </Card>
         );
     }
 }

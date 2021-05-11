@@ -5,10 +5,6 @@ const controller_auth = require("../controllers/controllerAuth");
 const express = require("express");
 const router = express.Router();
 
-const multer = require('multer');
-const storage = require('../utils/multer');
-const uploader = multer({ storage });
-
 router.use(function(request, response,next) {
     response.header(
         "Access-Control-Allow-Headers",
@@ -22,8 +18,6 @@ router.post("/signup", [ verifySignUp.checkDuplicateUsernameOrEmail, controller_
 router.post("/signin", controller_auth.signIn);
 
 router.post("/editProfile",controller_auth.editProfile);
-
-router.post("/updatePhoto",uploader.single('profilePhoto'),controller_auth.updatePhoto);
 
 router.post("/disableProfile",controller_auth.disableProfile);
 /*---------------------------------------------------------*/

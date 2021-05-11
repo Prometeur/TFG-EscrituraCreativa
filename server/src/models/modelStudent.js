@@ -274,9 +274,9 @@ class modelStudent {
     }
 
     /*Obtiene el equipo del remitente*/
-    getTeam(idTeam, callback) {
-        const sqlSelect = "SELECT * FROM equipo WHERE id = ?";
-        this.pool.query(sqlSelect, idTeam, (err, result) => {
+    getTeam(idSender, callback) {
+        const sqlSelect = "SELECT * FROM equipo WHERE idCreador = ?";
+        this.pool.query(sqlSelect, idSender, (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }
@@ -459,24 +459,10 @@ class modelStudent {
 
     
     /*busca mensaje del estudiante*/
-    searchMessageByIssuer(idGroup,idIssuer,idCreatorTeam, callback) {
+    searchMessage(idGroup,idIssuer,idCreatorTeam, callback) {
         // const sqlSelect = "SELECT m.id as id, m.idEmisor as idEmisor, m.mensaje as mensaje, u.nombre as nombreEmisor FROM mensajeria AS m INNER JOIN usuario AS u ON m.idEmisor = u.id WHERE m.id = ? ";
         const sqlSelect = "SELECT * FROM mensajeria WHERE idGrupo = ? AND idEmisor=? AND idCreador=?";
         this.pool.query(sqlSelect, [idGroup,idIssuer,idCreatorTeam], (err, result) => {
-            if (err) {
-                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
-            }
-            else {
-                callback(null, result);
-            }
-        });
-    }
-
-       /*busca mensaje del estudiante por receptor*/
-       searchMessageByReceiver(idGroup,idReceiver,idCreatorTeam, callback) {
-        // const sqlSelect = "SELECT m.id as id, m.idEmisor as idEmisor, m.mensaje as mensaje, u.nombre as nombreEmisor FROM mensajeria AS m INNER JOIN usuario AS u ON m.idEmisor = u.id WHERE m.id = ? ";
-        const sqlSelect = "SELECT * FROM mensajeria WHERE idGrupo = ? AND idReceptor=? AND idCreador=?";
-        this.pool.query(sqlSelect, [idGroup,idReceiver,idCreatorTeam], (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }

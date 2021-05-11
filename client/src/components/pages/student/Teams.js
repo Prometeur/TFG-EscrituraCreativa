@@ -75,6 +75,7 @@ class Teams extends Component {
     //     var devolver=[];
     //     StudentService.getMembersTeam(team.idEquipo)
     //     .then(response => {
+    //         debugger;
     //         // var nombre;
     //         // response.filter(member1 => member1.idEstudiante === this.state.idLider).map((member) => ( 
     //         //     nombre = member.nombreEstudiante +" "+ member.apellidoEstudiante

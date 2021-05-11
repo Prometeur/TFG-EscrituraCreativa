@@ -47,6 +47,7 @@ class Messenger extends Component {
         StudentService.getMessages(AuthUser.getCurrentUser().id)
             .then(response => {
                 if (response.length > 0) {
+                    debugger;
                     this.setState({
                         dataMessages: response,
                         showMessages: true,
@@ -61,6 +62,7 @@ class Messenger extends Component {
 
         // StudentService.getTeamStudent()
         // .then(response => {
+        //     // debugger;
         //     this.setState({ dataTeamStudent: response });
 
         // }).catch(error => {
