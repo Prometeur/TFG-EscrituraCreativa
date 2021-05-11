@@ -155,12 +155,13 @@ class TeamStudent extends Component {
     //Edita un equipo (cambio de lider de un equipo o se edita el nombre del equipo)
     editTeam = () => {
         let arreglo = [];
-        this.setState({ dataTeamStudentGroup: arreglo, showTeamStudent: false, showLiderStudent: false, modalDeleteTeam: false, modalLeaveLider: false });
+        //this.setState({ dataTeamStudentGroup: arreglo, showTeamStudent: false, showLiderStudent: false, modalDeleteTeam: false, modalLeaveLider: false });
 
         StudentService.editTeam(this.state.dataTeamStudentGroup[0].idEquipo, this.state.dataTeamStudentGroup[0].nombreEquipo, this.state.idLider, this.state.dataTeamStudentGroup[0].idGrupo)
             .then(response => {
                 StudentService.leaveStudentTeam(this.state.dataTeamStudentGroup[0].idEquipo, AuthUser.getCurrentUser().id)
                     .then(response => {
+                        this.setState({ dataTeamStudentGroup: arreglo, showTeamStudent: false, showLiderStudent: false, modalDeleteTeam: false, modalLeaveLider: false });
                     })
                     .catch(error => {
                         console.log(error.message);
