@@ -140,7 +140,6 @@ class CreateChallenge extends Component {
     };
 
     changeView = () => {
-        //debugger;
         window.location.href = "/teacher";
     }
 

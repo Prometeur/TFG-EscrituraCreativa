@@ -55,8 +55,6 @@ class WritingsStudent extends Component {
         }
     }
 
-
-
     //Devuelve string del escrito finalizado
     showWritingFinalized = (writing) => {
         if (writing.finalizado === 1)

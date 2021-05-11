@@ -18,7 +18,6 @@ import '../../../styles/styleGeneral.css';
 class WritingsStudent extends Component {
 
     constructor(props) {
-        debugger;
         super(props);
         this.state = {
             changeState: false,
@@ -63,7 +62,6 @@ class WritingsStudent extends Component {
 
 
     componentDidUpdate(pP, pS, sS) {
-        debugger;
         if ( this.props.idChallenge !== pP.idChallenge) {
             TeacherService.getChallenge(this.props.idChallenge)
                 .then(response => {

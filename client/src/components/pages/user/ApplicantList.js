@@ -175,7 +175,7 @@ class SearchStudentRes extends Component {
         if(this.state.filteredData.length === 0)
         {
             cartel = <nav>
-                        <h2>No hay resultados para la búsqueda realizada.</h2>
+                        <h4>No hay resultados para la búsqueda realizada.</h4>
                     </nav>;
             tabla = <div></div>;
         }
@@ -192,7 +192,7 @@ class SearchStudentRes extends Component {
                     <option value="nombre">Nombre</option>
                     <option value="email">Email</option>
                 </select>
-                <h2> Resultados de buscar solicitantes con {this.state.searchType} similar a {this.state.searchName}:</h2>
+                <h4> Resultados de buscar solicitantes con {this.state.searchType} similar a {this.state.searchName}:</h4>
             </div>;
 
             if(this.state.currentUserRole == "A")

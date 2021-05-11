@@ -47,7 +47,6 @@ class WritingsTeam extends Component {
 
 
     // handleSelect(challenge) {
-    //     debugger;
     //     this.setState({ challenge: challenge });
     //   }
 

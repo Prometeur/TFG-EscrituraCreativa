@@ -102,7 +102,7 @@ class SearchStudentRes extends Component {
                              alt="" style={{width: '2rem',  borderRadius: '80%'}} >
                         </img>
                     </td>
-                    <td>{student.nombre}{student.apellidos}</td>
+                    <td>{student.nombre} {student.apellidos}</td>
                     <td> {student.correo}</td>
                     <td>
                         <Link key={student.id} to={`/teacher/students/viewProfile/${student.id}`}>

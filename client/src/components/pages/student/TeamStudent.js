@@ -70,8 +70,11 @@ class TeamStudent extends Component {
             modalDeleteTeam: false,
             modalLeaveTeam: false,
             modalKickStudent: false,
+            modalErrorInvitation: false,
+            modalErrorReceiveInvitation:false,
             showCreateTeam: false,
             showTeamStudent: false,
+
             showLiderStudent: false,//muestra funciones que solo puede ver el lider como eliminar integrante/ invitar miembro
             formErrors: {
                 teamName: '',
@@ -88,7 +91,7 @@ class TeamStudent extends Component {
         }
         else if (this.props.match === undefined) {//si por grupos entro en "Equipos"
             groupSelect = this.props.groupSelect;
-            this.setState({ groupSelect: groupSelect,showCreateTeam:true });
+            this.setState({ groupSelect: groupSelect, showCreateTeam: true });
         }
 
         /*Obtiene equipo del estudiante correspondiente a un grupo en concreto*/
@@ -97,9 +100,9 @@ class TeamStudent extends Component {
                 //Si tiene equipo
                 if (response.length != 0) {
                     if (response[0].idCreador === AuthUser.getCurrentUser().id)//si estudiante es lider del equipo
-                        this.setState({ dataTeamStudentGroup: response, idLider: response[0].idCreador, showLiderStudent: true,showCreateTeam:false });
+                        this.setState({ dataTeamStudentGroup: response, idLider: response[0].idCreador, showLiderStudent: true, showCreateTeam: false });
                     else {
-                        this.setState({ dataTeamStudentGroup: response, idLider: response[0].idCreador,showCreateTeam:false });
+                        this.setState({ dataTeamStudentGroup: response, idLider: response[0].idCreador, showCreateTeam: false });
                     }
                 }
                 //si el estudiante tiene equipo
@@ -136,7 +139,7 @@ class TeamStudent extends Component {
     createTeam = () => {
         //crea un equipo
         if (this.state.teamName !== "") {
-            this.setState({ modalCreateTeam: false,showCreateTeam:false })
+            this.setState({ modalCreateTeam: false, showCreateTeam: false })
             StudentService.createTeam(AuthUser.getCurrentUser().id, this.state.groupSelect, this.state.teamName)
                 .then(response => {
                     this.showModalSuccessCreateTeam();
@@ -191,7 +194,6 @@ class TeamStudent extends Component {
 
     //Elimina equipo
     deleteTeam = () => {
-
         if (this.props.match === undefined) {//si por grupos entro en "Equipos"
             this.setState({ showCreateTeam: true });
         }
@@ -206,18 +208,53 @@ class TeamStudent extends Component {
             })
     }
 
+    askInvitation = () => {
+        debugger;
+        var idTeam = this.state.dataTeamStudentGroup[0].idEquipo;
+        var idGroup = this.state.groupSelect;
+        var idReceiver = this.state.idGuest;
+
+        //Comprueba si envio una solicitud antes al estudiante a invitar
+        StudentService.searchMessageByReceiver(idGroup, idReceiver, idTeam)
+            .then(response => {
+                if (response.length === 0) {
+                     //Comprueba si recibió una solicitud antes por el estudiante a invitar
+                    StudentService.searchMessageByIssuer(this.props.groupSelect, idReceiver, idTeam)
+                        .then(response => {
+                            if (response.length === 0) {
+                                this.invite()
+                            } 
+                            else {
+                                this.showModalErrorReceiveInvitation();
+                            }
+
+                        })
+                        .catch(error => {
+                            console.log(error.message);
+                        })
+
+                }
+                else {
+                    this.showModalErrorInvitation();
+                }
+            })
+            .catch(error => {
+                console.log(error.message);
+            })
+    };
+
     //Envia una invitación a un estudiante para unirse a su equipo
     invite = () => {
+        var idGroup = this.state.groupSelect;
         var nombre = AuthUser.getCurrentUser().username;
         var apellidos = AuthUser.getCurrentUser().surname;
         var messageBody = "te envía una invitación para unirte a su equipo";
         var equipo = this.state.dataTeamStudentGroup[0].nombreEquipo;
         var grupo = this.state.dataTeamStudentGroup[0].nombreGrupo;
         var message = nombre + " " + apellidos + " " + messageBody + " " + equipo + " del Grupo de " + grupo;
-        StudentService.sendMessage(AuthUser.getCurrentUser().id, this.state.idGuest, AuthUser.getCurrentUser().id, message, 2)
+        StudentService.sendMessage(idGroup, AuthUser.getCurrentUser().id, this.state.idGuest, AuthUser.getCurrentUser().id, message, 2)
             .then(response => {
                 this.showModalSuccesfulInvitation();
-
             }).catch(error => {
                 console.log(error.message);
             })
@@ -390,6 +427,30 @@ class TeamStudent extends Component {
         });
     };
 
+
+    showModalErrorInvitation = () => {
+        this.setState({
+            modalErrorInvitation: true,
+        });
+        //cierra el modal despues de 3 segundos
+        setTimeout(
+            () => this.setState({ modalErrorInvitation: false }),
+            2000
+        );
+    };
+
+    showModalErrorReceiveInvitation = () => {
+        this.setState({
+            modalErrorReceiveInvitation: true,
+        });
+        //cierra el modal despues de 3 segundos
+        setTimeout(
+            () => this.setState({ modalErrorReceiveInvitation: false }),
+            3000
+        );
+    };
+
+
     //Muestra modal de invitación enviada satisfactoriamente
     showModalSuccesfulInvitation = () => {
         this.setState({
@@ -419,7 +480,6 @@ class TeamStudent extends Component {
         console.log("hola------>", u++);
         if (this.state.cdm) {
             if (pS.dataTeamStudentGroup !== this.state.dataTeamStudentGroup) {
-                debugger;
                 console.log("hacer algo");
             }
         }
@@ -432,7 +492,7 @@ class TeamStudent extends Component {
             <div className="container">
                 <Card className="card-long">
                     <Card.Body>
-                    <div className="items-column"><h3>Lista de equipos</h3></div>
+                        <div className="items-column"><h3>Lista de equipos</h3></div>
                         {showTeamStudent ? (
                             <Table striped bordered hover >
                                 <thead>
@@ -490,11 +550,9 @@ class TeamStudent extends Component {
                             </div>
                         </>
 
-
                         ) : (
                             <></>
                         )}
-
 
                         {showLiderStudent ? (
                             <>
@@ -511,7 +569,7 @@ class TeamStudent extends Component {
                                         </select>
                                     </li>
                                     <li className="flex-row-items">
-                                        <Button disabled={this.disabledButtonInvite()} onClick={() => this.invite()} >Invitar</Button>
+                                        <Button disabled={this.disabledButtonInvite()} onClick={() => this.askInvitation()} >Invitar</Button>
                                     </li>
                                 </ul>
 
@@ -627,6 +685,26 @@ class TeamStudent extends Component {
                             <Modal.Footer>
                                 <Button onClick={() => this.kickStudentTeam()}>Aceptar</Button>
                                 <Button color="danger" onClick={() => this.setState({ modalKickStudent: false })}>Cancelar</Button>
+                            </Modal.Footer>
+                        </Modal>
+
+                        <Modal show={this.state.modalErrorInvitation}>
+                            <Modal.Header>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <p> Ya has enviado una invitacion anteriormente</p>
+                            </Modal.Body>
+                            <Modal.Footer>
+                            </Modal.Footer>
+                        </Modal>
+
+                        <Modal show={this.state.modalErrorReceiveInvitation}>
+                            <Modal.Header>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <p> Ya has recibido una petición del estudiante para unirse a tu equipo</p>
+                            </Modal.Body>
+                            <Modal.Footer>
                             </Modal.Footer>
                         </Modal>
                     </Card.Body>

@@ -45,7 +45,6 @@ class TabsWriting extends Component {
     render() {
         const { tabs, activeTab } = this.state;
         const tabToShow = activeTab - 1;
-        //debugger;
         return (
             <div>
                 {tabs && this.renderTabs()}

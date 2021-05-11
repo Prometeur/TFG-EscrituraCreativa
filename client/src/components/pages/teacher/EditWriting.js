@@ -73,7 +73,6 @@ class EditWriting extends Component {
     }
 
     componentDidMount() {
-        debugger;
         /*Obtiene el desafio seleccionado*/
         TeacherService.getChallenge(this.props.match.params.idChallenge)
             .then(response => {

@@ -266,8 +266,8 @@ class StudentService {
     }
 
     /**Obtiene el equipo del estudiante */
-    getTeam(idSender) {
-        return axios.get("/student/getTeam", { params: { idSender: idSender } }, { headers: { "Authorization": `Bearer ${authHeader()}` } })
+    getTeam(idTeam) {
+        return axios.get("/student/getTeam", { params: { idTeam: idTeam } }, { headers: { "Authorization": `Bearer ${authHeader()}` } })
             .then(response => {
                 return response.data;
             }).catch(error => {
@@ -425,10 +425,20 @@ class StudentService {
         })
     }
 
-      /**Obtiene los mensajes del estudiante */
-      searchMessage(idGroup,idIssuer,idCreatorTeam) {
-        debugger;
-        return axios.get("/student/searchMessage", { params: { idGroup: idGroup, idIssuer:idIssuer,idCreatorTeam:idCreatorTeam} },{ headers: { "Authorization": `Bearer ${authHeader()}` } })
+      /**busca mensajes por emisor estudiante*/
+      searchMessageByIssuer(idGroup,idIssuer,idCreatorTeam) {
+        return axios.get("/student/searchMessageByIssuer", { params: { idGroup: idGroup, idIssuer:idIssuer,idCreatorTeam:idCreatorTeam} },{ headers: { "Authorization": `Bearer ${authHeader()}` } })
+            .then(response => {
+                return response.data;
+            }).catch(error => {
+                console.log(error.message);
+            })
+    }
+
+    
+      /**busca mensajes por emisor estudiante*/
+      searchMessageByReceiver(idGroup,idReceiver,idCreatorTeam) {
+        return axios.get("/student/searchMessageByReceiver", { params: { idGroup: idGroup, idReceiver:idReceiver,idCreatorTeam:idCreatorTeam} },{ headers: { "Authorization": `Bearer ${authHeader()}` } })
             .then(response => {
                 return response.data;
             }).catch(error => {

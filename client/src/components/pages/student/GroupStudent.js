@@ -6,6 +6,7 @@ import AuthUser from '../../../services/authenticity/auth-service.js';
 import WritingTabs from './WritingTabs.js';
 import TeamTabs from './TeamTabs.js';
 import ChallengeTabs from './ChallengeTabs.js';
+import Tabs from "./Tabs";
 
 //Estilos
 import '../../../styles/styleGeneral.css';
@@ -20,8 +21,6 @@ import Card from 'react-bootstrap/Card';
 import Icon from '@material-ui/core/Icon';
 import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
 import Button from "../teacher/GroupTeacher";
-
-
 
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
@@ -74,6 +73,8 @@ class GroupStudent extends Component {
     super(props);
 
     this.state = {
+
+
       dataGroup: [],//contiene todos los grupos del estudiante
       currentUser: { id: "" },
       groupSelect: "",
@@ -82,6 +83,12 @@ class GroupStudent extends Component {
       showChallenges: false,
       showWritings: false,
       showTeams: false,
+
+      data: [
+        { id: 1, name: "Crear Escrito", content: () => <ChallengeTabs key={this.state.groupSelect} groupSelect={this.state.groupSelect} />, state: "active" },
+        { id: 2, name: "Escritos", content: () => <WritingTabs key={this.state.groupSelect} groupSelect={this.state.groupSelect} />, state: "inactive" },
+        { id: 3, name: "Equipos", content: () => <TeamTabs key={this.state.groupSelect} groupSelect={this.state.groupSelect} />, state: "inactive" },
+      ],
     };
   }
 
@@ -100,23 +107,6 @@ class GroupStudent extends Component {
       })
   }
 
-  componentDidUpdate(pP, pS, sS) {
-
-    // if (pS.dataTeamStudentGroup !== this.state.dataTeamStudentGroup) {
-    //     debugger;
-    //     console.log("hacer algo");
-    // }
-
-    var u = 1
-    u = u + 1
-    console.log("hola------>", u++);
-    // if (pP !== this.props) {
-    //     debugger;
-    //     console.log("hacer algo");
-    // }
-
-  }
-  
   itemSelection = event => {
     if (event.target.value === "1") {
       this.setState({
@@ -142,7 +132,6 @@ class GroupStudent extends Component {
   };
 
   // handleSelect(groupId) {
-  //   debugger;
   //   this.setState({ groupSelect: groupId });
   // }
 
@@ -179,12 +168,7 @@ class GroupStudent extends Component {
               <h3>{this.state.nameGroupSelect}</h3>
             </div>
 
-            {/* onChange={this.qualificationSelection} */}
-            {/* value={this.state.form.qualification} */}
-
-            <select onChange={this.itemSelection} disabled={!this.state.groupSelect ? true : null} >
-              {/* <select onChange={this.itemSelection} disabled={this.disabledButton()} > */}
-              {/* <option value="" selected disabled hidden > Seleccionar </option> */}
+            {/* <select onChange={this.itemSelection} disabled={!this.state.groupSelect ? true : null} >
               <option value="1" > Crear Escrito </option>
               <option value="2" > Escritos </option>
               <option value="3" > Equipos </option>
@@ -212,7 +196,9 @@ class GroupStudent extends Component {
               </div>
             ) : (
               <div></div>
-            )}
+            )} */}
+
+            <Tabs data={this.state.data} />
 
           </Card.Body>
         </Card>
@@ -222,3 +208,6 @@ class GroupStudent extends Component {
 }
 
 export default GroupStudent;
+
+{/* <select onChange={this.itemSelection} disabled={this.disabledButton()} > */ }
+{/* <option value="" selected disabled hidden > Seleccionar </option> */ }
