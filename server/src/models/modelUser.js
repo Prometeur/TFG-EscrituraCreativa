@@ -73,16 +73,14 @@ class modelUser {
 
     /*Obtiene todos los grupos*/
     getAllGroups(callback) {
-        this.pool.getConnection(function(err, connection) {
-            if (err) 
-            {
+        this.pool.getConnection(function (err, connection) {
+            if (err) {
                 callback(new Error("No se puede conectar a la base de datos."))
-            } 
-            else 
-            {
+            }
+            else {
                 const sql = "SELECT * FROM grupo WHERE activo = 1";
                 const valores = [];
-                connection.query(sql, valores, function(err, res) {
+                connection.query(sql, valores, function (err, res) {
                     connection.release();
                     if (err) {
                         callback(new Error("Error al buscar los grupos."));
@@ -122,19 +120,19 @@ class modelUser {
         });
     }
 
-     //Busca todos los usuarios activos con ciertos parámetros.
-     searchUsers(clave, tipo, callback) {
-        this.pool.getConnection(function(err, connection) {
+    //Busca todos los usuarios activos con ciertos parámetros.
+    searchUsers(clave, tipo, callback) {
+        this.pool.getConnection(function (err, connection) {
             if (err) {
                 callback(new Error("No se puede conectar a la base de datos."))
             } else {
                 let consulta = 'SELECT id, nombre, apellidos, foto, rol, correo FROM usuario WHERE (nombre LIKE ? OR apellidos LIKE ?) AND activo = 1;';
-                if(tipo == "email"){
+                if (tipo == "email") {
                     consulta = 'SELECT id, nombre, apellidos, foto, rol, correo FROM usuario WHERE correo LIKE ? AND activo = 1;';
                 }
-                const sql = consulta; 
-                const valores = [ "%" + clave + "%", "%" + clave + "%"];
-                connection.query(sql, valores, function(err, res) {
+                const sql = consulta;
+                const valores = ["%" + clave + "%", "%" + clave + "%"];
+                connection.query(sql, valores, function (err, res) {
                     connection.release();
                     if (err) {
                         callback(new Error("Error al buscar usuarios con " + tipo + " similar a " + clave + "."));
@@ -216,16 +214,14 @@ class modelUser {
 
     /*Obtiene los datos de grupo del elegido*/
     getGroupData(id, callback) {
-        this.pool.getConnection(function(err, connection) {
-            if (err) 
-            {
+        this.pool.getConnection(function (err, connection) {
+            if (err) {
                 callback(new Error("No se puede conectar a la base de datos."))
-            } 
-            else 
-            {
+            }
+            else {
                 const sql = "SELECT id, nombre, idprofesor FROM grupo WHERE id = ? AND activo = 1";
                 const valores = [id];
-                connection.query(sql, valores, function(err, res) {
+                connection.query(sql, valores, function (err, res) {
                     connection.release();
                     if (err) {
                         callback(new Error("Error al buscar al grupo."));
@@ -352,7 +348,7 @@ class modelUser {
             }
             else {
                 const sql = "SELECT * FROM usuario where correo = ? and activo=?";
-                const valores = [username,1];
+                const valores = [username, 1];
                 connection.query(sql, valores, function (err, res) {
                     connection.release();
                     if (err) {
@@ -377,28 +373,26 @@ class modelUser {
             }
             else {
 
-                let query ='';
-                let parametros='';
+                let query = '';
+                let parametros = '';
 
-                if(!password && foto==''){
+                if (!password && foto == '') {
 
                     query = "UPDATE usuario  SET correo = ?,nombre = ?, apellidos=? WHERE id= ?";
-                    parametros = [correo,nombre,apellidos,id];
+                    parametros = [correo, nombre, apellidos, id];
                 }
-                else if(!password  && foto)
-                {
-                     query = "UPDATE usuario  SET correo = ?,nombre = ?, apellidos =?, foto =? WHERE id= ?";
-                     parametros = [correo,nombre,apellidos,foto,id];
+                else if (!password && foto) {
+                    query = "UPDATE usuario  SET correo = ?,nombre = ?, apellidos =?, foto =? WHERE id= ?";
+                    parametros = [correo, nombre, apellidos, foto, id];
                 }
-                else if(password && !foto)
-                {
+                else if (password && !foto) {
                     query = "UPDATE usuario  SET correo = ?,nombre = ?, apellidos =?, password=? WHERE id= ?";
-                    parametros = [correo,nombre,apellidos,password,id];
+                    parametros = [correo, nombre, apellidos, password, id];
                 }
                 else {
 
                     query = "UPDATE usuario  SET correo = ?,nombre = ?, apellidos =?, password =? ,foto = ? WHERE id= ?";
-                    parametros = [correo,nombre,apellidos, password, foto, id];
+                    parametros = [correo, nombre, apellidos, password, foto, id];
 
                 }
 
@@ -422,6 +416,19 @@ class modelUser {
 
     }
 
+    /*Actualiza la foto de perfil del estudiante*/
+    updatePhoto(idUser, path, callback) {
+        const sqlUpdate = "UPDATE usuario SET ruta=? WHERE id =?";
+        this.pool.query(sqlUpdate, [path, idUser], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+            }
+        });
+    }
+
     disableProfile(idUser, callback) {
 
         this.pool.getConnection(function (err, connection) {
@@ -430,7 +437,7 @@ class modelUser {
             }
             else {
                 const sql = "UPDATE usuario SET activo=? WHERE id =?";
-                const valores = [0,idUser];
+                const valores = [0, idUser];
                 connection.query(sql, valores, function (err, res) {
                     connection.release();
                     if (err) {
@@ -458,7 +465,7 @@ class modelUser {
                     if (err) {
                         callback(new Error("Error al buscar al usuario."));
                     } else {
-                       callback(null, res);
+                        callback(null, res);
                     }
                 })
             }
@@ -467,4 +474,4 @@ class modelUser {
 }
 
 //Data export
-module.exports = modelUser;  
+module.exports = modelUser;

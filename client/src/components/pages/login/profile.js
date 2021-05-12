@@ -6,6 +6,7 @@ import '../../../styles/styleCard.css';
 import Card from 'react-bootstrap/Card';
 import Figure from 'react-bootstrap/Figure';
 import Button from 'react-bootstrap/Button';
+import axios from "../../../axios";
 
 
 export default class Profile extends Component {
@@ -38,11 +39,10 @@ export default class Profile extends Component {
         else{
             this.setState({role:"Administrador/a"});
         }
-        console.log(currentUser);
+   
     }
 
     render() {
-
 
         if (this.state.redirect) {
             return <Redirect to={this.state.redirect} />
@@ -58,20 +58,28 @@ export default class Profile extends Component {
                         />
                 </Figure>;
 
-        console.log(this.state.currentUser.foto);
-        if(this.state.currentUser.foto != undefined)
-        {
-            if(this.state.currentUser.foto.data.length != 0)
-            {
-            let fotoSource = "data:image/png;base64," + btoa(String.fromCharCode.apply(null, this.state.currentUser.foto.data));
+        var baseURL = axios.defaults.baseURL+"multimedia/users/default.jpg";
+        if( this.state.currentUser.ruta !== ""){
+            // if(this.state.currentUser.foto.data.length != 0)
+            // {
+            //let fotoSource = "data:image/png;base64," + btoa(String.fromCharCode.apply(null, this.state.currentUser.foto.data));
             foto = <Figure>
                         <Figure.Image
                             bsPrefix="figure"
                             alt="171x180"
-                            src={fotoSource}
+                            src={currentUser.ruta}
                         />
                 </Figure>;
-            }
+            //}
+        }
+        else{  
+            foto = <Figure>
+                        <Figure.Image
+                            bsPrefix="figure"
+                            alt="171x180"
+                            src={baseURL}
+                        />
+                </Figure>;   
         }
 
         return (
