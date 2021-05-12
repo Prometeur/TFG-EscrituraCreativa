@@ -40,6 +40,7 @@ class EditChallenge extends Component {
     constructor(props) {
         super(props);
         this.onFileChange = this.onFileChange.bind(this);
+        this.onModalSave = this.onModalSave.bind(this);
 
         this.state = {
             imgCollection: [],//array de ficheros multimedia
@@ -114,14 +115,14 @@ class EditChallenge extends Component {
                 if (this.state.imgCollection.length > 0) {
                     TeacherService.sendMultimediaChallenge(this.state.imgCollection, AuthUser.getCurrentUser().id, this.props.match.params.idChallenge, this.state.form.type)
                         .then(response => {
-                            window.location.href = '/teacher';
+                            window.location.href = "/teacher/groups";
                         })
                         .catch(error => {
                             console.log(error.message);
                         });
                 }
                 else
-                    window.location.href = '/teacher';
+                    window.location.href = "/teacher/groups";
             })
             .catch(error => {
                 console.log(error.message);
@@ -215,7 +216,7 @@ class EditChallenge extends Component {
 
     //redireccion a una pagina
     changeView = () => {
-        window.location.href = "/teacher";
+        window.location.href = "/teacher/groups";
     }
 
     qualificationSelection = event => {
@@ -300,8 +301,7 @@ class EditChallenge extends Component {
 
     /*Dibuja la pagina */
     render() {
-        // const { editorState } = this.state;
-        // const { formErrors } = this.state;
+
         const { editorState, formErrors, dataMediaChallenge } = this.state;
         return (
             <div className="container">
@@ -329,7 +329,6 @@ class EditChallenge extends Component {
                             </div>
                         </div>
                         <div className="row-edit">
-
                             <label className='form-label'>Descripción</label>
                             <Editor
                                 editorState={editorState}
@@ -386,7 +385,7 @@ class EditChallenge extends Component {
                         </div>
 
                         <div className="row-edit">
-                            <label className='form-label'> Ficheros Multimedia: </label>
+                            <label className='form-label'> Ficheros Multimedia </label>
                             <table>
                                 <tbody>
                                     <div className={"table-multi"}>
@@ -400,7 +399,6 @@ class EditChallenge extends Component {
                                                         <Button onClick={() => window.open(mediaChallenge.ruta)}>Ver</Button>
                                                     </div>
                                                 </td>
-                                                {/* <td>< button onClick={() => this.deleteFile(mediaChallenge)}>Eliminar</button></td> */}
                                                 <td>
                                                     <div className="form-button">
                                                         <Button onClick={() => this.askDeleteFile(mediaChallenge)}>Eliminar</Button>

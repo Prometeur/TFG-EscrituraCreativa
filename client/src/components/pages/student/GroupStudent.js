@@ -1,3 +1,9 @@
+/*
+*  Name_file:
+*  Description:
+*/
+
+
 import React, { Component, useState } from "react";
 import StudentService from '../../../services/student/student-service.js';
 import AuthUser from '../../../services/authenticity/auth-service.js';
@@ -6,7 +12,6 @@ import AuthUser from '../../../services/authenticity/auth-service.js';
 import WritingTabs from './WritingTabs.js';
 import TeamTabs from './TeamTabs.js';
 import ChallengeTabs from './ChallengeTabs.js';
-import Tabs from "./Tabs";
 
 //Estilos
 import '../../../styles/styleGeneral.css';
@@ -20,7 +25,7 @@ import FormControl from 'react-bootstrap/FormControl';
 import Card from 'react-bootstrap/Card';
 import Icon from '@material-ui/core/Icon';
 import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
-import Button from "../teacher/GroupTeacher";
+
 
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
@@ -73,8 +78,6 @@ class GroupStudent extends Component {
     super(props);
 
     this.state = {
-
-
       dataGroup: [],//contiene todos los grupos del estudiante
       currentUser: { id: "" },
       groupSelect: "",
@@ -83,12 +86,6 @@ class GroupStudent extends Component {
       showChallenges: false,
       showWritings: false,
       showTeams: false,
-
-      data: [
-        { id: 1, name: "Crear Escrito", content: () => <ChallengeTabs key={this.state.groupSelect} groupSelect={this.state.groupSelect} />, state: "active" },
-        { id: 2, name: "Escritos", content: () => <WritingTabs key={this.state.groupSelect} groupSelect={this.state.groupSelect} />, state: "inactive" },
-        { id: 3, name: "Equipos", content: () => <TeamTabs key={this.state.groupSelect} groupSelect={this.state.groupSelect} />, state: "inactive" },
-      ],
     };
   }
 
@@ -131,11 +128,6 @@ class GroupStudent extends Component {
     }
   };
 
-  // handleSelect(groupId) {
-  //   this.setState({ groupSelect: groupId });
-  // }
-
-
   handleSelect(group) {
     this.setState({ groupSelect: group.idGrupo, nameGroupSelect: group.nombre });
   }
@@ -154,51 +146,61 @@ class GroupStudent extends Component {
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
         <Card className="card-long">
           <Card.Body>
-            <Dropdown className="drop-down" >
-              <DropdownToggle as={CustomToggle} id="dropdown-custom-components">Selecciona grupo</DropdownToggle>
-              <DropdownMenu as={CustomMenu}>
-                {dataGroup.map((row) => (
-                  // <DropdownItem eventKey={row.idGrupo} onClick={() => this.handleSelect(row.idGrupo)}>{row.nombre}</DropdownItem>
-                  <DropdownItem eventKey={row.idGrupo} onClick={() => this.handleSelect(row)}>{row.nombre}</DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-
-            <div className="items-column">
-              <h3>{this.state.nameGroupSelect}</h3>
+            <div className={"row-edit"}>
+              <div className={"section-title"}>
+                <h2>Gestionar grupos</h2>
+              </div>
             </div>
 
-            {/* <select onChange={this.itemSelection} disabled={!this.state.groupSelect ? true : null} >
-              <option value="1" > Crear Escrito </option>
-              <option value="2" > Escritos </option>
-              <option value="3" > Equipos </option>
-            </select>
+            <ul className={"flex-items-row-evenly"}>
+              <li className={"flex-item-form"}>
+                  <Dropdown className="drop-down" >
+                    <DropdownToggle as={CustomToggle} id="dropdown-custom-components">Selecciona grupo</DropdownToggle>
+                    <DropdownMenu as={CustomMenu}>
+                      {dataGroup.map((row) => (
+                          <DropdownItem eventKey={row.idGrupo} onClick={() => this.handleSelect(row)}>{row.nombre}</DropdownItem>
+                      ))}
+                    </DropdownMenu>
+                  </Dropdown>
+              </li>
+              <li className={"flex-item-form"}>
+                <h3>{this.state.nameGroupSelect}</h3>
+              </li>
+              <li className={"flex-item-form"}>
+                <div className={"form-select"}>
+                  <label className={"form-label"} htmlFor="">Seleccione un opción</label>
+                  <select onChange={this.itemSelection} disabled={!this.state.groupSelect ? true : null} >
+                    <option value="1" > Crear Escrito </option>
+                    <option value="2" > Escritos </option>
+                    <option value="3" > Equipos </option>
+                  </select>
+                </div>
+              </li>
+            </ul>
 
             {showChallenges ? (
-              <div className="row">
+              <div className="row-edit">
                 <ChallengeTabs key={groupSelect} groupSelect={groupSelect} />
               </div>
             ) : (
-              <div></div>
+              <></>
             )}
 
             {showWritings ? (
-              <div className="row">
+              <div className="row-edit">
                 <WritingTabs key={groupSelect} groupSelect={groupSelect} />
               </div>
             ) : (
-              <div></div>
+              <></>
             )}
 
             {showTeams ? (
-              <div className="row">
+              <div className="row-edit">
                 <TeamTabs key={groupSelect} groupSelect={groupSelect} />
               </div>
             ) : (
-              <div></div>
-            )} */}
-
-            <Tabs data={this.state.data} />
+              <></>
+            )}
 
           </Card.Body>
         </Card>
@@ -208,6 +210,3 @@ class GroupStudent extends Component {
 }
 
 export default GroupStudent;
-
-{/* <select onChange={this.itemSelection} disabled={this.disabledButton()} > */ }
-{/* <option value="" selected disabled hidden > Seleccionar </option> */ }

@@ -19,16 +19,13 @@ export default class Profile extends Component {
             redirect: null,
             userReady: false,
             currentUser: [],
-            path:'',
         };
     }
 
 
     componentDidMount() {
-        
-       
         const currentUser = AuthService.getCurrentUser();
-        debugger;
+
         if (!currentUser )
             this.setState({ redirect: "/home" });
 
@@ -42,13 +39,10 @@ export default class Profile extends Component {
         else{
             this.setState({role:"Administrador/a"});
         }
-        console.log(currentUser);
-
-
+   
     }
 
     render() {
-
 
         if (this.state.redirect) {
             return <Redirect to={this.state.redirect} />
@@ -60,13 +54,12 @@ export default class Profile extends Component {
                         <Figure.Image
                             bsPrefix="figure"
                             alt="171x180"
-                            src="fotoperfil.jpg"
+                            src="/chicaliteratura_sizebig.png"
                         />
                 </Figure>;
 
-       var baseURL = axios.defaults.baseURL+"multimedia/users/default.jpg";
-    
-        if(this.state.currentUser.ruta != undefined){
+        var baseURL = axios.defaults.baseURL+"multimedia/users/default.jpg";
+        if( this.state.currentUser.ruta !== ""){
             // if(this.state.currentUser.foto.data.length != 0)
             // {
             //let fotoSource = "data:image/png;base64," + btoa(String.fromCharCode.apply(null, this.state.currentUser.foto.data));
@@ -86,31 +79,35 @@ export default class Profile extends Component {
                             alt="171x180"
                             src={baseURL}
                         />
-                </Figure>;
-            
+                </Figure>;   
         }
 
         return (
             <>
             <div className="perfil-left">
-
-                <ul className="container-column-list">
-                    <li className="item-column-list wrap">
+                <ul className="flex-container wrap">
+                    <li className="items-column">
                         {foto}
                     </li>
-                    <li className="item-column-list wrap">
-                        <h6>
+                    <li className="items-column">
+                        <h1>
                             {currentUser.username}
-                        </h6>
+                        </h1>
                     </li>
-                    <li className="item-column-list wrap">
+                    <li className="items-column">
                         <h6>{role}</h6>
                     </li>
-                    <li className="item-column-list">
-                        <img src="setting.png" alt=""/>
-                        <Link to={"/editProfile"}>
-                            <Button size="sm"  variant="outline-light">Editar</Button>
-                        </Link>
+                    <li className="items-column">
+                       <ul className={"flex-row"}>
+                            <li className={"flex-row-item"}>
+                                <img  className={"img-icon-perfil"} src="setting.png" alt=""/>
+                           </li>
+                           <li className={"flex-row-item"}>
+                               <Link to={"/editProfile"}>
+                                   <Button size="sm"  variant="outline-light">Editar</Button>
+                               </Link>
+                           </li>
+                       </ul>
                     </li>
                 </ul>
             </div>

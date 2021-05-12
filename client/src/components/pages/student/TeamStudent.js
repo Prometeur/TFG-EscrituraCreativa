@@ -14,17 +14,6 @@ import StudentService from '../../../services/student/student-service.js';
 /**Datos del usuario */
 import AuthUser from '../../../services/authenticity/auth-service.js';
 
-// import {
-//     Table,
-//     Button,
-//     Container,
-//     Modal,
-//     ModalHeader,
-//     ModalBody,
-//     FormGroup,
-//     ModalFooter,
-// } from "reactstrap";
-
 /*Componentes de estilo Bootstrap*/
 import Table from "react-bootstrap/Table";
 import Card from 'react-bootstrap/Card';
@@ -175,7 +164,6 @@ class TeamStudent extends Component {
     editTeam = () => {
         let arreglo = [];
         //this.setState({ dataTeamStudentGroup: arreglo, showTeamStudent: false, showLiderStudent: false, modalDeleteTeam: false, modalLeaveLider: false });
-
         StudentService.editTeam(this.state.dataTeamStudentGroup[0].idEquipo, this.state.dataTeamStudentGroup[0].nombreEquipo, this.state.idLider, this.state.dataTeamStudentGroup[0].idGrupo)
             .then(response => {
                 StudentService.leaveStudentTeam(this.state.dataTeamStudentGroup[0].idEquipo, AuthUser.getCurrentUser().id)
@@ -210,7 +198,6 @@ class TeamStudent extends Component {
     }
 
     askInvitation = () => {
-        debugger;
         var idTeam = this.state.dataTeamStudentGroup[0].idEquipo;
         var idGroup = this.state.groupSelect;
         var idReceiver = this.state.idGuest;
@@ -228,12 +215,10 @@ class TeamStudent extends Component {
                             else {
                                 this.showModalErrorReceiveInvitation();
                             }
-
                         })
                         .catch(error => {
                             console.log(error.message);
                         })
-
                 }
                 else {
                     this.showModalErrorInvitation();
@@ -450,7 +435,6 @@ class TeamStudent extends Component {
             3000
         );
     };
-
 
     //Muestra modal de invitación enviada satisfactoriamente
     showModalSuccesfulInvitation = () => {

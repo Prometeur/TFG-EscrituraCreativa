@@ -1,5 +1,6 @@
 import axios from "../../axios";
 import authHeader from '../authenticity/auth-header';
+
 class AuthService {
  
     login(username, password) {
@@ -19,7 +20,10 @@ class AuthService {
         
             return response.data;
       
-         });
+         }).catch(error => {
+            console.log(error.message);
+            window.location.href = '/500';
+        });
     }
 
     logout() {
@@ -38,7 +42,10 @@ class AuthService {
                 {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
-        } );
+        } ).catch(error => {
+            console.log(error.message);
+            window.location.href = '/500';
+        });
     }
 
     editProfile(id,username,surname,email,password,foto) {
@@ -56,11 +63,14 @@ class AuthService {
                 {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
+            }).catch(error => {
+                console.log(error.message);
+                window.location.href = '/500';
             });
     }
 
-    //Actualiza la foto
-    updatePhoto(idUser,file,type) {
+     //Actualiza la foto
+     updatePhoto(idUser,file,type) {
 
         const form = new FormData();
         form.append("profilePhoto", file);
@@ -75,7 +85,6 @@ class AuthService {
         })
     }
 
-
     disableProfile(idUser) {
 
         return axios.post("auth/disableProfile",
@@ -84,10 +93,14 @@ class AuthService {
                 {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
-             });
+             }).catch(error => {
+                console.log(error.message);
+                window.location.href = '/500';
+            });
     }
 
     getCurrentUser() {
+
         return JSON.parse(localStorage.getItem('user'));
     }
 }

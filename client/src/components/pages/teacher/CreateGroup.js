@@ -2,17 +2,20 @@
 *  Name_file :CreateGroup.js
 *  Description: Pagina que sirve para crear grupos nuevos
 */
+
 import React, { Component } from 'react';
 import teacherService from '../../../services/teacher/teacherService';
 import AuthUser from '../../../services/authenticity/auth-service.js';
+
+/**Estilos CSS*/
 import '../../../styles/styleGeneral.css';
 import '../../../styles/styleCard.css';
+
+/**Estilos*/
 import Card from 'react-bootstrap/Card';
 import Button  from 'react-bootstrap/Button';
 import Modal from "react-bootstrap/Modal";
-
-
-
+import Alert from 'react-bootstrap/Alert';
 
 class CreateGroup extends Component {
 
@@ -29,11 +32,10 @@ class CreateGroup extends Component {
             currentUserId: '',
             currentUserRole: '',
 
-        }
+        };
     }
 
-
-      /*Si vuelvo a la pagina de login, comprueba si el usuario ya inicio sesion anteriomente
+    /*Si vuelvo a la pagina de login, comprueba si el usuario ya inicio sesion anteriomente
    si es el caso lo redirige a la home segun su rol*/
    componentDidMount() {      
 
@@ -65,7 +67,7 @@ class CreateGroup extends Component {
         {
             teacherService.createGroup(this.state.currentUserId, this.state.groupName ).then(response => {
                 console.log(response);
-                window.location.href = '/teacher';
+                window.location.href = '/teacher/createGroup';
             }).catch(error => {
                 console.log(error.message);
             })
@@ -73,30 +75,39 @@ class CreateGroup extends Component {
 
     }
 
-
+    /*Cambia estado del modal*/
     onModal(modal) {
-
         this.setState({
             onModal: modal
         });
     }
 
-/*Dibuja la pagina  */
+    /*Dibuja la pagina  */
     render() {
-
         return (
-
             <div className="container">
                 <Card className="card-long">
                     <Card.Body>
-                        <h1>Crear grupo</h1>
-                        <label className="form-label">Nombre del grupo nuevo: </label>
-                        <input placeholder="Ingrese un nombre"
-                               className="form-control" type="text"
-                               name="groupName"
-                               onChange={this.handleChangeName}
-                        />
-                        <Button variant="primary" onClick={() => this.createGroup()}>Aceptar</Button>
+                        <div className={"row-edit"}>
+                            <div className={"section-title"}>
+                                <h2>Crear un grupo</h2>
+                            </div>
+                            <br/>
+                            <Alert variant={"info"}>
+                                <img src="/info.png" alt=""/>
+                                 Introduzca el nombre del nuevo grupo que desea crear.
+                            </Alert>
+                        </div>
+                        <div className={"row-edit"}>
+                            <label className="form-label">Nombre del grupo nuevo : </label>
+                            <input placeholder="Ingrese un nombre"
+                                   className="form-control" type="text"
+                                   name="groupName"
+                                   onChange={this.handleChangeName}
+                            />
+                            <br/>
+                            <Button variant="primary" onClick={() => this.createGroup()}>Aceptar</Button>
+                        </div>
                         <Modal
                             centered
                             show={this.state.onModal}
@@ -119,7 +130,6 @@ class CreateGroup extends Component {
             </div>
         );
      }
-
 }
 
 export default CreateGroup;

@@ -86,7 +86,7 @@ export default class Profile extends Component {
         this.onChangeEmail = this.onChangeEmail.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
         this.onChangeConfirmPassword = this.onChangeConfirmPassword.bind(this);
-        this.onFileChange = this.onFileChange.bind(this);
+        // this.onFileChange = this.onFileChange.bind(this);
         this.onModal = this.onModal.bind(this);
         this.onTeamModal = this.onTeamModal.bind(this);
         this.onDeleteModal = this.onDeleteModal.bind(this);
@@ -109,17 +109,25 @@ export default class Profile extends Component {
                 photo: [],
                 file: '',
                 reader: '',
-                name:'',//nombre fichero
+                name:"",//nombre fichero
             }
         };
     }
 
 
     componentDidMount() {
-        var str = AuthService.getCurrentUser().ruta;
-        var res = str.split("/");
-
         const currentUser = AuthService.getCurrentUser();
+       
+        if(currentUser.ruta !== null || currentUser.ruta !=""){
+            var res = currentUser.ruta.split("/");
+            this.setState({
+                updateUser: {
+                    ...this.state.updateUser,
+                    name:res[6],
+                }
+            });
+        }
+        
         this.setState({ currentUser: currentUser });
         this.setState({
             updateUser: {
@@ -127,11 +135,8 @@ export default class Profile extends Component {
                 username: currentUser.username,
                 surname: currentUser.surname,
                 email: currentUser.email,
-                name:res[6],
             }
         });
-        
-       
 
     }
 
@@ -223,26 +228,26 @@ export default class Profile extends Component {
     }
 
     //Carga los ficheros multimedia del escrito
-    onFileChange(e) {
-        if (e.target.value) {
-            this.setState({
-                updateUser: {
-                    ...this.state.updateUser,
-                    photo: e.target.value
-                }
-            });
-        }
-    }
+    // onFileChange(e) {
+    //     console.log(e.target.value, e.target);
+
+    //     if (e.target.value) {
+    //         this.setState({
+    //             updateUser: {
+    //                 ...this.state.updateUser,
+    //                 photo: e.target.value
+    //             }
+    //         });
+    //     }
+    // }
 
     onFileChange2 = (e) => {
-      
         if (e.target.files && e.target.files.length > 0) {
             const file = e.target.files[0];
             if (file.type.includes("image")) {
                 const reader = new FileReader();
                 reader.readAsDataURL(e.target.files[0]);
                 reader.onload = () => {
-                    console.log(reader.result);
                     this.setState({
                         updateUser: {
                             ...this.state.updateUser,
@@ -250,42 +255,35 @@ export default class Profile extends Component {
                         }
                     });
                 }
-
-                debugger;
-                // var str = file.n
-                // var res = str.split("/");
                 this.setState({
                     updateUser: {
                         ...this.state.updateUser,
                         file: file,
-                        name:file.name,
+                        name: file.name,
                     }
                 });
-                // this.onUpdateModal(true);
-                // this.onModal(false);
             }
-            else {
+            else 
                 console.log("there was an error")
-            }
         }
     }
+
 
     logout() {
         AuthService.logout();
     }
 
     editProfile() {
-       
-        var str = this.state.currentUser.ruta;
-        var res = str.split("/");
-        //res[6] nombre de la foto
-
+        var aux="";
+        if( this.state.currentUser.ruta !="" ){
+            var res = this.state.currentUser.ruta.split("/");
+            aux=res[6];
+        }
         if (this.state.updateUser.surname == this.state.currentUser.surname
             && this.state.updateUser.username == this.state.currentUser.username
             && this.state.updateUser.password == '' && this.state.updateUser.email == this.state.currentUser.email
             && this.state.updateUser.confirmPassword == '' && this.state.updateUser.photo.length == 0 &&
-            this.state.updateUser.name == res[6]) {
-
+            this.state.updateUser.name == aux) {
             this.onUpdateModal(true);
             this.onModal(false);
         } else {
@@ -298,26 +296,24 @@ export default class Profile extends Component {
                         console.log(error.message);
                     })
 
-                   //Si ha seleccionado una imagen, actualiza foto
-                    if (this.state.updateUser.file !== "") {    
-                        AuthService.updatePhoto(this.state.currentUser.id,this.state.updateUser.file,3)
-                        .then(response => { 
-                            debugger;
+                //Si ha seleccionado una imagen, actualiza la foto
+                if (this.state.updateUser.file !== "") {
+                    AuthService.updatePhoto(this.state.currentUser.id, this.state.updateUser.file, 3)
+                        .then(response => {
                             console.log("todo correcto");
 
-                         }).catch(error => {
+                        }).catch(error => {
                             console.log(error.message);
                         })
-                    }
-                    else{
-                        this.onUpdateModal(true);
-                        this.onModal(false);
-                    }
+                }
+                else {
+                    this.onUpdateModal(true);
+                    this.onModal(false);
+                }
             } else {
                 alert("Ambas contraseñas no coinciden");
             }
         }
-
     }
 
     deleteUser() {
@@ -346,13 +342,11 @@ export default class Profile extends Component {
     }
 
     render() {
-
         let media1 = "";
         if (this.state.updateUser.file.type !== undefined) {//si hemos previsualizado un archivo
             if (this.state.updateUser.file.type.includes("image"))
                 media1 = <img className="image" src={this.state.updateUser.reader} />;
         }
-       
         return (
             <>
                 <div className="editPerfil-left">
@@ -409,17 +403,11 @@ export default class Profile extends Component {
                                                 validations={[required, email]}
                                             />
                                         </li>
-
-
-                                        {/* <li className="flex-item-file">
-                                            <label className="form-label">Foto de perfil</label>
-                                            <input type="file" name="imgCollection" onChange={this.onFileChange} />
-                                        </li> */}
-
                                         <li className="flex-item-file">
                                             <label className="form-label">Foto de perfil</label>
                                             {media1}
                                             <input type="file" name="photo" onChange={this.onFileChange2} />
+                                           
                                         </li>
 
                                         <li className="flex-item">
@@ -497,8 +485,8 @@ export default class Profile extends Component {
                                     </p>
                                 </Modal.Body>
                                 <Modal.Footer>
-                                    <Button variant="secondary" onClick={() => this.onModal(false)}>No</Button>
                                     <Button variant="primary" onClick={() => this.editProfile()}>Aceptar</Button>
+                                    <Button variant="secondary" onClick={() => this.onModal(false)}>Cancelar</Button>
                                 </Modal.Footer>
                             </Modal>
 

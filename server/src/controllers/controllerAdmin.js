@@ -31,10 +31,7 @@ function deactivateUser(request, response, next){
                 //next(err);
                 console.log("No se puede conectar a la base de datos");
             }
-            response.status(500);
-            /*response.render("perfil", {
-                error: err.message
-            });*/
+            response.status(500).send({ error: err.message });
             console.log(err.message);
         }
         else 
@@ -57,10 +54,7 @@ function deleteUser(request, response, next){
                 //next(err);
                 console.log("No se puede conectar a la base de datos");
             }
-            response.status(500);
-            /*response.render("perfil", {
-                error: err.message
-            });*/
+            response.status(500).send({ error: err.message });
             console.log(err.message);
         }
         else 
@@ -84,10 +78,7 @@ function renameGroup(request, response, next){
                 //next(err);
                 console.log("No se puede conectar a la base de datos");
             }
-            response.status(500);
-            /*response.render("perfil", {
-                error: err.message
-            });*/
+            response.status(500).send({ error: err.message });
             console.log(err.message);
         }
         else 
@@ -110,10 +101,7 @@ function deactivateGroup(request, response, next){
                 //next(err);
                 console.log("No se puede conectar a la base de datos");
             }
-            response.status(500);
-            /*response.render("perfil", {
-                error: err.message
-            });*/
+            response.status(500).send({ error: err.message });
             console.log(err.message);
         }
         else 

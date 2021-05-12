@@ -3,16 +3,14 @@
 *  Description: Contiene los datos de un equipo segun un ID dado.
 *    
 */
-import React, { Component } from 'react';
-import authHeader from '../../../services/authenticity/auth-header.js';
-import AuthUser from '../../../services/authenticity/auth-service.js';
-import TeacherService from '../../../services/teacher/teacherService.js';
-import AdminService from '../../../services/admin/adminService.js';
 
-import Card from 'react-bootstrap/Card';
-import Button  from 'react-bootstrap/Button';
-import ListGroup from 'react-bootstrap/ListGroup';
+import React, { Component } from 'react';
+import TeacherService from '../../../services/teacher/teacherService.js';
 import { Link} from "react-router-dom";
+
+/** Estilo CSS*/
+import Button from "react-bootstrap/Button";
+
 
 
 class ViewTeamInfo extends Component {
@@ -21,11 +19,8 @@ class ViewTeamInfo extends Component {
         super(props);
 
         this.state = {
-            
             data: [],
             memberData: [],
-           
-    
         };
     }
 
@@ -58,41 +53,49 @@ class ViewTeamInfo extends Component {
     /*Dibuja la pagina  */
     render() {
         
-        let cartel =<div> </div>;
-        let contenido = <div>
-                        <h3>Nombre: {this.state.data.nombre}</h3>
-                        <div>
-                        <ListGroup variant="flush">
-                        {this.state.memberData.map((user) => 
-                            (
-                                <React.Fragment>
-                                <ListGroup.Item>
-                                    {user.nombreEstudiante} {user.apellidoEstudiante} 
-                                    <Link key={user.id} to={`/teacher/students/viewProfile/${user.idEstudiante}`}><button text='Ver Perfil'> Ver perfil </button></Link>
-                                </ListGroup.Item>
-                                </React.Fragment>
-                                
-                            )
-                        )}
-                        </ListGroup>
-                        </div>
-                    </div>;
+        let cartel =<> </>;
+        let contenido = <>
+                            <ul className={"flex-items-row-start wrap"}>
+                                {this.state.memberData.map((user) =>
+                                    (
+                                        <li className={"items-row"}>
+                                            <br/>
+                                            <ul className={"container-column-list wrap"}>
+                                                <li className={"flex-item-list"}>
+                                                    <img src={(user.foto.data.length != 0) ? ("data:image/png;base64," +
+                                                        btoa(String.fromCharCode.apply(null, user.foto.data))) : "/chicaliteratura.png" }
+                                                         alt=""
+                                                         style={{width: '60px',  borderRadius: '80%',margin:"0 1rem 0 1rem"}}
+                                                    >
+                                                    </img>
+                                                </li>
+                                                <li className={"flex-item-list"}>
+                                                    {user.nombreEstudiante}
+                                                </li>
+                                                <li className={"flex-item-list"}>
+                                                    {user.apellidoEstudiante}
+                                                </li>
+                                                <li className={"flex-item-list"}>
+                                                    <Link key={user.id} to={`/teacher/students/viewProfile/${user.idEstudiante}`}>
+                                                        <Button text='Ver Perfil'> Ver perfil </Button>
+                                                    </Link>
+                                                </li>
+                                            </ul>
+                                            <hr/>
+                                        </li>
+
+                                    )
+                                )}
+                            </ul>
+                    </>;
 
 
         return (
-            <>
-                <h1>Perfil:</h1>
-            
+
                 <div>
-                
                     {cartel}
-
-
                     {contenido}
-
-
                 </div>
-            </>
         );
     }
 

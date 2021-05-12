@@ -41,7 +41,7 @@ function signUp(request, response) {
     request.body.email, bcrypt.hashSync(request.body.password, 8), function (err, rel) {
 
       if (err) {
-        response.status(500);
+        response.status(500).send({ error: err.message });
       }
       else {
         response.status(200).send({ message: "Hola nuevo usuario!" });
@@ -60,11 +60,9 @@ function signIn(request, response) {
     }
     else {
       if (!rel) {
-        // console.log("ERROR---> user not found");
         response.status(404).send({ message: "User Not found." });
       }
       else {
-        // console.log("Correct---> user found");
         var passwordIsValid = bcrypt.compareSync(
           request.body.password,
           rel.password
@@ -119,7 +117,6 @@ function editProfile(request, response) {
     else {
 
       if (!rel) {
-        // console.log("ERROR---> user not found");
         response.status(404).send({ message: "User Not update." });
       }
       else {
@@ -134,7 +131,7 @@ function editProfile(request, response) {
 function updatePhoto(req, res) {
   const idUser = req.body.idUser;
   var type;
-  if (req.query.type == 3) 
+  if (req.query.type == 3)
     type = "users";
   const dir = idUser + "/";
   //ruta de la foto de perfil
@@ -148,15 +145,15 @@ function updatePhoto(req, res) {
 }
 
 function disableProfile(request, response) {
+
   let idUser = request.body.idUser;
+
   model_user.disableProfile(idUser, function (err, rel) {
     if (err) {
       response.status(500).send({ message: "Internal server error" });
     }
     else {
-
       if (!rel) {
-        // console.log("ERROR---> user not found");
         response.status(404).send({ message: "User Not disable." });
       }
       else {

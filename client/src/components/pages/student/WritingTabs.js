@@ -2,7 +2,6 @@ import React,{ useState } from "react";
 import TabsWriting from "./Tabs";
 import WritingsStudent from "./WritingsStudent";
 import WritingsTeam from "./WritingsTeam";
-import Card from "react-bootstrap/Card";
 import '../../../styles/styleCard.css';
 
 function WritingTabs(props) {
@@ -13,12 +12,8 @@ function WritingTabs(props) {
     ];
 
     return (
-        <div className="container">
-            <Card className="card-long">
-                <Card.Body>
-                    <TabsWriting data={data} />
-                </Card.Body>
-            </Card>
+        <div className="row-edit">
+            <TabsWriting data={data} />
         </div>
     );
 }

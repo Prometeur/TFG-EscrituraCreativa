@@ -3,22 +3,26 @@
 *  Description: Contiene una lista de resultado de la búsqueda de los estudiantes.
 *    
 */
+
 import React, { Component } from 'react';
 import { Link} from "react-router-dom";
 import AuthUser from '../../../services/authenticity/auth-service.js';
 import TeacherService from '../../../services/teacher/teacherService.js';
-import AdminService from '../../../services/admin/adminService.js';
+
+/** Estilos CSS*/
 import '../../../styles/styleGeneral.css';
 import '../../../styles/styleCard.css';
+
+/**Estilos*/
 import Card from 'react-bootstrap/Card';
 import Button  from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Alert from "react-bootstrap/Alert";
 
 class SearchStudentRes extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             data: [],
             filteredData: [],
@@ -27,7 +31,6 @@ class SearchStudentRes extends Component {
             currentUserRole: '',
             searchType: 'nombre',
             searchRole:"none"
-    
         };
     }
 
@@ -123,10 +126,8 @@ class SearchStudentRes extends Component {
 
     /*Dibuja la pagina  */
     render() {
-        let cartel =<div> </div>;
-        
-        let tabla = <div> </div>;
-
+        let cartel =<> </>;
+        let tabla = <> </>;
 
     if(this.state.currentUserRole ==="T"){
         tabla = <ListGroup variant="flush">
@@ -136,7 +137,8 @@ class SearchStudentRes extends Component {
                     <React.Fragment>
                     <ListGroup.Item>
                         {student.id} 
-                        <img src={"data:image/png;base64," + btoa(String.fromCharCode.apply(null, student.foto.data))} alt="" style={{width: '5%',  borderRadius: '80%'}} ></img>
+                        <img src={(student.foto.data.length != 0) ? ("data:image/png;base64," +
+                        btoa(String.fromCharCode.apply(null, student.foto.data))) : "/chicaliteratura.png" } alt="" style={{width: '5%',  borderRadius: '80%'}} ></img>
                         {student.nombre} {student.apellidos} 
                         {student.correo}
                         <Link key={student.id} to={`/teacher/students/viewProfile/${student.id}`}><button text='Ver Perfil'> Ver perfil </button></Link>
@@ -146,7 +148,7 @@ class SearchStudentRes extends Component {
                 )
             )}
             
-    </ListGroup>;
+      </ListGroup>;
     }
 
     if(this.state.currentUserRole ==="A"){
@@ -158,7 +160,8 @@ class SearchStudentRes extends Component {
                     <React.Fragment>
                     <ListGroup.Item>
                         {student.id} 
-                        <img src={"data:image/png;base64," + btoa(String.fromCharCode.apply(null, student.foto.data))} alt="" style={{width: '5%',  borderRadius: '80%'}} ></img>
+                        <img src={(student.foto.data.length != 0) ? ("data:image/png;base64," +
+                        btoa(String.fromCharCode.apply(null, student.foto.data))) : "/chicaliteratura.png" } alt="" style={{width: '5%',  borderRadius: '80%'}} ></img>
                         {student.nombre} {student.apellidos} 
                         {student.correo}
                         <Link key={student.id} to={`/admin/users/viewProfile/${student.id}`}><button text='Ver Perfil'> Ver perfil </button></Link>
@@ -172,76 +175,101 @@ class SearchStudentRes extends Component {
     }
 
 
-        if(this.state.filteredData.length === 0)
-        {
-            cartel = <nav>
-                        <h4>No hay resultados para la búsqueda realizada.</h4>
-                    </nav>;
-            tabla = <div></div>;
-        }
-        
+    if(this.state.filteredData.length === 0)
+    {
+        cartel = <h4>No hay resultados para la búsqueda realizada.</h4>
 
-        let searchtools = 
-            <div>
-                <label>Buscar solicitantes: </label>
-                <br />
+        tabla = <></>;
+    }
+
+
+    let searchtools =
+        <ul className={"container-column-list"}>
+            <li className={"items-row"}>
+                <label  className={"form-label"}>Buscar estudiante</label>
+            </li>
+            <li className={"items-row"}>
                 <input type="text" name="searchName" onChange={this.handleChangeSearch} />
-                <br />
-                <label for="searchType">Escoja cómo buscar:</label>
+            </li>
+            <li className={"items-row"}>
+                <img src="../../search.png" alt=""/>
+            </li>
+            <li className={"items-row"}>
+                <label className={"form-label"}>Escoja cómo buscar</label>
+            </li>
+            <li className={"items-row"}>
                 <select name="searchType" id="searchType" onChange={this.handleChangeSearchType}>
                     <option value="nombre">Nombre</option>
                     <option value="email">Email</option>
                 </select>
-                <h4> Resultados de buscar solicitantes con {this.state.searchType} similar a {this.state.searchName}:</h4>
-            </div>;
+            </li>
+        </ul>;
 
-            if(this.state.currentUserRole == "A")
-            {
-                searchtools = 
-                    <div>
-                    <h2> Resultados de buscar usuarios con {this.state.searchName} similar a {this.state.searchType}:</h2>
-                            <label>Buscar usuario: </label>
-                            <br />
-                            <input type="text" name="searchName" onChange={this.handleChangeSearch} />
-                            <br />
-                            <label for="searchType">Escoja cómo buscar:</label>
-                            <select name="searchType" id="searchType" onChange={this.handleChangeSearchType}>
+        if(this.state.currentUserRole == "A")
+        {
+            searchtools =
+            <ul className={"container-column-list"}>
+                    <li className={"items-row"}>
+                         <label  className={"form-label"}>Buscar estudiante</label>
+                    </li>
+                    <li className={"items-row"}>
+                         <input type="text" name="searchName" onChange={this.handleChangeSearch} />
+                    </li>
+                     <li className={"items-row"}>
+                    <img src="../../search.png" alt=""/>
+                    </li>
+                    <li className={"items-row"}>
+                        <label className={"form-label"}>Escoja cómo buscar</label>
+                    </li>
+                    <li className={"items-row"}>
+                         <select name="searchType" id="searchType" onChange={this.handleChangeSearchType}>
                                 <option value="nombre">Nombre</option>
                                 <option value="email">Email</option>
-                            </select>
-                            <label for="searchRole">Buscar por rol:</label>
-                            <select name="searchRole" id="searchRole" onChange={this.handleChangeSearchRole}>
-                                <option value="none">Buscar por rol...</option>
-                                <option value="S">Estudiantes</option>
-                                <option value="T">Profesores</option>
-                                <option value="A">Administradores</option>
-                            </select> 
-                    </div>
-            }
-
+                         </select>
+                    </li>
+                    <li className={"items-row"}>
+                         <label  className={"form-label"}>Buscar por rol</label>
+                    </li>
+                    <li className={"items-row"}>
+                       <select name="searchRole" id="searchRole" onChange={this.handleChangeSearchRole}>
+                            <option value="none">Buscar por rol...</option>
+                            <option value="S">Estudiantes</option>
+                            <option value="T">Profesores</option>
+                            <option value="A">Administradores</option>
+                        </select>
+                    </li>
+             </ul>
+        }
 
         return (
-            <>
             <div className="container">
-                <Card className="card-edit">
+                <Card className="card-long">
                     <Card.Body>
-                    <h1>Solicitantes:</h1>
-
-                        {searchtools}
-
-                    <div>
-
-                        {cartel}
-
-
-                        {tabla}
-
-
-                    </div>
+                        <div className={"row-edit"}>
+                            <div className={"section-title"}>
+                                <h2>Lista de solicitantes</h2>
+                            </div>
+                            <br/>
+                            <Alert variant={"info"}>
+                                <img src="/info.png" alt=""/>
+                                Desde este espacio puede ver las solicitudes para acceder a la plataforma Creactiva.
+                            </Alert>
+                        </div>
+                        <div className={"row-edit"}>
+                            {searchtools}
+                            <br/>
+                            <div className={"form-select"}>
+                                <h6> Resultados de buscar solicitantes con {this.state.searchType} similar a {this.state.searchName}:</h6>
+                            </div>
+                        </div>
+                        <div className={"row-edit"}>
+                            <br/>
+                            {cartel}
+                            {tabla}
+                        </div>
                     </Card.Body>
                 </Card>
             </div>
-          </>
         );
     }
 

@@ -11,6 +11,7 @@ class StudentService {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -24,6 +25,7 @@ class StudentService {
             return response.data;
         }).catch(error => {
             console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -35,6 +37,7 @@ class StudentService {
             return response.data;
         }).catch(error => {
             console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -46,6 +49,7 @@ class StudentService {
             return response.data;
         }).catch(error => {
             console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -60,6 +64,7 @@ class StudentService {
                 return response;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -74,6 +79,7 @@ class StudentService {
                 return response;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -86,6 +92,7 @@ class StudentService {
                 return response;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -98,6 +105,7 @@ class StudentService {
                 return response;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -110,6 +118,7 @@ class StudentService {
                 return response;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -121,6 +130,7 @@ class StudentService {
             return response.data;
         }).catch(error => {
             console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -132,6 +142,7 @@ class StudentService {
             return response.data;
         }).catch(error => {
             console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -143,6 +154,7 @@ class StudentService {
             return response.data;
         }).catch(error => {
             console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -154,6 +166,7 @@ class StudentService {
             return response.data;
         }).catch(error => {
             console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -165,6 +178,7 @@ class StudentService {
             return response.data;
         }).catch(error => {
             console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -184,6 +198,7 @@ class StudentService {
             return response.data;
         }).catch(error => {
             console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -196,6 +211,7 @@ class StudentService {
                 return response;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -212,6 +228,7 @@ class StudentService {
             return response.data;
         }).catch(error => {
             console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -221,6 +238,9 @@ class StudentService {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
             return response.data;
+        }).catch(error => {
+            console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
@@ -252,6 +272,7 @@ class StudentService {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -262,6 +283,7 @@ class StudentService {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -272,6 +294,7 @@ class StudentService {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -282,6 +305,7 @@ class StudentService {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -292,6 +316,7 @@ class StudentService {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -302,6 +327,7 @@ class StudentService {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -312,6 +338,7 @@ class StudentService {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -322,6 +349,7 @@ class StudentService {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -332,6 +360,7 @@ class StudentService {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -342,6 +371,7 @@ class StudentService {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -352,6 +382,7 @@ class StudentService {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -362,6 +393,7 @@ class StudentService {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -372,17 +404,19 @@ class StudentService {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
     //-----------------------------------------------------MESSAGES----------------------------------------------------------------//
 
     //Envia un mensaje
-    sendMessage(idGroup,idSender, idReceiver, idCreator, message, type) {
-        return axios.post("/student/sendMessage", {idGroup:idGroup ,idSender: idSender, idReceiver: idReceiver, idCreator: idCreator, message: message, type: type }, { headers: { "Authorization": `Bearer ${authHeader()}` } })
+    sendMessage(idGroup, idSender, idReceiver, idCreator, message, type) {
+        return axios.post("/student/sendMessage", { idGroup: idGroup, idSender: idSender, idReceiver: idReceiver, idCreator: idCreator, message: message, type: type }, { headers: { "Authorization": `Bearer ${authHeader()}` } })
             .then(response => {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -393,6 +427,7 @@ class StudentService {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -403,6 +438,7 @@ class StudentService {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -413,6 +449,7 @@ class StudentService {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
@@ -422,27 +459,32 @@ class StudentService {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
             return response.data;
+        }).catch(error => {
+            console.log(error.message);
+            window.location.href = '/500';
         })
     }
 
-      /**busca mensajes por emisor estudiante*/
-      searchMessageByIssuer(idGroup,idIssuer,idCreatorTeam) {
-        return axios.get("/student/searchMessageByIssuer", { params: { idGroup: idGroup, idIssuer:idIssuer,idCreatorTeam:idCreatorTeam} },{ headers: { "Authorization": `Bearer ${authHeader()}` } })
+    /**busca mensajes por emisor estudiante*/
+    searchMessageByIssuer(idGroup, idIssuer, idCreatorTeam) {
+        return axios.get("/student/searchMessageByIssuer", { params: { idGroup: idGroup, idIssuer: idIssuer, idCreatorTeam: idCreatorTeam } }, { headers: { "Authorization": `Bearer ${authHeader()}` } })
             .then(response => {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
-    
-      /**busca mensajes por emisor estudiante*/
-      searchMessageByReceiver(idGroup,idReceiver,idCreatorTeam) {
-        return axios.get("/student/searchMessageByReceiver", { params: { idGroup: idGroup, idReceiver:idReceiver,idCreatorTeam:idCreatorTeam} },{ headers: { "Authorization": `Bearer ${authHeader()}` } })
+
+    /**busca mensajes por emisor estudiante*/
+    searchMessageByReceiver(idGroup, idReceiver, idCreatorTeam) {
+        return axios.get("/student/searchMessageByReceiver", { params: { idGroup: idGroup, idReceiver: idReceiver, idCreatorTeam: idCreatorTeam } }, { headers: { "Authorization": `Bearer ${authHeader()}` } })
             .then(response => {
                 return response.data;
             }).catch(error => {
                 console.log(error.message);
+                window.location.href = '/500';
             })
     }
 
