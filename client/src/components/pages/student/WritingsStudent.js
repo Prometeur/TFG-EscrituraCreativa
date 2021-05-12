@@ -29,8 +29,6 @@ class WritingsStudent extends Component {
         }
     }
 
-
-
     componentDidMount() {
         //obtiene los escritos del estudiante
         if (this.props.groupSelect === undefined) {

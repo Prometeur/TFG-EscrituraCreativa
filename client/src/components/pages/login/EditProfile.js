@@ -242,14 +242,12 @@ export default class Profile extends Component {
     // }
 
     onFileChange2 = (e) => {
-
         if (e.target.files && e.target.files.length > 0) {
             const file = e.target.files[0];
             if (file.type.includes("image")) {
                 const reader = new FileReader();
                 reader.readAsDataURL(e.target.files[0]);
                 reader.onload = () => {
-                    console.log(reader.result);
                     this.setState({
                         updateUser: {
                             ...this.state.updateUser,
@@ -302,7 +300,6 @@ export default class Profile extends Component {
                 if (this.state.updateUser.file !== "") {
                     AuthService.updatePhoto(this.state.currentUser.id, this.state.updateUser.file, 3)
                         .then(response => {
-                            debugger;
                             console.log("todo correcto");
 
                         }).catch(error => {

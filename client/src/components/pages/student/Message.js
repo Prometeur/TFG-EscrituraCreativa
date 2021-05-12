@@ -45,7 +45,6 @@ class Message extends Component {
 
     constructor(props) {
         super(props);
-        //const dataUser = AuthUser.getCurrentUser();
         this.state = {
             message: '',
             team: '',//equipo 
@@ -53,8 +52,8 @@ class Message extends Component {
             modalAcceptJoinTeam: false,
             modalRefuseJoinTeam: false,
             modalAnswerJoinTeam: false,
-            // dataMessages: [],
-            // dataTeamStudent: []
+            senderHasTeam:false,
+            modalSenderHasTeam:false,
         }
     }
 
@@ -62,13 +61,11 @@ class Message extends Component {
         //Obtiene el mensaje 
         StudentService.getMessage(this.props.match.params.idMessage)
             .then(response => {
-
                 var aux = false;
                 if (response[0].tipo === 0 || response[0].tipo === 2) {
                     aux = true;
                 }
                 this.setState({ message: response[0], showButtons: aux });
-
                 //Obtiene el equipo del creador del equipo
                 StudentService.getTeam(this.state.message.idCreador)
                     .then(response => {
@@ -76,36 +73,60 @@ class Message extends Component {
                     }).catch(error => {
                         console.log(error.message);
                     })
+
+
+                //Compruebo si el estudiante emisor del mensaje dispone de equipo
+                StudentService.getTeamStudentGroup(response[0].idEmisor,response[0].idGrupo)
+                .then(response => {
+                    this.setState({ senderHasTeam: true });//Remitente del mensaje tiene equipo
+                    console.log("remitente tiene equipo")
+
+                }).catch(error => {
+                    console.log(error.message);
+                })
+
             }).catch(error => {
                 console.log(error.message);
             })
+
     }
 
-
     askAcceptRequest = () => {
-        debugger;
-        if(this.state.message.tipo===2){
+        //Si el mensaje es una solicitud para unirse a un equipo(tipo 2) y si el estudiante remitente no tiene equipo
+        if (this.state.message.tipo === 2 && !this.state.senderHasTeam ) {
             this.acceptRequest();
         }
-        else if(this.state.message.tipo===0){
+        //Si el mensaje ya fue respondido(tipo 0)
+        else if (this.state.message.tipo === 0) {
             this.showModalAnswerJoinTeam();
         }
+        else{//en otro caso el estudiante remitente tiene equipo
+            this.showModalSenderhasTeam();
+            StudentService.editMessage(this.state.message.id)//actualizamos el tipo de mensaje
+            .then(response => {
+            }).catch(error => {
+                console.log(error.message);
+            })
 
+        }
     }
 
     acceptRequest = () => {
         //si el mensaje es una solicitud de unirse a un equipo
         if (this.state.message.tipo === 2) {
-            var idMessage=this.state.message.id;
-            var idGroup=this.state.message.idGrupo;
-            var idIssuer=this.state.message.idEmisor;
-            var idReceiver=this.state.message.idReceptor;
-            var idCreatorTeam= this.state.message.idCreador;
-            var mensaje=this.state.message.mensaje;
-            var date=this.state.message.fecha;
-            var active=this.state.message.activo;
-            let dataMessage = [{ id: idMessage, idGrupo:idGroup, idEmisor:idIssuer,idReceptor:idReceiver,idCreador:idCreatorTeam,mensaje:mensaje,tipo:0,fecha:date,activo:active }];
-            this.setState({message: dataMessage[0]});
+            var idMessage = this.state.message.id;
+            var idGroup = this.state.message.idGrupo;
+            var idIssuer = this.state.message.idEmisor;
+            var idReceiver = this.state.message.idReceptor;
+
+            var idCreatorTeam = this.state.message.idCreador;
+            var mensaje = this.state.message.mensaje;
+            var date = this.state.message.fecha;
+            var active = this.state.message.activo;
+
+            let dataMessage = [{ id: idMessage, idGrupo: idGroup, idEmisor: idIssuer, idReceptor: idReceiver, idCreador: idCreatorTeam, mensaje: mensaje, tipo: 0, fecha: date, activo: active }];
+            this.setState({ message: dataMessage[0] });
+
             var idMember;
             //Obtengo el id del futuro miembro del equipo, identificar si el idEmisor/idReceptor
             //es el futuro miembro
@@ -115,13 +136,14 @@ class Message extends Component {
             else {
                 idMember = dataMessage[0].idEmisor;
             }
+            //estudiante se une al equipo
             StudentService.joinTeam(this.state.team.id, idMember)
                 .then(response => {
                     this.showModalAcceptJoinTeam();
                     //modifico el tipo de mensaje 
                     StudentService.editMessage(dataMessage[0].id)
                         .then(response => {
-                            
+
                         }).catch(error => {
                             console.log(error.message);
                         })
@@ -161,7 +183,6 @@ class Message extends Component {
     };
 
     showModalAnswerJoinTeam = () => {
-        debugger;
         this.setState({
             //   form: dato,
             modalAnswerJoinTeam: true,
@@ -171,6 +192,18 @@ class Message extends Component {
             2000
         );
     };
+
+    showModalSenderhasTeam = () => {
+        this.setState({
+            //   form: dato,
+            modalSenderHasTeam : true,
+        });
+        setTimeout(
+            () => this.setState({ modalSenderHasTeam: false }),
+            2000
+        );
+    };
+
 
     showModalRefuseJoinTeam = () => {
         this.setState({
@@ -210,19 +243,12 @@ class Message extends Component {
 
                                     </div>
                                 )}
-                                {/* <div class="message-inputs">
-                                 <label className='message-label' > Mensaje </label>
-                                        <td><textarea name="mensaje" rows="10" cols="70" value={this.state.message.mensaje} readOnly={true} style={{ resize: "none" }} ></textarea></td>
-
-                                 </div> */}
-
                                 <div className="form-select">
                                     <Button onClick={() => window.location.href = "/student/messenger"}>Volver</Button>
                                 </div>
                             </div>
                         </Card.Body>
                     </Card>
-                    {/* <td><Link to={`/teacher/createChallenge/${this.props.groupSelect}`}><button >Crear Desafio</button></Link></td> */}
                 </div>
 
                 <Modal show={this.state.modalAcceptJoinTeam}>
@@ -250,6 +276,16 @@ class Message extends Component {
                     </Modal.Header>
                     <Modal.Body>
                         <p> Ya has respondido a la solicitud</p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                    </Modal.Footer>
+                </Modal>
+
+                <Modal show={this.state.modalSenderHasTeam}>
+                    <Modal.Header>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p> El estudiante ya tiene equipo</p>
                     </Modal.Body>
                     <Modal.Footer>
                     </Modal.Footer>

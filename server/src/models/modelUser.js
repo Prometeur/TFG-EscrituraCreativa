@@ -94,8 +94,6 @@ class modelUser {
 
     //Busca todos los estudiantes que contengan "clave" bien en su nombre o en su correo. Esta elección está pensada para elegirse desde un combobox.
     searchStudent(clave, tipo, callback) {
-        console.log(clave);
-        console.log(tipo);
         this.pool.getConnection(function (err, connection) {
             if (err) {
                 callback(new Error("No se puede conectar a la base de datos."))
@@ -112,7 +110,6 @@ class modelUser {
                     if (err) {
                         callback(new Error("Error al buscar esudiantes con " + tipo + " similar a " + clave + "."));
                     } else {
-                        console.log(res);
                         callback(null, res);
                     }
                 })
@@ -366,7 +363,6 @@ class modelUser {
 
     editProfile(id, nombre, apellidos, correo, password, foto, callback) {
 
-        console.log(foto);
         this.pool.getConnection(function (err, connection) {
             if (err) {
                 callback(new Error("No se puede conectar a la base de datos."))

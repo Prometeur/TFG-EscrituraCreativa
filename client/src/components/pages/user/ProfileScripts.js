@@ -31,7 +31,6 @@ class GroupTeacher extends Component {
             console.log(response);//muestra consola navegador
             this.setState({ data: response });
             console.log(response);
-            debugger;
             this.setState({ filteredData: response });
         }).catch(error => {
             console.log(error.message);

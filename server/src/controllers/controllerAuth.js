@@ -60,11 +60,9 @@ function signIn(request, response) {
     }
     else {
       if (!rel) {
-        // console.log("ERROR---> user not found");
         response.status(404).send({ message: "User Not found." });
       }
       else {
-        // console.log("Correct---> user found");
         var passwordIsValid = bcrypt.compareSync(
           request.body.password,
           rel.password
@@ -119,7 +117,6 @@ function editProfile(request, response) {
     else {
 
       if (!rel) {
-        // console.log("ERROR---> user not found");
         response.status(404).send({ message: "User Not update." });
       }
       else {
@@ -156,9 +153,7 @@ function disableProfile(request, response) {
       response.status(500).send({ message: "Internal server error" });
     }
     else {
-
       if (!rel) {
-        // console.log("ERROR---> user not found");
         response.status(404).send({ message: "User Not disable." });
       }
       else {

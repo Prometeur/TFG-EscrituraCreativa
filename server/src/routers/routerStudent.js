@@ -2,6 +2,7 @@
 const controller = require("../controllers/controllerStudent");
 const express = require('express');//voy a usar el modulo express
 const router = express.Router();
+
 const multer = require('multer');
 const storage = require('../utils/multer');
 const uploader = multer({ storage });
@@ -133,7 +134,10 @@ router.post("/editMessage", controller.editMessage);
 /*edita el tipo de mensaje*/
 router.post("/deleteMessage", controller.deleteMessage);
 
-/*busca mensaje del estudiante segun su grupo*/
-router.get("/searchMessage", controller.searchMessage);
+/*busca mensaje por emisor estudiante segun su grupo*/
+router.get("/searchMessageByIssuer", controller.searchMessageByIssuer);
+
+/*busca mensaje por receptor estudiante segun su grupo*/
+router.get("/searchMessageByReceiver", controller.searchMessageByReceiver);
 
 module.exports = router;
