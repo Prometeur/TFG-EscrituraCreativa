@@ -207,7 +207,7 @@ class TeamsGroup extends Component {
                                 </div>
                             ) : (
                                 <div className="table-margin">
-                                    <p>Todavia no hay equipos para mostrar</p>
+                                    <p>No hay equipos para mostrar</p>
                                 </div>
                             )}
                         </Card.Body>

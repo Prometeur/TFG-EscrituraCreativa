@@ -73,8 +73,6 @@ class Message extends Component {
                     }).catch(error => {
                         console.log(error.message);
                     })
-
-
                 //Compruebo si el estudiante emisor del mensaje dispone de equipo
                 StudentService.getTeamStudentGroup(response[0].idEmisor,response[0].idGrupo)
                 .then(response => {
@@ -107,7 +105,6 @@ class Message extends Component {
             }).catch(error => {
                 console.log(error.message);
             })
-
         }
     }
 

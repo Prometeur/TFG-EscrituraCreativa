@@ -5,7 +5,7 @@
 */
 
 import React, { Component } from 'react';
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import TeacherService from '../../../services/teacher/teacherService.js';
 
 /** Estilos CSS*/
@@ -15,7 +15,7 @@ import '../../../styles/styleCard.css';
 /** Estilos*/
 import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
-import Button  from 'react-bootstrap/Button';
+import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import Alert from "react-bootstrap/Alert";
 
@@ -28,27 +28,24 @@ class SearchStudentRes extends Component {
             data: [],
             filteredData: [],
             searchStudent: '',
-            searchType: 'nombre'
+            searchType: 'nombre',
+            showListStudents: false,//muestra lista estudiantes
         };
     }
 
 
     //Filtra los datos de los estudiantes buscados para solo buscar en la base de datos una vez
-    filterData = () =>{
+    filterData = () => {
         let auxArray = [];
         //this.state.filteredData = [];
-        for(let i = 0; i < this.state.data.length; i++){
-            if(this.state.searchType == "email")
-            {
-                if(new RegExp( this.state.searchStudent, 'i'  ).test(this.state.data[i].correo))
-                {
+        for (let i = 0; i < this.state.data.length; i++) {
+            if (this.state.searchType == "email") {
+                if (new RegExp(this.state.searchStudent, 'i').test(this.state.data[i].correo)) {
                     auxArray.push(this.state.data[i]);
                 }
             }
-            else
-            {
-                if((new RegExp(this.state.searchStudent, 'i' ).test(this.state.data[i].nombre)) || (new RegExp( this.state.searchStudent, 'i' ).test(this.state.data[i].apellidos)) )
-                {
+            else {
+                if ((new RegExp(this.state.searchStudent, 'i').test(this.state.data[i].nombre)) || (new RegExp(this.state.searchStudent, 'i').test(this.state.data[i].apellidos))) {
                     auxArray.push(this.state.data[i]);
                 }
             }
@@ -59,7 +56,7 @@ class SearchStudentRes extends Component {
     /*Lo que escribamos en el input lo guarda en el state async para que lo veamos en tiempo real */
     handleChangeSearch = async e => {
         await this.setState({
-                [e.target.name]: e.target.value
+            [e.target.name]: e.target.value
         });
         this.filterData();
     }
@@ -67,23 +64,27 @@ class SearchStudentRes extends Component {
     /*Lo que escribamos en el input lo guarda en el state async para que lo veamos en tiempo real */
     handleChangeSearchType = async e => {
         await this.setState({
-                [e.target.name]: e.target.value
+            [e.target.name]: e.target.value
         });
         this.filterData();
     }
 
-    changeViewStudentProfile = (idStudent) => 
-    {
-        window.location.href = '/teacher/students/viewProfile/'+ idStudent;
+    changeViewStudentProfile = (idStudent) => {
+        window.location.href = '/teacher/students/viewProfile/' + idStudent;
     }
-    
+
 
     componentDidMount() {
 
-        TeacherService.searchStudent(this.state.searchStudent, this.state.searchType).then(response =>{
-            this.setState({data:response});
-            this.setState({filteredData:response});
-            this.filterData();
+        TeacherService.searchStudent(this.state.searchStudent, this.state.searchType).then(response => {
+            debugger;
+            if (response.length > 0) {//si existen estudiantes
+                this.setState({ data: response });
+                this.setState({ filteredData: response });
+                this.setState({ showListStudents: true });
+                this.filterData();
+            }
+
         })
 
     }
@@ -91,15 +92,15 @@ class SearchStudentRes extends Component {
 
     /*Dibuja la pagina  */
     render() {
-        let cartel =<div> </div>;
+        let cartel = <div> </div>;
         let tabla = <ul className={"flex-items-row-start wrap"}>
             {this.state.filteredData.map((student) => (
                 <li className={"items-row"}>
                     <ul className={"container-column-list wrap"}>
                         <li className={"flex-item-list"}>
                             <img src={(student.foto.data.length != 0) ? ("data:image/png;base64," +
-                                btoa(String.fromCharCode.apply(null, student.foto.data))) : "/chicaliteratura.png" }
-                                 alt="" style={{width: '2rem',  borderRadius: '80%'}} >
+                                btoa(String.fromCharCode.apply(null, student.foto.data))) : "/chicaliteratura.png"}
+                                alt="" style={{ width: '2rem', borderRadius: '80%' }} >
                             </img>
                         </li>
                         <li className={"flex-item-list"}>
@@ -117,68 +118,75 @@ class SearchStudentRes extends Component {
                             </Link>
                         </li>
                     </ul>
-                    <hr/>
+                    <hr />
                 </li>
             ))}
         </ul>;
 
-        if(this.state.filteredData.length === 0)
-        {
+        if (this.state.filteredData.length === 0) {
             cartel = <div className={"row-edit"}>
-                         <br/>
-                        <h4>No hay resultados para la búsqueda realizada.</h4>
-                    </div>;
+                <br />
+                <h4>No hay resultados para la búsqueda realizada.</h4>
+            </div>;
             tabla = <></>;
         }
 
-
+        const { showListStudents } = this.state;
         return (
             <div className="container">
                 <Card className="card-long">
-                   <Card.Body>
-                       <div className={"row-edit"}>
-                           <div className={"section-title"}>
-                               <h2>Lista de estudiantes</h2>
-                           </div>
-                           <br/>
-                           <Alert variant={"info"}>
-                               <img src="/info.png" alt=""/>
+                    <Card.Body>
+                        <div className={"row-edit"}>
+                            <div className={"section-title"}>
+                                <h2>Lista de estudiantes</h2>
+                            </div>
+                            <br />
+                            <Alert variant={"info"}>
+                                <img src="/info.png" alt="" />
                                Desde este espacio puede ver la lista de sus estudiantes participantes.
                            </Alert>
-                       </div>
-                        <div className={"row-edit"}>
-                            <ul className={"container-column-list"}>
-                                <li className={"items-row"}>
-                                    <label className={"form-label"}>Buscar estudiante: </label>
-                                 </li>
-                                <li className={"items-row"}>
-                                    <input type="text" name="searchStudent" onChange={this.handleChangeSearch} />
-                                </li>
-                                <li className={"items-row"}>
-                                    <img src="../../search.png" alt=""/>
-                                </li>
-                                <li className={"items-row"}>
-                                    <label className={"form-label"} htmlFor="searchType">Escoja cómo buscar:</label>
-                                </li>
-                                <li className={"items-row"}>
-                                    <select name="searchType" id="searchType" onChange={this.handleChangeSearchType}>
-                                        <option value="nombre">Nombre</option>
-                                        <option value="email">Email</option>
-                                     </select>
-                                </li>
-                                <li className={"items-row"}>
-
-                                </li>
-                            </ul>
                         </div>
-                    <div className={"row-edit"}>
-                        <Card className={"card-long"}>
-                            <Card.Body >
-                                {cartel}
-                                {tabla}
-                            </Card.Body>
-                        </Card>
-                    </div>
+                        {showListStudents ? (
+                            <div>
+                                <div className={"row-edit"}>
+                                    <ul className={"container-column-list"}>
+                                        <li className={"items-row"}>
+                                            <label className={"form-label"}>Buscar estudiante: </label>
+                                        </li>
+                                        <li className={"items-row"}>
+                                            <input type="text" name="searchStudent" onChange={this.handleChangeSearch} />
+                                        </li>
+                                        <li className={"items-row"}>
+                                            <img src="../../search.png" alt="" />
+                                        </li>
+                                        <li className={"items-row"}>
+                                            <label className={"form-label"} htmlFor="searchType">Escoja cómo buscar:</label>
+                                        </li>
+                                        <li className={"items-row"}>
+                                            <select name="searchType" id="searchType" onChange={this.handleChangeSearchType}>
+                                                <option value="nombre">Nombre</option>
+                                                <option value="email">Email</option>
+                                            </select>
+                                        </li>
+                                        <li className={"items-row"}>
+
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div className={"row-edit"}>
+                                    <Card className={"card-long"}>
+                                        <Card.Body >
+                                            {cartel}
+                                            {tabla}
+                                        </Card.Body>
+                                    </Card>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="table-margin">
+                                <p>No hay estudiantes para mostrar</p>
+                            </div>
+                        )}
                     </Card.Body>
                 </Card>
             </div>

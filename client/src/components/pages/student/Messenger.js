@@ -156,7 +156,7 @@ class Messenger extends Component {
                                 </div>
                             ) : (
                                 <div className="table-margin">
-                                    <p>Todavia no dispones de mensajes para mostrar</p>
+                                    <p>No dispones de Mensajes para mostrar</p>
                                 </div>
                             )}
                         </Card.Body>
