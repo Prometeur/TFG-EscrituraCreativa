@@ -149,7 +149,7 @@ class WritingsStudent extends Component {
                 ) : (
                     <div className="table-margin">
                         <div className="row-edit">
-                            <label className='form-label'>fafafa</label>
+                            <label className='form-label'>Lista de Desafios</label>
                         </div>
                         <Table  bordered hover responsive>
                             <thead>

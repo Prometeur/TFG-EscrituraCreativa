@@ -159,7 +159,7 @@ class ChallengesStudent extends Component {
                         ) : (
                             <div className="row-edit">
                                 <Alert variant={"danger"}>
-                                    Todavia no dispones de desafios para mostrar.
+                                    No dispones de desafios para mostrar.
                                 </Alert>
                             </div>
                         )}

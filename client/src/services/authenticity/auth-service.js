@@ -20,10 +20,11 @@ class AuthService {
         
             return response.data;
       
-         }).catch(error => {
-            console.log(error.message);
-            window.location.href = '/500';
-        });
+         })
+        //  .catch(error => {
+        //     console.log(error.message);
+        //    // window.location.href = '/500';
+        // });
     }
 
     logout() {

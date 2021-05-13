@@ -87,7 +87,11 @@ class App extends Component {
                               <Nav.Link  bsPrefix="nav-link" href="/teacher/groups">Dashboard</Nav.Link>
                           )}
                           <Nav.Link bsPrefix="nav-link" href="/profile"> {currentUser.username}</Nav.Link>
+
+                          {showStudent && (
                           <Nav.Link bsPrefix="nav-link" href="/student/messenger"> Mensajeria</Nav.Link>
+                          )}
+
                           <Nav.Link bsPrefix="nav-link" href="/login" onClick={this.logOut}>Cerrar sesión</Nav.Link>
                         </Nav>
                       ) : (
