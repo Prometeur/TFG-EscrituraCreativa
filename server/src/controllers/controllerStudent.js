@@ -17,10 +17,10 @@ function getGroups(req, res) {
             res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        else
-        {
+        else {
             res.send(JSON.stringify(result));
         }
+
     });
 }
 
@@ -34,8 +34,7 @@ function getChallenge(req, res) {
             res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        else
-        {
+        else {
             res.send(result);
         }
     });
@@ -50,8 +49,7 @@ function getChallenges(req, res) {
             res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        else
-        {
+        else {
             res.send(result);
         }
     });
@@ -66,8 +64,7 @@ function getChallengesIndividual(req, res) {
             res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        else
-        {
+        else {
             res.send(result);
         }
     });
@@ -83,8 +80,7 @@ function getMultimediaChallenge(req, res) {
             res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        else
-        {
+        else {
             res.send(result);
         }
     });
@@ -102,11 +98,9 @@ function sendWriting(req, res) {
     const type = req.body.type;
     modelStudent.sendWriting(idGroup, desafio, idWriter, title, texto, type, function (err, result) {
         if (err) {
-            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        else
-        {
+        else {
             res.send(result);
         }
     });
@@ -121,8 +115,7 @@ function getWriting(req, res) {
             res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        else
-        {
+        else {
             res.send(result);
         }
     });
@@ -137,8 +130,7 @@ function getWritings(req, res) {
             res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        else
-        {
+        else {
             res.send(result);
         }
     });
@@ -153,8 +145,7 @@ function getWritingsCollaborative(req, res) {
             res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        else
-        {
+        else {
             res.send(result);
         }
     });
@@ -171,8 +162,7 @@ function getWritingWriter(req, res) {
             res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        else
-        {
+        else {
             res.send(result);
         }
     });
@@ -187,8 +177,7 @@ function getWritingsTeam(req, res) {
             res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        else
-        {
+        else {
             res.send(result);
         }
     });
@@ -203,8 +192,7 @@ function getWritingsStudent(req, res) {
             res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        else
-        {
+        else {
             res.send(result);
         }
     });
@@ -224,8 +212,7 @@ function editWriting(req, res) {
             res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        else
-        {
+        else {
             res.send(result);
         }
     });
@@ -246,8 +233,7 @@ function editWritingTeam(req, res) {
             res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        else
-        {
+        else {
             res.send(result);
         }
     });
@@ -264,359 +250,12 @@ function getMultimediaWriting(req, res) {
             res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        else
-        {
+        else {
             res.send(result);
         }
     });
 }
 
-/*Elimina  fichero multimedia del escrito*/
-function deleteFile(req, res) {
-    const idMultimedia = req.body.idMultimedia;
-    const path = req.body.path;
-    // console.log("Eliminando file--------->", idMultimedia);
-
-    //'http://localhost:3001/' es remplazado por vacio ''
-
-    // var filePath = "public/" + path.replace('http://localhost:3001/', '');
-    var filePath = "public/" + path.replace('http://' + req.headers.host + "/", '');
-    fs.unlink(filePath, (err) => {
-        if (err) {
-            res.status(500).send({ error: err.message });
-            console.error(err)
-            return
-        }
-    });
-    modelStudent.deleteFile(idMultimedia, function (err, result) {
-        if (err) {
-            res.status(500).send({ error: err.message });
-            console.log(err.message);
-        }
-        else
-        {
-            res.send(result);
-        }
-    });
-}
-
-//-----------------------------------------------------TEAMS---------------------------------------------------------------//
-
-/*Envio el mensaje*/
-function createTeam(req, res) {
-    const idCreator = req.body.idCreator;
-    const idGroup = req.body.idGroup;
-    const teamName = req.body.teamName;
-    modelStudent.createTeam(idCreator, idGroup, teamName, function (err, result) {
-        if (err) {
-            res.status(500).send({ error: err.message });
-            console.log(err.message);
-        }
-        // res.send(result);
-        // res.status(200).send("todo perfecto");
-        else
-        {
-            res.status(200).send((result.insertId).toString());
-        }
-    });
-}
-
-/*Obtiene el equipo del remitente/emisor*/
-function getTeam(req, res) {
-    const idSender = req.query.idSender;
-    modelStudent.getTeam(idSender, function (err, result) {
-        if (err) {
-            res.status(500).send({ error: err.message });
-            console.log(err.message);
-        }
-        else
-        {
-            res.send(result);
-        }
-    });
-}
-/*Obtiene los equipos del estudiante*/
-function getTeams(req, res) {
-    const idStudent = req.query.idStudent;
-
-    modelStudent.getTeams(idStudent, function (err, result) {
-        if (err) {
-            res.status(500).send({ error: err.message });
-            console.log(err.message);
-        }
-        else
-        {
-            res.send(result);
-        }
-    });
-}
-
-/*Obtiene los equipos del grupo*/
-function getTeamsGroup(req, res) {
-    const idGroup = req.query.idGroup;
-    modelStudent.getTeamsGroup(idGroup, function (err, result) {
-        if (err) {
-            res.status(500).send({ error: err.message });
-            console.log(err.message);
-        }
-        else
-        {
-            res.send(result);
-        }
-    });
-}
-
-/*Obtiene equipo del estudiante correspondiente a un grupo en concreto*/
-function getTeamStudentGroup(req, res) {
-    const idStudent = req.query.idStudent;
-    const idGroup = req.query.idGroup;
-    modelStudent.getTeamStudentGroup(idStudent, idGroup, function (err, result) {
-        if (err) {
-            res.status(500).send({ error: err.message });
-            console.log(err.message);
-        }
-        else
-        {
-            res.send(result);
-        }
-    });
-}
-
-/*Obtiene la tabla entera de equipoestudiante*/
-function getTeamStudent(req, res) {
-    modelStudent.getTeamStudent(function (err, result) {
-        if (err) {
-            res.status(500).send({ error: err.message });
-            console.log(err.message);
-        }
-        else
-        {
-            res.send(result);
-        }
-    });
-}
-
-/*Obtiene los estudiantes sin equipo de un grupo */
-function getStudentWithoutTeam(req, res) {
-    const idGroup = req.query.idGroup;
-    modelStudent.getStudentWithoutTeam(idGroup, function (err, result) {
-        if (err) {
-            res.status(500).send({ error: err.message });
-            console.log(err.message);
-        }
-        else
-        {
-            res.send(result);
-        }
-        // console.log("------>", result[0].id);
-        // res.status(200).send({
-
-        //     id: result[0].idEstudiante,
-        //     nombre: result[0].nombre,
-        //     apellidos: result[0].apellidos,
-        //     idGrupo: result[0].idGrupo
-        //   });
-    });
-}
-
-/*Obtiene los integrantes de un equipo */
-function getMembersTeam(req, res) {
-    const idTeam = req.query.idTeam;
-    modelStudent.getMembersTeam(idTeam, function (err, result) {
-        if (err) {
-            res.status(500).send({ error: err.message });
-            console.log(err.message);
-        }
-        else
-        {
-            res.send(result);
-        }
-    });
-}
-
-/*Edita Equipo*/
-function editTeam(req, res) {
-    const idTeam = req.body.idTeam;
-    const name = req.body.name;
-    const idCreator = req.body.idCreator;
-    const idGroup = req.body.idGroup;
-
-    modelStudent.editTeam(idTeam, name, idCreator, idGroup, function (err, result) {
-        if (err) {
-            res.status(500).send({ error: err.message });
-            console.log(err.message);
-        }
-        else
-        {
-            res.status(200).send("Successful");   
-        }
-    });
-}
-
-
-/*Edita Equipo*/
-function deleteTeam(req, res) {
-    const idTeam = req.body.idTeam;
-    modelStudent.deleteTeam(idTeam, function (err, result) {
-        if (err) {
-            res.status(500).send({ error: err.message });
-            console.log(err.message);
-        }
-        // res.send(result);
-        // res.status(200).send("todo perfecto");
-        else
-        {
-            res.status(200).send("Successful");
-        }
-    });
-}
-
-/*Agrega estudiante a un equipo*/
-function addStudentTeam(req, res) {
-    const idTeam = req.body.idTeam;
-    const idStudent = req.body.idStudent;
-
-    modelStudent.addStudentTeam(idTeam, idStudent, function (err, result) {
-        if (err) {
-            res.status(500).send({ error: err.message });
-            console.log(err.message);
-        }
-        else
-        {
-            res.status(200).send("Success");
-        }
-    });
-}
-
-/*estudiante se une a un equipo*/
-function joinTeam(req, res) {
-    const idTeam = req.query.idTeam;
-    const idStudent = req.query.idStudent;
-    modelStudent.joinTeam(idTeam, idStudent, function (err, result) {
-        if (err) {
-            res.status(500).send({ error: err.message });
-            console.log(err.message);
-        }
-        else{
-            res.send("todo correcto");
-        }
-    });
-}
-
-/*Elimina estudiante de un equipo*/
-function leaveStudentTeam(req, res) {
-    const idTeam = req.body.idTeam;
-    const idStudent = req.body.idStudent;
-    modelStudent.leaveStudentTeam(idTeam, idStudent, function (err, result) {
-        if (err) {
-            res.status(500).send({ error: err.message });
-            console.log(err.message);
-        }
-        else
-        {
-            res.status(200).send("Success");
-        }
-    });
-}
-
-//-----------------------------------------------------MESSAGES---------------------------------------------------------------//
-/*Obtiene el mensaje del estudiante*/
-function getMessage(req, res) {
-    const idMessage = req.query.idMessage;
-    modelStudent.getMessage(idMessage, function (err, result) {
-        if (err) {
-            res.status(500).send({ error: err.message });
-            console.log(err.message);
-        }
-        else
-        {
-            res.send(result);
-        }   
-    });
-}
-
-
-/*Obtiene mensajes del estudiante*/
-function getMessages(req, res) {
-    const idStudent = req.query.idStudent;
-    modelStudent.getMessages(idStudent, function (err, result) {
-        if (err) {
-            res.status(500).send({ error: err.message });
-            console.log(err.message);
-        }
-        else
-        {
-            res.send(result);
-        }   
-    });
-}
-
-/*Obtiene el mensaje del estudiante*/
-function searchMessage(req, res) {
-    const idGroup = req.query.idGroup;
-    const idIssuer = req.query.idIssuer;
-    const idCreatorTeam = req.query.idCreatorTeam;
-    modelStudent.searchMessage(idGroup,idIssuer,idCreatorTeam, function (err, result) {
-        if (err) {
-            res.status(500).send({ error: err.message });
-            console.log(err.message);
-        }
-        else
-        {
-            res.send(result);
-        }   
-    });
-}
-
-/*Edita el tipo de mensaje*/
-function editMessage(req, res) {
-    const idMessage = req.body.idMessage;
-    modelStudent.editMessage(idMessage, function (err, result) {
-        if (err) {
-            res.status(500).send({ error: err.message });
-            console.log(err.message);
-        }
-        else{
-            res.status(200).send("todo perfecto");
-        }
-    });
-}
-
-/*elimina/desactiva el mensaje*/
-function deleteMessage(req, res) {
-    const idMessage = req.body.idMessage;
-    modelStudent.deleteMessage(idMessage, function (err, result) {
-        if (err) {
-            res.status(500).send({ error: err.message });
-            console.log(err.message);
-        }
-        else{
-            res.send(result);
-        }
-    });
-}
-
-/*Envio el mensaje*/
-function sendMessage(req, res) {
-    const idGroup = req.body.idGroup;
-    const idSender = req.body.idSender;
-    const idReceiver = req.body.idReceiver;
-    const idCreator = req.body.idCreator;
-    const message = req.body.message;
-    const type = req.body.type;
-    modelStudent.sendMessage(idGroup,idSender, idReceiver, idCreator, message, type, function (err, result) {
-        if (err) {
-            res.status(500).send({ error: err.message });
-            console.log(err.message);
-        }
-        // res.send(result);
-        else
-        {
-            res.status(200).send("Success");
-        }
-        
-    });
-}
 
 /*Envia los ficheros multimedia del escrito del estudiante*/
 function sendMultimedia(req, res) {
@@ -643,11 +282,361 @@ function sendMultimedia(req, res) {
     modelStudent.sendMultimedia(reqFiles, function (err, result) {
         if (err) {
             res.status(500).send({ error: err.message });
+            console.log(err);
+        }
+        else {
+            res.send(result);
+        }
+    });
+}
+
+
+/*Elimina  fichero multimedia del escrito*/
+function deleteFile(req, res) {
+    const idMultimedia = req.body.idMultimedia;
+    const path = req.body.path;
+    // console.log("Eliminando file--------->", idMultimedia);
+
+    //'http://localhost:3001/' es remplazado por vacio ''
+
+    // var filePath = "public/" + path.replace('http://localhost:3001/', '');
+    var filePath = "public/" + path.replace('http://' + req.headers.host + "/", '');
+    fs.unlink(filePath, (err) => {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.error(err)
+            return
+        }
+    });
+    modelStudent.deleteFile(idMultimedia, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
             console.log(err.message);
         }
-        else{
+        else {
             res.send(result);
-        }   
+        }
+    });
+}
+
+//-----------------------------------------------------TEAMS---------------------------------------------------------------//
+
+/*Envio el mensaje*/
+function createTeam(req, res) {
+    const idCreator = req.body.idCreator;
+    const idGroup = req.body.idGroup;
+    const teamName = req.body.teamName;
+    modelStudent.createTeam(idCreator, idGroup, teamName, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        // res.send(result);
+        // res.status(200).send("todo perfecto");
+        else {
+            res.status(200).send((result.insertId).toString());
+        }
+
+    });
+}
+
+/*Obtiene el equipo del remitente/emisor*/
+function getTeam(req, res) {
+    const idTeam = req.query.idTeam;
+    modelStudent.getTeam(idTeam, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else {
+            res.send(result);
+        }
+    });
+}
+/*Obtiene los equipos del estudiante*/
+function getTeams(req, res) {
+    const idStudent = req.query.idStudent;
+
+    modelStudent.getTeams(idStudent, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else {
+            res.send(result);
+        }
+    });
+}
+
+/*Obtiene los equipos del grupo*/
+function getTeamsGroup(req, res) {
+    const idGroup = req.query.idGroup;
+    modelStudent.getTeamsGroup(idGroup, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else {
+            res.send(result);
+        }
+    });
+}
+
+/*Obtiene equipo del estudiante correspondiente a un grupo en concreto*/
+function getTeamStudentGroup(req, res) {
+    const idStudent = req.query.idStudent;
+    const idGroup = req.query.idGroup;
+    modelStudent.getTeamStudentGroup(idStudent, idGroup, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else {
+            res.send(result);
+        }
+    });
+}
+
+/*Obtiene la tabla entera de equipoestudiante*/
+function getTeamStudent(req, res) {
+    modelStudent.getTeamStudent(function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else {
+            res.send(result);
+        }
+    });
+}
+
+/*Obtiene los estudiantes sin equipo de un grupo */
+function getStudentWithoutTeam(req, res) {
+    const idGroup = req.query.idGroup;
+    modelStudent.getStudentWithoutTeam(idGroup, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else {
+            res.send(result);
+        }
+        // console.log("------>", result[0].id);
+        // res.status(200).send({
+
+        //     id: result[0].idEstudiante,
+        //     nombre: result[0].nombre,
+        //     apellidos: result[0].apellidos,
+        //     idGrupo: result[0].idGrupo
+        //   });
+    });
+}
+
+/*Obtiene los integrantes de un equipo */
+function getMembersTeam(req, res) {
+    const idTeam = req.query.idTeam;
+    modelStudent.getMembersTeam(idTeam, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else {
+            res.send(result);
+        }
+    });
+}
+
+/*Edita Equipo*/
+function editTeam(req, res) {
+    const idTeam = req.body.idTeam;
+    const name = req.body.name;
+    const idCreator = req.body.idCreator;
+    const idGroup = req.body.idGroup;
+
+    modelStudent.editTeam(idTeam, name, idCreator, idGroup, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        // res.send(result);
+        // res.status(200).send("todo perfecto");
+        else {
+            res.status(200).send("Successful");
+        }
+    });
+}
+
+
+/*Edita Equipo*/
+function deleteTeam(req, res) {
+    const idTeam = req.body.idTeam;
+    modelStudent.deleteTeam(idTeam, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        // res.send(result);
+        // res.status(200).send("todo perfecto");
+        else {
+            res.status(200).send("Successful");
+        }
+    });
+}
+
+/*Agrega estudiante a un equipo*/
+function addStudentTeam(req, res) {
+    const idTeam = req.body.idTeam;
+    const idStudent = req.body.idStudent;
+
+    modelStudent.addStudentTeam(idTeam, idStudent, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else {
+            res.status(200).send("Success");
+        }
+    });
+}
+
+/*estudiante se une a un equipo*/
+function joinTeam(req, res) {
+    const idTeam = req.query.idTeam;
+    const idStudent = req.query.idStudent;
+    modelStudent.joinTeam(idTeam, idStudent, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else {
+            res.send("todo correcto");
+        }
+    });
+}
+
+/*Elimina estudiante de un equipo*/
+function leaveStudentTeam(req, res) {
+    const idTeam = req.body.idTeam;
+    const idStudent = req.body.idStudent;
+    modelStudent.leaveStudentTeam(idTeam, idStudent, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else {
+            res.status(200).send("Success");
+        }
+    });
+}
+
+//-----------------------------------------------------MESSAGES---------------------------------------------------------------//
+/*Obtiene el mensaje del estudiante*/
+function getMessage(req, res) {
+    const idMessage = req.query.idMessage;
+    modelStudent.getMessage(idMessage, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else {
+            res.send(result);
+        }
+    });
+}
+
+
+/*Obtiene mensajes del estudiante*/
+function getMessages(req, res) {
+    const idStudent = req.query.idStudent;
+    modelStudent.getMessages(idStudent, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else {
+            res.send(result);
+        }
+    });
+}
+
+/*Obtiene el mensaje del estudiante*/
+function searchMessageByIssuer(req, res) {
+    const idGroup = req.query.idGroup;
+    const idIssuer = req.query.idIssuer;
+    const idCreatorTeam = req.query.idCreatorTeam;
+    modelStudent.searchMessageByIssuer(idGroup, idIssuer, idCreatorTeam, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else {
+            res.send(result);
+        }
+    });
+}
+
+/*busca mensaje del estudiante por receptor*/
+function searchMessageByReceiver(req, res) {
+    const idGroup = req.query.idGroup;
+    const idReceiver = req.query.idReceiver;
+    const idCreatorTeam = req.query.idCreatorTeam;
+    modelStudent.searchMessageByReceiver(idGroup, idReceiver, idCreatorTeam, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else {
+            res.send(result);
+        }
+    });
+}
+
+
+
+/*Edita el tipo de mensaje*/
+function editMessage(req, res) {
+    const idMessage = req.body.idMessage;
+    modelStudent.editMessage(idMessage, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else {
+            res.status(200).send("todo perfecto");
+        }
+    });
+}
+
+/*elimina/desactiva el mensaje*/
+function deleteMessage(req, res) {
+    const idMessage = req.body.idMessage;
+    modelStudent.deleteMessage(idMessage, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else {
+            res.send(result);
+        }
+    });
+}
+
+/*Envio el mensaje*/
+function sendMessage(req, res) {
+    const idGroup = req.body.idGroup;
+    const idSender = req.body.idSender;
+    const idReceiver = req.body.idReceiver;
+    const idCreator = req.body.idCreator;
+    const message = req.body.message;
+    const type = req.body.type;
+    modelStudent.sendMessage(idGroup, idSender, idReceiver, idCreator, message, type, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else {
+            res.status(200).send("Success");
+        }
     });
 }
 
@@ -694,5 +683,6 @@ module.exports = {
     getMessage: getMessage,
     editMessage: editMessage,
     deleteMessage: deleteMessage,
-    searchMessage:searchMessage,
+    searchMessageByIssuer: searchMessageByIssuer,
+    searchMessageByReceiver: searchMessageByReceiver,
 };

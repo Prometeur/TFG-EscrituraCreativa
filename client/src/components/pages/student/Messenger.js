@@ -47,7 +47,6 @@ class Messenger extends Component {
         StudentService.getMessages(AuthUser.getCurrentUser().id)
             .then(response => {
                 if (response.length > 0) {
-                    debugger;
                     this.setState({
                         dataMessages: response,
                         showMessages: true,
@@ -62,7 +61,6 @@ class Messenger extends Component {
 
         // StudentService.getTeamStudent()
         // .then(response => {
-        //     // debugger;
         //     this.setState({ dataTeamStudent: response });
 
         // }).catch(error => {
@@ -158,7 +156,7 @@ class Messenger extends Component {
                                 </div>
                             ) : (
                                 <div className="table-margin">
-                                    <p>Todavia no dispones de mensajes para mostrar</p>
+                                    <p>No dispones de Mensajes para mostrar</p>
                                 </div>
                             )}
                         </Card.Body>

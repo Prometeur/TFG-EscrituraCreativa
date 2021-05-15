@@ -274,9 +274,9 @@ class modelStudent {
     }
 
     /*Obtiene el equipo del remitente*/
-    getTeam(idSender, callback) {
-        const sqlSelect = "SELECT * FROM equipo WHERE idCreador = ?";
-        this.pool.query(sqlSelect, idSender, (err, result) => {
+    getTeam(idTeam, callback) {
+        const sqlSelect = "SELECT * FROM equipo WHERE id = ?";
+        this.pool.query(sqlSelect, idTeam, (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }
@@ -347,7 +347,7 @@ class modelStudent {
     getMembersTeam(idTeam, callback) {
         // const sqlSelect = "SELECT desafio.id,desafio.idGrupo,desafio.titulo,desafio.descripcion,desafio.tipoCalificacion,categoria.nombre,desafio.colaborativo,desafio.fechaIni,desafio.fechaFin, desafio.activo FROM desafio INNER JOIN categoria ON desafio.idCategoria = categoria.id WHERE desafio.idGrupo = ? ";
         // const sqlSelect = "SELECT * from equipoestudiante as ts INNER JOIN usuario as u ON ts.idEstudiante <> u.id AND u.rol = ?  INNER JOIN grupoestudiante as gs ON gs.idEstudiante = u.id WHERE gs.idGrupo=? ";
-        const sqlSelect = "SELECT u.foto, ts.idEquipo, ts.idEstudiante ,u.nombre as nombreEstudiante, u.apellidos as apellidoEstudiante from equipoestudiante as ts INNER JOIN usuario as u ON ts.idEstudiante = u.id WHERE ts.idEquipo =?   ";
+        const sqlSelect = "SELECT ts.idEquipo, ts.idEstudiante ,u.nombre as nombreEstudiante, u.apellidos as apellidoEstudiante from equipoestudiante as ts INNER JOIN usuario as u ON ts.idEstudiante = u.id WHERE ts.idEquipo =?   ";
         // this.pool.query(sqlSelect, [rol,idGroup], (err, result) => {
         this.pool.query(sqlSelect, idTeam, (err, result) => {
             if (err) {
@@ -459,10 +459,24 @@ class modelStudent {
 
     
     /*busca mensaje del estudiante*/
-    searchMessage(idGroup,idIssuer,idCreatorTeam, callback) {
+    searchMessageByIssuer(idGroup,idIssuer,idCreatorTeam, callback) {
         // const sqlSelect = "SELECT m.id as id, m.idEmisor as idEmisor, m.mensaje as mensaje, u.nombre as nombreEmisor FROM mensajeria AS m INNER JOIN usuario AS u ON m.idEmisor = u.id WHERE m.id = ? ";
         const sqlSelect = "SELECT * FROM mensajeria WHERE idGrupo = ? AND idEmisor=? AND idCreador=?";
         this.pool.query(sqlSelect, [idGroup,idIssuer,idCreatorTeam], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+            }
+        });
+    }
+
+       /*busca mensaje del estudiante por receptor*/
+       searchMessageByReceiver(idGroup,idReceiver,idCreatorTeam, callback) {
+        // const sqlSelect = "SELECT m.id as id, m.idEmisor as idEmisor, m.mensaje as mensaje, u.nombre as nombreEmisor FROM mensajeria AS m INNER JOIN usuario AS u ON m.idEmisor = u.id WHERE m.id = ? ";
+        const sqlSelect = "SELECT * FROM mensajeria WHERE idGrupo = ? AND idReceptor=? AND idCreador=?";
+        this.pool.query(sqlSelect, [idGroup,idReceiver,idCreatorTeam], (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }

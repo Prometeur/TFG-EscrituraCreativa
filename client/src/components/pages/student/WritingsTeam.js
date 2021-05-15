@@ -144,7 +144,7 @@ class WritingsTeam extends Component {
 
                                 <div className="row-edit">
                                     <Alert variant={"danger"}>
-                                        Todavia no dispones de escritos para mostrar
+                                        No dispones de escritos para mostrar
                                     </Alert>
                                 </div>
                             )}

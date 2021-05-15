@@ -255,7 +255,6 @@ class EditWritingTeam extends Component {
 
     /* */
     pruebaChange = (nombre, mensaje, mensajes) => {
-        debugger;
         // mensajes.push([nombre,mensaje])
         // let dataMessage = { nombre: nombre, mensaje: mensaje };
         // mensajes.push(dataMessage)

@@ -32,14 +32,14 @@ import Accordion from 'react-bootstrap/Accordion';
 
 
 const required = value => {
-    if (!value) {
-        return (
-            <Alert variant="danger" bsPrefix="alert-login">
-                ¡Todos los campos son obligatorios!
-            </Alert>
+  if (!value) {
+    return (
+      <Alert variant="danger" bsPrefix="alert-login">
+        ¡Todos los campos son obligatorios!
+      </Alert>
 
-        );
-    }
+    );
+  }
 };
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
@@ -101,9 +101,10 @@ class GroupTeacher extends Component {
       showWritings: false,
       showTeams: false,
       showStudents: false,
-      newName:"",
-      onRenameGroupModal:'',
-      onAlert:false,
+      newName: "",
+      onRenameGroupModal: '',
+      onAlert: false,
+      showListGroups: false,//muestra grupos
     };
   }
 
@@ -115,9 +116,8 @@ class GroupTeacher extends Component {
     /**Obtiene todos los grupos del profesor */
     TeacherService.getGroups(dataUser.id).then(response => {
       this.setState({ dataGroup: response });
-      if(this.state.dataGroup.length > 0)
-      {
-        this.setState({ groupSelect: this.state.dataGroup[0].id, nameGroupSelect: this.state.dataGroup[0].nombre });
+      if (this.state.dataGroup.length > 0) {
+        this.setState({ groupSelect: this.state.dataGroup[0].id, nameGroupSelect: this.state.dataGroup[0].nombre, showListGroups: true });
       }
     })
   }
@@ -170,39 +170,39 @@ class GroupTeacher extends Component {
   /*Lo que escribamos en el input lo guarda en el state async para que lo veamos en tiempo real */
   handleChangeRename = async e => {
     await this.setState({
-            [e.target.name]: e.target.value
+      [e.target.name]: e.target.value
     });
   }
 
   /*Cambia el estado del modal*/
   onModal(modal) {
 
-        this.setState({
-            onRenameGroupModal: modal
-        });
+    this.setState({
+      onRenameGroupModal: modal
+    });
   }
 
   onAlert(modal) {
-      this.setState({
-          onAlert: modal
-      });
+    this.setState({
+      onAlert: modal
+    });
   }
 
   /*Se hacen peticiones al servidor renombrar grupo*/
   rename = () => {
-    if(this.state.newName!='') {
-        AdminService.renameGroup(this.state.groupSelect, this.state.newName).then(response => {
-            const dataUser = AuthUser.getCurrentUser();
-            this.setState({nameGroupSelect: this.state.newName});
-            this.onModal(false);
+    if (this.state.newName != '') {
+      AdminService.renameGroup(this.state.groupSelect, this.state.newName).then(response => {
+        const dataUser = AuthUser.getCurrentUser();
+        this.setState({ nameGroupSelect: this.state.newName });
+        this.onModal(false);
 
-        }).catch(error => {
-            console.log(error.message);
-        })
+      }).catch(error => {
+        console.log(error.message);
+      })
     }
     else {
 
-        this.onAlert(true)
+      this.onAlert(true)
     }
   }
 
@@ -213,109 +213,118 @@ class GroupTeacher extends Component {
 
     // SISTEMA DE TABS
 
-      let tabs =
-          <div className={"row-edit"}>
-                      <Tabs>
-                          <TabList className={"react-tabs__tab-list"}>
-                            <Tab>DESAFIOS</Tab>
-                            <Tab>ESCRITOS</Tab>
-                            <Tab>EQUIPOS</Tab>
-                            <Tab>ESTUDIANTES</Tab>
-                          </TabList>
-                          <TabPanel>
-                            <Challenges key={groupSelect} groupSelect={groupSelect} />
-                          </TabPanel>
-                          <TabPanel>
-                            <Writings key={groupSelect} groupSelect={groupSelect} />
-                          </TabPanel>
-                          <TabPanel>
-                            <Teams key={groupSelect} groupSelect={groupSelect} />
-                          </TabPanel>
-                          <TabPanel>
-                            <Students key={groupSelect} idGroup={groupSelect} />
-                          </TabPanel>
-                      </Tabs>
-                </div>;
-
+    let tabs =
+      <div className={"row-edit"}>
+        <Tabs>
+          <TabList className={"react-tabs__tab-list"}>
+            <Tab>DESAFIOS</Tab>
+            <Tab>ESCRITOS</Tab>
+            <Tab>EQUIPOS</Tab>
+            <Tab>ESTUDIANTES</Tab>
+          </TabList>
+          <TabPanel>
+            <Challenges key={groupSelect} groupSelect={groupSelect} />
+          </TabPanel>
+          <TabPanel>
+            <Writings key={groupSelect} groupSelect={groupSelect} />
+          </TabPanel>
+          <TabPanel>
+            <Teams key={groupSelect} groupSelect={groupSelect} />
+          </TabPanel>
+          <TabPanel>
+            <Students key={groupSelect} idGroup={groupSelect} />
+          </TabPanel>
+        </Tabs>
+      </div>;
+    const { showListGroups } = this.state;
     return (
       <div className="container">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
         <Card className="card-long">
-             <Card.Body>
-                 <div className={"row-edit"}>
-                     <div className={"section-title"}>
-                         <h2>Gestionar grupos</h2>
-                     </div>
-                 </div>
-                  <div className={"row-edit"}>
-                      <br/>
-                      <ul className={"flex-items-row-space"}>
-                          <li className={"items-row"}>
-                              <Dropdown className="drop-down">
-                                  <DropdownToggle as={CustomToggle} id="dropdown-custom-components">Selecciona grupo</DropdownToggle>
-                                  <DropdownMenu as={CustomMenu}>
-                                      {dataGroup.map((row) => (
-                                          // <DropdownItem eventKey={row.id}
-                                          //   onClick={() => this.handleSelect(row.id)}>{row.nombre}</DropdownItem>
-                                          <DropdownItem eventKey={row.idGrupo} onClick={() => this.handleSelect(row)}>{row.nombre}</DropdownItem>
-                                      ))}
-                                  </DropdownMenu>
-                              </Dropdown>
-                          </li>
-                          <li className={"items-row"}>
-                              <h3>{this.state.nameGroupSelect}</h3>
-                          </li>
-                          <li className={"items-row"}>
-                              <Button variant="primary" onClick={()=>this.onModal(true)}>Renombar grupo</Button>
-                          </li>
-                      </ul>
-                  </div>
+          <Card.Body>
+            <div className={"row-edit"}>
+              <div className={"section-title"}>
+                <h2>Gestionar grupos</h2>
+              </div>
+            </div>
 
-                <Modal
-                    show={this.state.onRenameGroupModal}
-                    onHide={this.state.onRenameGroupModal}
-                >
-                     <Modal.Header>
-                         <Modal.Title>Renombrar grupo</Modal.Title>
-                     </Modal.Header>
-                     <Modal.Body>
-                         <label>Cambiar nombre: </label>
-                         <br />
-                         <input type="text" className="form-control" name="newName" onChange={this.handleChangeRename} />
-                         <Alert show={this.state.onAlert}>Hola</Alert>
-                         <br />
-                     </Modal.Body>
-                     <Modal.Footer>
-                         <Button variant="primary" onClick={()=>this.rename()}>Acepto</Button>
-                         <Button variant="secondary" onClick={()=>this.onModal(false)}>Atras</Button>
-                    </Modal.Footer>
-                 </Modal>
+            {showListGroups ? (
+              <div>
+                <div className={"row-edit"}>
+                  <br />
+                  <ul className={"flex-items-row-space"}>
+                    <li className={"items-row"}>
+                      <Dropdown className="drop-down">
+                        <DropdownToggle as={CustomToggle} id="dropdown-custom-components">Selecciona grupo</DropdownToggle>
+                        <DropdownMenu as={CustomMenu}>
+                          {dataGroup.map((row) => (
+                            // <DropdownItem eventKey={row.id}
+                            //   onClick={() => this.handleSelect(row.id)}>{row.nombre}</DropdownItem>
+                            <DropdownItem eventKey={row.idGrupo} onClick={() => this.handleSelect(row)}>{row.nombre}</DropdownItem>
+                          ))}
+                        </DropdownMenu>
+                      </Dropdown>
+                    </li>
+                    <li className={"items-row"}>
+                      <h3>{this.state.nameGroupSelect}</h3>
+                    </li>
+                    <li className={"items-row"}>
+                      <Button variant="primary" onClick={() => this.onModal(true)}>Renombar grupo</Button>
+                    </li>
+                  </ul>
+                </div>
+
 
                 {showChallenges ? (
-                    <Challenges key={groupSelect} groupSelect={groupSelect} />
+                  <Challenges key={groupSelect} groupSelect={groupSelect} />
                 ) : (
                   <></>
                 )}
 
                 {showWritings ? (
-                    <Writings key={groupSelect} groupSelect={groupSelect} />
+                  <Writings key={groupSelect} groupSelect={groupSelect} />
                 ) : (
                   <></>
                 )}
                 {showTeams ? (
-                    <Teams key={groupSelect} groupSelect={groupSelect} />
+                  <Teams key={groupSelect} groupSelect={groupSelect} />
                 ) : (
                   <></>
                 )}
                 {showStudents ? (
-                    <Students key={groupSelect} idGroup={groupSelect} />
+                  <Students key={groupSelect} idGroup={groupSelect} />
                 ) : (
                   <></>
                 )}
                 {tabs}
-
+              </div>
+            ) : (
+              <div className="table-margin">
+                <p>No hay grupos para mostrar</p>
+              </div>
+            )}
           </Card.Body>
         </Card>
+
+        <Modal
+          show={this.state.onRenameGroupModal}
+          onHide={this.state.onRenameGroupModal}
+        >
+          <Modal.Header>
+            <Modal.Title>Renombrar grupo</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <label>Cambiar nombre: </label>
+            <br />
+            <input type="text" className="form-control" name="newName" onChange={this.handleChangeRename} />
+            <Alert show={this.state.onAlert}>Hola</Alert>
+            <br />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="primary" onClick={() => this.rename()}>Acepto</Button>
+            <Button variant="secondary" onClick={() => this.onModal(false)}>Atras</Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     );
   }

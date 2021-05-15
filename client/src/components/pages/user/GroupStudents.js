@@ -4,14 +4,14 @@
 *    
 */
 import React, { Component } from 'react';
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import TeacherService from '../../../services/teacher/teacherService.js';
 import AdminService from '../../../services/admin/adminService.js';
 import AuthUser from '../../../services/authenticity/auth-service.js';
 import '../../../styles/styleGeneral.css';
 import '../../../styles/styleCard.css';
 import Card from 'react-bootstrap/Card';
-import Button  from 'react-bootstrap/Button';
+import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 
 class GroupStudents extends Component {
@@ -25,26 +25,23 @@ class GroupStudents extends Component {
             currentUserId: '',
             currentUserRole: '',
             searchStudent: '',
-            searchType: 'nombre'
+            searchType: 'nombre',
+            showListStudents: false,//muestra lista estudiantes
         };
     }
 
     //Filtra los datos de los estudiantes buscados para solo buscar en la base de datos una vez
-    filterData = () =>{
+    filterData = () => {
         let auxArray = [];
         //this.state.filteredData = [];
-        for(let i = 0; i < this.state.data.length; i++){
-            if(this.state.searchType == "email")
-            {
-                if(new RegExp( this.state.searchStudent, 'i'  ).test(this.state.data[i].correo))
-                {
+        for (let i = 0; i < this.state.data.length; i++) {
+            if (this.state.searchType == "email") {
+                if (new RegExp(this.state.searchStudent, 'i').test(this.state.data[i].correo)) {
                     auxArray.push(this.state.data[i]);
                 }
             }
-            else
-            {
-                if((new RegExp(this.state.searchStudent, 'i' ).test(this.state.data[i].nombre)) || (new RegExp( this.state.searchStudent, 'i' ).test(this.state.data[i].apellidos)) )
-                {
+            else {
+                if ((new RegExp(this.state.searchStudent, 'i').test(this.state.data[i].nombre)) || (new RegExp(this.state.searchStudent, 'i').test(this.state.data[i].apellidos))) {
                     auxArray.push(this.state.data[i]);
                 }
             }
@@ -55,7 +52,7 @@ class GroupStudents extends Component {
     /*Lo que escribamos en el input lo guarda en el state async para que lo veamos en tiempo real */
     handleChangeSearch = async e => {
         await this.setState({
-                [e.target.name]: e.target.value
+            [e.target.name]: e.target.value
         });
         this.filterData();
     }
@@ -63,11 +60,10 @@ class GroupStudents extends Component {
     /*Lo que escribamos en el input lo guarda en el state async para que lo veamos en tiempo real */
     handleChangeSearchType = async e => {
         await this.setState({
-                [e.target.name]: e.target.value
+            [e.target.name]: e.target.value
         });
         this.filterData();
     }
-    
 
     componentDidMount() {
 
@@ -79,124 +75,131 @@ class GroupStudents extends Component {
             currentUserRole: dataUser.rol
         });
 
-        AdminService.getStudentsOfGroup(this.props.idGroup).then(response =>{
-            this.setState({data:response});
-            this.setState({filteredData:response});
-            this.filterData();
+        AdminService.getStudentsOfGroup(this.props.idGroup).then(response => {
+
+            if (response.length > 0) {
+                this.setState({ data: response });
+                this.setState({ filteredData: response });
+                this.setState({ showListStudents: true });
+                this.filterData();
+            }
+
         })
-
     }
-
 
     /*Dibuja la pagina  */
     render() {
-        let cartel =<> </>;
+        let cartel = <> </>;
         let tabla = <ul className={"flex-items-row-start wrap"}>
-            {this.state.filteredData.map((student) => 
-                (
-                   <li className={"items-row"}>
-                       <div className={"form-items-row"}>
-                            <img src={(student.foto.data.length != 0) ? ("data:image/png;base64," +
-                                        btoa(String.fromCharCode.apply(null, student.foto.data))) : "/chicaliteratura.png"}
-                                 alt=""
-                                 style={{width: '40%',  borderRadius: '80%'}} >
-                            </img>
-                       </div>
+            {this.state.filteredData.map((student) =>
+            (
+                <li className={"items-row"}>
+                    <div className={"form-items-row"}>
+                        <img src={(student.foto.data.length != 0) ? ("data:image/png;base64," +
+                            btoa(String.fromCharCode.apply(null, student.foto.data))) : "/chicaliteratura.png"}
+                            alt=""
+                            style={{ width: '40%', borderRadius: '80%' }} >
+                        </img>
+                    </div>
 
-                        <div className={"form-items-row"}>
-                            {student.nombre} {student.apellidos}
-                        </div>
-                       <div className={"form-items-row"}>
-                            {student.correo}
-                       </div>
-                       <div className={"form-items-row"}>
-                            <Link key={student.id} to={`/admin/users/viewProfile/${student.id}`}>
-                                <Button variant={"outline-secondary"} text='Ver Perfil'> Ver perfil </Button>
-                            </Link>
-                       </div>
-                   </li>
-                )
+                    <div className={"form-items-row"}>
+                        {student.nombre} {student.apellidos}
+                    </div>
+                    <div className={"form-items-row"}>
+                        {student.correo}
+                    </div>
+                    <div className={"form-items-row"}>
+                        <Link key={student.id} to={`/admin/users/viewProfile/${student.id}`}>
+                            <Button variant={"outline-secondary"} text='Ver Perfil'> Ver perfil </Button>
+                        </Link>
+                    </div>
+                </li>
+            )
             )}
         </ul>
 
-    if(this.state.currentUserRole === "T")
-    {
-        tabla = <ul className={"flex-items-row-start wrap"}>
-                    {this.state.filteredData.map((student) =>
-                        (
-                            <li className={"items-row"}>
-                                <ul className={"container-column-list wrap"}>
-                                    <li className={"flex-item-list"}>
-                                        <img src={(student.foto.data.length != 0) ? ("data:image/png;base64," +
-                                            btoa(String.fromCharCode.apply(null, student.foto.data))) : "/chicaliteratura.png" }
-                                             alt=""
-                                             style={{width: '60px',  borderRadius: '80%',margin:"0 1rem 0 1rem"}}
-                                        >
-                                        </img>
-                                    </li>
-                                    <li className={"flex-item-list"}>
-                                        {student.nombre}
-                                    </li>
-                                    <li className={"flex-item-list"}>
-                                        {student.apellidos}
-                                    </li>
-                                    <li className={"flex-item-list"}>
-                                        {student.correo}
-                                    </li>
-                                    <li className={"flex-item-list"}>
-                                        <Link key={student.id} to={`/teacher/students/viewProfile/${student.id}`}>
-                                            <Button size={"sm"} variant={"outline-secondary"} text='Ver Perfil'> Ver perfil </Button>
-                                        </Link>
-                                    </li>
-                                </ul>
-                                <hr></hr>
+        if (this.state.currentUserRole === "T") {
+            tabla = <ul className={"flex-items-row-start wrap"}>
+                {this.state.filteredData.map((student) =>
+                (
+                    <li className={"items-row"}>
+                        <ul className={"container-column-list wrap"}>
+                            <li className={"flex-item-list"}>
+                                <img src={(student.foto.data.length != 0) ? ("data:image/png;base64," +
+                                    btoa(String.fromCharCode.apply(null, student.foto.data))) : "/chicaliteratura.png"}
+                                    alt=""
+                                    style={{ width: '60px', borderRadius: '80%', margin: "0 1rem 0 1rem" }}
+                                >
+                                </img>
                             </li>
-                        )
-                    )}
+                            <li className={"flex-item-list"}>
+                                {student.nombre}
+                            </li>
+                            <li className={"flex-item-list"}>
+                                {student.apellidos}
+                            </li>
+                            <li className={"flex-item-list"}>
+                                {student.correo}
+                            </li>
+                            <li className={"flex-item-list"}>
+                                <Link key={student.id} to={`/teacher/students/viewProfile/${student.id}`}>
+                                    <Button size={"sm"} variant={"outline-secondary"} text='Ver Perfil'> Ver perfil </Button>
+                                </Link>
+                            </li>
+                        </ul>
+                        <hr></hr>
+                    </li>
+                )
+                )}
             </ul>
-    }
-    if(this.state.filteredData.length === 0)
-    {
-        cartel = <div className={"section-title"}>
-                    <h3>No hay resultados para la búsqueda realizada.</h3>
-                  </div>;
-        tabla = <></>;
-    }
+        }
+        if (this.state.filteredData.length === 0) {
+            cartel = <div className={"section-title"}>
+                <h3>No hay resultados para la búsqueda realizada.</h3>
+            </div>;
+            tabla = <></>;
+        }
 
+        const { showListStudents } = this.state;
         return (
 
-                <Card className="card-long">
-                    <Card.Body>
-                    <ul className={"container-column-list"}>
-                        <li className={"items-row"}>
-                            <label  className={"form-label"}>Buscar estudiante</label>
-                        </li>
-                        <li className={"items-row"}>
-                            <input type="text" name="searchStudent" onChange={this.handleChangeSearch} />
-                        </li>
-                        <li className={"items-row"}>
-                            <img src="../../search.png" alt=""/>
-                        </li>
-                        <li className={"items-row"}>
-                            <label className={"form-label"}>Escoja cómo buscar</label>
-                        </li>
-                        <li className={"items-row"}>
-                            <select name="searchType" id="searchType" onChange={this.handleChangeSearchType}>
-                                <option value="nombre">Nombre</option>
-                                <option value="email">Email</option>
-                            </select>
-                        </li>
-                    </ul>
-                    <br/>
-                        {cartel}
-                        {tabla}
-                    </Card.Body>
-                </Card>
-
+            <Card className="card-long">
+                <Card.Body>
+                    {showListStudents ? (
+                        <div>
+                            <ul className={"container-column-list"}>
+                                <li className={"items-row"}>
+                                    <label className={"form-label"}>Buscar estudiante</label>
+                                </li>
+                                <li className={"items-row"}>
+                                    <input type="text" name="searchStudent" onChange={this.handleChangeSearch} />
+                                </li>
+                                <li className={"items-row"}>
+                                    <img src="../../search.png" alt="" />
+                                </li>
+                                <li className={"items-row"}>
+                                    <label className={"form-label"}>Escoja cómo buscar</label>
+                                </li>
+                                <li className={"items-row"}>
+                                    <select name="searchType" id="searchType" onChange={this.handleChangeSearchType}>
+                                        <option value="nombre">Nombre</option>
+                                        <option value="email">Email</option>
+                                    </select>
+                                </li>
+                            </ul>
+                            <br />
+                            {cartel}
+                            {tabla}
+                        </div>
+                    ) : (
+                        <div className="table-margin">
+                            <p>No hay Estudiantes para mostrar</p>
+                        </div>
+                    )}
+                </Card.Body>
+            </Card>
         );
     }
-
-
 }
 
 export default GroupStudents;

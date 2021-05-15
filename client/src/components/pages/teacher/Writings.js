@@ -13,6 +13,7 @@ function Writings(props) {
     const [count, setCount] = useState(0);
     const [dataChallenges, setDataChallenges] = useState([]);
     const [showWritings, setShowWritings] = useState(false);
+    //const [showWritings, setShowWritings] = useState(false);
     const [idChallenge, setIdChallenge] = useState("");
 
     let data = [
@@ -24,15 +25,16 @@ function Writings(props) {
         //obtiene todos los desafios del profesor
         TeacherService.getChallenges(props.groupSelect)
             .then(response => {
-                setDataChallenges([...dataChallenges, response])
-
+                if(response.length>0){//si existen desafios
+                    setDataChallenges([...dataChallenges, response])
+                }
+              
             })
 
     }, []);
 
     const selectionChallenge = event => {
         setIdChallenge(event.target.value)
-        console.log(idChallenge);
         setShowWritings(true)
     };
 

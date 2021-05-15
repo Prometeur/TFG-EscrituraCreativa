@@ -27,7 +27,6 @@ class HomeAdmin extends Component {
     /*Se hacen peticiones al servidor para que me devuelva la tabla entera usuarios*/
     peticionGet = () => {
         axios.get(baseUrl).then(response => {
-            console.log(response.data);
             this.setState({ data: response.data });
         }).catch(error => {
             console.log(error.message);
@@ -63,13 +62,6 @@ class HomeAdmin extends Component {
 
     /*Dibuja la pagina */
     render() {
-        // console.log('id: ' + cookies.get('id'));
-        // console.log('correo: ' + cookies.get('correo'));
-        // console.log('nombre: ' + cookies.get('nombre'));
-        // console.log('apellidos: ' + cookies.get('apellidos'));
-        // console.log('foto: ' + cookies.get('foto'));
-        // console.log('activo: ' + cookies.get('activo'));
-        // console.log('rol: ' + cookies.get('rol'));
         return (<>
             <h2> Soy Home del Admin</h2>
             <nav>

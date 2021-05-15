@@ -1,4 +1,5 @@
 import axios from "../../axios";
+import authHeader from '../authenticity/auth-header';
 
 class AuthService {
  
@@ -19,10 +20,11 @@ class AuthService {
         
             return response.data;
       
-         }).catch(error => {
-            console.log(error.message);
-            window.location.href = '/500';
-        });
+         })
+        //  .catch(error => {
+        //     console.log(error.message);
+        //    // window.location.href = '/500';
+        // });
     }
 
     logout() {
@@ -66,6 +68,22 @@ class AuthService {
                 console.log(error.message);
                 window.location.href = '/500';
             });
+    }
+
+     //Actualiza la foto
+     updatePhoto(idUser,file,type) {
+
+        const form = new FormData();
+        form.append("profilePhoto", file);
+        form.append("idUser", idUser);
+        return axios.post("auth/updatePhoto", form, { params:{ id:idUser, file:file,type:type}},
+            // { headers: {'Content-Type': 'application/x-www-form-urlencoded'}});
+            {headers: { "Authorization": `Bearer ${authHeader()}` }
+        }).then(response => {
+            return response.data;
+        }).catch(error => {
+            console.log(error.message);
+        })
     }
 
     disableProfile(idUser) {
