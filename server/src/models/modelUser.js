@@ -5,7 +5,7 @@ class modelUser {
         this.pool = pool;
     }
 
-    create(username, surname, email, password, callback) {
+    create(username, surname, email, password, role , callback) {
 
         this.pool.getConnection(function (err, connection) {
 
@@ -13,7 +13,7 @@ class modelUser {
                 callback(new Error("No se puede conectar a la base de datos."))
             } else {
                 const sql = "INSERT INTO usuario (correo, password,nombre,apellidos,activo,rol) values (?,?,?,?,?,?)";
-                const valores = [email, password, username, surname, 1, "S"];
+                const valores = [email, password, username, surname, 0, role];
                 connection.query(sql, valores, function (err, res) {
                     connection.release();
                     if (err) {
@@ -237,7 +237,7 @@ class modelUser {
                 callback(new Error("No se puede conectar a la base de datos."))
             }
             else {
-                const sql = 'SELECT usuario.id, nombre, apellidos, foto, correo FROM usuario INNER JOIN grupoestudiante ON usuario.id = grupoestudiante.idEstudiante WHERE usuario.rol = "S" AND grupoestudiante.idGrupo = ?;';
+                const sql = 'SELECT usuario.id, nombre, apellidos, foto, correo FROM usuario INNER JOIN grupoestudiante ON usuario.id = grupoestudiante.idEstudiante WHERE usuario.rol = "S" AND usuario.activo = 1 AND grupoestudiante.idGrupo = ?;';
                 const valores = [idGrupo];
                 connection.query(sql, valores, function (err, res) {
                     connection.release();

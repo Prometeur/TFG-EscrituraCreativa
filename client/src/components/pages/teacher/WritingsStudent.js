@@ -12,6 +12,7 @@ import moment from 'moment';
 // Componentes estilos
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
+import Alert from 'react-bootstrap/Alert';
 //Estilos
 import '../../../styles/styleGeneral.css';
 
@@ -112,38 +113,54 @@ class WritingsStudent extends Component {
         console.log(this.state);
         let formatedDate;
         let { dataWritings, showTableStudent } = this.state;
+
+        let tabla = <div className="table-margin">
+        <Table bordered hover responsive>
+            <thead>
+                <tr>
+                    <th >Desafío</th>
+                    <th >Tipo</th>
+                    <th >Escrito</th>
+                    <th >Estudiante</th>
+                    <th >Puntuación</th>
+                    <th >Fecha</th>
+                    <th >Hora</th>
+                    <th >Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {dataWritings.map((writing) => (
+                    <tr>
+                        <td>{writing.nombreDesafio}</td>
+                        <td>{this.showCollaborative(writing)}</td>
+                        <td>{writing.nombreEscrito}</td>
+                        <td>{writing.nombreEstudiante} {writing.apellidosEstudiante}</td>
+                        <td>{writing.puntuacion}</td>
+                        <td >{formatedDate = moment(writing.fecha).format('DD/MM/YYYY')}</td>
+                        <td >{formatedDate = moment(writing.fecha).format('LT')}</td>
+                        <td className="challenge-td"><Link to={`/teacher/editWriting/${this.props.groupSelect}/${writing.idDesafio}/${writing.idEscrito}/${writing.idEstudiante}`}><img src={"../edit.png"} />Editar</Link></td>
+                    </tr>
+                ))}
+            </tbody>
+        </Table>
+    </div>;
+
+        if (dataWritings.length === 0)
+        {
+            tabla = <div className="row-edit">
+                            <Alert variant={"info"}>
+                                No hay escritos para este desafío en estos momentos.
+                            </Alert>
+                    </div>;
+        }
+
+
         return (
             <>
                 {showTableStudent ? (
-                    <div className="table-margin">
-                        <Table bordered hover responsive>
-                            <thead>
-                                <tr>
-                                    <th >Desafío</th>
-                                    <th >Tipo</th>
-                                    <th >Escrito</th>
-                                    <th >Estudiante</th>
-                                    <th >Puntuación</th>
-                                    <th >Fecha</th>
-                                    <th >Hora</th>
-                                    <th >Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {dataWritings.map((writing) => (
-                                    <tr>
-                                        <td>{writing.nombreDesafio}</td>
-                                        <td>{this.showCollaborative(writing)}</td>
-                                        <td>{writing.nombreEscrito}</td>
-                                        <td>{writing.nombreEstudiante} {writing.apellidosEstudiante}</td>
-                                        <td>{writing.puntuacion}</td>
-                                        <td >{formatedDate = moment(writing.fecha).format('DD/MM/YYYY')}</td>
-                                        <td >{formatedDate = moment(writing.fecha).format('LT')}</td>
-                                        <td className="challenge-td"><Link to={`/teacher/editWriting/${this.props.groupSelect}/${writing.idDesafio}/${writing.idEscrito}/${writing.idEstudiante}`}><img src={"../edit.png"} />Editar</Link></td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </Table>
+                    
+                    <div>
+                        {tabla}
                     </div>
 
                 ) : (

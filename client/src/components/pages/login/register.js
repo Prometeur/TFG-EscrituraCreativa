@@ -10,6 +10,12 @@ import Card from "react-bootstrap/Card";
 import AuthService  from "../../../services/authenticity/auth-service";
 import Alert from 'react-bootstrap/Alert';
 
+import { FormControl } from '@material-ui/core';
+import { FormControlLabel } from '@material-ui/core';
+import { FormLabel } from '@material-ui/core';
+import { Radio } from '@material-ui/core';
+import { RadioGroup } from '@material-ui/core';
+
 const required = value => {
     if (!value) {
       return (
@@ -77,6 +83,7 @@ class Register extends Component {
         surname: "",
         email: "",
         password: "",
+        role: "S",
         successful: false,
         message: ""
       };
@@ -106,6 +113,12 @@ class Register extends Component {
         password: e.target.value
       });
     }
+
+    onChangeRole = (e) => {
+      this.setState({
+        role: e.target.value
+      });
+    }
   
     handleRegister(e) {
       e.preventDefault();
@@ -123,7 +136,8 @@ class Register extends Component {
           this.state.username,
           this.state.surname,
           this.state.email,
-          this.state.password
+          this.state.password,
+          this.state.role
         ).then(
           response => {
             this.setState({
@@ -204,9 +218,18 @@ class Register extends Component {
                               validations={[required, vpassword]}
                             />
                         </div>
+                        <div className="section-column">
+                        <FormControl component="fieldset">
+                          <FormLabel component="legend">¿Qué tipo de usuario eres?</FormLabel>
+                          <RadioGroup aria-label="Rol" name="role" value={this.state.role} onChange={this.onChangeRole}>
+                            <FormControlLabel value="S" control={<Radio />} label="Soy estudiante." />
+                            <FormControlLabel value="T" control={<Radio />} label="Soy profesor." />
+                          </RadioGroup>
+                      </FormControl>
+                        </div>
                         <ul className="flex-container wrap">
                             <li className="flex-item-small">
-                                <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike"></input>
+                                <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" required= "required"></input>
                             </li>
                             <li className="flex-item-medium">
                                 <label htmlFor="vehicle1">

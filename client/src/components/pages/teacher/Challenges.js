@@ -15,6 +15,7 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Modal from 'react-bootstrap/Modal';
 import Card from 'react-bootstrap/Card';
+import Alert from 'react-bootstrap/Alert';
 
 // Estilos
 import '../../../styles/styleGeneral.css';
@@ -94,6 +95,67 @@ class Challenges extends Component {
     render() {
         let formatedDate;
         const { categories, data } = this.state;
+
+        let tabla = <div className="table-margin">
+        <Table bordered hover responsive>
+            <thead>
+                <tr>
+                    <th>Titulo</th>
+                    <th>Categoria</th>
+                    <th>Tipo</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {/* {data.map((challenge) => (
+                    <tr key={challenge.id}>
+                        <td>{challenge.titulo}</td>
+                        {categories.filter(category => category.id === challenge.idCategoria).map((item, index) =>
+                            <td>{item.nombre}</td>
+                        )}
+                        <td>{challenge.colaborativo}</td>
+                        <td>{formatedDate = moment(challenge.fechaFin).format('DD/MM/YYYY')}</td>
+                        <td>{formatedDate = moment(challenge.fechaFin).format('LT')}</td>
+                        <td>{challenge.activo}</td>
+
+                        <td><Link to={`/teacher/groups/${this.props.groupSelect}/editChallenge/${challenge.id}`}><Button variant="outline-primary" size="sm">Editar</Button></Link></td>
+                        <td><Link to={`/teacher/groups/${this.props.groupSelect}/editChallenge/${challenge.id}`}><Button variant="outline-primary" size="sm">Eliminar</Button></Link></td>
+                    </tr>
+                ))} */}
+                {data.filter(challenge => challenge.activo === 1).map((challenge, index) =>
+                    <tr key={challenge.id}>
+                        {/* <td className ="challenge-td">{challenge.id}</td>
+                        <td className ="challenge-td">{challenge.idGrupo}</td> */}
+                        <td className="challenge-td">{challenge.titulo}</td>
+                        {categories.filter(category => category.id === challenge.idCategoria).map((item, index) =>
+                            <td className="challenge-td">{item.nombre}</td>
+                        )}
+                        <td className="challenge-td">{this.showCollaborative(challenge)}</td>
+                        <td className="challenge-td">{formatedDate = moment(challenge.fechaFin).format('DD/MM/YYYY')}</td>
+                        <td className="challenge-td">{formatedDate = moment(challenge.fechaFin).format('LT')}</td>
+                        {/* <td>{challenge.activo}</td> */}
+                        <td ><Link to={`/teacher/editChallenge/${this.props.groupSelect}/${challenge.id}`}><img src={"../edit.png"} alt={"editar"}></img> Editar</Link></td>
+                        {/* <td ><Button variant="outline-primary" size="sm" onClick={() => this.deleteChallenge(challenge)}>Eliminar</Button></td> */}
+                        <td><img className={"img-icon"} src="../delete.png" alt="delete"></img><Link onClick={() => this.askDeleteChallenge(challenge)}>Borrar</Link></td>
+                    </tr>
+                )}
+            </tbody>
+        </Table>
+    </div>;
+
+    if (data.length === 0)
+    {
+        tabla = <div className="row-edit">
+                        <Alert variant={"info"}>
+                            No hay desafíos en estos momentos.
+                        </Alert>
+                </div>;
+    }
+
+
         return (
             <Card className={"card-long"}>
                 <Card.Body>
@@ -102,55 +164,9 @@ class Challenges extends Component {
                         <Button variant="outline-secondary">Crear desafio</Button>
                     </Link>
                 </div>
-                <div className="table-margin">
-                    <Table bordered hover responsive>
-                        <thead>
-                            <tr>
-                                <th>Titulo</th>
-                                <th>Categoria</th>
-                                <th>Tipo</th>
-                                <th>Fecha</th>
-                                <th>Hora</th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {/* {data.map((challenge) => (
-                                <tr key={challenge.id}>
-                                    <td>{challenge.titulo}</td>
-                                    {categories.filter(category => category.id === challenge.idCategoria).map((item, index) =>
-                                        <td>{item.nombre}</td>
-                                    )}
-                                    <td>{challenge.colaborativo}</td>
-                                    <td>{formatedDate = moment(challenge.fechaFin).format('DD/MM/YYYY')}</td>
-                                    <td>{formatedDate = moment(challenge.fechaFin).format('LT')}</td>
-                                    <td>{challenge.activo}</td>
+                
+                {tabla}
 
-                                    <td><Link to={`/teacher/groups/${this.props.groupSelect}/editChallenge/${challenge.id}`}><Button variant="outline-primary" size="sm">Editar</Button></Link></td>
-                                    <td><Link to={`/teacher/groups/${this.props.groupSelect}/editChallenge/${challenge.id}`}><Button variant="outline-primary" size="sm">Eliminar</Button></Link></td>
-                                </tr>
-                            ))} */}
-                            {data.filter(challenge => challenge.activo === 1).map((challenge, index) =>
-                                <tr key={challenge.id}>
-                                    {/* <td className ="challenge-td">{challenge.id}</td>
-                                    <td className ="challenge-td">{challenge.idGrupo}</td> */}
-                                    <td className="challenge-td">{challenge.titulo}</td>
-                                    {categories.filter(category => category.id === challenge.idCategoria).map((item, index) =>
-                                        <td className="challenge-td">{item.nombre}</td>
-                                    )}
-                                    <td className="challenge-td">{this.showCollaborative(challenge)}</td>
-                                    <td className="challenge-td">{formatedDate = moment(challenge.fechaFin).format('DD/MM/YYYY')}</td>
-                                    <td className="challenge-td">{formatedDate = moment(challenge.fechaFin).format('LT')}</td>
-                                    {/* <td>{challenge.activo}</td> */}
-                                    <td ><Link to={`/teacher/editChallenge/${this.props.groupSelect}/${challenge.id}`}><img src={"../edit.png"} alt={"editar"}></img> Editar</Link></td>
-                                    {/* <td ><Button variant="outline-primary" size="sm" onClick={() => this.deleteChallenge(challenge)}>Eliminar</Button></td> */}
-                                    <td><img className={"img-icon"} src="../delete.png" alt="delete"></img><Link onClick={() => this.askDeleteChallenge(challenge)}>Borrar</Link></td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </Table>
-                </div>
 
                 <Modal show={this.state.modalDeleteChallenge}>
                     <Modal.Header>

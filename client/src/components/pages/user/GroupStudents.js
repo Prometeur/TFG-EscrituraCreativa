@@ -11,6 +11,7 @@ import AuthUser from '../../../services/authenticity/auth-service.js';
 import '../../../styles/styleGeneral.css';
 import '../../../styles/styleCard.css';
 import Card from 'react-bootstrap/Card';
+import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 
@@ -154,9 +155,11 @@ class GroupStudents extends Component {
             </ul>
         }
         if (this.state.filteredData.length === 0) {
-            cartel = <div className={"section-title"}>
-                <h3>No hay resultados para la búsqueda realizada.</h3>
-            </div>;
+            cartel = <div className="row-edit">
+                                <Alert variant={"danger"}>
+                                    No hay estudiantes con esos parámetros.
+                                </Alert>
+                    </div>
             tabla = <></>;
         }
 
@@ -192,8 +195,10 @@ class GroupStudents extends Component {
                             {tabla}
                         </div>
                     ) : (
-                        <div className="table-margin">
-                            <p>No hay Estudiantes para mostrar</p>
+                        <div className="row-edit">
+                                    <Alert variant={"danger"}>
+                                        No hay estudiantes con esos parámetros.
+                                    </Alert>
                         </div>
                     )}
                 </Card.Body>
