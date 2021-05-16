@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-04-2021 a las 21:05:21
+-- Tiempo de generación: 12-05-2021 a las 14:15:35
 -- Versión del servidor: 10.4.14-MariaDB
 -- Versión de PHP: 7.4.11
 
@@ -81,6 +81,14 @@ CREATE TABLE `desafio` (
   `activo` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Volcado de datos para la tabla `desafio`
+--
+
+INSERT INTO `desafio` (`id`, `idGrupo`, `titulo`, `descripcion`, `tipoCalificacion`, `idCategoria`, `colaborativo`, `fechaIni`, `fechaFin`, `activo`) VALUES
+(269, 3, 'Desafio1', '<p><span style=\"color: rgb(0,0,0);background-color: transparent;font-size: 37.5pt;font-family: Work Sans\", sans-serif;\"><em>“Quiero que escribas la continuación de la siguiente historia, que contenga los siguientes elementos: chica, refresco, eólica y pueblo”</em></span>&nbsp;</p>\n', 1, 11, 2, '2021-04-27 02:34:34', '2021-06-30 00:32:00', 1),
+(270, 3, 'Desafio3000', '<p><span style=\"color: rgb(0,0,0);background-color: transparent;font-size: 37.5pt;font-family: Work Sans\", sans-serif;\"><em>“Quiero que escribas la continuación de la siguiente historia, que contenga los siguientes elementos: chica, refresco, eólica y pueblo”</em></span>&nbsp;</p>\r\n', 1, 7, 1, '2021-04-27 02:34:34', '2021-06-30 00:32:00', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -111,8 +119,10 @@ CREATE TABLE `equipo` (
 --
 
 INSERT INTO `equipo` (`id`, `nombre`, `activo`, `idCreador`, `idGrupo`) VALUES
-(22, 'Los Escribanos', 1, 9, 3),
-(23, 'Los brothers', 1, 10, 4);
+(74, 'hipotenusa', 1, 6, 4),
+(75, 'equilatero', 1, 16, 3),
+(76, 'vector', 1, 6, 3),
+(78, 'pollo', 1, 9, 3);
 
 -- --------------------------------------------------------
 
@@ -131,11 +141,10 @@ CREATE TABLE `equipoestudiante` (
 --
 
 INSERT INTO `equipoestudiante` (`id`, `idEquipo`, `idEstudiante`) VALUES
-(40, 22, 6),
-(47, 23, 9),
-(48, 23, 10),
-(49, 22, 7),
-(50, 22, 9);
+(137, 74, 6),
+(145, 75, 16),
+(148, 76, 6),
+(152, 78, 9);
 
 -- --------------------------------------------------------
 
@@ -150,6 +159,7 @@ CREATE TABLE `escrito` (
   `idEscritor` int(9) NOT NULL,
   `nombre` varchar(250) NOT NULL,
   `texto` longtext NOT NULL,
+  `registro` longtext NOT NULL,
   `puntuacion` float NOT NULL,
   `comentario` mediumtext NOT NULL,
   `colaborativo` tinyint(1) NOT NULL,
@@ -157,6 +167,14 @@ CREATE TABLE `escrito` (
   `fecha` datetime NOT NULL DEFAULT current_timestamp(),
   `activo` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `escrito`
+--
+
+INSERT INTO `escrito` (`id`, `idGrupo`, `idDesafio`, `idEscritor`, `nombre`, `texto`, `registro`, `puntuacion`, `comentario`, `colaborativo`, `finalizado`, `fecha`, `activo`) VALUES
+(145, 3, 269, 72, 'Escrito8', '<p><em>El otro día conocí a una chica en una reunión que me presentaron unos amigos. La chica me contó que en su pueblo se estaba construyendo una mini-central eólica usando latas de refresco. La gente estaba muy contenta.</em></p>\n<p></p>\n', '', 6, 'Me parece muy buena historia quizás mejoraría algunas cosas como.....', 2, 0, '2021-04-27 09:42:50', 1),
+(146, 3, 270, 35, 'Escrito40', '<p><em>El otro día conocí a una chica en una reunión que me presentaron unos amigos. La chica me contó que en su pueblo se estaba construyendo una mini-central eólica usando latas de refresco. La gente estaba muy contenta.</em></p>\r\n<p></p>\r\n', '', 6, 'Me parece muy buena historia quizás mejoraría algunas cosas como.....', 2, 0, '2021-04-27 09:42:50', 1);
 
 -- --------------------------------------------------------
 
@@ -212,7 +230,8 @@ INSERT INTO `grupoestudiante` (`id`, `idGrupo`, `idEstudiante`) VALUES
 (2, 3, 7),
 (3, 4, 9),
 (4, 3, 9),
-(5, 3, 16);
+(5, 3, 16),
+(7, 4, 6);
 
 -- --------------------------------------------------------
 
@@ -222,6 +241,7 @@ INSERT INTO `grupoestudiante` (`id`, `idGrupo`, `idEstudiante`) VALUES
 
 CREATE TABLE `mensajeria` (
   `id` int(9) NOT NULL,
+  `idGrupo` int(9) NOT NULL,
   `idEmisor` int(9) NOT NULL,
   `idReceptor` int(9) NOT NULL,
   `idCreador` int(9) NOT NULL,
@@ -230,13 +250,6 @@ CREATE TABLE `mensajeria` (
   `fecha` datetime NOT NULL DEFAULT current_timestamp(),
   `activo` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `mensajeria`
---
-
-INSERT INTO `mensajeria` (`id`, `idEmisor`, `idReceptor`, `idCreador`, `mensaje`, `tipo`, `fecha`, `activo`) VALUES
-(29, 7, 6, 6, 'gonzalo gonzalo2 te envía una petición para unirse a tu equipo Los Escribanos del Grupo de Historia', 0, '2021-03-27 11:45:14', 1);
 
 -- --------------------------------------------------------
 
@@ -250,6 +263,14 @@ CREATE TABLE `multimediadesafio` (
   `ruta` text NOT NULL,
   `fecha` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `multimediadesafio`
+--
+
+INSERT INTO `multimediadesafio` (`id`, `idDesafio`, `ruta`, `fecha`) VALUES
+(247, 269, 'http://localhost:3001/multimedia/users/4/269/video/eolica.mp4', '2021-04-27 09:32:39'),
+(248, 269, 'http://localhost:3001/multimedia/users/4/269/image/pueblo.jpg', '2021-04-27 09:32:39');
 
 -- --------------------------------------------------------
 
@@ -266,6 +287,16 @@ CREATE TABLE `multimediaescrito` (
   `orden` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Volcado de datos para la tabla `multimediaescrito`
+--
+
+INSERT INTO `multimediaescrito` (`id`, `idEscritor`, `idDesafio`, `ruta`, `fecha`, `orden`) VALUES
+(131, 9, 269, 'http://localhost:3001/multimedia/users/9/269/image/alaska.jpg', '2021-04-27 09:37:04', 0),
+(134, 32, 269, 'http://localhost:3001/multimedia/teams/32/269/image/alaska.jpg', '2021-04-27 09:50:48', 0),
+(136, 33, 269, 'http://localhost:3001/multimedia/teams/33/269/audio/Daft Punk - Get Lucky.mp3', '2021-04-29 15:58:08', 0),
+(137, 72, 269, 'http://localhost:3001/multimedia/teams/72/269/image/alaska.jpg', '2021-05-07 23:58:18', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -279,6 +310,7 @@ CREATE TABLE `usuario` (
   `nombre` varchar(50) NOT NULL,
   `apellidos` varchar(50) NOT NULL,
   `foto` blob NOT NULL,
+  `ruta` text NOT NULL,
   `activo` tinyint(1) NOT NULL,
   `rol` varchar(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -287,14 +319,14 @@ CREATE TABLE `usuario` (
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`id`, `correo`, `password`, `nombre`, `apellidos`, `foto`, `activo`, `rol`) VALUES
-(4, 'cora@ucm.es', '$2a$08$yobEY52jl8G2FpN6Nhd7nOLVjNdn96A1GWGQwHuJFREpmMcsUye9G', 'cora', 'cora2', '', 1, 'T'),
-(6, 'genesis@ucm.es', '$2a$08$yobEY52jl8G2FpN6Nhd7nOLVjNdn96A1GWGQwHuJFREpmMcsUye9G', 'genesis', 'genesis2', '', 1, 'S'),
-(7, 'gonzalo@ucm.es', '$2a$08$yobEY52jl8G2FpN6Nhd7nOLVjNdn96A1GWGQwHuJFREpmMcsUye9G', 'gonzalo', 'gonzalo2', '', 1, 'S'),
-(8, 'adrian@ucm.es', '$2a$08$yobEY52jl8G2FpN6Nhd7nOLVjNdn96A1GWGQwHuJFREpmMcsUye9G', 'adrian', 'riesco', '', 1, 'A'),
-(9, 'luis@ucm.es', '$2a$08$yobEY52jl8G2FpN6Nhd7nOLVjNdn96A1GWGQwHuJFREpmMcsUye9G', 'luis', 'jaramillo', '', 1, 'S'),
-(10, 'stefano@ucm.es', '$2a$08$yobEY52jl8G2FpN6Nhd7nOLVjNdn96A1GWGQwHuJFREpmMcsUye9G', 'stefano', 'stefano2', '', 1, 'S'),
-(16, 'pedro@ucm.es', '$2a$08$/fYrEGbexRF6udkEeon5CuNNhyzfex0iX/8rMafYfbW5YrayYwp6e', 'pedro', 'mata', '', 1, 'S');
+INSERT INTO `usuario` (`id`, `correo`, `password`, `nombre`, `apellidos`, `foto`, `ruta`, `activo`, `rol`) VALUES
+(4, 'cora@ucm.es', '$2a$08$yobEY52jl8G2FpN6Nhd7nOLVjNdn96A1GWGQwHuJFREpmMcsUye9G', 'cora', 'cora2', '', '', 1, 'T'),
+(6, 'genesis@ucm.es', '$2a$08$yobEY52jl8G2FpN6Nhd7nOLVjNdn96A1GWGQwHuJFREpmMcsUye9G', 'Genesis', 'Duque', 0x433a5c66616b65706174685c6469676974616c2e6a7067, 'http://localhost:3001/multimedia/users/6/user6.jpg', 1, 'S'),
+(7, 'gonzalo@ucm.es', '$2a$08$yobEY52jl8G2FpN6Nhd7nOLVjNdn96A1GWGQwHuJFREpmMcsUye9G', 'Gonzalo', 'Rivas', '', '', 1, 'S'),
+(8, 'adrian@ucm.es', '$2a$08$yobEY52jl8G2FpN6Nhd7nOLVjNdn96A1GWGQwHuJFREpmMcsUye9G', 'adrian', 'riesco', '', '', 1, 'A'),
+(9, 'luis@ucm.es', '$2a$08$yobEY52jl8G2FpN6Nhd7nOLVjNdn96A1GWGQwHuJFREpmMcsUye9G', 'LuisJ', 'Jaramillo', 0x433a5c66616b65706174685c616c61736b612e6a7067, 'http://localhost:3001/multimedia/users/9/user9.jpg', 1, 'S'),
+(10, 'stefano@ucm.es', '$2a$08$yobEY52jl8G2FpN6Nhd7nOLVjNdn96A1GWGQwHuJFREpmMcsUye9G', 'Stefano', 'Flores', '', '', 1, 'S'),
+(16, 'pedro@ucm.es', '$2a$08$/fYrEGbexRF6udkEeon5CuNNhyzfex0iX/8rMafYfbW5YrayYwp6e', 'Pedro', 'Suárez', '', '', 1, 'S');
 
 --
 -- Índices para tablas volcadas
@@ -372,7 +404,8 @@ ALTER TABLE `grupoestudiante`
 ALTER TABLE `mensajeria`
   ADD PRIMARY KEY (`id`),
   ADD KEY `indexEmisor` (`idEmisor`) USING BTREE,
-  ADD KEY `indexReceptor` (`idReceptor`) USING BTREE;
+  ADD KEY `indexReceptor` (`idReceptor`) USING BTREE,
+  ADD KEY `indexGrupo` (`idGrupo`) USING BTREE;
 
 --
 -- Indices de la tabla `multimediadesafio`
@@ -409,25 +442,25 @@ ALTER TABLE `categoria`
 -- AUTO_INCREMENT de la tabla `desafio`
 --
 ALTER TABLE `desafio`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=267;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=271;
 
 --
 -- AUTO_INCREMENT de la tabla `equipo`
 --
 ALTER TABLE `equipo`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
 
 --
 -- AUTO_INCREMENT de la tabla `equipoestudiante`
 --
 ALTER TABLE `equipoestudiante`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=153;
 
 --
 -- AUTO_INCREMENT de la tabla `escrito`
 --
 ALTER TABLE `escrito`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=142;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=147;
 
 --
 -- AUTO_INCREMENT de la tabla `grupo`
@@ -439,31 +472,31 @@ ALTER TABLE `grupo`
 -- AUTO_INCREMENT de la tabla `grupoestudiante`
 --
 ALTER TABLE `grupoestudiante`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `mensajeria`
 --
 ALTER TABLE `mensajeria`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 
 --
 -- AUTO_INCREMENT de la tabla `multimediadesafio`
 --
 ALTER TABLE `multimediadesafio`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=240;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=249;
 
 --
 -- AUTO_INCREMENT de la tabla `multimediaescrito`
 --
 ALTER TABLE `multimediaescrito`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=129;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=138;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- Restricciones para tablas volcadas
@@ -526,6 +559,7 @@ ALTER TABLE `grupoestudiante`
 -- Filtros para la tabla `mensajeria`
 --
 ALTER TABLE `mensajeria`
+  ADD CONSTRAINT `grupo_ibfk_3` FOREIGN KEY (`idGrupo`) REFERENCES `grupo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `mensajeria_ibfk_1` FOREIGN KEY (`idEmisor`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `mensajeria_ibfk_2` FOREIGN KEY (`idReceptor`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 

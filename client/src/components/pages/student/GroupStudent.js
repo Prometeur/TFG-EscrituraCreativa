@@ -151,9 +151,9 @@ class GroupStudent extends Component {
                 <h2>Gestionar grupos</h2>
               </div>
             </div>
-
-            <ul className={"flex-items-row-evenly"}>
-              <li className={"flex-item-form"}>
+            <div className={"border-group"}>
+              <ul className={"flex-items-row-evenly"}>
+                <li className={"flex-item-form"}>
                   <Dropdown className="drop-down" >
                     <DropdownToggle as={CustomToggle} id="dropdown-custom-components">Selecciona grupo</DropdownToggle>
                     <DropdownMenu as={CustomMenu}>
@@ -162,42 +162,44 @@ class GroupStudent extends Component {
                       ))}
                     </DropdownMenu>
                   </Dropdown>
-              </li>
-              <li className={"flex-item-form"}>
-                <h3>{this.state.nameGroupSelect}</h3>
-              </li>
-              <li className={"flex-item-form"}>
-                <div className={"form-select"}>
-                  <label className={"form-label"} htmlFor="">Seleccione un opción</label>
-                  <select onChange={this.itemSelection} disabled={!this.state.groupSelect ? true : null} >
-                    <option value="1" > Crear Escrito </option>
-                    <option value="2" > Escritos </option>
-                    <option value="3" > Equipos </option>
-                  </select>
-                </div>
-              </li>
-            </ul>
+                </li>
+                <li className={"flex-item-form"}>
+                    <h4 style={{color: "#717172"}}>{this.state.nameGroupSelect}</h4>
+                </li>
+                <li className={"flex-item-form"}>
+                  <div className={"form-select"}>
+                    <label className={"form-label"} htmlFor="">Seleccione un opción</label>
+                    <select onChange={this.itemSelection} disabled={!this.state.groupSelect ? true : null} >
+                      <option value="1" > Crear Escrito </option>
+                      <option value="2" > Escritos </option>
+                      <option value="3" > Equipos </option>
+                    </select>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
 
             {showChallenges ? (
-              <div className="row-edit">
+              <>
                 <ChallengeTabs key={groupSelect} groupSelect={groupSelect} />
-              </div>
+              </>
             ) : (
               <></>
             )}
 
             {showWritings ? (
-              <div className="row-edit">
+              <>
                 <WritingTabs key={groupSelect} groupSelect={groupSelect} />
-              </div>
+              </>
             ) : (
               <></>
             )}
 
             {showTeams ? (
-              <div className="row-edit">
+              <>
                 <TeamTabs key={groupSelect} groupSelect={groupSelect} />
-              </div>
+              </>
             ) : (
               <></>
             )}

@@ -11,6 +11,7 @@ import authHeader from '../../../services/authenticity/auth-header.js';
 import AuthUser from '../../../services/authenticity/auth-service.js';
 import '../../../styles/styleGeneral.css';
 import '../../../styles/styleCard.css';
+import '../../../styles/Challenge.css';
 import Card from 'react-bootstrap/Card';
 import Button  from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -18,13 +19,18 @@ import ListGroup from 'react-bootstrap/ListGroup';
 
 class GroupList extends Component {
 
-    state = {
-        data: [],
-        filteredData: [],
-        searchKey: '',
-        searchType: 'nombre',
+    constructor(props){
+        super(props);
 
+        this.state = {
+            data: [],
+            filteredData: [],
+            searchKey: '',
+            searchType: 'nombre',
+
+        };
     }
+
 
     /*Se hacen peticiones al servidor para que me devuelva todos los grupos del profesor*/
     peticionGet = () => {
@@ -74,7 +80,7 @@ class GroupList extends Component {
     /*Dibuja la pagina  */
     render() {
 
-        let cartel =<div> </div>;
+        let cartel =<></>;
         let tabla = <ListGroup variant="flush">
 
             {this.state.filteredData.map((group) => 
@@ -115,33 +121,33 @@ class GroupList extends Component {
         return (
 
             <div className="container">
-             <Card className="card-edit">
+                <Card className="card-long">
                     <Card.Body>
-                    
-            <h1>Grupos:</h1>
-            
-            
-            <div>
-                <label>Buscar grupo: </label>
-                <br />
-                <input type="text" name="searchKey" onChange={this.handleChangeSearch} />
-            </div>
-
-
-                 <div>
-
-                        {cartel}
-
-
-                        {tabla}
-
-
-                    </div>
+                        <div className={"row-edit"}>
+                            <div className={"section-title"}>
+                                <h2>Gestionar grupos</h2>
+                            </div>
+                        </div>
+                        <div className={"row-edit"}>
+                            <ul className={"container-column-list"}>
+                                <li className={"items-row"}>
+                                    <label className={"form-label"}>Buscar grupo </label>
+                                </li>
+                                <li className={"items-row"}>
+                                    <input type="text" name="searchKey" onChange={this.handleChangeSearch} />
+                                </li>
+                                <li className={"items-row"}>
+                                    <img src="../../search.png" alt=""/>
+                                </li>
+                            </ul>
+                        </div>
+                        <div className={"row-edit"}>
+                                {cartel}
+                                {tabla}
+                        </div>
                     </Card.Body>
                 </Card>
             </div>
-          
-           
         );
     }
 

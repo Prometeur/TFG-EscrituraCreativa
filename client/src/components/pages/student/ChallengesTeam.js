@@ -191,70 +191,69 @@ class ChallengesTeam extends Component {
         let formatedDate;
         let writingAux = '';
         return (
-            <div className="container">
                 <Card className="card-long">
                     <Card.Body>
                         {showChallenges ? (
-                            <div className="table-margin">
-                                <h3>Lista de escritos</h3>
-                                <Table striped bordered hover >
-                                    <thead>
-                                        <tr>
-                                            <th>Desafio</th>
-                                            <th>Grupo</th>
-                                            {/* <th>Equipo</th> */}
-                                            <th>Categoria</th>
-                                            <th>Tipo</th>
-                                            <th>Fecha</th>
-                                            <th>Hora</th>
-                                            <th>Finalizado</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {data.map((challenge) => (
-                                            <tr key={challenge.id}>
-                                                <td>{challenge.titulo}</td>
-                                                <td>{challenge.nombreGrupo}</td>
-                                                {/* <td>{this.showNameTeam()}</td> */}
-                                                <td>{challenge.nombreCategoria}</td>
-                                                <td>{this.showCollaborative(challenge)}</td>
-                                                <td>{formatedDate = moment(challenge.fechaFin).format('DD/MM/YYYY')}</td>
-                                                <td>{formatedDate = moment(challenge.fechaFin).format('LT')}</td>
-                                                <td >{this.showChallengeFinalized(challenge)}</td>
-
-                                                {existsWriting = false}
-                                                {existsTeam = false}
-                                                {/* Si el desafio tiene un escrito*/}
-                                                {dataWritingTeam.filter(writing => writing.idDesafio === challenge.id)
-                                                    .map((item, index) => {
-                                                        existsWriting = true;
-                                                        idWriting = item.id;
-                                                        writingAux = item;
-                                                    }
-                                                    )}
-                                                {dataTeams.filter(team => team.idGrupo === challenge.idGrupo)
-                                                    .map((item, index) => {
-                                                        existsTeam = true;
-                                                    }
-                                                    )}
-
-                                                {/* <td><Link to={`/student/writing/${challenge.idGrupo}/${challenge.id}`}><Button variant="outline-primary" disabled={this.disabledButtonCreate(challenge, existsWriting, existsTeam)}>Crear Escrito</Button></Link></td> */}
-                                                {existsTeam ? (
-                                                    <td><Link to={`/student/writing/${challenge.idGrupo}/${challenge.id}`}><Button variant="outline-primary" disabled={this.disabledButtonCreate(challenge, existsWriting, existsTeam)}>Crear Escrito</Button></Link></td>
-                                                ) : (
-                                                    <></>
-
-                                                )}
-
-                                                {/* <td><Link to={`/student/writing/${challenge.idGrupo}/${challenge.id}`}><Button variant="outline-primary" disabled={this.disabledButtonCreate(challenge, n)}>Nuevo Escrito</Button></Link></td>
-                                <td><Link to={`/student/editWriting/${challenge.idGrupo}/${challenge.id}/${idWriting}`}><Button variant="outline-primary" disabled={this.disabledButtonEdit(challenge, n)}>Editar Escrito</Button></Link></td>
-                                <td><Link to={`/student/editWritingTeam/${challenge.idGrupo}/${challenge.id}/${idWriting}`}><Button variant="outline-primary" disabled={this.disabledButtonEdit(challenge, n)}>Editar Escrito Team Beta</Button></Link></td> */}
+                            <>
+                                <div className={"row-edit"}>
+                                    <h5>Lista de escritos</h5>
+                                </div>
+                                <div className={"row-edit"}>
+                                    <div className="table-margin">
+                                        <Table striped bordered hover responsive>
+                                            <thead>
+                                            <tr>
+                                                <th>Desafio</th>
+                                                <th>Grupo</th>
+                                                {/* <th>Equipo</th> */}
+                                                <th>Categoria</th>
+                                                <th>Tipo</th>
+                                                <th>Fecha</th>
+                                                <th>Hora</th>
+                                                <th>Finalizado</th>
                                             </tr>
-                                        ))}
-                                    </tbody>
-                                </Table>
-                            </div>
+                                            </thead>
+                                            <tbody>
+                                            {data.map((challenge) => (
+                                                <tr key={challenge.id}>
+                                                    <td>{challenge.titulo}</td>
+                                                    <td>{challenge.nombreGrupo}</td>
+                                                    {/* <td>{this.showNameTeam()}</td> */}
+                                                    <td>{challenge.nombreCategoria}</td>
+                                                    <td>{this.showCollaborative(challenge)}</td>
+                                                    <td>{formatedDate = moment(challenge.fechaFin).format('DD/MM/YYYY')}</td>
+                                                    <td>{formatedDate = moment(challenge.fechaFin).format('LT')}</td>
+                                                    <td >{this.showChallengeFinalized(challenge)}</td>
 
+                                                    {existsWriting = false}
+                                                    {existsTeam = false}
+                                                    {/* Si el desafio tiene un escrito*/}
+                                                    {dataWritingTeam.filter(writing => writing.idDesafio === challenge.id)
+                                                        .map((item, index) => {
+                                                                existsWriting = true;
+                                                                idWriting = item.id;
+                                                                writingAux = item;
+                                                            }
+                                                        )}
+                                                    {dataTeams.filter(team => team.idGrupo === challenge.idGrupo)
+                                                        .map((item, index) => {
+                                                                existsTeam = true;
+                                                            }
+                                                        )}
+
+                                                    {existsTeam ? (
+                                                        <td><Link to={`/student/writing/${challenge.idGrupo}/${challenge.id}`}><Button variant="outline-primary" disabled={this.disabledButtonCreate(challenge, existsWriting, existsTeam)}>Crear Escrito</Button></Link></td>
+                                                    ) : (
+                                                        <></>
+
+                                                    )}
+                                                </tr>
+                                            ))}
+                                            </tbody>
+                                        </Table>
+                                    </div>
+                                </div>
+                            </>
                         ) : (
                             <div className="row-edit">
                                 <Alert variant={"danger"}>
@@ -264,7 +263,6 @@ class ChallengesTeam extends Component {
                         )}
                     </Card.Body>
                 </Card>
-            </div>
         );
     }
 }

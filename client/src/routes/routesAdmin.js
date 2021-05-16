@@ -5,7 +5,6 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route, useRouteMatch } from 'react-router-dom';
 
-import HomeAdmin from '../components/pages/admin/AdminBoard';
 import UserList from '../components/pages/user/UserList.js';
 import Profile from '../components/pages/user/Profile.js';
 import ApplicantList from '../components/pages/user/ApplicantList';
@@ -23,7 +22,6 @@ function Routes() {
       <BrowserRouter>
       <Sidebar links={LinksAdmin} url={url} />
         <Switch>
-        <Route exact path="/homeAdmin" component={HomeAdmin} />
         <Route exact path="/admin/users" component={UserList} />
         <Route exact path="/admin/users/viewProfile/:idStudent" component={Profile} />
         <Route exact path="/admin/applicants" component={ApplicantList}/>

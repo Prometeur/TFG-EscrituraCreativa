@@ -34,7 +34,7 @@ class CreateWriting extends Component {
 
     constructor(props) {
         super(props);
-        const dataUser = AuthUser.getCurrentUser();
+
         this.onFileChange = this.onFileChange.bind(this);
 
         this.state = {
@@ -192,58 +192,74 @@ class CreateWriting extends Component {
     render() {
         const { dataMediaChallenge } = this.state;
         const { editorState } = this.state;
-        // const { formErrors } = this.state;
+
+
         return (
                 <div className="container">
-
-                    <label className='form-label'>{this.showTypeChallenge()}</label>
-
-                    <Card className="card-edit">
+                    <Card className="card-long">
                         <Card.Body >
-                            <div className="row-edit">
-                                <h2 > {this.state.challenge.titulo} </h2>
+                            <div className={"row-edit"}>
+                                <div className={"section-title"}>
+                                    <h2>{this.showTypeChallenge()}</h2>
+                                </div>
                             </div>
-
-                            <div className="row-edit">
-
-                                <label className='form-label'>Categoria</label>
-                                <p>{this.state.challenge.nombre}</p>
+                            <br/>
+                            <div className={"row-edit"}>
+                                <label className={"form-label"}>Detalles del desafío</label>
                             </div>
-
+                            <hr/>
                             <div className="row-edit">
+                                <ul className={"flex-row"}>
+                                    <li className={"flex-item-form"}>
+                                        <label className='form-label'>Nombre del desafío</label>
+                                        <h5> {this.state.challenge.titulo} </h5>
+                                    </li>
+                                    <li className={"flex-item-form"}>
+                                        <label className='form-label'>Categoria</label>
+                                        <h5>{this.state.challenge.nombre}</h5>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div className={"row-edit"}>
                                 <label className='form-label'>Leer la descripción del Desafío</label>
                                 <div className="challenge-inputs" dangerouslySetInnerHTML={{ __html: this.state.challenge.descripcion }}></div>
                             </div>
-
                             <div className="row-edit">
                                 <label className='form-label'>Ficheros Multimedia: </label>
                                 <table>
                                     <tbody>
-                                        <div style={{ width: "500px", height: "250px", overflow: "scroll", behavior: "smooth" }}>
+                                        <div  className={"table-multi"}>
                                             {dataMediaChallenge.map((challenge) => (
                                                 <tr key={challenge.id}>
                                                     <td>{this.showTitle(challenge)}</td>
-                                                    {/* <td><a href={challenge.ruta}>Ver</a></td> */}
-                                                    <td><Button onClick={() => window.open(challenge.ruta)}>Ver</Button></td>
+                                                    <div className={"form-button"}>
+                                                        <td><Button onClick={() => window.open(challenge.ruta)}>Ver</Button></td>
+                                                    </div>
                                                 </tr>
                                             ))}
                                         </div>
                                     </tbody>
                                 </table>
                             </div>
-
+                            <br/>
+                            <div className={"row-edit"}>
+                                <label className={"form-label"}>Espacio de escrittura</label>
+                            </div>
+                            <hr/>
                             <div className="row-edit">
-                                <label className='form-label'>Titulo</label>
-                                <div>
-                                    <input
-                                        // className='form-input'
-                                        type="text"
-                                        name="title"
-                                        placeholder="Escribe el título"
-                                        value={this.state.form.title}
-                                        // onChange={this.handleChange}
-                                        onChange={this.onChangeWritingName}
-                                    />
+                                <div className={"form-inputs"}>
+                                    <label className='form-label'>Titulo</label>
+                                    <div>
+                                        <input
+                                            className="form-input"
+                                            type="text"
+                                            name="title"
+                                            placeholder="Escribe el título"
+                                            value={this.state.form.title}
+                                            // onChange={this.handleChange}
+                                            onChange={this.onChangeWritingName}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                             <div className="row-edit">
@@ -260,18 +276,21 @@ class CreateWriting extends Component {
                                     onChange={this.editorChange}
                                 />
                             </div>
+                            <br/>
                             <div class="row-edit">
                                 <label className='form-label'>Puedes agregar un fichero multimedia si lo deseas (imagen,video o audio): </label>
                                 <div className="form">
                                     <input type="file" name="imgCollection" onChange={this.onFileChange} multiple />
                                 </div>
                             </div>
-
-                            <div className="form-select">
-                                <Button text='enviar' onClick={() => this.sendWriting()}> Enviar  </Button>
-                            </div>
-                            <div className="form-select">
-                                <Button onClick={() => window.location.href = '/student'}>Cancelar</Button>
+                            <br/>
+                            <div className={"row-edit"}>
+                                <div className="form-button">
+                                    <Button text='enviar' onClick={() => this.sendWriting()}> Enviar  </Button>
+                                </div>
+                                <div className="form-button">
+                                    <Button onClick={() => window.location.href = '/student/challengesTabs'}>Cancelar</Button>
+                                </div>
                             </div>
                         </Card.Body>
                     </Card>

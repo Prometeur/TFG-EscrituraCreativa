@@ -44,8 +44,6 @@ class Home extends Component {
 
         
             <div className="container-home">
-                <h1>LA TERdkfdsfmsd</h1>
-                <img className="img-home" src="liteaturalapiz.png"></img>
             </div>
 
 

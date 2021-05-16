@@ -113,7 +113,6 @@ class ChallengesStudent extends Component {
         let finish = '';
         let writingAux = '';
         return (
-            <div className="container">
                 <Card className="card-long">
                     <Card.Body>
                         {showChallenges ? (
@@ -165,7 +164,6 @@ class ChallengesStudent extends Component {
                         )}
                     </Card.Body>
                 </Card>
-            </div>
 
         );
     }
