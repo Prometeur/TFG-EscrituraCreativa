@@ -38,13 +38,13 @@ app.use(bodyParser.json());
 function signUp(request, response) {
 
   model_user.create(request.body.username, request.body.surname,
-    request.body.email, bcrypt.hashSync(request.body.password, 8), function (err, rel) {
+    request.body.email, bcrypt.hashSync(request.body.password, 8),request.body.role , function (err, rel) {
 
       if (err) {
         response.status(500).send({ error: err.message });
       }
       else {
-        response.status(200).send({ message: "Hola nuevo usuario!" });
+        response.status(200).send({ message: "¡Bienvenido/a, " + request.body.username +"!\n Por favor, recuerda que necesitas que un responsable de la aplicación acepte tu cuenta antes de que puedas iniciar sesión.\n ¡Nos vemos pronto!" });
       }
     });
 }

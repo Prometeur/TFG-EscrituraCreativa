@@ -11,6 +11,7 @@ import '../../../styles/Challenge.css';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Alert from 'react-bootstrap/Alert';
 import teacherService from '../../../services/teacher/teacherService.js';
 
 class GroupTeams extends Component {
@@ -92,9 +93,9 @@ class GroupTeams extends Component {
             )}
         </ul>;
         if (this.state.filteredData.length === 0) {
-            cartel = <div className={"group-teams"}>
-                <h2>No hay resultados para la búsqueda realizada.</h2>
-            </div>;
+            cartel = <Alert variant={"danger"}>
+                        No hay equipos con esos parámetros.
+                    </Alert>
             tabla = <></>;
         }
 
@@ -109,7 +110,7 @@ class GroupTeams extends Component {
                                     <label className={"form-label"}>Buscar estudiante</label>
                                 </li>
                                 <li className={"items-row"}>
-                                    <input type="text" name="searchStudent" onChange={this.handleChangeSearch} />
+                                    <input type="text" name="searchKey" onChange={this.handleChangeSearch} />
                                 </li>
                                 <li className={"items-row"}>
                                     <img src="../../search.png" alt="" />
@@ -119,8 +120,10 @@ class GroupTeams extends Component {
                             {tabla}
                         </div>
                     ) : (
-                        <div className="table-margin">
-                            <p>No hay Equipos para mostrar</p>
+                        <div className="row-edit">
+                                    <Alert variant={"danger"}>
+                                        No hay equipos con esos parámetros.
+                                    </Alert>
                         </div>
                     )}
                 </Card.Body>
