@@ -191,7 +191,6 @@ class ChallengesTeam extends Component {
         let formatedDate;
         let writingAux = '';
         return (
-            <div className="container">
                 <Card className="card-long">
                     <Card.Body>
                         {showChallenges ? (
@@ -264,7 +263,6 @@ class ChallengesTeam extends Component {
                         )}
                     </Card.Body>
                 </Card>
-            </div>
         );
     }
 }

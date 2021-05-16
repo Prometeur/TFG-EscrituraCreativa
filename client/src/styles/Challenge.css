@@ -1,6 +1,7 @@
 .form {
     background: #ffffff;
     margin: 1rem 2rem 1rem;
+    align-items: flex-start;
 }
 
 .form-btn {

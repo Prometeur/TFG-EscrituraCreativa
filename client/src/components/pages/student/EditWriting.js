@@ -338,9 +338,8 @@ class EditWriting extends Component {
                                     onContentStateChange={this.onContentStateChange}
                                     onChange={this.editorChange}
                                 />
-                                {/* <EditorText onEditorStateChange={this.onEditorStateChange} onContentStateChange={this.onContentStateChange}  onChange={this.editorChange} param={this.state.editorState}/> */}
                             </div>
-
+                            <br/>
                             <div class="row-edit">
                                 <label className='form-label'>Puedes agregar un fichero multimedia si lo deseas (imagen,video o audio): </label>
                                 <div className="form">

@@ -32,7 +32,6 @@ class Teams extends Component {
             dataTeamStudent: [],//contiene tabla entera de equipoestudiante
             dataAux: [],
             showTeamStudent: false,
-
         }
     }
 

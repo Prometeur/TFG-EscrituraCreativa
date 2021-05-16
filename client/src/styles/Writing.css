@@ -33,7 +33,9 @@
     padding: .5rem;
     margin: 0 0 2rem;
     border: 2px solid #dedede;
+    font-size: 1rem;
 }
+
 
 .form-input{
     width: 100%; 
@@ -176,13 +178,14 @@
 
 
 @media screen and (min-width: 1024px) {
+
     .toolbarClassName1 {
         width: 161vh;
     }
 
     .editorClassName1 {
         border: 1px solid lavender;
-        height: 55vh;
+        height: 40vh;
         width: 161vh;
     }
 
@@ -190,7 +193,7 @@
         width:auto;
         height: 65vh;
         margin-top: .75rem;
-        margin-bottom: 2rem;
+        margin-bottom: 6rem;
     }
 
 }

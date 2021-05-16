@@ -173,38 +173,42 @@ class TeamsGroup extends Component {
         const { showTeams, dataTeamsGroup, dataTeamStudent } = this.state;
         return (
             <>
-                <div className="container">
                     <Card className="card-long">
                         <Card.Body>
-                            <div className="items-column"><h3>Lista de equipos</h3></div>
                             {showTeams ? (
-                                <div className="table-margin">
-                                    <Table striped bordered hover>
-                                        <thead>
-                                            <tr>
-                                                <th>Equipo</th>
-                                                <th>Grupo</th>
-                                                <th>Integrantes</th>
-                                                <th>Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {dataTeamsGroup.map(team => {
-                                                return (
-                                                    <tr key={team.idEquipo}>
-                                                        <td>{team.nombreEquipo}</td>
-                                                        <td>{team.nombreGrupo}</td>
-                                                        {dataTeamStudent.filter(teamStudent => teamStudent.idEquipo === team.idEquipo).map((item, index) =>
-                                                            <tr> {item.nombre} {item.apellidos}</tr>
-                                                        )}
-                                                        <td ><Button onClick={() => this.askSendRequest(team)} disabled={this.disabledButtonJoin()}>Enviar Solicitud</Button></td>
-                                                    </tr>
-                                                )
-                                            })}
-                                        </tbody>
-                                    </Table>
-                                    {/* <td><Link to={`/teacher/createChallenge/${this.props.groupSelect}`}><button >Crear Desafio</button></Link></td> */}
-                                </div>
+                                <>
+                                    <div className={"row-edit"}>
+                                        <h4>Lista de equipos</h4>
+                                    </div>
+                                    <div className={"row-edit"}>
+                                        <div className="table-margin">
+                                            <Table striped bordered hover>
+                                                <thead>
+                                                <tr>
+                                                    <th>Equipo</th>
+                                                    <th>Grupo</th>
+                                                    <th>Integrantes</th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {dataTeamsGroup.map(team => {
+                                                    return (
+                                                        <tr key={team.idEquipo}>
+                                                            <td>{team.nombreEquipo}</td>
+                                                            <td>{team.nombreGrupo}</td>
+                                                            {dataTeamStudent.filter(teamStudent => teamStudent.idEquipo === team.idEquipo).map((item, index) =>
+                                                                <td> <div>{item.nombre} {item.apellidos}</div> </td>
+                                                            )}
+                                                            <td ><Button onClick={() => this.askSendRequest(team)} disabled={this.disabledButtonJoin()}>Enviar Solicitud</Button></td>
+                                                        </tr>
+                                                    )
+                                                })}
+                                                </tbody>
+                                            </Table>
+                                        </div>
+                                    </div>
+                                </>
                             ) : (
                                 <div className="table-margin">
                                     <p>No hay equipos para mostrar</p>
@@ -212,7 +216,6 @@ class TeamsGroup extends Component {
                             )}
                         </Card.Body>
                     </Card>
-                </div>
                 <Modal show={this.state.modalSuccesfulSendJoinTeam}>
                     <Modal.Header>
                     </Modal.Header>
