@@ -14,19 +14,9 @@ import AuthUser from '../../../services/authenticity/auth-service.js';
 /*Importacion del css*/
 import '../../../styles/styleGeneral.css';
 import '../../../styles/styleCard.css';
-// import '../../../styles/Student.css';
+
 
 import Modal from 'react-bootstrap/Modal';
-
-// import {
-//     Table,
-//     Container,
-//     Modal,
-//     ModalHeader,
-//     ModalBody,
-//     FormGroup,
-//     ModalFooter,
-// } from "reactstrap";
 
 //Componentes css
 import Card from 'react-bootstrap/Card';
@@ -221,15 +211,24 @@ class Message extends Component {
                 <div className="container">
                     <Card className="card-edit">
                         <Card.Body >
-                            <div className="message-card">
+                            <div className={"row-edit"}>
+                                <div className={"section-title"}>
+                                    <h2>Mensaje</h2>
+                                </div>
+                            </div>
+                            <div className="row-edit">
                                 {showButtons ? (
                                     <div class="message-inputs">
-                                        <div>{this.state.message.mensaje}</div>
-                                        <div className="form-select">
-                                            <Button onClick={() => this.askAcceptRequest()} > Aceptar</Button>
+                                        <div className={"row-edit"}>
+                                            <h6>{this.state.message.mensaje}</h6>
                                         </div>
                                         <div className="form-select">
-                                            <Button onClick={() => this.refuseRequest()}> Rechazar</Button>
+                                            <Button variant="outline-primary"  onClick={() => this.askAcceptRequest()} > Aceptar</Button>
+                                        </div>
+                                        <div className="form-select">
+                                            <div className={"form-button"}>
+                                                <Button  variant="outline-danger" onClick={() => this.refuseRequest()}> Rechazar</Button>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -237,11 +236,12 @@ class Message extends Component {
                                     <div class="message-inputs">
                                         <label className='message-label' > Mensaje </label>
                                         <td><textarea name="mensaje" rows="10" cols="70" value={this.state.message.mensaje} readOnly={true} style={{ resize: "none" }} ></textarea></td>
-
                                     </div>
                                 )}
                                 <div className="form-select">
-                                    <Button onClick={() => window.location.href = "/student/messenger"}>Volver</Button>
+                                    <div className={"form-button-column"}>
+                                        <Button variant="secondary" onClick={() => window.location.href = "/student/messenger"}>Volver</Button>
+                                    </div>
                                 </div>
                             </div>
                         </Card.Body>

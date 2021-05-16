@@ -29,10 +29,18 @@
 }
 
 .message-inputs {
-    width: 80%;
-    padding: 5rem;
-    border: 2px solid rgb(0, 0, 0);
+    width: auto;
+    color: #645c5c;
+    height: auto;
+    text-transform: uppercase;
+    padding: 3rem 15rem 3rem;
+    border-radius: 16rem 2rem;
+    text-align: center;
+    box-shadow: 5px 1px 5px 2px lightgrey;
+    background-image: linear-gradient(to right, #43e97b 0%, #38f9d7 100%);
 }
+
+
 
 .message-input{
     width: 100%; 
@@ -43,7 +51,7 @@
   
 }
 
-  .message-media {
+.message-media {
     width: 100%;
     height: 30px;
     padding-left: 10px;
@@ -86,13 +94,6 @@
     text-align: left;
 }
 
-
-
-.message-inputs {
-    width: 80%;
-    padding: 5rem;
-    border: 2px solid rgb(0, 0, 0);
-}
 
 .message-td {
     padding-top:0.5rem;

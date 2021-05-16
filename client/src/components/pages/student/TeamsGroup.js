@@ -178,7 +178,7 @@ class TeamsGroup extends Component {
                             {showTeams ? (
                                 <>
                                     <div className={"row-edit"}>
-                                        <h4>Lista de equipos</h4>
+                                        <h5>Lista de equipos</h5>
                                     </div>
                                     <div className={"row-edit"}>
                                         <div className="table-margin">

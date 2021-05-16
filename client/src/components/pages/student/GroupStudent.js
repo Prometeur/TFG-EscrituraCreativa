@@ -164,7 +164,7 @@ class GroupStudent extends Component {
                   </Dropdown>
                 </li>
                 <li className={"flex-item-form"}>
-                  <h3>{this.state.nameGroupSelect}</h3>
+                    <h4 style={{color: "#717172"}}>{this.state.nameGroupSelect}</h4>
                 </li>
                 <li className={"flex-item-form"}>
                   <div className={"form-select"}>

@@ -521,7 +521,7 @@ class TeamStudent extends Component {
                             <div className="row-edit">
                                 <br/>
                                 <h5>Lista de equipos</h5>
-                                     <Table striped bordered hover responsive>
+                                     <Table  bordered hover responsive>
                                         <thead>
                                             <tr>
                                                 <th>Equipo</th>

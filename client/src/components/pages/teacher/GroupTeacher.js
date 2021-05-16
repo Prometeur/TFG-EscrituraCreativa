@@ -249,11 +249,11 @@ class GroupTeacher extends Component {
             </div>
 
             {showListGroups ? (
-              <div>
-                <div className={"row-edit"}>
+              <>
+                <div className={"border-group"}>
                   <br />
-                  <ul className={"flex-items-row-space"}>
-                    <li className={"items-row"}>
+                  <ul className={"flex-items-row-evenly"}>
+                    <li className={"flex-item-form"}>
                       <Dropdown className="drop-down">
                         <DropdownToggle as={CustomToggle} id="dropdown-custom-components">Selecciona grupo</DropdownToggle>
                         <DropdownMenu as={CustomMenu}>
@@ -265,10 +265,10 @@ class GroupTeacher extends Component {
                         </DropdownMenu>
                       </Dropdown>
                     </li>
-                    <li className={"items-row"}>
-                      <h3>{this.state.nameGroupSelect}</h3>
+                    <li className={"flex-item-form"}>
+                      <h4  style={{color: "#717172"}}>{this.state.nameGroupSelect}</h4>
                     </li>
-                    <li className={"items-row"}>
+                    <li className={"flex-item-form"}>
                       <Button variant="primary" onClick={() => this.onModal(true)}>Renombar grupo</Button>
                     </li>
                   </ul>
@@ -297,7 +297,7 @@ class GroupTeacher extends Component {
                   <></>
                 )}
                 {tabs}
-              </div>
+              </>
             ) : (
               <div className="table-margin">
                 <p>No hay grupos para mostrar</p>

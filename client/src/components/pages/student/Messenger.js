@@ -24,6 +24,7 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Modal from 'react-bootstrap/Modal';
 import Card from "react-bootstrap/Card";
+import Alert from 'react-bootstrap/Alert';
 
 //Estilos
 import '../../../styles/styleGeneral.css';
@@ -58,14 +59,6 @@ class Messenger extends Component {
             }).catch(error => {
                 console.log(error.message);
             })
-
-        // StudentService.getTeamStudent()
-        // .then(response => {
-        //     this.setState({ dataTeamStudent: response });
-
-        // }).catch(error => {
-        //     console.log(error.message);
-        // })
 
     }
 
@@ -109,54 +102,72 @@ class Messenger extends Component {
                 <div className="container">
                     <Card className="card-long">
                         <Card.Body>
-                            <div className="items-column"><h3>Lista de mensajes</h3></div>
-
                             {showMessages ? (
-                                <div className="table-margin">
-                                    <Table striped bordered hover>
-                                        <thead>
-                                            <tr>
-                                                <th>Emisor</th>
-                                                <th>Grupo</th>
-                                                <th>Mensaje</th>
-                                                <th>Fecha</th>
-                                                <th>Hora</th>
-                                                <th>Acciones</th>
-                                            </tr>
-                                        </thead>
+                                <>
+                                     <div className={"row-edit"}>
+                                        <div className={"section-title"}>
+                                            <h2>Lista de mensajes</h2>
+                                        </div>
+                                     </div>
+                                    <div className="row-edit">
+                                        <Alert variant={"info"}>
+                                            <img src="/message.png" alt=""/>
+                                             mensajeria de  invitaciones para unirte a un equipo.
+                                        </Alert>
+                                    </div>
+                                    <div className="row-edit">
+                                        <div className="table-margin">
+                                            <Table striped bordered hover responsive>
+                                                <thead>
+                                                <tr>
+                                                    <th>Emisor</th>
+                                                    <th>Grupo</th>
+                                                    <th>Mensaje</th>
+                                                    <th>Fecha</th>
+                                                    <th>Hora</th>
+                                                    <th>Acciones</th>
+                                                    <th></th>
+                                                </tr>
+                                                </thead>
 
-                                        <tbody>
-                                            {this.state.dataMessages.map(message => {
-                                                return (
-                                                    <tr key={message.id}>
-                                                        {/* <td>{message.nombreEmisor}</td> */}
-                                                        <td>{message.correo}</td>
-                                                        {/* width: 230px;
-                                        white-space: nowrap;
-                                        text-overflow: ellipsis;
-                                        overflow: hidden; */}
-                                                        {/* <div style={{ width: "210px", whiteSpace: "nowrap", textOverflow: "ellipsis", overflow: "hidden" }}><td>{message.mensaje}</td></div> */}
-                                                        <td>{message.nombreGrupo}</td>
-                                                        <div className="message-text"><td>{message.mensaje}</td></div>
+                                                <tbody>
+                                                {this.state.dataMessages.map(message => {
+                                                    return (
+                                                        <tr key={message.id}>
+                                                            <td>{message.correo}</td>
+                                                            <td>{message.nombreGrupo}</td>
+                                                            <td><div className="message-text">{message.mensaje}</div></td>
+                                                            <td>{formatedDate = moment(message.fecha).format('DD/MM/YYYY')}</td>
+                                                            <td>{formatedDate = moment(message.fecha).format('LT')}</td>
+                                                            <td>
+                                                                <Link to={`/student/message/${message.id}`} >
+                                                                    <img  className={"img-icon"} src="/view.png" alt=""/>
+                                                                    Ver
+                                                                </Link>
+                                                            </td>
+                                                            <td >
+                                                                <img
+                                                                    className={"img-icon"}
+                                                                    src="/delete.png"
+                                                                    alt=""
 
-                                                        {/* <td><textarea name="mensaje" rows="1" cols="30" value ={message.mensaje} readOnly = {true} ></textarea></td> */}
-                                                        <td>{formatedDate = moment(message.fecha).format('DD/MM/YYYY')}</td>
-                                                        <td>{formatedDate = moment(message.fecha).format('LT')}</td>
-                                                        <td><Link to={`/student/message/${message.id}`} ><Button size="sm">Ver</Button></Link></td>
-
-                                                        <td ><Button variant="danger" size="sm" onClick={() => this.askDeleteMessage(message)}>Eliminar</Button></td>
-
-                                                        {/* <td><Link to={`/teacher/createChallenge/${this.props.groupSelect}`}><button >Eliminar</button></Link></td> */}
-
-                                                    </tr>
-                                                )
-                                            })}
-                                        </tbody>
-                                    </Table>
-                                </div>
+                                                                />
+                                                                <Link onClick={() => this.askDeleteMessage(message)} >Eliminar</Link>
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                })}
+                                                </tbody>
+                                            </Table>
+                                        </div>
+                                     </div>
+                                 </>
                             ) : (
-                                <div className="table-margin">
-                                    <p>No dispones de Mensajes para mostrar</p>
+                                <div className="row-edit">
+                                    <Alert variant={"danger"}>
+                                        <img src="/message.png" alt=""/>
+                                        No hay mensajes que mostrar.
+                                    </Alert>
                                 </div>
                             )}
                         </Card.Body>
