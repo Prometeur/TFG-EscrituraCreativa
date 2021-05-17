@@ -66,7 +66,6 @@ class CreateChallenge extends Component {
         };
     }
 
-
     componentDidMount() {
         /*Obtiene todas las categorias de los desafios */
         TeacherService.getCategories().then(response => {
@@ -77,7 +76,7 @@ class CreateChallenge extends Component {
     }
 
     //Envio del desafio al server
-    sendChallenge = () => {
+    createChallenge = () => {
         TeacherService.createChallenge(this.props.match.params.idGroup, this.state.form.title, this.state.form.description,
             this.state.form.type, this.state.form.idCategory, this.state.form.typeQualification, this.state.form.date)
             .then(response => {
@@ -98,6 +97,8 @@ class CreateChallenge extends Component {
             .catch(error => {
                 console.log(error.message);
             });
+
+
     };
 
     /*Lo que escribamos en el input lo guarda en el state async para que lo veamos en tiempo real */
@@ -123,14 +124,13 @@ class CreateChallenge extends Component {
             default:
                 break;
         }
-        // this.setState({ formErrors, [name]: value }, () => console.log(this.state));
         this.setState({
             formErrors,
             form: {
                 ...this.state.form,
                 [name]: value
             }
-        }, () => console.log(this.state));
+        });
     }
 
     onEditorStateChange = (editorState) => {
@@ -150,7 +150,18 @@ class CreateChallenge extends Component {
     }
 
     handleDateChange = (date) => {
+
+        var dateActual = new Date();
+        let formErrors = { ...this.state.formErrors };
+        //Si la fecha actual es mayor que la fecha seleccionada
+        if (dateActual > date) {
+            formErrors.date = "Fecha no válida";
+        }
+        else {
+            formErrors.date = "";
+        }
         this.setState({
+            formErrors,
             form: {
                 ...this.state.form,
                 date: date
@@ -185,21 +196,19 @@ class CreateChallenge extends Component {
         });
     };
 
-
-    // onDeleteMultimedia(indexItem) {
-    //     this.setState(() =>
-    //         ({ imgNamesCollection: this.state.imgNamesCollection.filter((todo, index) => index !== indexItem) }));
-
-    // }
-
     onFileChange(e) {
         this.setState({ imgCollection: e.target.files });
-
-        // let newFiles = this.state.imgNamesCollection;
-        // Array.from(e.target.files).forEach((file) => { newFiles.push(file) });
-        // this.setState({ imgNamesCollection: [...newFiles] });
-        // console.log(this.state.imgNamesCollection);
     }
+
+    //Desactiva boton
+    disabledButton = () => {
+        var dateActual = new Date();
+        if (this.state.form.title.length === 0 || dateActual > this.state.form.date || this.state.form.description.length === 0) {
+            return true;//desactivar
+        }
+        else
+            return false;
+    };
 
     /*Dibuja la pagina */
     render() {
@@ -215,24 +224,23 @@ class CreateChallenge extends Component {
                             </div>
                         </div>
                         <div className={"row-edit"}>
-                                <label className='form-label'>Titulo</label>
-                                <input
-                                    // className='form-input'
-                                    className={formErrors.title.length > 0 ? "error" : "form-control"}
-                                    type="text"
-                                    name="title"
-                                    placeholder="Escribe el título"
-                                    // onChange={this.handleChange}
-                                    onChange={this.handleErrors}
-                                />
-                                {formErrors.title.length > 0 && (
-                                    <span className="errorMessage">{formErrors.title}</span>
-                                )}
+                            <label className='form-label'>Titulo</label>
+                            <input
+                                className={formErrors.title.length > 0 ? "error" : "form-control"}
+                                type="text"
+                                name="title"
+                                placeholder="Escribe el título"
+                                onChange={this.handleErrors}
+                            />
+                            {formErrors.title.length > 0 && (
+                                <span className="errorMessage">{formErrors.title}</span>
+                            )}
                         </div>
 
                         <div className="row-edit">
                             <label className='form-label'>Descripción</label>
                             <Editor
+
                                 editorState={editorState}
                                 // toolbarClassName="toolbarClassName"
                                 // wrapperClassName="demo-wrapper"
@@ -243,7 +251,15 @@ class CreateChallenge extends Component {
                                 onEditorStateChange={this.onEditorStateChange}
                                 onChange={
                                     (event, editor) => {
+                                        let formErrors = { ...this.state.formErrors };
+                                        if(!editorState.getCurrentContent().hasText()){
+                                            formErrors.description="Texto Vacío";
+                                        }
+                                        else{
+                                            formErrors.description="";
+                                        }
                                         this.setState({
+                                            formErrors,
                                             form: {
                                                 ...this.state.form,
                                                 description: draftToHtml(convertToRaw(editorState.getCurrentContent()))
@@ -251,7 +267,11 @@ class CreateChallenge extends Component {
                                         });
                                     }
                                 }
+                                className={formErrors.description.length > 0 ? "error" : "form-control"}
                             />
+                             {formErrors.description.length > 0 && (
+                                <span className="errorMessage">{formErrors.description}</span>
+                            )}
                         </div>
 
                         <ul className={"flex-row"}>
@@ -259,7 +279,7 @@ class CreateChallenge extends Component {
                                 <div className="form-select">
                                     <label className='form-label'> Tipo de Desafío </label>
                                     <select onChange={this.handleSelectionChange}>
-                                        <option value="" selected disabled hidden> Seleccionar</option>
+                                        {/* <option value="" selected disabled hidden> Seleccionar</option> */}
                                         <option value="1"> Individual</option>
                                         <option value="2"> Colaborativo</option>
                                     </select>
@@ -269,7 +289,7 @@ class CreateChallenge extends Component {
                                 <div className="form-select">
                                     <label className='form-label'>Categoría</label>
                                     <select onChange={this.handleSelectionCategory} >
-                                        <option value="" selected disabled hidden > Seleccionar</option>
+                                        {/* <option value="" selected disabled hidden > Seleccionar</option> */}
                                         {this.state.categories.map(elemento => (
                                             <option key={elemento.id} value={elemento.id} > { elemento.nombre} </option>
                                         ))}
@@ -280,7 +300,7 @@ class CreateChallenge extends Component {
                                 <div className="form-select">
                                     <label className='form-label'> Tipo de Calificación </label>
                                     <select onChange={this.qualificationSelection}>
-                                        <option value="" selected disabled hidden>Seleccionar</option>
+                                        {/* <option value="" selected disabled hidden>Seleccionar</option> */}
                                         <option value="1"> Numerica</option>
                                         <option value="2"> Conceptual</option>
                                     </select>
@@ -292,9 +312,15 @@ class CreateChallenge extends Component {
                         </div>
                         <div className="form-select">
                             <Dates
+                                className={formErrors.date.length > 0 ? "error" : "form-control"}
                                 handleDateChange={this.handleDateChange}
                                 param={this.state.form.date}
                             />
+
+                            {formErrors.date.length > 0 && (
+                                <span className="errorMessage">{formErrors.date}</span>
+                            )}
+
                         </div>
                         <div class="row-edit">
                             <div className="form-select">
@@ -305,7 +331,7 @@ class CreateChallenge extends Component {
 
                         <div className="row-edit">
                             <div className="form-button">
-                                <Button onClick={() => this.onModal(true)}>Enviar</Button>
+                                <Button onClick={() => this.onModal(true)} disabled={this.disabledButton()}>Enviar</Button>
                             </div>
                             <div className="form-button">
                                 <Button onClick={() => this.changeView()}>Cancelar</Button>
@@ -319,10 +345,10 @@ class CreateChallenge extends Component {
                                 </Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
-                                ¿Esta seguro de enviar este desafio?
+                                ¿Esta seguro de enviar este desafío?
                             </Modal.Body>
                             <Modal.Footer>
-                                <Button onClick={() => this.sendChallenge()}>Si</Button>
+                                <Button onClick={() => this.createChallenge()}>Si</Button>
                                 <Button onClick={() => this.onModal(false)}>No</Button>
                             </Modal.Footer>
                         </Modal>

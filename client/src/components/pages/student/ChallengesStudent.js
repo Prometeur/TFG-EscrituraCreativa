@@ -1,5 +1,5 @@
 /*
-*  Name_file :GroupTeacher.js
+*  Name_file :ChallengesStudent.js
 *  Description: Pagina del grupo seleccionado por profesor, contiene la vista de los desafios  
 *  que tiene el grupo seleccionado por el profesor  
 */
