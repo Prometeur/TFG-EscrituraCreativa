@@ -106,8 +106,6 @@ class WritingsStudent extends Component {
                                             <th >Estudiante</th>
                                             <th >Fecha</th>
                                             <th >Hora</th>
-                                            {/* <th>Corregido</th> */}
-                                            {/* <th >Puntuación</th> */}
                                             <th >Acciones</th>
                                         </tr>
                                     </thead>
@@ -121,8 +119,6 @@ class WritingsStudent extends Component {
                                                 <td>{writing.nombre} {writing.apellidos}</td>
                                                 <td >{formatedDate = moment(writing.fecha).format('DD/MM/YYYY')}</td>
                                                 <td >{formatedDate = moment(writing.fecha).format('LT')}</td>
-                                                {/* <td>{this.showWritingFinalized(writing)}</td> */}
-                                                {/* <td>{writing.puntuacion}</td> */}
                                                 {this.challengeFinalized(writing) ? (
                                                     <td><Link to={`/student/viewWriting/${this.props.groupSelect}/${writing.idDesafio}/${writing.id}`} ><Button variant="outline-primary" disabled={writing.finalizado === 1 ? false : true}>Ver Escrito</Button></Link></td>
                                                 ) : (
@@ -143,7 +139,6 @@ class WritingsStudent extends Component {
                         )}
                     </Card.Body>
                 </Card>
-
         );
     }
 }

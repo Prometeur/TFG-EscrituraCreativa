@@ -52,7 +52,12 @@ class EditWriting extends Component {
             modalDeleteFile: false,
             deleteFileMedia: '',//fichero multimedia del escrito que desea ser borrado
             nameDeleteFileMedia: '',//nombre del fichero multimedia del escrito que desea ser borrado
+            modalEditWriting: false,
             writing: '',
+            formErrors: {
+                title: '',
+                description: '',
+            },
             form: {
                 idWriter: '',
                 title: '',
@@ -71,7 +76,7 @@ class EditWriting extends Component {
                     /*Obtiene equipo del estudiante correspondiente a un grupo en concreto*/
                     StudentService.getTeamStudentGroup(AuthUser.getCurrentUser().id, this.props.match.params.idGroup)
                         .then(response => {
-                            this.setState({form: {...this.state.form,idWriter: response[0].idEquipo}});
+                            this.setState({ form: { ...this.state.form, idWriter: response[0].idEquipo } });
                             /*Obtiene multimedia del escrito del equipo */
                             StudentService.getMultimediaWriting(this.props.match.params.idChallenge, response[0].idEquipo)
                                 .then(response => {
@@ -134,6 +139,7 @@ class EditWriting extends Component {
 
     //Envia el escrito editado 
     editWriting = () => {
+        this.onModalEditWriting(false)
         /*Edita escrito del estudiante*/
         StudentService.editWriting(this.props.match.params.idWriting, this.props.match.params.idGroup, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.title, this.state.form.escrito, this.state.challenge.colaborativo)
             .then(response => {
@@ -166,7 +172,7 @@ class EditWriting extends Component {
             contador++;
         });
         this.setState({ dataMediaWriting: arreglo });
-        
+
         StudentService.deleteMultimedia(writing.id, writing.ruta)
             .then(response => {
             })
@@ -233,7 +239,20 @@ class EditWriting extends Component {
     };
 
     onChangeWritingName = e => {
+        e.preventDefault();
+        const { name, value } = e.target;
+        let formErrors = { ...this.state.formErrors };
+        switch (name) {
+            case "title":
+                formErrors.title =
+                    value.length < 1 ? "Campo obligatorio requerido" : "";
+                break;
+            default:
+                break;
+        }
+
         this.setState({
+            formErrors,
             form: {
                 ...this.state.form,
                 title: e.target.value
@@ -241,7 +260,7 @@ class EditWriting extends Component {
         });
     }
 
-    
+
     //Devuelve el tipo de desafio
     showCollaborative = () => {
         if (this.state.challenge.colaborativo === 1) {
@@ -251,41 +270,60 @@ class EditWriting extends Component {
             return "Colaborativo"
         }
     }
+
+    //Desactiva boton
+    disabledButton = () => {
+        if (this.state.form.title.length === 0  || this.state.form.escrito.length === 0 || this.state.form.escrito === "<p></p>\n") {
+            return true;//desactivar
+        }
+        else
+            return false;
+    };
+
+    onModalEditWriting = (modal) => {
+        this.setState({
+            modalEditWriting: modal,
+        });
+    };
+
     /*Dibuja la pagina */
     render() {
-        const { dataMediaChallenge,dataMediaWriting } = this.state;
+        const { editorState, dataMediaChallenge, dataMediaWriting, formErrors } = this.state;
         return (
-                <div className="container">
-                    <Card className="card-edit">
-                        <Card.Body>
-                            <div className={"row-edit"}>
-                                <div className={"section-title"}>
-                                    <h2>Editar Escrito {this.showCollaborative()}</h2>
-                                </div>
+            <div className="container">
+                <Card className="card-edit">
+                    <Card.Body>
+                        <div className={"row-edit"}>
+                            <div className={"section-title"}>
+                                <h2>Editar Escrito {this.showCollaborative()}</h2>
                             </div>
-                            <div className={"row-edit"}>
-                                <label className={"form-label"}>Detalles del desafío</label>
-                            </div>
-                            <hr/>
-                            <ul className={"flex-row"}>
-                                <li className={"flex-item-form"}>
-                                    <label className='form-label'>Nombre</label>
-                                    <h5> {this.state.challenge.titulo} </h5>
-                                </li>
-                                <li className={"flex-item-form"}>
-                                    <label className='form-label'>Categoria</label>
-                                    <h5>{this.state.challenge.nombre}</h5>
-                                </li>
-                            </ul>
-                            <div className="row-edit">
-                                <label className='form-label'>Leer la descripción del Desafío</label>
-                                <div className="challenge-inputs"
-                                     dangerouslySetInnerHTML={{ __html: this.state.challenge.descripcion }}>
+                        </div>
+                        <div className={"row-edit"}>
+                            <label className={"form-label"}>Detalles del desafío</label>
+                        </div>
+                        <hr />
+                        <ul className={"flex-row"}>
+                            <li className={"flex-item-form"}>
+                                <label className='form-label'>Nombre</label>
+                                <h5> {this.state.challenge.titulo} </h5>
+                            </li>
+                            <li className={"flex-item-form"}>
+                                <label className='form-label'>Categoria</label>
+                                <h5>{this.state.challenge.nombre}</h5>
+                            </li>
+                        </ul>
+                        <div className="row-edit">
+                            <label className='form-label'>Leer la descripción del Desafío</label>
+                            <div className="challenge-inputs"
+                                dangerouslySetInnerHTML={{ __html: this.state.challenge.descripcion }}>
 
-                                </div>
                             </div>
-                            <div className="row-edit">
-                                <label className='form-label'>Ficheros Multimedia: </label>
+                        </div>
+                        <div className="row-edit">
+                            <label className='form-label'>Ficheros Multimedia: </label>
+
+                            {dataMediaChallenge.length > 0 ? (
+
                                 <table>
                                     <tbody>
                                         <div className={"table-multi"}>
@@ -302,53 +340,86 @@ class EditWriting extends Component {
                                         </div>
                                     </tbody>
                                 </table>
-                            </div>
-                            <br/>
-                            <div className={"row-edit"}>
-                                <label className={"form-label"}>Espacio de escrittura</label>
-                            </div>
-                            <hr/>
-                            <div className={"row-edit"}>
-                                <div className="form-inputs">
-                                    <label className='form-label'>Titulo</label>
-                                    <div>
-                                        <input
-                                            className="form-input"
-                                            type="text"
-                                            name="title"
-                                            placeholder="Escribe el título"
-                                            value={this.state.form.title}
-                                            // onChange={this.handleChange}
-                                            onChange={this.onChangeWritingName}
-                                        />
-                                    </div>
+                            ) : (
+                                <div className="row-edit">
+                                    <p>No hay ficheros para mostrar</p>
+                                </div>
+                            )}
+                        </div>
+                        <br />
+                        <div className={"row-edit"}>
+                            <label className={"form-label"}>Espacio de escritura</label>
+                        </div>
+                        <hr />
+                        <div className={"row-edit"}>
+                            <div className="form-inputs">
+                                <label className='form-label'>Titulo</label>
+                                <div>
+                                    <input
+                                        className={formErrors.title.length > 0 ? "error" : "form-input"}
+                                        type="text"
+                                        name="title"
+                                        placeholder="Escribe el título"
+                                        value={this.state.form.title}
+                                        // onChange={this.handleChange}
+                                        onChange={this.onChangeWritingName}
+                                    />
+                                    {formErrors.title.length > 0 && (
+                                        <span className="errorMessage">{formErrors.title}</span>
+                                    )}
                                 </div>
                             </div>
-                            <div className="row-edit">
-                                <label className='form-label' >Descripción</label>
-                                <Editor
-                                    editorState={this.state.editorState}
-                                    // toolbarClassName="toolbarClassName"
-                                    // // wrapperClassName="demo-wrapper"
-                                    // // editorClassName="border-edit"
-                                    wrapperClassName="wrapperClassName1"
-                                    editorClassName="editorClassName1"
-                                    toolbarClassName="toolbarClassName1"
-                                    onEditorStateChange={this.onEditorStateChange}
-                                    onContentStateChange={this.onContentStateChange}
-                                    onChange={this.editorChange}
-                                />
-                            </div>
-                            <br/>
-                            <div class="row-edit">
-                                <label className='form-label'>Puedes agregar un fichero multimedia si lo deseas (imagen,video o audio): </label>
-                                <div className="form">
-                                    <input type="file" name="imgCollection" onChange={this.onFileChange} multiple />
-                                </div>
-                            </div>
+                        </div>
+                        <div className="row-edit">
+                            <label className='form-label' >Descripción</label>
+                            <Editor
+                                editorState={editorState}
+                                // toolbarClassName="toolbarClassName"
+                                // // wrapperClassName="demo-wrapper"
+                                // // editorClassName="border-edit"
+                                wrapperClassName="wrapperClassName1"
+                                editorClassName="editorClassName1"
+                                toolbarClassName="toolbarClassName1"
+                                onEditorStateChange={this.onEditorStateChange}
+                                onContentStateChange={this.onContentStateChange}
+                                // onChange={this.editorChange}
 
-                            <div class="row-edit">
-                                <label className='form-label'>Ficheros Multimedia</label>
+                                onChange={
+                                    (event, editor) => {
+                                        let formErrors = { ...this.state.formErrors };
+                                        if (!editorState.getCurrentContent().hasText()) {
+                                            formErrors.description = "Texto Vacío";
+                                        }
+                                        else {
+                                            formErrors.description = "";
+                                        }
+                                        this.setState({
+                                            formErrors,
+                                            form: {
+                                                ...this.state.form,
+                                                escrito: draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))
+                                            }
+                                        });
+                                    }
+                                }
+                                className={formErrors.description.length > 0 ? "error" : "form-control"}
+                            />
+                            {formErrors.description.length > 0 && (
+                                <span className="errorMessage">{formErrors.description}</span>
+                            )}
+
+                        </div>
+                        <br />
+                        <div class="row-edit">
+                            <label className='form-label'>Puedes agregar un fichero multimedia si lo deseas (imagen,video o audio): </label>
+                            <div className="form">
+                                <input type="file" name="imgCollection" onChange={this.onFileChange} multiple />
+                            </div>
+                        </div>
+
+                        <div class="row-edit">
+                            <label className='form-label'>Ficheros Multimedia</label>
+                            {dataMediaWriting.length > 0 ? (
                                 <table>
                                     <tbody>
                                         <div className={"table-multi"}>
@@ -370,36 +441,52 @@ class EditWriting extends Component {
                                         </div>
                                     </tbody>
                                 </table>
-                            </div>
-                            <br/>
-                            <div className={"row-edit"}>
-                                <div className="form-button">
-                                    <Button text='enviar' onClick={() => this.editWriting()}> Guardar  </Button>
+                            ) : (
+                                <div className="row-edit">
+                                    <p>No hay ficheros para mostrar</p>
                                 </div>
-                                <div className="form-button">
-                                    <Button onClick={() => window.location.href = '/student/groups'}>Cancelar</Button>
-                                </div>
+                            )}
+                        </div>
+                        <br />
+                        <div className={"row-edit"}>
+                            <div className="form-button">
+                                <Button text='enviar' onClick={() => this.onModalEditWriting(true)} disabled={this.disabledButton()} > Guardar  </Button>
                             </div>
-                        </Card.Body>
-                    </Card>
+                            <div className="form-button">
+                                <Button onClick={() => window.location.href = '/student/groups'}>Cancelar</Button>
+                            </div>
+                        </div>
+                    </Card.Body>
+                </Card>
 
-                    <Modal show={this.state.modalDeleteFile}>
-                        <Modal.Header>
-                            <div><h5>¿Seguro que desea eliminar {this.state.nameDeleteFileMedia}?</h5> </div>
-                        </Modal.Header>
-                        <Modal.Body>
-                            {/* <FormGroup>
+                <Modal show={this.state.modalDeleteFile}>
+                    <Modal.Header>
+                        <div><h5>¿Seguro que desea eliminar {this.state.nameDeleteFileMedia}?</h5> </div>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {/* <FormGroup>
                         </FormGroup> */}
-                        </Modal.Body>
+                    </Modal.Body>
 
-                        <Modal.Footer>
-                            <Button onClick={() => this.deleteFile(this.state.deleteFileMedia)}>Aceptar</Button>
-                            <Button variant="danger" onClick={() => this.closeModalDeleteFile()}>Cancelar</Button>
-                        </Modal.Footer>
-                    </Modal>
-                </div>
+                    <Modal.Footer>
+                        <Button onClick={() => this.deleteFile(this.state.deleteFileMedia)}>Aceptar</Button>
+                        <Button variant="danger" onClick={() => this.closeModalDeleteFile()}>Cancelar</Button>
+                    </Modal.Footer>
+                </Modal>
+                
+                <Modal show={this.state.modalEditWriting}>
+                    <Modal.Header>
+                    </Modal.Header>
+                    <Modal.Body>
+                    <p> ¿Deseas guardar los cambios?</p>
+                    </Modal.Body>
 
-
+                    <Modal.Footer>
+                        <Button onClick={() => this.editWriting()}>Aceptar</Button>
+                        <Button variant="danger" onClick={() => this.onModalEditWriting(false)}>Cancelar</Button>
+                    </Modal.Footer>
+                </Modal>               
+            </div>
         );
     }
 }

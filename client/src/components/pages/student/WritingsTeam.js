@@ -98,58 +98,59 @@ class WritingsTeam extends Component {
         let formatedDate;
         let { dataWritingTeam, showWritings } = this.state;
         return (
-                    <Card className="card-long">
-                        <Card.Body>
-                            {showWritings ? (
-                                <>
-                                    <h4>Lista de escritos</h4>
-                                    <div className="table-margin">
-                                        <Table striped bordered hover >
-                                            <thead>
-                                                <tr>
-                                                    <th>Escrito</th>
-                                                    <th>Grupo</th>
-                                                    <th>Desafio</th>
-                                                    <th>Desafio Finalizado</th>
-                                                    <th>Equipo</th>
-                                                    <th>Fecha</th>
-                                                    <th>Hora</th>
-                                                    <th>Acciones</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {dataWritingTeam.map((writing) => (
-                                                    <tr key={writing.id} >
-                                                        <td>{writing.nombreEscrito}</td>
-                                                        <td>{writing.nombreGrupo}</td>
-                                                        <td>{writing.nombreDesafio}</td>
-                                                        <td>{this.showChallengeFinalized(writing)}</td>
-                                                        <td>{writing.nombreEquipo}</td>
-                                                        <td >{formatedDate = moment(writing.fecha).format('DD/MM/YYYY')}</td>
-                                                        <td >{formatedDate = moment(writing.fecha).format('LT')}</td>
+            <Card className="card-long">
+                <Card.Body>
+                    {showWritings ? (
+                        <>
+                            <h4>Lista de escritos</h4>
+                            <div className="table-margin">
+                                <Table striped bordered hover >
+                                    <thead>
+                                        <tr>
+                                            <th>Escrito</th>
+                                            <th>Grupo</th>
+                                            <th>Desafio</th>
+                                            <th>Desafio Finalizado</th>
+                                            <th>Equipo</th>
+                                            <th>Fecha</th>
+                                            <th>Hora</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {dataWritingTeam.map((writing) => (
+                                            <tr key={writing.id} >
+                                                <td>{writing.nombreEscrito}</td>
+                                                <td>{writing.nombreGrupo}</td>
+                                                <td>{writing.nombreDesafio}</td>
+                                                <td>{this.showChallengeFinalized(writing)}</td>
+                                                <td>{writing.nombreEquipo}</td>
+                                                <td >{formatedDate = moment(writing.fecha).format('DD/MM/YYYY')}</td>
+                                                <td >{formatedDate = moment(writing.fecha).format('LT')}</td>
 
-                                                        {this.challengeFinalized(writing) ? (
-                                                            <td><Link to={`/student/viewWriting/${this.props.groupSelect}/${writing.idDesafio}/${writing.id}`} ><Button variant="outline-primary" disabled={writing.finalizado === 1 ? false : true}>Ver</Button></Link></td>
-                                                        ) : (
+                                                {this.challengeFinalized(writing) ? (
+                                                    <td><Link to={`/student/viewWriting/${this.props.groupSelect}/${writing.idDesafio}/${writing.id}`} ><Button variant="outline-primary" disabled={writing.finalizado === 1 ? false : true}>Ver</Button></Link></td>
+                                                ) : (
 
-                                                            <td ><Link to={`/student/editWritingTeam/${writing.idGrupo}/${writing.idDesafio}/${writing.id}`}><Button variant="outline-primary" disabled={this.challengeFinalized(writing)}>Editar Escrito BETA</Button></Link></td>
-                                                        )}
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </Table>
-                                    </div>
-                                </>
-                            ) : (
+                                                    // <td ><Link to={`/student/editWritingTeam/${writing.idGrupo}/${writing.idDesafio}/${writing.id}`}><Button variant="outline-primary" disabled={this.challengeFinalized(writing)}>Editar Escrito BETA</Button></Link></td>
+                                                    <td ><Link to={`/student/editWriting/${writing.idGrupo}/${writing.idDesafio}/${writing.id}`}><Button variant="outline-primary" disabled={this.challengeFinalized(writing)}>Editar Escrito</Button></Link></td>
+                                                )}
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </Table>
+                            </div>
+                        </>
+                    ) : (
 
-                                <div className="row-edit">
-                                    <Alert variant={"danger"}>
-                                        No dispones de escritos para mostrar
+                        <div className="row-edit">
+                            <Alert variant={"danger"}>
+                                No dispones de escritos para mostrar
                                     </Alert>
-                                </div>
-                            )}
-                        </Card.Body>
-                    </Card>
+                        </div>
+                    )}
+                </Card.Body>
+            </Card>
 
         );
     }

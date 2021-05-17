@@ -115,7 +115,7 @@
 
 
 .editorClassName1{
-    border: 1px solid  #a39d9d;
+    /* border: 1px solid  #cc1534; */
     height: 55vh;
     width:  163vh;
 }
@@ -131,7 +131,7 @@
 
 .toolbarClassName1{
     /* border: 1px solid rgb(161, 62, 62); */
-    width:163vh;
+    width:150vh;
 }
 
 

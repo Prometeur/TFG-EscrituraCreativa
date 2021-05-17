@@ -56,8 +56,6 @@ class EditChallenge extends Component {
                 title: '',
                 description: '',
                 date: '',
-                idCategory: '',
-                type: '',
             },
             form: {
                 title: '',
@@ -109,7 +107,7 @@ class EditChallenge extends Component {
     }
 
     //Envio el desafio editado
-    sendChallenge = () => {
+    editChallenge = () => {
         TeacherService.editChallenge(this.state.challenge.id, this.props.match.params.idGroup, this.state.form.title, this.state.form.description, this.state.form.type, this.state.form.idCategory, this.state.form.typeQualification, this.state.form.date)
             .then(response => {
                 if (this.state.imgCollection.length > 0) {
@@ -131,7 +129,7 @@ class EditChallenge extends Component {
 
     //Elimina el fichero multimedia del desafio
     deleteFile = (mediaChallenge) => {
-        this.closeModalDeleteFile();
+        this.onModalDeleteFile(false);
         var contador = 0;
         var arreglo = this.state.dataMediaChallenge;
         arreglo.map((registro) => {
@@ -148,8 +146,8 @@ class EditChallenge extends Component {
             .catch(error => {
                 console.log(error.message);
             });
-
     }
+
     /*Lo que escribamos en el input lo guarda en el state async para que lo veamos en tiempo real */
     handleChange = async e => {
         await this.setState({
@@ -158,7 +156,6 @@ class EditChallenge extends Component {
                 [e.target.name]: e.target.value
             }
         });
-        console.log(this.state.form);//visualizar consola navegador lo que escribimos en el input
     }
 
     /* manejador para validar formulario*/
@@ -180,7 +177,7 @@ class EditChallenge extends Component {
                 ...this.state.form,
                 [name]: value
             }
-        }, () => console.log(this.state));
+        });
     }
 
     onContentStateChange = contentState => {
@@ -202,17 +199,12 @@ class EditChallenge extends Component {
         });
     }
 
-    /**modal guardar cambios */
+    /**modal eliminar Fichero */
     onModalDeleteFile(modal) {
         this.setState({
             modalDeleteFile: modal
         });
     }
-
-    //Cierra el modal de eliminar fichero
-    closeModalDeleteFile = () => {
-        this.setState({ modalDeleteFile: false });
-    };
 
     //redireccion a una pagina
     changeView = () => {
@@ -230,8 +222,17 @@ class EditChallenge extends Component {
 
     /* manejador de fechas*/
     handleDateChange = (date) => {
-        // this.setState({ date: date });
+        var dateActual = new Date();
+        let formErrors = { ...this.state.formErrors };
+        //Si la fecha actual es mayor que la fecha seleccionada
+        if (dateActual > date) {
+            formErrors.date = "Fecha no válida";
+        }
+        else {
+            formErrors.date = "";
+        }
         this.setState({
+            formErrors,
             form: {
                 ...this.state.form,
                 date: date
@@ -259,16 +260,8 @@ class EditChallenge extends Component {
         });
     };
 
-    onDeleteMultimedia(indexItem) {
-        this.setState(() =>
-            ({ imgNamesCollection: this.state.imgNamesCollection.filter((todo, index) => index !== indexItem) }));
-    }
-
     onFileChange(e) {
         this.setState({ imgCollection: e.target.files });
-        // let newFiles = this.state.imgNamesCollection;
-        // Array.from(e.target.files).forEach((file) => { newFiles.push(file) });
-        // this.setState({ imgNamesCollection: [...newFiles] });
     }
 
     //Obtiene el nombre del desafio/escrito
@@ -278,16 +271,25 @@ class EditChallenge extends Component {
         return res[8];
     }
 
-    editorChange = () => {
+    editorChange = (editorState) => {
+        let formErrors = { ...this.state.formErrors };
+        if (!editorState.getCurrentContent().hasText()) {
+            formErrors.description = "Texto Vacío";
+        }
+        else {
+            formErrors.description = "";
+        }
+
         this.setState({
             form: {
+                formErrors,
                 ...this.state.form,
                 description: draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))
             }
         });
     };
 
-    //Muestra modal  para eliminar fichero multimedia
+    //Muestra modal para eliminar fichero multimedia
     askDeleteFile = (mediaChallenge) => {
         var str = mediaChallenge.ruta;
         var res = str.split("/");
@@ -296,12 +298,20 @@ class EditChallenge extends Component {
             deleteFileMedia: mediaChallenge,
             modalDeleteFile: true,
         });
-
     }
+
+     //Desactiva boton
+     disabledButton = () => {
+        var dateActual = new Date();//"<p></p>\n"
+        if (this.state.form.title.length === 0 || dateActual > this.state.form.date || this.state.form.description.length === 0 || this.state.form.description==="<p></p>\n") {
+            return true;//desactivar
+        }
+        else
+            return false;
+    };
 
     /*Dibuja la pagina */
     render() {
-
         const { editorState, formErrors, dataMediaChallenge } = this.state;
         return (
             <div className="container">
@@ -340,9 +350,30 @@ class EditChallenge extends Component {
                                 toolbarClassName="toolbarClassName1"
                                 onEditorStateChange={this.onEditorStateChange}
                                 onContentStateChange={this.onContentStateChange}
-                                onChange={this.editorChange}
+                                // onChange={this.editorChange(editorState)}
+                                onChange={
+                                    (event, editor) => {
+                                        let formErrors = { ...this.state.formErrors };
+                                        if(!editorState.getCurrentContent().hasText()){
+                                            formErrors.description="Texto Vacío";
+                                        }
+                                        else{
+                                            formErrors.description="";
+                                        }
+                                        this.setState({
+                                            formErrors,
+                                            form: {
+                                                ...this.state.form,
+                                                description: draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))
+                                            }
+                                        });
+                                    }
+                                }
+                                className={formErrors.description.length > 0 ? "error" : "form-control"}
                             />
-
+                            {formErrors.description.length > 0 && (
+                                <span className="errorMessage">{formErrors.description}</span>
+                            )}
                         </div>
                         <ul className={"flex-row"}>
                             <li className={"flex-item-form"}>
@@ -359,8 +390,6 @@ class EditChallenge extends Component {
                                 <div className="form-select">
                                     <label className='form-label'>Tipo de desafio</label>
                                     <select value={this.state.form.type} onChange={this.handleSelectionChange}>
-                                        {/* <option value="" selected disabled hidden>Choose here</option> */}
-                                        {/* <option value = {this.state.form.type} selected>{this.state.form.type} </option> */}
                                         <option value="1">Individual</option>
                                         <option value="2">Colaborativo</option>
                                     </select>
@@ -381,18 +410,24 @@ class EditChallenge extends Component {
                             <label className='form-label'> Fecha y hora de fin del desafío </label>
                         </div>
                         <div className="form-select">
-                            <Dates handleDateChange={this.handleDateChange} param={this.state.form.date} />
+                            <Dates  
+                            className={formErrors.date.length > 0 ? "error" : "form-control"}
+                            handleDateChange={this.handleDateChange} 
+                            param={this.state.form.date} />
+                             {formErrors.date.length > 0 && (
+                                <span className="errorMessage">{formErrors.date}</span>
+                            )}
                         </div>
-
                         <div className="row-edit">
                             <label className='form-label'> Ficheros Multimedia </label>
+                            {dataMediaChallenge.length>0 ? (
                             <table>
                                 <tbody>
                                     <div className={"table-multi"}>
                                         {dataMediaChallenge.map((mediaChallenge) => (
                                             <tr key={mediaChallenge.id}>
                                                 <td>
-                                                     {this.showTitle(mediaChallenge)}
+                                                    {this.showTitle(mediaChallenge)}
                                                 </td>
                                                 <td>
                                                     <div className="form-button">
@@ -409,8 +444,12 @@ class EditChallenge extends Component {
                                     </div>
                                 </tbody>
                             </table>
+                              ) : (
+                                <div className="row-edit">
+                              <p>No hay ficheros para mostrar</p>
+                            </div>
+                        )}
                         </div>
-
                         <div className="row-edit">
                             <div className={"form-select"}>
                                 <label className='form-label'>
@@ -419,43 +458,41 @@ class EditChallenge extends Component {
                                 <input type="file" name="imgCollection" onChange={this.onFileChange} multiple />
                             </div>
                         </div>
-
                         <div className={"row-edit"}>
                             <div className="form-button">
-                                <Button onClick={() => this.onModalSave(true)}>Guardar</Button>
+                                <Button onClick={() => this.onModalSave(true)} disabled={this.disabledButton()}>Guardar</Button>
                             </div>
                             <div className="form-button">
                                 <Button onClick={() => this.changeView()}>Cancelar</Button>
                             </div>
                         </div>
-
                         <Modal
-                               centered
-                               show={this.state.stateModal}
-                               onHide={this.state.stateModal}
+                            centered
+                            show={this.state.stateModal}
+                            onHide={this.state.stateModal}
                         >
                             <Modal.Header >
                                 <Modal.Title>Aviso</Modal.Title>
-                                <img src={"../../../exclamation.png"}/>
+                                <img src={"../../../exclamation.png"} />
                             </Modal.Header>
                             <Modal.Body>
                                 ¿Desea guardar los cambios?
                             </Modal.Body>
                             <Modal.Footer>
-                                <Button onClick={() => this.sendChallenge()}>Aceptar</Button>
+                                <Button onClick={() => this.editChallenge()}>Aceptar</Button>
                                 <Button onClick={() => this.onModalSave(false)}>Cancelar</Button>
                             </Modal.Footer>
                         </Modal>
 
                         <Modal
-                               centered
-                               show={this.state.modalDeleteFile}
-                               onHide={this.state.modalDeleteFile}
+                            centered
+                            show={this.state.modalDeleteFile}
+                            onHide={this.state.modalDeleteFile}
                         >
                             <Modal.Header >
                                 <Modal.Title>
                                     Aviso
-                                    <img src={"../../../triangle.png"}/>
+                                    <img src={"../../../triangle.png"} />
                                 </Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
