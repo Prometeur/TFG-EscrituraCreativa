@@ -1,7 +1,6 @@
 /*
 *  Name_file :ChallengesStudent.js
-*  Description: Pagina del grupo seleccionado por profesor, contiene la vista de los desafios  
-*  que tiene el grupo seleccionado por el profesor  
+*  Description: Pagina que muestra los desafíos individuales
 */
 import React, { Component } from 'react';
 import StudentService from '../../../services/student/student-service.js';
@@ -27,7 +26,6 @@ class ChallengesStudent extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             data: [],//contiene desafios del estudiante
             dataWritingStudent: [],//contiene escritos del estudiante
@@ -43,7 +41,6 @@ class ChallengesStudent extends Component {
                     if (response.length !== 0) {
                         this.setState({ data: response, showChallenges: true });
                     }
-
                 }).catch(error => {
                     console.log(error.message);
                 })
@@ -59,8 +56,9 @@ class ChallengesStudent extends Component {
             /**Obtiene los desafios del estudiante segun su grupo */
             StudentService.getChallenges(this.props.groupSelect, 1)
                 .then(response => {
-
-                    this.setState({ data: response });
+                    if (response.length !== 0) {//Si existen desafíos
+                        this.setState({ data: response,showChallenges:true });
+                    }  
                 }).catch(error => {
                     console.log(error.message);
                 })
@@ -164,7 +162,6 @@ class ChallengesStudent extends Component {
                         )}
                     </Card.Body>
                 </Card>
-
         );
     }
 }

@@ -115,7 +115,7 @@ class TeamsGroup extends Component {
         var equipo = team.nombreEquipo;
         var grupo = team.nombreGrupo;
         var idGroup = this.props.groupSelect;
-        var message = nombre + " " + apellidos + " " + messageBody + " " + equipo + " del Grupo de " + grupo;
+        var message = nombre + " " + apellidos + " " + messageBody + " " + "'"+equipo +"'"+ " del Grupo " + "'"+grupo+"'";
         //Envio el mensaje de solicitud 
         StudentService.sendMessage(idGroup, AuthUser.getCurrentUser().id, team.idCreador, team.idEquipo, message, 2)
             .then(response => {
@@ -192,13 +192,13 @@ class TeamsGroup extends Component {
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                {dataTeamsGroup.map(team => {
+                                                {dataTeamsGroup.filter(team => team.activo === 1).map(team => {
                                                     return (
                                                         <tr key={team.idEquipo}>
                                                             <td>{team.nombreEquipo}</td>
                                                             <td>{team.nombreGrupo}</td>
                                                             {dataTeamStudent.filter(teamStudent => teamStudent.idEquipo === team.idEquipo).map((item, index) =>
-                                                                <td> <div>{item.nombre} {item.apellidos}</div> </td>
+                                                                <tr> <div>{item.nombre} {item.apellidos} </div></tr>
                                                             )}
                                                             <td ><Button onClick={() => this.askSendRequest(team)} disabled={this.disabledButtonJoin()}>Enviar Solicitud</Button></td>
                                                         </tr>

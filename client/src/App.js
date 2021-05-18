@@ -44,7 +44,7 @@ class App extends Component {
       showStudent: false,
       showTeacher: false,
       showAdmin: false,
-      url:""
+      url: ""
     };
   }
 
@@ -54,34 +54,34 @@ class App extends Component {
     const user = AuthService.getCurrentUser();
 
     if (user) {
-          this.setState({
-            currentUser: user,
-            showStudent: user["rol"].includes("S"),
-            showTeacher: user["rol"].includes("T"),
-            showAdmin: user["rol"].includes("A"),
-          });
+      this.setState({
+        currentUser: user,
+        showStudent: user["rol"].includes("S"),
+        showTeacher: user["rol"].includes("T"),
+        showAdmin: user["rol"].includes("A"),
+      });
     }
 
-      if(this.state.showStudents){
-          this.setState({
-              url:'/student/groups'
-          });
-      }
-      else if(this.state.showAdmin) {
-          this.setState({
-              url:"/teacher/groups"
-          });
-      }
-      else if (this.state.showTeacher) {
-          this.setState({
-              url:"/admin"
-          });
-      }
-      else {
-          this.setState({
-              url:window.location.pathname
-          });
-      }
+    if (this.state.showStudents) {
+      this.setState({
+        url: '/student/groups'
+      });
+    }
+    else if (this.state.showAdmin) {
+      this.setState({
+        url: "/teacher/groups"
+      });
+    }
+    else if (this.state.showTeacher) {
+      this.setState({
+        url: "/admin"
+      });
+    }
+    else {
+      this.setState({
+        url: window.location.pathname
+      });
+    }
   }
 
 
@@ -90,74 +90,77 @@ class App extends Component {
   }
 
   render() {
-      const { currentUser, showStudent, showTeacher, showAdmin} = this.state;
+    const { currentUser, showStudent, showTeacher, showAdmin } = this.state;
     return (
       <Router>
-            {currentUser ? (
-                <div className= "full-wrapper">
-                  <header>
-                    <link rel="preconnect" href="https://fonts.gstatic.com"></link>
-                    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Pontano+Sans&family=Dawning+of+a+New+Day&display=swap" rel="stylesheet"></link>
-                    <Navbar collapseOnSelect expand="lg" >
-                      <Navbar.Brand href={"/profile"}>Creativa</Navbar.Brand>
-                      <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                      <Navbar.Collapse id="responsive-navbar-nav">
-                      <Nav className="mr-auto">
-                        {showAdmin && (
-                            <Nav.Link bsPrefix="nav-link" href="/admin/groups">Dashboard</Nav.Link>
-                        )}
-                        {showStudent && (
-                            <Nav.Link  bsPrefix="nav-link" href="/student/groups">Dashboard</Nav.Link>
-                        )}
-                        {showTeacher && (
-                            <Nav.Link  bsPrefix="nav-link" href="/teacher/groups">Dashboard</Nav.Link>
-                        )}
-                      <Nav.Link bsPrefix="nav-link" href="/profile"> {currentUser.username}</Nav.Link>
+        {currentUser ? (
+          <div className="full-wrapper">
+            <header>
+              <link rel="preconnect" href="https://fonts.gstatic.com"></link>
+              <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Pontano+Sans&family=Dawning+of+a+New+Day&display=swap" rel="stylesheet"></link>
+              <Navbar collapseOnSelect expand="lg" >
+                <Navbar.Brand href={"/profile"}>Creativa</Navbar.Brand>
+                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                <Navbar.Collapse id="responsive-navbar-nav">
+                  <Nav className="mr-auto">
+                    {showAdmin && (
+                      <Nav.Link bsPrefix="nav-link" href="/admin/groups">Dashboard</Nav.Link>
+                    )}
+                    {showStudent && (
+                      <Nav.Link bsPrefix="nav-link" href="/student/groups">Dashboard</Nav.Link>
+                    )}
+                    {showTeacher && (
+                      <Nav.Link bsPrefix="nav-link" href="/teacher/groups">Dashboard</Nav.Link>
+                    )}
+                    <Nav.Link bsPrefix="nav-link" href="/profile"> {currentUser.username}</Nav.Link>
+
+                    {showStudent && (
                       <Nav.Link bsPrefix="nav-link" href="/student/messenger"> Mensajeria</Nav.Link>
-                      <Nav.Link bsPrefix="nav-link" href="/login" onClick={this.logOut}>Cerrar sesión</Nav.Link>
-                      </Nav>
-                      </Navbar.Collapse>
-                    </Navbar>
-                  </header>
-                  <Switch>
-                    <Route exact path='/login' component={Login} />
-                    <Route exact path='/register' component={Register} />
-                    <Route exact path='/profile' component={Profile} />
-                    <Route path='/admin' component={AdminBoard} />
-                    <Route exact path='/editProfile' component={EditProfile} />
-                    <Route path='/teacher' component={TeacherBoard} />
-                    <Route exact path="/student/messenger" component={Messenger} />
-                    <Route exact path="/student/message/:idMessage" component={Message} />
-                    <Route path='/student' component={StudentBoard} />
-                    <Route exact path='/500' component={InternalEror} /> {/*Esta dirección sirve para el error 500 (interno del servidor).*/}
-                    <Route exact path='*' component={NoMatch}/> {/*Esta dirección sirve para el error 404.*/}
-                  </Switch>
-                </div>
-              ) : (
-                  <div className= "main-wrapper">
-                    <header>
-                      <link rel="preconnect" href="https://fonts.gstatic.com"></link>
-                      <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Pontano+Sans&display=swap" rel="stylesheet"></link>
-                      <Navbar collapseOnSelect expand="lg" >
-                        <Navbar.Brand href={"/login"}>Creativa</Navbar.Brand>
-                        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                        <Navbar.Collapse id="responsive-navbar-nav">
-                        <Nav className="mr-auto">
-                          <Nav.Link href="/login">Iniciar</Nav.Link>
-                          <Nav.Link href="/register">Registar</Nav.Link>
-                        </Nav>
-                        </Navbar.Collapse>
-                      </Navbar>
-                    </header>
-                    <Switch>
-                      <Route exact path={["/", "/login"]} component={Login} />
-                      <Route exact path='/login' component={Login} />
-                      <Route exact path='/register' component={Register} />
-                      <Route exact path='/500' component={InternalEror} /> {/*Esta dirección sirve para el error 500 (interno del servidor).*/}
-                      <Route path='*' component={NoMatch}/> {/*Esta dirección sirve para el error 404.*/}
-                    </Switch>
-                  </div>
-            )}
+                    )}
+                    <Nav.Link bsPrefix="nav-link" href="/login" onClick={this.logOut}>Cerrar sesión</Nav.Link>
+                  </Nav>
+                </Navbar.Collapse>
+              </Navbar>
+            </header>
+            <Switch>
+              <Route exact path='/login' component={Login} />
+              <Route exact path='/register' component={Register} />
+              <Route exact path='/profile' component={Profile} />
+              <Route path='/admin' component={AdminBoard} />
+              <Route exact path='/editProfile' component={EditProfile} />
+              <Route path='/teacher' component={TeacherBoard} />
+              <Route exact path="/student/messenger" component={Messenger} />
+              <Route exact path="/student/message/:idMessage" component={Message} />
+              <Route path='/student' component={StudentBoard} />
+              <Route exact path='/500' component={InternalEror} /> {/*Esta dirección sirve para el error 500 (interno del servidor).*/}
+              <Route exact path='*' component={NoMatch} /> {/*Esta dirección sirve para el error 404.*/}
+            </Switch>
+          </div>
+        ) : (
+          <div className="main-wrapper">
+            <header>
+              <link rel="preconnect" href="https://fonts.gstatic.com"></link>
+              <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Pontano+Sans&display=swap" rel="stylesheet"></link>
+              <Navbar collapseOnSelect expand="lg" >
+                <Navbar.Brand href={"/login"}>Creativa</Navbar.Brand>
+                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                <Navbar.Collapse id="responsive-navbar-nav">
+                  <Nav className="mr-auto">
+                    <Nav.Link href="/login">Iniciar</Nav.Link>
+                    <Nav.Link href="/register">Registar</Nav.Link>
+                  </Nav>
+                </Navbar.Collapse>
+              </Navbar>
+            </header>
+            <Switch>
+              <Route exact path={["/", "/login"]} component={Login} />
+              <Route exact path='/login' component={Login} />
+              <Route exact path='/register' component={Register} />
+              <Route exact path='/500' component={InternalEror} /> {/*Esta dirección sirve para el error 500 (interno del servidor).*/}
+              <Route path='*' component={NoMatch} /> {/*Esta dirección sirve para el error 404.*/}
+            </Switch>
+          </div>
+        )}
       </Router>
     );
   }

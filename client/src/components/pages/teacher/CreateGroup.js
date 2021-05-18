@@ -13,20 +13,21 @@ import '../../../styles/styleCard.css';
 
 /**Estilos*/
 import Card from 'react-bootstrap/Card';
-import Button  from 'react-bootstrap/Button';
+import Button from 'react-bootstrap/Button';
 import Modal from "react-bootstrap/Modal";
 import Alert from 'react-bootstrap/Alert';
 
 class CreateGroup extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.onModal = this.onModal.bind(this);
 
         this.state = {
             data: [],
-            onModal:false,
+            onModal: false,
+            modalCreateGroup: false,
             filteredData: [],
             groupName: '',
             currentUserId: '',
@@ -37,7 +38,7 @@ class CreateGroup extends Component {
 
     /*Si vuelvo a la pagina de login, comprueba si el usuario ya inicio sesion anteriomente
    si es el caso lo redirige a la home segun su rol*/
-   componentDidMount() {      
+    componentDidMount() {
 
         const dataUser = AuthUser.getCurrentUser();
         this.setState({
@@ -56,23 +57,16 @@ class CreateGroup extends Component {
         });
     }
 
-    /*Se hacen peticiones al servidor renombrar grupo*/
+    /*Crea un grupo*/
     createGroup = () => {
-
-        if(this.state.groupName == '')
-        {
-                this.onModal(true);
-        }
-        else
-        {
-            teacherService.createGroup(this.state.currentUserId, this.state.groupName ).then(response => {
-                console.log(response);
-                window.location.href = '/teacher/createGroup';
-            }).catch(error => {
-                console.log(error.message);
-            })
-        }
-
+        this.onModalCreateGroup(false);
+        this.onModalCreateGroup(false);
+        teacherService.createGroup(this.state.currentUserId, this.state.groupName).then(response => {
+            console.log(response);
+            window.location.href = '/teacher/createGroup';
+        }).catch(error => {
+            console.log(error.message);
+        })
     }
 
     /*Cambia estado del modal*/
@@ -81,6 +75,22 @@ class CreateGroup extends Component {
             onModal: modal
         });
     }
+
+    //Comprueba si el nombre del grupo es bacio
+    checkCreateGroup() {
+        //Comprueba si el campo está vacío
+        if (this.state.groupName == '')
+            this.onModal(true);
+        else
+            this.onModalCreateGroup(true);
+    }
+
+    //modal de crearGrupo
+    onModalCreateGroup = (modal) => {
+        this.setState({
+            modalCreateGroup: modal,
+        });
+    };
 
     /*Dibuja la pagina  */
     render() {
@@ -92,44 +102,57 @@ class CreateGroup extends Component {
                             <div className={"section-title"}>
                                 <h2>Crear un grupo</h2>
                             </div>
-                            <br/>
+                            <br />
                             <Alert variant={"info"}>
-                                <img src="/info.png" alt=""/>
+                                <img src="/info.png" alt="" />
                                  Introduzca el nombre del nuevo grupo que desea crear.
                             </Alert>
                         </div>
                         <div className={"row-edit"}>
                             <label className="form-label">Nombre del grupo nuevo : </label>
                             <input placeholder="Ingrese un nombre"
-                                   className="form-control" type="text"
-                                   name="groupName"
-                                   onChange={this.handleChangeName}
+                                className="form-control" type="text"
+                                name="groupName"
+                                onChange={this.handleChangeName}
                             />
-                            <br/>
-                            <Button variant="primary" onClick={() => this.createGroup()}>Aceptar</Button>
+                            <br />
+                            <Button variant="primary" onClick={() => this.checkCreateGroup()}>Aceptar</Button>
                         </div>
-                        <Modal
-                            centered
-                            show={this.state.onModal}
-                            onHide={this.state.onModal}
-                        >
-                            <Modal.Header>
-                                <Modal.Title>
-                                  Ups...
-                                </Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                                No ha ingresado un nombre
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <Button variant="secondary" onClick={() => this.onModal(false)}>Atras</Button>
-                            </Modal.Footer>
-                        </Modal>
                     </Card.Body>
                 </Card>
+                <Modal
+                    centered
+                    show={this.state.onModal}
+                    onHide={this.state.onModal}
+                >
+                    <Modal.Header>
+                        <Modal.Title>
+                            Ups...
+                                </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        No ha ingresado un nombre
+                            </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => this.onModal(false)}>Atras</Button>
+                    </Modal.Footer>
+                </Modal>
+
+                <Modal show={this.state.modalCreateGroup}>
+                    <Modal.Header>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p> ¿Está seguro de crear el grupo?</p>
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <Button onClick={() => this.createGroup()}>Aceptar</Button>
+                        <Button variant="danger" onClick={() => this.onModalCreateGroup(false)}>Cancelar</Button>
+                    </Modal.Footer>
+                </Modal>
             </div>
         );
-     }
+    }
 }
 
 export default CreateGroup;

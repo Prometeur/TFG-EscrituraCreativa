@@ -51,24 +51,28 @@ class Message extends Component {
         //Obtiene el mensaje 
         StudentService.getMessage(this.props.match.params.idMessage)
             .then(response => {
-                var aux = false;
+                var showButtons = false;
+                //si el mensaje es de tipo 0(ya respondio a la solicitud) o 2(no respondio a la solicitud) muestra los botones de "aceptar" o "rechazar"
                 if (response[0].tipo === 0 || response[0].tipo === 2) {
-                    aux = true;
+                    showButtons = true;
                 }
-                this.setState({ message: response[0], showButtons: aux });
-                //Obtiene el equipo del creador del equipo
+                this.setState({ message: response[0], showButtons: showButtons });
+                //Obtiene el equipo del mensaje
                 StudentService.getTeam(this.state.message.idCreador)
                     .then(response => {
-                        this.setState({ team: response[0] });
+                        if(response.length > 0){//si el mensaje tiene equipo
+                            this.setState({ team: response[0] });
+                    }
                     }).catch(error => {
                         console.log(error.message);
                     })
+
                 //Compruebo si el estudiante emisor del mensaje dispone de equipo
                 StudentService.getTeamStudentGroup(response[0].idEmisor,response[0].idGrupo)
                 .then(response => {
-                    this.setState({ senderHasTeam: true });//Remitente del mensaje tiene equipo
-                    console.log("remitente tiene equipo")
-
+                    if(response.length !=0){//si el remitente tiene equipo
+                        this.setState({ senderHasTeam: true });
+                    }
                 }).catch(error => {
                     console.log(error.message);
                 })
@@ -76,7 +80,6 @@ class Message extends Component {
             }).catch(error => {
                 console.log(error.message);
             })
-
     }
 
     askAcceptRequest = () => {
@@ -105,24 +108,19 @@ class Message extends Component {
             var idGroup = this.state.message.idGrupo;
             var idIssuer = this.state.message.idEmisor;
             var idReceiver = this.state.message.idReceptor;
-
             var idCreatorTeam = this.state.message.idCreador;
             var mensaje = this.state.message.mensaje;
             var date = this.state.message.fecha;
             var active = this.state.message.activo;
-
             let dataMessage = [{ id: idMessage, idGrupo: idGroup, idEmisor: idIssuer, idReceptor: idReceiver, idCreador: idCreatorTeam, mensaje: mensaje, tipo: 0, fecha: date, activo: active }];
             this.setState({ message: dataMessage[0] });
-
             var idMember;
-            //Obtengo el id del futuro miembro del equipo, identificar si el idEmisor/idReceptor
+            //Obtengo el id del futuro miembro del equipo, identifica si el idEmisor/idReceptor
             //es el futuro miembro
-            if (dataMessage[0].idCreador === dataMessage[0].idEmisor) {
+            if (dataMessage[0].idCreador === dataMessage[0].idEmisor) 
                 idMember = dataMessage[0].idReceptor;
-            }
-            else {
+            else 
                 idMember = dataMessage[0].idEmisor;
-            }
             //estudiante se une al equipo
             StudentService.joinTeam(this.state.team.id, idMember)
                 .then(response => {
@@ -156,7 +154,6 @@ class Message extends Component {
             this.showModalAnswerJoinTeam();
         }
     }
-
 
     showModalAcceptJoinTeam = () => {
         this.setState({

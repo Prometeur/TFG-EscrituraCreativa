@@ -109,7 +109,7 @@ class modelStudent {
         });
     }
 
-    /*Obtiene el escrito del estudiante segun su grupo*/
+    /*Obtiene el escrito del estudiante */
     getWriting(idWriting, callback) {
         const sqlSelect = "SELECT * FROM escrito where id= ?;";
         this.pool.query(sqlSelect, idWriting, (err, result) => {
@@ -137,7 +137,7 @@ class modelStudent {
 
     /*Obtiene los escritos del estudiante*/
     getWritingsStudent(idStudent, idGroup, callback) {
-        const sqlSelect = "SELECT g.nombre as nombreGrupo,u.nombre ,u.apellidos, c.titulo as nombreDesafio, w.id,w.idGrupo,w.idDesafio,w.idEscritor,w.puntuacion,w.comentario,w.colaborativo,w.finalizado,w.fecha,w.activo FROM escrito as w INNER JOIN usuario as u ON w.idEscritor= u.id INNER JOIN desafio as c ON w.idDesafio= c.id INNER JOIN grupo as g ON  w.idGrupo=g.id where w.idEscritor= ? AND w.idGrupo=?;";
+        const sqlSelect = "SELECT g.nombre as nombreGrupo,u.nombre ,u.apellidos, c.titulo as nombreDesafio, c.fechaFin,w.id,w.idGrupo,w.idDesafio,w.idEscritor,w.nombre as nombreEscrito,w.puntuacion,w.comentario,w.colaborativo,w.finalizado,w.fecha,w.activo FROM escrito as w INNER JOIN usuario as u ON w.idEscritor= u.id INNER JOIN desafio as c ON w.idDesafio= c.id INNER JOIN grupo as g ON  w.idGrupo=g.id where w.idEscritor= ? AND w.idGrupo=?;";
         this.pool.query(sqlSelect, [idStudent, idGroup], (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
@@ -162,7 +162,7 @@ class modelStudent {
     }
 
     /*Envio el escrito del estudiante */
-    sendWriting(idGroup, desafio, idWriter, title, texto, type, callback) {
+    createWriting(idGroup, desafio, idWriter, title, texto, type, callback) {
         const sqlInsert = "INSERT INTO escrito (idGrupo,idDesafio,idEscritor,nombre,texto,colaborativo,activo) VALUES (?,?,?,?,?,?,?)";
         this.pool.query(sqlInsert, [idGroup, desafio, idWriter, title, texto, type, 1], (err, result) => {
             if (err) {
@@ -188,7 +188,7 @@ class modelStudent {
         });
     }
 
-    /*Edito el escrito del estudiante */
+    /*Edito el escrito del equipo del estudiante */
     editWritingTeam(idWriting, idGroup, idChallenge, idWriter, title, text, log, type, callback) {
         const sqlInsert = "UPDATE escrito SET idGrupo = ?,idDesafio = ?, idEscritor = ?, nombre=?,texto = ?, registro=?,colaborativo = ? WHERE id=?";
         this.pool.query(sqlInsert, [idGroup, idChallenge, idWriter, title, text, log, type, idWriting], (err, result) => {
@@ -262,8 +262,8 @@ class modelStudent {
     getTeams(idStudent, callback) {
         // const sqlSelect = "SELECT * FROM equipoestudiante INNER JOIN equipo ON equipoestudiante.idEquipo = equipo.id INNER JOIN grupo ON equipo.idGrupo = grupo.id where idEstudiante= ?";
 
-        const sqlSelect = "SELECT ts.idEquipo as idEquipo,t.nombre as nombreEquipo ,t.idCreador, g.nombre as nombreGrupo, g.id as idGrupo FROM equipoestudiante AS ts INNER JOIN equipo AS t ON ts.idEquipo = t.id INNER JOIN grupo AS g ON t.idGrupo = g.id where ts.idEstudiante= ?";
-        this.pool.query(sqlSelect, idStudent, (err, result) => {
+        const sqlSelect = "SELECT ts.idEquipo as idEquipo,t.nombre as nombreEquipo ,t.idCreador, t.activo,g.nombre as nombreGrupo, g.id as idGrupo FROM equipoestudiante AS ts INNER JOIN equipo AS t ON ts.idEquipo = t.id INNER JOIN grupo AS g ON t.idGrupo = g.id where ts.idEstudiante= ? AND t.activo=?";
+        this.pool.query(sqlSelect, [idStudent,1], (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }
@@ -275,8 +275,8 @@ class modelStudent {
 
     /*Obtiene el equipo del remitente*/
     getTeam(idTeam, callback) {
-        const sqlSelect = "SELECT * FROM equipo WHERE id = ?";
-        this.pool.query(sqlSelect, idTeam, (err, result) => {
+        const sqlSelect = "SELECT * FROM equipo WHERE id = ? AND activo=?";
+        this.pool.query(sqlSelect, [idTeam,1], (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }
@@ -288,8 +288,8 @@ class modelStudent {
 
     /*Obtiene los equipos del grupo*/
     getTeamsGroup(idGroup, callback) {
-        const sqlSelect = "SELECT t.id as idEquipo, t.nombre as nombreEquipo, t.idCreador as idCreador, t.idGrupo as idGrupo,g.idprofesor as idProfesor ,g.nombre as nombreGrupo FROM equipo as t INNER JOIN grupo as g ON t.idGrupo=g.id  WHERE t.idGrupo = ?";
-        this.pool.query(sqlSelect, idGroup, (err, result) => {
+        const sqlSelect = "SELECT t.id as idEquipo, t.nombre as nombreEquipo, t.idCreador as idCreador, t.idGrupo as idGrupo,t.activo,g.idprofesor as idProfesor ,g.nombre as nombreGrupo FROM equipo as t INNER JOIN grupo as g ON t.idGrupo=g.id  WHERE t.idGrupo = ? AND t.activo=?";
+        this.pool.query(sqlSelect, [idGroup,1], (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }
@@ -302,8 +302,8 @@ class modelStudent {
     /*Obtiene equipo del estudiante correspondiente a un grupo en concreto*/
     getTeamStudentGroup(idStudent, idGroup, callback) {
         // const sqlSelect = "SELECT t.id as idEquipo, t.nombre as nombreEquipo, t.idCreador as idCreador, t.idGrupo as idGrupo,g.idprofesor as idProfesor ,g.nombre as nombreGrupo FROM equipo as t INNER JOIN grupo as g ON t.idGrupo=g.id  WHERE t.idGrupo = ?";
-        const sqlSelect = "SELECT t.id as idEquipo,t.nombre as nombreEquipo, t.idCreador as idCreador, ts.idEstudiante as idEstudiante, g.id as idGrupo, g.nombre as nombreGrupo  FROM equipoestudiante as ts INNER JOIN equipo as t ON ts.idEquipo= t.id INNER JOIN grupo as g ON t.idGrupo=g.id WHERE ts.idEstudiante=? AND t.idGrupo=? ";
-        this.pool.query(sqlSelect, [idStudent, idGroup], (err, result) => {
+        const sqlSelect = "SELECT t.id as idEquipo,t.nombre as nombreEquipo, t.idCreador as idCreador, t.activo,ts.idEstudiante as idEstudiante, g.id as idGrupo, g.nombre as nombreGrupo  FROM equipoestudiante as ts INNER JOIN equipo as t ON ts.idEquipo= t.id INNER JOIN grupo as g ON t.idGrupo=g.id WHERE ts.idEstudiante=? AND t.idGrupo=? AND t.activo=?";
+        this.pool.query(sqlSelect, [idStudent, idGroup,1], (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }
@@ -361,9 +361,8 @@ class modelStudent {
 
     /*Edita un equipo*/
     editTeam(idTeam, name, idCreator, idGroup, callback) {
-
-        const sqlUpdate = "UPDATE equipo SET nombre = ?,activo=?,idCreador=?,idGrupo=? WHERE id=? ";
-        this.pool.query(sqlUpdate, [name, 1, idCreator, idGroup, idTeam], (err, result) => {
+        const sqlUpdate = "UPDATE equipo SET nombre = ?,idCreador=?,idGrupo=?,activo=? WHERE id=? ";
+        this.pool.query(sqlUpdate, [name, idCreator, idGroup,1,idTeam], (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }
@@ -373,9 +372,10 @@ class modelStudent {
         });
     }
 
-    /*Elimina un equipo*/
+    /*Elimina/Desactiva un equipo*/
     deleteTeam(idTeam, callback) {
         const sqlDelete = "DELETE FROM equipo WHERE id=?  ";
+        //const sqlUpdate = "UPDATE equipo SET activo = 0 WHERE id=? ";
         this.pool.query(sqlDelete, idTeam, (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
@@ -386,7 +386,7 @@ class modelStudent {
         });
     }
 
-    /*Agrega un estudiante a un equipo*/
+    /*Agrega un estudiante a un equipo en la tabla equipoestudiante*/
     addStudentTeam(idTeam, idStudent, callback) {
         const sqlInsert = "INSERT INTO equipoestudiante (idEquipo,idEstudiante) VALUES (?,?)";
         this.pool.query(sqlInsert, [idTeam, idStudent], (err, result) => {

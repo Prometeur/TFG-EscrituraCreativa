@@ -46,6 +46,7 @@ class WritingsStudent extends Component {
             StudentService.getWritingsStudent(AuthUser.getCurrentUser().id, this.props.groupSelect)
                 .then(response => {
                     if (response.length !== 0) {
+                        debugger;
                         this.setState({ data: response, showWritings: true });
                     }
                 })
@@ -117,8 +118,8 @@ class WritingsStudent extends Component {
                                                 <td>{writing.nombreDesafio}</td>
                                                 <td>{this.showChallengeFinalized(writing)}</td>
                                                 <td>{writing.nombre} {writing.apellidos}</td>
-                                                <td >{formatedDate = moment(writing.fecha).format('DD/MM/YYYY')}</td>
-                                                <td >{formatedDate = moment(writing.fecha).format('LT')}</td>
+                                                <td >{formatedDate = moment(writing.fechaFin).format('DD/MM/YYYY')}</td>
+                                                <td >{formatedDate = moment(writing.fechaFin).format('LT')}</td>
                                                 {this.challengeFinalized(writing) ? (
                                                     <td><Link to={`/student/viewWriting/${this.props.groupSelect}/${writing.idDesafio}/${writing.id}`} ><Button variant="outline-primary" disabled={writing.finalizado === 1 ? false : true}>Ver Escrito</Button></Link></td>
                                                 ) : (

@@ -89,7 +89,7 @@ class Teams extends Component {
 
     /*Dibuja la pagina  */
     render() {
-        const { showTeamStudent } = this.state;
+        const { showTeamStudent,dataTeams } = this.state;
         return (
             <div className="container">
                <Card className="card-long">
@@ -119,7 +119,7 @@ class Teams extends Component {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {this.state.dataTeams.map(team => {
+                                            {dataTeams.filter(team => team.activo === 1).map(team => {
                                                 return (
                                                     <tr key={team.idEquipo}>
                                                         <td>{team.nombreEquipo}</td>
