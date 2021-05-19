@@ -128,48 +128,78 @@ class SearchStudentRes extends Component {
         let tabla = <> </>;
 
         if (this.state.currentUserRole === "T") {
-            tabla = <ListGroup variant="flush">
+            tabla = <ul className={"flex-items-row-start wrap"}  >
 
                 {this.state.filteredData.map((student) =>
                 (
-                    <React.Fragment>
-                        <ListGroup.Item>
-                            {student.id}
-                            <img src={(student.foto.data.length != 0) ? ("data:image/png;base64," +
-                                btoa(String.fromCharCode.apply(null, student.foto.data))) : "/chicaliteratura.png"} alt="" style={{ width: '5%', borderRadius: '80%' }} ></img>
-                            {student.nombre} {student.apellidos}
-                            {student.correo}
-                            <Link key={student.id} to={`/teacher/students/viewProfile/${student.id}`}><button text='Ver Perfil'> Ver perfil </button></Link>
-                        </ListGroup.Item>
-                    </React.Fragment>
+                     <li className={"items-row"}>
+                         <ul className={"container-column-list wrap"}>
+                             <li className={"flex-item-list"}>
+                                 <img src={(student.foto.data.length != 0) ? ("data:image/png;base64," +
+                                     btoa(String.fromCharCode.apply(null, student.foto.data))) : "../chicaliteratura.png"}
+                                      alt=""
+                                      style={{ width: '5%', borderRadius: '80%' }} >
+
+                                 </img>
+                             </li>
+                             <li className={"flex-item-list"}>
+                                 {student.nombre}
+                             </li>
+                             <li className={"flex-item-list"}>
+                                 {student.apellidos}
+                             </li>
+                             <li className={"flex-item-list"}>
+                                 {student.correo}
+                             </li>
+                             <li className={"flex-item-list"}>
+                                 <Link key={student.id} to={`/teacher/students/viewProfile/${student.id}`}>
+                                     <Button size={"sm"} text='Ver Perfil'> Ver perfil </Button>
+                                 </Link>
+                             </li>
+                         </ul>
+                    </li>
 
                 )
                 )}
 
-            </ListGroup>;
+            </ul>;
         }
 
         if (this.state.currentUserRole === "A") {
 
-            tabla = <ListGroup variant="flush">
+            tabla = <ul className={"flex-items-row-start wrap"}>
 
                 {this.state.filteredData.map((student) =>
                 (
-                    <React.Fragment>
-                        <ListGroup.Item>
-                            {student.id}
-                            <img src={(student.foto.data.length != 0) ? ("data:image/png;base64," +
-                                btoa(String.fromCharCode.apply(null, student.foto.data))) : "/chicaliteratura.png"} alt="" style={{ width: '5%', borderRadius: '80%' }} ></img>
-                            {student.nombre} {student.apellidos}
-                            {student.correo}
-                            <Link key={student.id} to={`/admin/users/viewProfile/${student.id}`}><button text='Ver Perfil'> Ver perfil </button></Link>
-                        </ListGroup.Item>
-                    </React.Fragment>
+                    <li className={"items-row"}>
+                        <ul className={"container-column-list wrap"}>
+                            <li className={"flex-item-list"}>
+                                <img src={(student.foto.data.length != 0) ? ("data:image/png;base64," +
+                                    btoa(String.fromCharCode.apply(null, student.foto.data))) : "/chicaliteratura.png"}
+                                     alt=""
+                                     style={{ width: '5%', borderRadius: '80%' }} >
 
-                )
+                                </img>
+                            </li>
+                            <li className={"flex-item-list"}>
+                                {student.nombre}
+                            </li>
+                            <li className={"flex-item-list"}>
+                                {student.apellidos}
+                            </li>
+                            <li className={"flex-item-list"}>
+                                {student.correo}
+                            </li>
+                            <li className={"flex-item-list"}>
+                                <Link key={student.id} to={`/admin/users/viewProfile/${student.id}`}>
+                                    <Button  size={"sm"} text='Ver Perfil'> Ver perfil </Button>
+                                </Link>
+                            </li>
+                        </ul>
+                    </li>
+                  )
                 )}
-
-            </ListGroup>;
+            </ul>;
         }
 
 
@@ -256,10 +286,6 @@ class SearchStudentRes extends Component {
                             <div>
                                 <div className={"row-edit"}>
                                     {searchtools}
-                                    <br />
-                                    <div className={"form-select"}>
-                                        <h6> Resultados de buscar solicitantes con {this.state.searchType} similar a {this.state.searchName}:</h6>
-                                    </div>
                                 </div>
                                 <div className={"row-edit"}>
                                     <br />
@@ -268,8 +294,12 @@ class SearchStudentRes extends Component {
                                 </div>
                             </div>
                         ) : (
-                            <div className="table-margin">
-                                <p>No hay solicitantes para mostrar</p>
+                            <div className="row-edit">
+                                <hr/>
+                                <br/>
+                                <Alert variant={"danger"}>
+                                    No hay solicitantes para mostrar
+                                </Alert>
                             </div>
                         )}
                     </Card.Body>

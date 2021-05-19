@@ -662,7 +662,7 @@ img.figure-profile {
     margin: 2rem 1rem 3rem;
     height: 8rem;
     border-radius: 6rem;
-    background: #c8f1df;
+    background:#bee5eb;
 }
 
 /*Responsive con minimo de 320px -movile*/
@@ -953,7 +953,9 @@ img.figure-profile {
     }
 
     .container {
-        width: 100%;
+        margin-left: 1rem !important;
+        margin-right: 1rem !important;
+        max-width: 97% !important;
     }
 
     .container-home {
@@ -965,7 +967,7 @@ img.figure-profile {
     }
 
     .sidebar-left {
-        width: 13%;
+        width: 12%;
         position: fixed;
         position: fixed;
         height: 30rem;
@@ -980,6 +982,7 @@ img.figure-profile {
 
     .sidebar-left ul {
         margin-top: 6rem;
+        margin-left: .75rem;
     }
 
     .sidebar-left a:hover:not(.active) {
@@ -1101,25 +1104,24 @@ img.figure-profile {
     }
 }
 
-/*Responsive con minimo de 1200px*/
-@media screen and (min-width:1200px) {
+
+
+@media screen and (min-width: 1765px) {
+
+    .sidebar-left {
+        width: 10%;
+        position: fixed;
+        position: fixed;
+        height: 30rem;
+        top:2rem;
+    }
+
     .sidebar-left a {
         text-align: left;
         float: none;
         font-size: .9rem;
     }
 
-    .text-area-comment {
-        overflow: auto;
-        width: 61rem;
-        height: 15rem;
-    }
 }
 
-/*Responsive con minimo de 1444px*/
-@media screen and (min-width: 1444px){
-    .items-column {
-        margin: 0 1.9rem 0.2rem 2rem;
-        padding: 0;
-    }
-}
+

@@ -77,7 +77,6 @@ class SearchStudentRes extends Component {
     componentDidMount() {
 
         TeacherService.searchStudent(this.state.searchStudent, this.state.searchType).then(response => {
-            debugger;
             if (response.length > 0) {//si existen estudiantes
                 this.setState({ data: response });
                 this.setState({ filteredData: response });

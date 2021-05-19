@@ -150,7 +150,6 @@ class Challenges extends Component {
     {
         tabla = <div className="row-edit">
                         <Alert variant={"danger"}>
-                            <img src="/info.png" alt=""/>
                             No hay desafíos en estos momentos.
                         </Alert>
                 </div>;

@@ -89,7 +89,7 @@ class GroupTeacher extends Component {
 
     /*Dibuja la pagina  */
     render() {
-        let cartel =<div> </div>;
+        let cartel =<></>;
         let tabla =
         <div className = "scriptList">
         
@@ -112,10 +112,12 @@ class GroupTeacher extends Component {
     ;
         if(this.state.filteredData.length === 0)
         {
-            cartel = <div className={"row-edit"}>
-                        <h2>No hay resultados para la búsqueda realizada.</h2>
-                    </div>;
-            tabla = <div></div>;
+            cartel = <>
+                        <Alert variant={"danger"}>
+                            No hay resultados para la búsqueda realizada.
+                        </Alert>
+                    </>;
+            tabla = <></>;
         }
 
 
