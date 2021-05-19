@@ -1,7 +1,6 @@
 /*
-*  Name_file :GroupTeacher.js
-*  Description: Pagina del grupo seleccionado por profesor, contiene la vista de los desafios  
-*  que tiene el grupo seleccionado por el profesor  
+*  Name_file :ChallengesTeam.js
+*  Description: Pagina que muestra los desafios colaborativos
 */
 import React, { Component } from 'react';
 import StudentService from '../../../services/student/student-service.js';
@@ -28,29 +27,19 @@ class ChallengesTeam extends Component {
         super(props);
 
         this.state = {
-            dataTeams: [],//Contiene los equipos del estudiante
-            dataTeamStudent: [],//Contiene el equipo del estudiante
+            dataTeams: [],//contiene los equipos del estudiante
+            dataTeamStudent: [],//contiene el equipo del estudiante
             data: [],//contiene desafios del estudiante
             dataWritingTeam: [],//contiene escritos del equipo del estudiante
-            showChallenges: false,
+            showChallenges: false,//booleano que activa tabla si existen desafíos
         };
     }
 
     componentDidMount() {
         if (this.props.groupSelect === undefined) {
-            //obtener desafios idUser y type(individual=1 o colaborativo=2)
-            // StudentService.getChallengesIndividual(AuthUser.getCurrentUser().id, 2)
-            //     .then(response => {
-            //         if (response.length !== 0) {
-            //             this.setState({ data: response, showChallenges: true });
-            //         }
-            //     }).catch(error => {
-            //         console.log(error.message);
-            //     })
-
             StudentService.getTeams(AuthUser.getCurrentUser().id)
                 .then(responseTeams => {
-                    //si el usuario tiene equipos puede ver  desafios
+                    //si el estudiante tiene equipos puede ver desafios
                     if (responseTeams.length != 0) {
                         this.setState({ dataTeams: responseTeams });
                         StudentService.getChallengesIndividual(AuthUser.getCurrentUser().id, 2)
@@ -75,16 +64,9 @@ class ChallengesTeam extends Component {
                 }).catch(error => {
                     console.log(error.message);
                 })
-
-
-            // //obtiene los escritos colaborativos del estudiante
-            // StudentService.getWritingsCollaborative(AuthUser.getCurrentUser().id)
-            //     .then(responseWritings => {
-            //         this.setState({ dataWritingTeam: responseWritings.data });
-            //     })
         }
         else {
-            /**Obtiene los desafios del estudiante segun su grupo */
+            /**Obtiene los desafios del estudiante según su grupo */
             StudentService.getChallenges(this.props.groupSelect, 2).then(response => {
                 if (response.length !== 0) {
                     this.setState({ data: response, showChallenges: true });
@@ -93,11 +75,9 @@ class ChallengesTeam extends Component {
                 console.log(error.message);
             })
 
-            
             /*Obtiene equipo del estudiante correspondiente a un grupo en concreto*/
             StudentService.getTeamStudentGroup(AuthUser.getCurrentUser().id, this.props.groupSelect)
                 .then(respuesta => {
-                   
                     //si el estudiante tiene equipo
                     if (respuesta.length != 0) {
                         this.setState({ dataTeams: respuesta });
@@ -135,8 +115,6 @@ class ChallengesTeam extends Component {
     };
 
     disabledButtonCreate = (challenge, n, existsTeam) => {
-
-
         //si no tiene equipo en el grupo de ese desafio
         if (!existsTeam) {
             return true;
@@ -156,12 +134,10 @@ class ChallengesTeam extends Component {
 
     //Devuelve el tipo de desafio
     showCollaborative = (challenge) => {
-        if (challenge.colaborativo === 1) {
+        if (challenge.colaborativo === 1) 
             return "individual"
-        }
-        else {
+        else
             return "colaborativo"
-        }
     }
 
 
@@ -218,16 +194,13 @@ class ChallengesTeam extends Component {
                                                 <tr key={challenge.id}>
                                                     <td>{challenge.titulo}</td>
                                                     <td>{challenge.nombreGrupo}</td>
-                                                    {/* <td>{this.showNameTeam()}</td> */}
                                                     <td>{challenge.nombreCategoria}</td>
                                                     <td>{this.showCollaborative(challenge)}</td>
                                                     <td>{formatedDate = moment(challenge.fechaFin).format('DD/MM/YYYY')}</td>
                                                     <td>{formatedDate = moment(challenge.fechaFin).format('LT')}</td>
                                                     <td >{this.showChallengeFinalized(challenge)}</td>
-
                                                     {existsWriting = false}
                                                     {existsTeam = false}
-                                                    {/* Si el desafio tiene un escrito*/}
                                                     {dataWritingTeam.filter(writing => writing.idDesafio === challenge.id)
                                                         .map((item, index) => {
                                                                 existsWriting = true;

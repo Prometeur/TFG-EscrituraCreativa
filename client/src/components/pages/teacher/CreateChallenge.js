@@ -155,7 +155,7 @@ class CreateChallenge extends Component {
         let formErrors = { ...this.state.formErrors };
         //Si la fecha actual es mayor que la fecha seleccionada
         if (dateActual > date) {
-            formErrors.date = "Fecha no válida";
+            formErrors.date = "Campo fecha no válida";
         }
         else {
             formErrors.date = "";
@@ -232,9 +232,10 @@ class CreateChallenge extends Component {
                                 placeholder="Escribe el título"
                                 onChange={this.handleErrors}
                             />
+                        
                             {formErrors.title.length > 0 && (
-                                <span className="errorMessage">{formErrors.title}</span>
-                            )}
+                                    <span className="alert-login">{formErrors.title}</span>
+                                )}
                         </div>
 
                         <div className="row-edit">
@@ -253,7 +254,7 @@ class CreateChallenge extends Component {
                                     (event, editor) => {
                                         let formErrors = { ...this.state.formErrors };
                                         if(!editorState.getCurrentContent().hasText()){
-                                            formErrors.description="Texto Vacío";
+                                            formErrors.description="Campo texto vacío";
                                         }
                                         else{
                                             formErrors.description="";
@@ -270,8 +271,8 @@ class CreateChallenge extends Component {
                                 className={formErrors.description.length > 0 ? "error" : "form-control"}
                             />
                              {formErrors.description.length > 0 && (
-                                <span className="errorMessage">{formErrors.description}</span>
-                            )}
+                                <span className="alert-login">{formErrors.description}</span>
+                            )}        
                         </div>
 
                         <ul className={"flex-row"}>
@@ -318,7 +319,7 @@ class CreateChallenge extends Component {
                             />
 
                             {formErrors.date.length > 0 && (
-                                <span className="errorMessage">{formErrors.date}</span>
+                                <span className="alert-login">{formErrors.date}</span>
                             )}
 
                         </div>

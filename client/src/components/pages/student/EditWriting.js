@@ -365,7 +365,7 @@ class EditWriting extends Component {
                                         onChange={this.onChangeWritingName}
                                     />
                                     {formErrors.title.length > 0 && (
-                                        <span className="errorMessage">{formErrors.title}</span>
+                                        <span className="alert-login">{formErrors.title}</span>
                                     )}
                                 </div>
                             </div>
@@ -388,7 +388,7 @@ class EditWriting extends Component {
                                     (event, editor) => {
                                         let formErrors = { ...this.state.formErrors };
                                         if (!editorState.getCurrentContent().hasText()) {
-                                            formErrors.description = "Texto Vacío";
+                                            formErrors.description = "Campo texto vacío";
                                         }
                                         else {
                                             formErrors.description = "";
@@ -405,7 +405,7 @@ class EditWriting extends Component {
                                 className={formErrors.description.length > 0 ? "error" : "form-control"}
                             />
                             {formErrors.description.length > 0 && (
-                                <span className="errorMessage">{formErrors.description}</span>
+                                <span className="alert-login">{formErrors.description}</span>
                             )}
 
                         </div>

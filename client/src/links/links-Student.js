@@ -7,18 +7,18 @@ const linksTeacher = [
         id: "challenges"
     },
     {
+        path: "/challengesTabs",
+        name: "Crear Escrito",
+        icon:"/create-new.png",
+        id: "desafios"
+    },
+    {
         path: "/writingsTabs",
         name: "Escritos",
         icon:"/writing.png",
         id: "escritos"
     }
     ,
-    {
-        path: "/challengesTabs",
-        name: "Crear Escrito",
-        icon:"/create-new.png",
-        id: "desafios"
-    },
     {
         path: "/teams",
         name: "Equipos",

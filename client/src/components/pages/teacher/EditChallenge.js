@@ -226,7 +226,7 @@ class EditChallenge extends Component {
         let formErrors = { ...this.state.formErrors };
         //Si la fecha actual es mayor que la fecha seleccionada
         if (dateActual > date) {
-            formErrors.date = "Fecha no válida";
+            formErrors.date = "Campo Fecha no válida";
         }
         else {
             formErrors.date = "";
@@ -300,10 +300,10 @@ class EditChallenge extends Component {
         });
     }
 
-     //Desactiva boton
-     disabledButton = () => {
+    //Desactiva boton
+    disabledButton = () => {
         var dateActual = new Date();//"<p></p>\n"
-        if (this.state.form.title.length === 0 || dateActual > this.state.form.date || this.state.form.description.length === 0 || this.state.form.description==="<p></p>\n") {
+        if (this.state.form.title.length === 0 || dateActual > this.state.form.date || this.state.form.description.length === 0 || this.state.form.description === "<p></p>\n") {
             return true;//desactivar
         }
         else
@@ -334,9 +334,10 @@ class EditChallenge extends Component {
                                     onChange={this.handleErrors}
                                 />
                                 {formErrors.title.length > 0 && (
-                                    <span className="errorMessage">{formErrors.title}</span>
+                                    <span className="alert-login">{formErrors.title}</span>
                                 )}
                             </div>
+
                         </div>
                         <div className="row-edit">
                             <label className='form-label'>Descripción</label>
@@ -354,11 +355,11 @@ class EditChallenge extends Component {
                                 onChange={
                                     (event, editor) => {
                                         let formErrors = { ...this.state.formErrors };
-                                        if(!editorState.getCurrentContent().hasText()){
-                                            formErrors.description="Texto Vacío";
+                                        if (!editorState.getCurrentContent().hasText()) {
+                                            formErrors.description = "Campo texto vacío";
                                         }
-                                        else{
-                                            formErrors.description="";
+                                        else {
+                                            formErrors.description = "";
                                         }
                                         this.setState({
                                             formErrors,
@@ -372,7 +373,7 @@ class EditChallenge extends Component {
                                 className={formErrors.description.length > 0 ? "error" : "form-control"}
                             />
                             {formErrors.description.length > 0 && (
-                                <span className="errorMessage">{formErrors.description}</span>
+                                <span className="alert-login">{formErrors.description}</span>
                             )}
                         </div>
                         <ul className={"flex-row"}>
@@ -410,45 +411,45 @@ class EditChallenge extends Component {
                             <label className='form-label'> Fecha y hora de fin del desafío </label>
                         </div>
                         <div className="form-select">
-                            <Dates  
-                            className={formErrors.date.length > 0 ? "error" : "form-control"}
-                            handleDateChange={this.handleDateChange} 
-                            param={this.state.form.date} />
-                             {formErrors.date.length > 0 && (
-                                <span className="errorMessage">{formErrors.date}</span>
+                            <Dates
+                                className={formErrors.date.length > 0 ? "error" : "form-control"}
+                                handleDateChange={this.handleDateChange}
+                                param={this.state.form.date} />
+                            {formErrors.date.length > 0 && (
+                                <span className="alert-login">{formErrors.date}</span>
                             )}
                         </div>
                         <div className="row-edit">
                             <label className='form-label'> Ficheros Multimedia </label>
-                            {dataMediaChallenge.length>0 ? (
-                            <table>
-                                <tbody>
-                                    <div className={"table-multi"}>
-                                        {dataMediaChallenge.map((mediaChallenge) => (
-                                            <tr key={mediaChallenge.id}>
-                                                <td>
-                                                    {this.showTitle(mediaChallenge)}
-                                                </td>
-                                                <td>
-                                                    <div className="form-button">
-                                                        <Button onClick={() => window.open(mediaChallenge.ruta)}>Ver</Button>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="form-button">
-                                                        <Button onClick={() => this.askDeleteFile(mediaChallenge)}>Eliminar</Button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </div>
-                                </tbody>
-                            </table>
-                              ) : (
+                            {dataMediaChallenge.length > 0 ? (
+                                <table>
+                                    <tbody>
+                                        <div className={"table-multi"}>
+                                            {dataMediaChallenge.map((mediaChallenge) => (
+                                                <tr key={mediaChallenge.id}>
+                                                    <td>
+                                                        {this.showTitle(mediaChallenge)}
+                                                    </td>
+                                                    <td>
+                                                        <div className="form-button">
+                                                            <Button onClick={() => window.open(mediaChallenge.ruta)}>Ver</Button>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="form-button">
+                                                            <Button onClick={() => this.askDeleteFile(mediaChallenge)}>Eliminar</Button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </div>
+                                    </tbody>
+                                </table>
+                            ) : (
                                 <div className="row-edit">
-                              <p>No hay ficheros para mostrar</p>
-                            </div>
-                        )}
+                                    <p>No hay ficheros para mostrar</p>
+                                </div>
+                            )}
                         </div>
                         <div className="row-edit">
                             <div className={"form-select"}>

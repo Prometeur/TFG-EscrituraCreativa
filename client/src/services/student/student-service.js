@@ -171,8 +171,8 @@ class StudentService {
     }
 
     /*Envia el escrito del estudiante segun su grupo*/
-    sendWriting(idGroup, idChallenge, idWriter, title, escrito, type) {
-        return axios.post("/student/sendWriting", { idGroup: idGroup, idChallenge: idChallenge, idWriter: idWriter, title: title, escrito: escrito, type: type }, {
+    createWriting(idGroup, idChallenge, idWriter, title, escrito, type) {
+        return axios.post("/student/createWriting", { idGroup: idGroup, idChallenge: idChallenge, idWriter: idWriter, title: title, escrito: escrito, type: type }, {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
             return response.data;

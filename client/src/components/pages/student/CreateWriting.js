@@ -113,7 +113,7 @@ class CreateWriting extends Component {
     }
 
     /*Envia el escrito y multimedia del estudiante*/
-    sendWriting = () => {
+    createWriting = () => {
         this.onModalCreateWriting(false);
         //Compruebo si no se ha creado un escrito anteriormente 
         StudentService.getWritingWriter(this.props.match.params.idGroup, this.props.match.params.idChallenge, this.state.form.idWriter)
@@ -123,7 +123,7 @@ class CreateWriting extends Component {
                     /**Si el estudiante/equipo ha escrito algo se envia */
                     if (this.state.form.escrito !== '') {
                         /*Envia el escrito del estudiante*/
-                        StudentService.sendWriting(this.props.match.params.idGroup, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.title, this.state.form.escrito, this.state.challenge.colaborativo)
+                        StudentService.createWriting(this.props.match.params.idGroup, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.title, this.state.form.escrito, this.state.challenge.colaborativo)
                             .then(response => {
                                 if (this.state.imgCollection.length > 0) {
                                     /*Envia los archivos multimedia del estudiante*/
@@ -297,7 +297,7 @@ class CreateWriting extends Component {
                                         onChange={this.onChangeWritingName}
                                     />
                                     {formErrors.title.length > 0 && (
-                                        <span className="errorMessage">{formErrors.title}</span>
+                                        <span className="alert-login">{formErrors.title}</span>
                                     )}
                                 </div>
                             </div>
@@ -318,7 +318,7 @@ class CreateWriting extends Component {
                                     (event, editor) => {
                                         let formErrors = { ...this.state.formErrors };
                                         if (!editorState.getCurrentContent().hasText()) {
-                                            formErrors.description = "Texto Vacío";
+                                            formErrors.description = "Campo texto Vacío";
                                         }
                                         else {
                                             formErrors.description = "";
@@ -335,7 +335,7 @@ class CreateWriting extends Component {
                                 className={formErrors.description.length > 0 ? "error" : "form-control"}
                             />
                             {formErrors.description.length > 0 && (
-                                <span className="errorMessage">{formErrors.description}</span>
+                                <span className="alert-login">{formErrors.description}</span>
                             )}
                         </div>
                         <br />
@@ -365,7 +365,7 @@ class CreateWriting extends Component {
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <Button onClick={() => this.sendWriting()}>Aceptar</Button>
+                        <Button onClick={() => this.createWriting()}>Aceptar</Button>
                         <Button variant="danger" onClick={() => this.onModalCreateWriting(false)}>Cancelar</Button>
                     </Modal.Footer>
                 </Modal>           

@@ -125,8 +125,8 @@ class WritingsTeam extends Component {
                                                 <td>{writing.nombreDesafio}</td>
                                                 <td>{this.showChallengeFinalized(writing)}</td>
                                                 <td>{writing.nombreEquipo}</td>
-                                                <td >{formatedDate = moment(writing.fecha).format('DD/MM/YYYY')}</td>
-                                                <td >{formatedDate = moment(writing.fecha).format('LT')}</td>
+                                                <td >{formatedDate = moment(writing.fechaFin).format('DD/MM/YYYY')}</td>
+                                                <td >{formatedDate = moment(writing.fechaFin).format('LT')}</td>
 
                                                 {this.challengeFinalized(writing) ? (
                                                     <td><Link to={`/student/viewWriting/${this.props.groupSelect}/${writing.idDesafio}/${writing.id}`} ><Button variant="outline-primary" disabled={writing.finalizado === 1 ? false : true}>Ver</Button></Link></td>

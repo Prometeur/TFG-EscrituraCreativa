@@ -57,7 +57,7 @@ router.get("/getWritingsTeam", controller.getWritingsTeam);
 router.get("/getWritingsStudent", controller.getWritingsStudent);
 
 /*Envio el escrito del estudiante */
-router.post("/sendWriting", controller.sendWriting);
+router.post("/createWriting", controller.createWriting);
 
 /*Edito el escrito del estudiante */
 router.post("/editWriting", controller.editWriting);

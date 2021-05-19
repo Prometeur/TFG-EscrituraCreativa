@@ -89,14 +89,14 @@ function getMultimediaChallenge(req, res) {
 //-----------------------------------------------------WRITINGS---------------------------------------------------------------//
 
 /*Envio el escrito del estudiante */
-function sendWriting(req, res) {
+function createWriting(req, res) {
     const idGroup = req.body.idGroup;
     const desafio = req.body.idChallenge;
     const idWriter = req.body.idWriter;
     const title = req.body.title;
     const texto = req.body.escrito;
     const type = req.body.type;
-    modelStudent.sendWriting(idGroup, desafio, idWriter, title, texto, type, function (err, result) {
+    modelStudent.createWriting(idGroup, desafio, idWriter, title, texto, type, function (err, result) {
         if (err) {
             console.log(err.message);
         }
@@ -139,7 +139,7 @@ function getWritings(req, res) {
 /*Obtiene todos los escritos colaborativos activos del equipo del estudiante*/
 function getWritingsCollaborative(req, res) {
     const idStudent = req.query.idStudent;
-
+    console.log("",idStudent);
     modelStudent.getWritingsCollaborative(idStudent, function (err, result) {
         if (err) {
             res.status(500).send({ error: err.message });
@@ -650,7 +650,7 @@ module.exports = {
     //MultimediaChallenge
     getMultimediaChallenge: getMultimediaChallenge,
     //Writings
-    sendWriting: sendWriting,
+    createWriting: createWriting,
     getWriting: getWriting,
     getWritings: getWritings,
     editWriting: editWriting,
