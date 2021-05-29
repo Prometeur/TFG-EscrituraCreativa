@@ -82,7 +82,7 @@ class GroupTeams extends Component {
                         </li>
                         <li className={"flex-item-list"}>
                             <Link key={team.id} to={`/teacher/viewTeam/${team.id}`}>
-                                <Button size={"sm"} variant={"outline-secondary"} text='Ver Equipo'>Ver equipo</Button>
+                                <Button size={"sm"} variant={"primary"} text='Ver Equipo'>Ver equipo</Button>
                             </Link>
                         </li>
                     </ul>
@@ -121,9 +121,9 @@ class GroupTeams extends Component {
                         </div>
                     ) : (
                         <div className="row-edit">
-                                    <Alert variant={"danger"}>
-                                        No hay equipos con esos parámetros.
-                                    </Alert>
+                            <Alert variant={"danger"}>
+                                No hay equipos con esos parámetros.
+                            </Alert>
                         </div>
                     )}
                 </Card.Body>

@@ -12,6 +12,7 @@ import '../../../styles/ScriptList.css';
 /**Estilos bootstrap*/
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
+import Card from "react-bootstrap/Card";
 
 class GroupTeacher extends Component {
 
@@ -97,12 +98,24 @@ class GroupTeacher extends Component {
                 return (
                 <div className ="scriptCardContainer">
                     <Link to={`/teacher/editWriting/${script.idGrupo}/${script.idDesafio}/${script.id}/${script.idEscritor}`}>
-                            <div className ="scriptCard">
-                                <h6>Nombre</h6>
+                        <Card
+                            key={script.idGrupo}
+                            style={{ width: '18rem' }}
+                            className="mb-2"
+                            bg={'Light'}
+                        >
+                            <Card.Header>
                                 <h5>{script.nombre}</h5>
-                                <h6>Desafío</h6>
-                                <h5>{script.titulo}</h5>
-                        </div>
+                            </Card.Header>
+                            <Card.Body>
+                                <Card.Title>
+                                    <h6>Desafío</h6>
+                                </Card.Title>
+                                <Card.Text>
+                                    <h5>{script.titulo}</h5>
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
                     </Link>
                 </div>
                 )
@@ -112,11 +125,11 @@ class GroupTeacher extends Component {
     ;
         if(this.state.filteredData.length === 0)
         {
-            cartel = <>
+            cartel = <div className={"row-edit"}>
                         <Alert variant={"danger"}>
                             No hay resultados para la búsqueda realizada.
                         </Alert>
-                    </>;
+                    </div>;
             tabla = <></>;
         }
 

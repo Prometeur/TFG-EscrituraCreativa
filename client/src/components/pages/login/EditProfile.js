@@ -1,9 +1,22 @@
+/**
+ *
+ *  Name_file: EditProfile.js
+ *  Description: Ventana  de modificación de datos para los usuarios de la aplicación.
+ *
+ * */
+
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import AuthService from "../../../services/authenticity/auth-service";
 import StudentService from "../../../services/student/student-service.js";
+import { isEmail } from "validator";
+
+
+/** Estilos CSS*/
 import '../../../styles/styleGeneral.css';
 import '../../../styles/styleCard.css';
+
+/**Estilos Bostrap*/
 import Card from 'react-bootstrap/Card';
 import Modal from 'react-bootstrap/Modal';
 import Form from "react-validation/build/form";
@@ -13,7 +26,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Alert from "react-bootstrap/Alert";
-import { isEmail } from "validator";
+
 
 
 const required = value => {
@@ -227,19 +240,6 @@ export default class Profile extends Component {
         });
     }
 
-    //Carga los ficheros multimedia del escrito
-    // onFileChange(e) {
-    //     console.log(e.target.value, e.target);
-
-    //     if (e.target.value) {
-    //         this.setState({
-    //             updateUser: {
-    //                 ...this.state.updateUser,
-    //                 photo: e.target.value
-    //             }
-    //         });
-    //     }
-    // }
 
     onFileChange2 = (e) => {
         if (e.target.files && e.target.files.length > 0) {
@@ -350,15 +350,21 @@ export default class Profile extends Component {
         return (
             <>
                 <div className="editPerfil-left">
-                    <Button size="sm" variant="danger" onClick={() => this.onDeleteModal(true)}>
-                        Baja de cuenta
-                    </Button>
+                    <div className={"form-button"}>
+                        <Button size={"sm"} variant="danger" onClick={() => this.onDeleteModal(true)}>
+                            Dar de baja esta cuenta
+                        </Button>
+                    </div>
+                    <img  className={"img-editprofile-button"} src="/plumaliteratura.png" alt=""/>
                 </div>
                 <div className="container">
                     <Card className="card-profile">
                         <Card.Body>
-                            <h2 className="form-title">Modificar Datos</h2>
-
+                            <div className={"row-edit"}>
+                                <div className={"section-title"}>
+                                    <h2>Modificar Datos</h2>
+                                </div>
+                            </div>
                             <Form
                                 onSubmit={this.handleRegister}
                                 ref={c => {
@@ -459,12 +465,12 @@ export default class Profile extends Component {
                                     }}
                                 />
                             </Form>
-
+                            <br/>
                             <div className="section-card">
-                                <div className="form-select">
+                                <div className="form-button">
                                     <Button onClick={() => this.onModal(true)}>Guardar</Button>
                                 </div>
-                                <div className="form-select">
+                                <div className="form-button">
                                     <Button href="/profile">Cancelar</Button>
                                 </div>
                             </div>
@@ -530,7 +536,7 @@ export default class Profile extends Component {
                                 </Modal.Body>
                                 <Modal.Footer>
                                     <Button variant="primary" onClick={() => this.deleteUser()}>aceptar</Button>
-                                    <Button variant="secondary" onClick={() => this.onDeleteModal(false)}>No</Button>
+                                    <Button variant="danger" onClick={() => this.onDeleteModal(false)}>Cancelar</Button>
                                 </Modal.Footer>
                             </Modal>
 

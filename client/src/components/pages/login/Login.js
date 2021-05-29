@@ -147,7 +147,6 @@ class Login extends Component {
                                 validations={[required]}
                             />
                           </div>
-                           <Link to={""}>¿Has olvidado tu contraseña?</Link>
                           <div className="section-column">
                             <button className="button button5" > Login </button>
                           </div>

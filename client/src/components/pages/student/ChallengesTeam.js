@@ -172,21 +172,21 @@ class ChallengesTeam extends Component {
                         {showChallenges ? (
                             <>
                                 <div className={"row-edit"}>
-                                    <h5>Lista de escritos</h5>
+                                    <label className={"form-label"}>Lista de escritos</label>
                                 </div>
                                 <div className={"row-edit"}>
                                     <div className="table-margin">
-                                        <Table striped bordered hover responsive>
+                                        <Table bordered hover responsive>
                                             <thead>
                                             <tr>
                                                 <th>Desafio</th>
                                                 <th>Grupo</th>
-                                                {/* <th>Equipo</th> */}
                                                 <th>Categoria</th>
                                                 <th>Tipo</th>
                                                 <th>Fecha</th>
                                                 <th>Hora</th>
                                                 <th>Finalizado</th>
+                                                <th>Acciones</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -215,7 +215,13 @@ class ChallengesTeam extends Component {
                                                         )}
 
                                                     {existsTeam ? (
-                                                        <td><Link to={`/student/writing/${challenge.idGrupo}/${challenge.id}`}><Button variant="outline-primary" disabled={this.disabledButtonCreate(challenge, existsWriting, existsTeam)}>Crear Escrito</Button></Link></td>
+                                                        <td>
+                                                            <Button href={`/student/writing/${challenge.idGrupo}/${challenge.id}`}
+                                                                    variant="primary"
+                                                                    disabled={this.disabledButtonCreate(challenge, existsWriting, existsTeam)}>
+                                                                Crear Escrito
+                                                            </Button>
+                                                        </td>
                                                     ) : (
                                                         <></>
 

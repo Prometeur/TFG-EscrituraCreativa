@@ -307,9 +307,9 @@ class modelTeacher {
             if (err) {
                 callback(new Error("No se puede conectar a la base de datos."))
             } else {
-                let consulta = 'SELECT id, nombre, apellidos, foto, correo FROM usuario WHERE (nombre LIKE ? OR apellidos LIKE ?) AND activo = 0;';
+                let consulta = 'SELECT id, nombre, apellidos, foto, ruta, correo FROM usuario WHERE (nombre LIKE ? OR apellidos LIKE ?) AND activo = 0;';
                 if(tipo == "email"){
-                    consulta = 'SELECT id, nombre, apellidos, foto, correo FROM usuario WHERE correo LIKE ? AND rol = "S" AND activo = 0;';
+                    consulta = 'SELECT id, nombre, apellidos, foto, ruta, correo FROM usuario WHERE correo LIKE ? AND rol = "S" AND activo = 0;';
                 }
                 const sql = consulta; 
                 const valores = [ "%" + clave + "%", "%" + clave + "%"];

@@ -510,6 +510,7 @@ class TeamStudent extends Component {
     render() {
         const { showCreateTeam, showTeamStudent, showLiderStudent, formErrors, dataTeamStudentGroup, dataMembersTeam } = this.state;
         return (
+           <div className={"container"}>
             <Card className="card-long">
                 <Card.Body>
                     {showLiderStudent ? (
@@ -517,8 +518,8 @@ class TeamStudent extends Component {
                             <div className="row-edit">
                                 <Alert variant={"info"}>
                                     <img src="/info.png" alt="" />
-                                         Puedes seleccionar a un estudiante del grupo e invitarle o eliminar a miembro de tu equipo.
-                                    </Alert>
+                                    Puedes seleccionar a un estudiante del grupo e invitarle o eliminar a miembro de tu equipo.
+                                </Alert>
                             </div>
                             <div className={"row-edit"}>
                                 <ul className="flex-row">
@@ -559,9 +560,12 @@ class TeamStudent extends Component {
                         <></>
                     )}
                     {showTeamStudent ? (
+                        <>
+                        <hr/>
+                        <div className={"row-edit"}>
+                            <label className={"form-label"}>Lista de equipos</label>
+                        </div>
                         <div className="row-edit">
-                            <br />
-                            <h5>Lista de equipos</h5>
                             <Table bordered hover responsive>
                                 <thead>
                                     <tr>
@@ -570,9 +574,9 @@ class TeamStudent extends Component {
                                         <th>Integrantes</th>
                                         <th>Lider</th>
                                         <th>Acciones</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
-
                                 <tbody>
                                     {dataTeamStudentGroup.map(team => {
                                         return (
@@ -580,26 +584,37 @@ class TeamStudent extends Component {
                                                 <td>{team.nombreEquipo}</td>
                                                 <td>{team.nombreGrupo}</td>
                                                 {dataMembersTeam.map(item =>
-                                                    <tr>
+                                                    <td>
                                                         <div>{item.nombreEstudiante} {item.apellidoEstudiante}</div>
-                                                    </tr>
+                                                    </td>
                                                 )}
                                                 <td>{this.state.nameLider}</td>
-                                                <td><Button variant="outline-primary" disabled={this.disabledButtonDeleteTeam()} onClick={() => this.askDeleteTeam()} >Eliminar Equipo</Button></td>
-                                                <td><Button disabled={this.state.dataMembersTeam.length < 2 ? true : null} onClick={() => this.askLeaveTeam()} >Dejar Equipo</Button>  </td>
+                                                <td>
+                                                    <img src="/delete.png" alt=""/>
+                                                    <Button variant="link" disabled={this.disabledButtonDeleteTeam()} onClick={() => this.askDeleteTeam()} >
+                                                        Eliminar
+                                                    </Button>
+                                                </td>
+                                                <td>
+                                                    <img src="/exit.png" alt=""/>
+                                                    <Button variant="link" disabled={this.state.dataMembersTeam.length < 2 ? true : null} onClick={() => this.askLeaveTeam()} >
+                                                        Dejar Equipo
+                                                    </Button>  
+                                                </td>
                                             </tr>
                                         )
                                     })}
                                 </tbody>
                             </Table>
                         </div>
+                       </>
                     ) : (
                         <>
                         </>
                     )}
 
                     {showCreateTeam ? (<>
-                        <div >
+                        <div className={"row-edit"}>
                             <h5> Crear Equipo </h5>
                             <input
                                 className={formErrors.teamName.length > 0 ? "error" : "form-input"}
@@ -631,7 +646,6 @@ class TeamStudent extends Component {
                         <Modal.Body>
                         </Modal.Body>
                         <Modal.Footer>
-                            {/* <Button color="primary" onClick={() => this.editar(this.state.form)}>Aceptarr</Button> */}
                             <Button onClick={() => this.createTeam()}>Aceptar</Button>
                             <Button color="danger" onClick={() => this.setState({ modalCreateTeam: false })}>Cancelar</Button>
                         </Modal.Footer>
@@ -655,9 +669,8 @@ class TeamStudent extends Component {
                             </select>
                         </Modal.Body>
                         <Modal.Footer>
-                            {/* <Button color="primary" onClick={() => this.editar(this.state.form)}>Aceptarr</Button> */}
                             <Button onClick={() => this.editTeam()}>Aceptar</Button>
-                            <Button color="danger" onClick={() => this.setState({ modalLeaveLider: false })}>Cancelar</Button>
+                            <Button variant={"danger"} onClick={() => this.setState({ modalLeaveLider: false })}>Cancelar</Button>
                         </Modal.Footer>
                     </Modal>
 
@@ -676,22 +689,25 @@ class TeamStudent extends Component {
                         </Modal.Header>
                         <Modal.Body>
                             <p> Equipo creado correctamente!</p>
-                            {/* {this.closeModalSuccessCreateTeam()} */}
                         </Modal.Body>
                         <Modal.Footer>
                         </Modal.Footer>
                     </Modal>
 
-                    <Modal show={this.state.modalDeleteTeam}>
+                    <Modal
+                        show={this.state.modalDeleteTeam}
+                    >
                         <Modal.Header>
-                            <div><h5>¿Estás seguro de eliminar el equipo?</h5></div>
+                            <Modal.Title>Aviso</Modal.Title>
+                            <img src="/triangle.png" alt=""/>
                         </Modal.Header>
                         <Modal.Body>
+                            <h5>¿Estás seguro de eliminar el equipo?</h5>
                         </Modal.Body>
                         <Modal.Footer>
                             {/* <Button color="primary" onClick={() => this.editar(this.state.form)}>Aceptarr</Button> */}
                             <Button onClick={() => this.deleteTeam()}>Aceptar</Button>
-                            <Button color="danger" onClick={() => this.setState({ modalDeleteTeam: false })}>Cancelar</Button>
+                            <Button variant="danger" onClick={() => this.setState({ modalDeleteTeam: false })}>Cancelar</Button>
                         </Modal.Footer>
                     </Modal>
 
@@ -749,9 +765,10 @@ class TeamStudent extends Component {
                         <Modal.Title>
                             Ups...
                         </Modal.Title>
+                        <img src="/exclamation.png" alt=""/>
                     </Modal.Header>
                     <Modal.Body>
-                        No has ingresado un nombre 
+                      <h5> No has ingresado un nombre </h5>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={() => this.onModal(false)}>Atras</Button>
@@ -759,7 +776,7 @@ class TeamStudent extends Component {
                 </Modal>
                 </Card.Body>
             </Card>
-
+           </div>
         );
     }
 }

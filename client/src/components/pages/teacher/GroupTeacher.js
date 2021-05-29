@@ -258,8 +258,6 @@ class GroupTeacher extends Component {
                         <DropdownToggle as={CustomToggle} id="dropdown-custom-components">Selecciona grupo</DropdownToggle>
                         <DropdownMenu as={CustomMenu}>
                           {dataGroup.map((row) => (
-                            // <DropdownItem eventKey={row.id}
-                            //   onClick={() => this.handleSelect(row.id)}>{row.nombre}</DropdownItem>
                             <DropdownItem eventKey={row.idGrupo} onClick={() => this.handleSelect(row)}>{row.nombre}</DropdownItem>
                           ))}
                         </DropdownMenu>
@@ -322,7 +320,7 @@ class GroupTeacher extends Component {
           </Modal.Body>
           <Modal.Footer>
             <Button variant="primary" onClick={() => this.rename()}>Acepto</Button>
-            <Button variant="secondary" onClick={() => this.onModal(false)}>Atras</Button>
+            <Button variant="danger" onClick={() => this.onModal(false)}>Cancelar</Button>
           </Modal.Footer>
         </Modal>
       </div>

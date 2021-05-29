@@ -6,15 +6,18 @@
 import React, { Component } from 'react';
 import { Link} from "react-router-dom";
 import adminService from '../../../services/admin/adminService';
-import teacherService from '../../../services/teacher/teacherService';
-import authHeader from '../../../services/authenticity/auth-header.js';
 import AuthUser from '../../../services/authenticity/auth-service.js';
+
+/**Estilos CSS*/
 import '../../../styles/styleGeneral.css';
 import '../../../styles/styleCard.css';
 import '../../../styles/Challenge.css';
+
+/**Estilos Boostrap*/
 import Card from 'react-bootstrap/Card';
 import Button  from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Alert from 'react-bootstrap/Alert';
 
 
 class GroupList extends Component {
@@ -81,40 +84,70 @@ class GroupList extends Component {
     render() {
 
         let cartel =<></>;
-        let tabla = <ListGroup variant="flush">
+        let alert = <div className={"row-edit"}>
+                        <Alert variant={"info"}>
+                            <img src="/info.png" alt=""/>
+                            Espacio para gestionar los grupos activos.
+                        </Alert>
+                    </div>;
+        let tabla =  <ul className={"flex-items-row-start wrap"} >
 
             {this.state.filteredData.map((group) => 
                 (
-                    <React.Fragment>
-                    <ListGroup.Item>
-                        {group.nombre}
-                        <Link key={group.id} to={`/admin/viewGroup/${group.id}`}><button text='Ver Grupo'> Ver grupo </button></Link>
-                    </ListGroup.Item>
-                    </React.Fragment>
+                    <li className={"items-row"}>
+                        <ul className={"container-column-list wrap"}>
+                            <li className={"flex-item-list"}>
+                                <img src="/team_black.png" alt=""/>
+                            </li>
+                            <li className={"flex-item-list"}>
+                                {group.nombre}
+                            </li>
+                            <li className={"flex-item-list"}>
+                                <Link key={group.id} to={`/admin/viewGroup/${group.id}`}>
+                                    <Button text='Ver Grupo'> Ver grupo </Button>
+                                </Link>
+                            </li>
+                        </ul>
+                        <hr/>
+                    </li>
                 )
             )}
-        </ListGroup>;
+        </ul>;
         if(this.state.currentUserRole ==="T")
         {
-            tabla = <ListGroup variant="flush">
+            alert= <></>
+            tabla = <ul className={"flex-items-row-start wrap"} >
 
                         {this.state.filteredData.map((group) => 
                             (
-                                <React.Fragment>
-                                <ListGroup.Item>
-                                    {group.nombre}
-                                    <Link key={group.id} to={`/teacher/viewGroup/${group.id}`}><button text='Ver Grupo'> Ver grupo </button></Link>
-                                </ListGroup.Item>
-                                </React.Fragment>
+                                <li className={"items-row"}>
+                                    <ul className={"container-column-list wrap"}>
+                                        <li className={"flex-item-list"}>
+                                            <img src="/team_black.png" alt=""/>
+                                        </li>
+                                        <li className={"flex-item-list"}>
+                                            {group.nombre}
+                                        </li>
+                                        <li className={"flex-item-list"}>
+                                            <Link key={group.id} to={`/teacher/viewGroup/${group.id}`}>
+                                                <Button text='Ver Grupo'> Ver grupo </Button>
+                                            </Link>
+                                        </li>
+                                    </ul>
+                                    <hr/>
+                                </li>
                             )
                         )}
-                    </ListGroup>;
+                    </ul>;
         }
         if(this.state.filteredData.length === 0)
         {
-            cartel = <nav>
-                        <h2>No hay resultados para la búsqueda realizada.</h2>
-                    </nav>;
+            cartel = <div className={"row-edit"}>
+                        <Alert variant={"danger"}>
+                            <h5> hay resultados para la búsqueda realizada.</h5>
+                        </Alert>
+
+                    </div>;
             tabla = <div></div>;
         }
 
@@ -128,6 +161,8 @@ class GroupList extends Component {
                                 <h2>Gestionar grupos</h2>
                             </div>
                         </div>
+                        <br/>
+                        {alert}
                         <div className={"row-edit"}>
                             <ul className={"container-column-list"}>
                                 <li className={"items-row"}>

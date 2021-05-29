@@ -178,11 +178,11 @@ class TeamsGroup extends Component {
                             {showTeams ? (
                                 <>
                                     <div className={"row-edit"}>
-                                        <h5>Lista de equipos</h5>
+                                        <label className={"form-label"}>Lista de equipos</label>
                                     </div>
                                     <div className={"row-edit"}>
                                         <div className="table-margin">
-                                            <Table striped bordered hover>
+                                            <Table bordered hover responsive>
                                                 <thead>
                                                 <tr>
                                                     <th>Equipo</th>
@@ -198,9 +198,18 @@ class TeamsGroup extends Component {
                                                             <td>{team.nombreEquipo}</td>
                                                             <td>{team.nombreGrupo}</td>
                                                             {dataTeamStudent.filter(teamStudent => teamStudent.idEquipo === team.idEquipo).map((item, index) =>
-                                                                <tr> <div>{item.nombre} {item.apellidos} </div></tr>
+                                                                <td> <div>{item.nombre} {item.apellidos} </div></td>
                                                             )}
-                                                            <td ><Button onClick={() => this.askSendRequest(team)} disabled={this.disabledButtonJoin()}>Enviar Solicitud</Button></td>
+                                                            <td >
+                                                                <img src="/send.png" alt=""/>
+                                                                <Button
+                                                                    variant="link"
+                                                                    onClick={() => this.askSendRequest(team)}
+                                                                    disabled={this.disabledButtonJoin()}
+                                                                >
+                                                                  Enviar Solicitud
+                                                               </Button>
+                                                            </td>
                                                         </tr>
                                                     )
                                                 })}
@@ -238,9 +247,10 @@ class TeamsGroup extends Component {
 
                 <Modal show={this.state.modalErrorReceiveRequest}>
                     <Modal.Header>
+                        <Modal.Title>Aviso</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <p>Ya Tienes una solicitud pendiente de este equipo</p>
+                        Ya Tienes una solicitud pendiente de este equipo
                     </Modal.Body>
                     <Modal.Footer>
                     </Modal.Footer>

@@ -4,11 +4,15 @@
 *    
 */
 import React, { Component } from 'react';
-import TeacherService from '../../../services/teacher/teacherService.js';
 import AdminService from '../../../services/admin/adminService.js';
 import Datos from "./GroupInfo";
 import Estudiantes from "./GroupStudents";
+
+/** Estilos CSS*/
 import '../../../styles/styleGeneral.css';
+
+/**Estilos importados*/
+import Card from 'react-bootstrap/Card';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
@@ -61,16 +65,25 @@ class Group extends Component {
 
 
         return (
-           <div className="container-box"> 
-                <Tabs>
-                    {tabs}
-                    <TabPanel>
-                        <Datos key={idGroup} idGroup={idGroup} handler ={this.handler}/>
-                    </TabPanel>
-                    <TabPanel>
-                        {secondTab}
-                    </TabPanel>
-                </Tabs>
+           <div className="container">
+               <Card className={"card-long"}>
+                   <Card.Body>
+                       <div className={"row-edit"}>
+                            <div className={"section-title"}>
+                                <h2> Información del grupo </h2>
+                            </div>
+                       </div>
+                       <Tabs>
+                           {tabs}
+                           <TabPanel>
+                               <Datos key={idGroup} idGroup={idGroup} handler ={this.handler}/>
+                           </TabPanel>
+                           <TabPanel>
+                               {secondTab}
+                           </TabPanel>
+                       </Tabs>
+                   </Card.Body>
+               </Card>
            </div>
         );
 

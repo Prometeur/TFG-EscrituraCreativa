@@ -62,8 +62,7 @@ class ViewTeamInfo extends Component {
                                             <br/>
                                             <ul className={"container-column-list wrap"}>
                                                 <li className={"flex-item-list"}>
-                                                    <img src={(user.foto.data.length != 0) ? ("data:image/png;base64," +
-                                                        btoa(String.fromCharCode.apply(null, user.foto.data))) : "/chicaliteratura.png" }
+                                                    <img src={(user.ruta != "" ) ? (user.ruta) : "/chicaliteratura.png" }
                                                          alt=""
                                                          style={{width: '60px',  borderRadius: '80%',margin:"0 1rem 0 1rem"}}
                                                     >

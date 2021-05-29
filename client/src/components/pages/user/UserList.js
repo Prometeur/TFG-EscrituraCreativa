@@ -1,17 +1,25 @@
 /*
 *  Name_file :UserList.js
-*  Description: Contiene una lista de los usuarios.
+*  Description: Contiene una lista de los usuarios activos en la plataforma.
 *    
 */
+
 import React, { Component } from 'react';
 import { Link} from "react-router-dom";
-import TeacherService from '../../../services/teacher/teacherService';
+
+/**Estilos CSS*/
 import '../../../styles/styleGeneral.css';
 import '../../../styles/styleCard.css';
+import '../../../styles/Challenge.css';
+
+
+/**Estilos Bootsrap */
 import Card from 'react-bootstrap/Card';
 import Button  from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 import adminService from '../../../services/admin/adminService';
+import Alert from 'react-bootstrap/Alert';
+
 
 class SearchStudentRes extends Component {
 
@@ -29,7 +37,7 @@ class SearchStudentRes extends Component {
     }
 
 
- /*Se hacen peticiones al servidor para que me devuelva todos los usuarios buscados*/
+  /*Se hacen peticiones al servidor para que me devuelva todos los usuarios buscados*/
     peticionPost = () => {
         adminService.getUsers(this.state.searchName, this.state.searchType).then(response =>{
             this.setState({data:response});
@@ -112,73 +120,109 @@ class SearchStudentRes extends Component {
 
     /*Dibuja la pagina  */
     render() {
-        let cartel =<div> </div>;
-        let tabla = <ListGroup variant="flush">
-
+        let cartel =<> </>;
+        let tabla = <ul className={"flex-items-row-start wrap"}>
             {this.state.filteredData.map((user) => 
                 (
-                    <React.Fragment>
-                    <ListGroup.Item>
-                        {user.id} 
-                        <img src={(user.foto.data.length != 0) ? ("data:image/png;base64," +
-                        btoa(String.fromCharCode.apply(null, user.foto.data))) : "/chicaliteratura.png" } alt="" style={{width: '5%',  borderRadius: '80%'}} ></img>
-                        {user.nombre} {user.apellidos} 
-                        {user.correo}
-                        <Link key={user.id} to={`/admin/users/viewProfile/${user.id}`}><button text='Ver Perfil'> Ver perfil </button></Link>
-                    </ListGroup.Item>
-                    </React.Fragment>
-                    
+                    <li className={"items-row"}>
+                        <br/>
+                        <ul className={"container-column-list wrap"}>
+                            <li className={"flex-item-list"}>
+                                <img
+                                    src={(user.ruta!= "") ? (user.ruta) : "/chicaliteratura.png" }
+                                    alt="" style={{width: '40%',  borderRadius: '80%'}} >
+
+                                </img>
+                            </li>
+                            <li className={"flex-item-list"}>
+                                {user.nombre}
+                            </li>
+                            <li className={"flex-item-list"}>
+                                {user.apellidos}
+                            </li>
+                            <li className={"flex-item-list"}>
+                                {user.correo}
+                            </li>
+                            <li className={"flex-item-list"}>
+                                <Link key={user.id} to={`/admin/users/viewProfile/${user.id}`}>
+                                    <Button size={"sm"} text='Ver Perfil'> Ver perfil </Button>
+                                </Link>
+                            </li>
+                        </ul>
+                        <hr/>
+                    </li>
                 )
             )}
-    </ListGroup>;
+    </ul>;
         if(this.state.filteredData.length === 0)
         {
-            cartel = <nav>
-                        <h2>No hay resultados para la búsqueda realizada.</h2>
-                    </nav>;
+            cartel = <div className={"row-edit"}>
+                        <Alert variant={"danger"}>
+                            <h6>No hay resultados para la búsqueda realizada.</h6>
+                        </Alert>
+                    </div>;
             tabla = <div></div>;
         }
 
 
         return (
-            <>
             <div className="container">
                 <Card className="card-edit">
                     <Card.Body>
-                    <h1>Usuarios:</h1>
-
-                    <div>
-                    <h2> Resultados de buscar usuarios con {this.state.searchName} similar a {this.state.searchType}:</h2>
-                            <label>Buscar usuario: </label>
-                            <br />
-                            <input type="text" name="searchName" onChange={this.handleChangeSearch} />
-                            <br />
-                            <label for="searchType">Escoja cómo buscar:</label>
-                            <select name="searchType" id="searchType" onChange={this.handleChangeSearchType}>
-                                <option value="nombre">Nombre</option>
-                                <option value="email">Email</option>
-                            </select>
-                            <label for="searchRole">Buscar por rol:</label>
-                            <select name="searchRole" id="searchRole" onChange={this.handleChangeSearchRole}>
-                                <option value="none">Buscar por rol...</option>
-                                <option value="S">Estudiantes</option>
-                                <option value="T">Profesores</option>
-                                <option value="A">Administradores</option>
-                            </select> 
-                    </div>
-                    <div>
-
-                        {cartel}
-
-
-                        {tabla}
-
-
-                    </div>
+                        <div className={"row-edit"}>
+                            <div className={"section-title"}>
+                                <h2>Usuarios activos </h2>
+                            </div>
+                        </div>
+                        <div className={"row-edit"}>
+                            <Alert variant={"info"}>
+                                <img src="/info.png" alt=""/>
+                                 Listado de los usuarios activos en la plataforma.
+                            </Alert>
+                        </div>
+                        <div className={"row-edit"}>
+                            <ul className={"flex-row"}>
+                                <li className={"flex-item-form"}>
+                                    <div className={"form-select"}>
+                                        <label className={"form-label"}>Buscar usuario  <img src="/search.png" alt=""/></label>
+                                        <input type="text" name="searchName" onChange={this.handleChangeSearch} />
+                                    </div>
+    
+                                </li>
+                                <li className={"flex-item-form"}>
+                                    <div className={"form-select"}>
+                                        <label className={"form-label"} htmlFor="searchType">Escoja cómo buscar</label>
+                                        <select name="searchType" id="searchType" onChange={this.handleChangeSearchType}>
+                                            <option value="nombre">Nombre</option>
+                                            <option value="email">Email</option>
+                                        </select>
+                                    </div>
+                                </li>
+                                <li className={"flex-item-form"}>
+                                    <div className={"form-select"}>
+                                        <label className={"form-label"} htmlFor="searchRole">Buscar por rol</label>
+                                        <select name="searchRole" id="searchRole" onChange={this.handleChangeSearchRole}>
+                                            <option value="none">Todos</option>
+                                            <option value="S">Estudiantes</option>
+                                            <option value="T">Profesores</option>
+                                            <option value="A">Administradores</option>
+                                        </select>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div className={"row-edit"}>
+                            <Card className={"card-long"}>
+                                <Card.Body>
+                                    {cartel}
+                                    {tabla}
+                                </Card.Body>
+                            </Card>
+                        </div>
                     </Card.Body>
                 </Card>
             </div>
-          </>
+
         );
     }
 

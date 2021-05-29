@@ -98,10 +98,10 @@ class modelUser {
             if (err) {
                 callback(new Error("No se puede conectar a la base de datos."))
             } else {
-                let consulta = 'SELECT id, nombre, apellidos, foto, correo FROM usuario WHERE (nombre LIKE ? OR apellidos LIKE ?)AND rol = "S" AND activo = 1;';
+                let consulta = 'SELECT id, nombre, apellidos, foto, ruta, correo FROM usuario WHERE (nombre LIKE ? OR apellidos LIKE ?)AND rol = "S" AND activo = 1;';
 
                 if (tipo == "email") {
-                    consulta = 'SELECT id, nombre, apellidos, foto, correo FROM usuario WHERE correo LIKE ? AND rol = "S" AND activo = 1;';
+                    consulta = 'SELECT id, nombre, apellidos, foto, ruta,  correo FROM usuario WHERE correo LIKE ? AND rol = "S" AND activo = 1;';
                 }
                 const sql = consulta;
                 const valores = ["%" + clave + "%", "%" + clave + "%"];
@@ -123,9 +123,9 @@ class modelUser {
             if (err) {
                 callback(new Error("No se puede conectar a la base de datos."))
             } else {
-                let consulta = 'SELECT id, nombre, apellidos, foto, rol, correo FROM usuario WHERE (nombre LIKE ? OR apellidos LIKE ?) AND activo = 1;';
+                let consulta = 'SELECT id, nombre, apellidos, foto, ruta, rol, correo FROM usuario WHERE (nombre LIKE ? OR apellidos LIKE ?) AND activo = 1;';
                 if (tipo == "email") {
-                    consulta = 'SELECT id, nombre, apellidos, foto, rol, correo FROM usuario WHERE correo LIKE ? AND activo = 1;';
+                    consulta = 'SELECT id, nombre, apellidos, foto, ruta, rol, correo FROM usuario WHERE correo LIKE ? AND activo = 1;';
                 }
                 const sql = consulta;
                 const valores = ["%" + clave + "%", "%" + clave + "%"];
@@ -147,9 +147,9 @@ class modelUser {
             if (err) {
                 callback(new Error("No se puede conectar a la base de datos."))
             } else {
-                let consulta = 'SELECT id, nombre, apellidos, foto, rol, correo  FROM usuario WHERE (nombre LIKE ? OR apellidos LIKE ?) AND activo = 0;';
+                let consulta = 'SELECT id, nombre, apellidos, foto,ruta, rol, correo  FROM usuario WHERE (nombre LIKE ? OR apellidos LIKE ?) AND activo = 0;';
                 if (tipo == "email") {
-                    consulta = 'SELECT id, nombre, apellidos, foto, rol, correo FROM usuario WHERE correo LIKE ? AND activo = 0;';
+                    consulta = 'SELECT id, nombre, apellidos, foto,ruta, rol, correo FROM usuario WHERE correo LIKE ? AND activo = 0;';
                 }
                 const sql = consulta;
                 const valores = ["%" + clave + "%", "%" + clave + "%"];
@@ -195,7 +195,7 @@ class modelUser {
                 callback(new Error("No se puede conectar a la base de datos."))
             }
             else {
-                const sql = "SELECT id, nombre, apellidos, foto, correo, activo, rol FROM usuario where id =  ?";
+                const sql = "SELECT id, nombre, apellidos, foto,ruta, correo, activo, rol FROM usuario where id =  ?";
                 const valores = [idUser];
                 connection.query(sql, valores, function (err, res) {
                     connection.release();
@@ -237,7 +237,7 @@ class modelUser {
                 callback(new Error("No se puede conectar a la base de datos."))
             }
             else {
-                const sql = 'SELECT usuario.id, nombre, apellidos, foto, correo FROM usuario INNER JOIN grupoestudiante ON usuario.id = grupoestudiante.idEstudiante WHERE usuario.rol = "S" AND usuario.activo = 1 AND grupoestudiante.idGrupo = ?;';
+                const sql = 'SELECT usuario.id, nombre, apellidos, foto, correo, ruta FROM usuario INNER JOIN grupoestudiante ON usuario.id = grupoestudiante.idEstudiante WHERE usuario.rol = "S" AND usuario.activo = 1 AND grupoestudiante.idGrupo = ?;';
                 const valores = [idGrupo];
                 connection.query(sql, valores, function (err, res) {
                     connection.release();

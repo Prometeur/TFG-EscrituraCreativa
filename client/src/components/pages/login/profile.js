@@ -58,11 +58,8 @@ export default class Profile extends Component {
                         />
                 </Figure>;
 
-        var baseURL = axios.defaults.baseURL+"multimedia/users/default.jpg";
+        //var baseURL = axios.defaults.baseURL+"multimedia/users/default.jpg";
         if( this.state.currentUser.ruta !== ""){
-            // if(this.state.currentUser.foto.data.length != 0)
-            // {
-            //let fotoSource = "data:image/png;base64," + btoa(String.fromCharCode.apply(null, this.state.currentUser.foto.data));
             foto = <Figure>
                         <Figure.Image
                             bsPrefix="figure"
@@ -77,7 +74,7 @@ export default class Profile extends Component {
                         <Figure.Image
                             bsPrefix="figure"
                             alt="171x180"
-                            src={baseURL}
+                            src={"/chicaliteratura.png"}
                         />
                 </Figure>;   
         }

@@ -99,6 +99,9 @@ class Messenger extends Component {
         let formatedDate;
         return (
             <>
+                <div className="editPerfil-left">
+                    <img  className={"img-editprofile"} src="/plumaliteratura.png" alt=""/>
+                </div>
                 <div className="container">
                     <Card className="card-long">
                         <Card.Body>

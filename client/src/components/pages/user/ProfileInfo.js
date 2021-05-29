@@ -12,6 +12,7 @@ import AdminService from '../../../services/admin/adminService.js';
 /**Estilos */
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
 
 /**Estilos CSS*/
 import '../../../styles/styleGeneral.css';
@@ -231,14 +232,14 @@ class ProfileInfo extends Component {
     /*Dibuja la pagina  */
     render() {
 
-        let fotoSource = "/chicaliteratura_sizebig.png";
+        let fotoSource = "/chicaliteratura.png";
         let imagenUser = <img src={fotoSource} alt="" className={"figure-profile"} ></img>
 
-        if(this.state.data.foto != undefined)
+        if(this.state.data.ruta != undefined)
         {
-            if(this.state.data.foto.data.length != 0)
+            if(this.state.data.ruta != "")
             {
-                fotoSource = "data:image/png;base64," + btoa(String.fromCharCode.apply(null, this.state.data.foto.data));
+                fotoSource = this.state.data.ruta;
                 imagenUser = <img src={fotoSource} alt="" className={"figure-profile"} ></img>
             }
         }
@@ -252,12 +253,9 @@ class ProfileInfo extends Component {
                                  </li>
                                  <li className={"items-row"}>
                                      <ul className={"container-column-list wrap"}>
-                                        <li className={"flex-item-list"}>
-                                            <h3>{this.state.data.nombre}</h3>
+                                        <li className={"flex-item-data"}>
+                                            <h3>{this.state.data.nombre}</h3>  <h3>{this.state.data.apellidos}</h3>
                                         </li>
-                                         <li className={"flex-item-list"}>
-                                             <h3>{this.state.data.apellidos}</h3>
-                                         </li>
                                      </ul>
                                      <div className={"email-profile"}>
                                          <h5>{this.state.data.correo}</h5>
@@ -282,7 +280,7 @@ class ProfileInfo extends Component {
                     </select>
                 </li>
                 <li className={"flex-item-profile"}>
-                    <Button text='Invitar a grupo' onClick={() => this.inviteToGroup(this.state.groupSelect)}>
+                    <Button size={"sm"}  text='Invitar a grupo' onClick={() => this.inviteToGroup(this.state.groupSelect)}>
                         Invitar
                     </Button>
                 </li>
@@ -308,7 +306,7 @@ class ProfileInfo extends Component {
                         </select>
                     </li>
                     <li className={"flex-item-profile"}>
-                        <Button disabled text='Invitar a grupo' onClick={() => this.inviteToGroup(this.state.groupSelect)}>
+                        <Button  size={"sm"} disabled text='Invitar a grupo' onClick={() => this.inviteToGroup(this.state.groupSelect)}>
                             Invitar
                         </Button>
                     </li>
@@ -333,7 +331,7 @@ class ProfileInfo extends Component {
                     </select>
                 </li>
                 <li className={"flex-item-profile"}>
-                    <Button text='Expulsar del grupo' onClick={() => this.kickFromGroup(this.state.groupKickSelect)}>
+                    <Button size={"sm"} text='Expulsar del grupo' onClick={() => this.kickFromGroup(this.state.groupKickSelect)}>
                         Expulsar
                     </Button>
                 </li>
@@ -358,7 +356,7 @@ class ProfileInfo extends Component {
                             </select>
                         </li>
                         <li className={"flex-item-profile"}>
-                            <Button disabled text='Expulsar del grupo' onClick={() => this.kickFromGroup(this.state.groupKickSelect)}>
+                            <Button  size={"sm"} disabled text='Expulsar del grupo' onClick={() => this.kickFromGroup(this.state.groupKickSelect)}>
                                 Expulsar
                             </Button>
                         </li>
@@ -376,28 +374,32 @@ class ProfileInfo extends Component {
         {
 
             botonDesactivar =
-                <div>
-                    <button text='Desactivar usuario' onClick={() => this.deactivateUser(this.state.data.id)}>
-                        Desactivar usuario
-                    </button>
-                </div>;
+                    <div className={"form-button"}>
+                        <Button size={"sm"} text='Desactivar usuario' onClick={() => this.deactivateUser(this.state.data.id)}>
+                            Desactivar usuario
+                        </Button>
+                    </div>
+
 
             botonEliminar =
-                <div>
-                    <button text='Eliminar usuario' onClick={() =>
-                        {if(window.confirm('El usuario '+ this.state.data.nombre + ' '+ this.state.data.apellidos +' y todos sus grupos, escritos, equipos y desafíos se eliminarán de forma permanente de la base de datos. ESTA ACCIÓN ES IRREVERSIBLE. ¿Eliminar usuario?'))
+                    <div className={"form-button"}>
+                        <Button
+                            variant={"danger"}
+                            size={"sm"}
+                            text='Eliminar usuario'
+                            onClick={() =>
+                        {if(window.confirm('El usuario '+ this.state.data.nombre + ' '+ this.state.data.apellidos
+                            +' y todos sus grupos, escritos, equipos y desafíos se eliminarán de forma permanente de la base de datos. ESTA ACCIÓN ES IRREVERSIBLE. ¿Eliminar usuario?'))
                         {this.deleteUser(this.state.data.id)};}}>
-                        Eliminar usuario
-                    </button>
-                </div>;
+                           Denegar solicitud
+                        </Button>
+                    </div>
 
         }
         if(this.state.currentUserRole == "S")
         {
-            invitaGrupo = <nav></nav>;
-
-
-            echaGrupo = <nav></nav>;
+            invitaGrupo = <></>;
+            echaGrupo = <></>;
         }
 
         //      RESTRICCIONES POR EL USUARIO QUE VEO
@@ -415,25 +417,34 @@ class ProfileInfo extends Component {
             //SI EL USUARIO QUE VEO ES PROFESOR NO PUEDO MODIFICAR A QUE GRUPOS PERTENECE
         {
             invitaGrupo = <></>;
-
-
             echaGrupo = <></>;
         }
 
         // RESTRICCIONES PARA SOLICITANTES
         if(this.state.data.activo === 0)
         {
-            cartel = <>
-                        <h2> Este estudiante aún no ha sido aceptado por un profesor.</h2>
-                     </>;
-            contenido = <div>
-                        <h3>Nombre: {this.state.data.nombre}</h3>
-                        <h3>Apellidos: {this.state.data.apellidos}</h3>
-                        <h3>Correo: {this.state.data.correo}</h3>
-                        <div>
-                            <button text='Aceptar solicitud' onClick={() => this.acceptApplicant(this.state.data.id)}>Aceptar solicitud</button>
-                        </div>
-            </div>;
+            cartel = <div className={"row-edit"}>
+                         <div className={"form-select"}>
+                             <label className={"form-label"} htmlFor="">Estudiantes aún en espera de ser aceptados.</label>
+                         </div>
+                     </div>;
+            contenido = <div className={"row-edit"}>
+                            <ul className={"container-column-list wrap"} >
+                                <li className={"flex-item-list"}>
+                                    {this.state.data.nombre} {this.state.data.apellidos}
+                                </li>
+                                <li  className={"flex-item-list"} >
+                                    {this.state.data.correo}
+                                </li>
+                                <li className={"flex-item-list"} >
+                                    <div className={"form-button-column"}>
+                                        <Button size={"sm"} text='Aceptar solicitud' onClick={() => this.acceptApplicant(this.state.data.id)}>
+                                            Aceptar solicitud
+                                        </Button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>;
 
             invitaGrupo = <></>;
             echaGrupo = <></>;
@@ -447,8 +458,11 @@ class ProfileInfo extends Component {
                         {contenido}
                         {invitaGrupo}
                         {echaGrupo}
-                        {botonDesactivar}
-                        {botonEliminar}
+                        <div className={"row-edit"}>
+                            <hr/>
+                            {botonDesactivar}
+                            {botonEliminar}
+                        </div>
                 </Card.Body>
             </Card>
         );
