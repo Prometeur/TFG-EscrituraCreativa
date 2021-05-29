@@ -5,7 +5,6 @@
 */
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import TeacherService from '../../../services/teacher/teacherService.js';
 import AdminService from '../../../services/admin/adminService.js';
 import AuthUser from '../../../services/authenticity/auth-service.js';
 import '../../../styles/styleGeneral.css';
@@ -13,7 +12,7 @@ import '../../../styles/styleCard.css';
 import Card from 'react-bootstrap/Card';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
-import ListGroup from 'react-bootstrap/ListGroup';
+
 
 class GroupStudents extends Component {
 
@@ -90,14 +89,14 @@ class GroupStudents extends Component {
 
     /*Dibuja la pagina  */
     render() {
+
         let cartel = <> </>;
         let tabla = <ul className={"flex-items-row-start wrap"}>
             {this.state.filteredData.map((student) =>
             (
                 <li className={"items-row"}>
                     <div className={"form-items-row"}>
-                        <img src={(student.foto.data.length != 0) ? ("data:image/png;base64," +
-                            btoa(String.fromCharCode.apply(null, student.foto.data))) : "/chicaliteratura.png"}
+                        <img src={(student.ruta !="") ? (student.ruta) : "/chicaliteratura.png"}
                             alt=""
                             style={{ width: '40%', borderRadius: '80%' }} >
                         </img>
@@ -114,6 +113,7 @@ class GroupStudents extends Component {
                             <Button variant={"outline-secondary"} text='Ver Perfil'> Ver perfil </Button>
                         </Link>
                     </div>
+                    <hr/>
                 </li>
             )
             )}
@@ -126,8 +126,7 @@ class GroupStudents extends Component {
                     <li className={"items-row"}>
                         <ul className={"container-column-list wrap"}>
                             <li className={"flex-item-list"}>
-                                <img src={(student.foto.data.length != 0) ? ("data:image/png;base64," +
-                                    btoa(String.fromCharCode.apply(null, student.foto.data))) : "/chicaliteratura.png"}
+                                <img src={(student.ruta == "") ? "/chicaliteratura.png" : (student.ruta) }
                                     alt=""
                                     style={{ width: '60px', borderRadius: '80%', margin: "0 1rem 0 1rem" }}
                                 >

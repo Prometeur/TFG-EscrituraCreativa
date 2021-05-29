@@ -3,14 +3,19 @@
 *  Description: Pagina que lista los grupos creados por un profesor
 *  que tiene el grupo seleccionado por el profesor  
 */
+
 import React, { Component } from 'react';
 import { Link} from "react-router-dom";
 import adminService from '../../../services/admin/adminService';
+
+/** Estilos CSS*/
 import '../../../styles/styleGeneral.css';
 import '../../../styles/styleCard.css';
+
+/**Estilos bootstrap*/
 import Card from 'react-bootstrap/Card';
 import Button  from 'react-bootstrap/Button';
-import ListGroup from 'react-bootstrap/ListGroup';
+import Alert from 'react-bootstrap/Alert';
 
 
 class GroupList extends Component {
@@ -63,58 +68,62 @@ class GroupList extends Component {
     /*Dibuja la pagina  */
     render() {
 
-        let cartel =<div> </div>;
-        let tabla = <ListGroup variant="flush">
+        let cartel =<> </>;
+        let tabla = <ul className={"flex-items-row-start wrap"}>
 
             {this.state.filteredData.map((group) => 
                 (
-                    <React.Fragment>
-                    <ListGroup.Item>
-                        {group.nombre}
-                        <Link key={group.id} to={`/admin/viewGroup/${group.id}`}><button text='Ver Grupo'> Ver grupo </button></Link>
-                    </ListGroup.Item>
-                    </React.Fragment>
+
+                    <li className={"items-row"}>
+                        <ul className={"container-column-list wrap"}>
+                            <li className={"flex-item-list"}>
+                                <img src="/team_black.png" alt=""/>
+                            </li>
+                            <li className={"flex-item-list"}>
+                                {group.nombre}
+                            </li>
+                            <li className={"flex-item-list"}>
+                                <Link key={group.id} to={`/admin/viewGroup/${group.id}`}>
+                                    <Button  size={"sm"} text='Ver Grupo'> Ver grupo </Button>
+                                </Link>
+                            </li>
+                        </ul>
+                        <hr/>
+                    </li>
+
                 )
             )}
-        </ListGroup>;
+        </ul>;
+
         if(this.state.filteredData.length === 0)
         {
-            cartel = <nav>
-                        <h2>No hay resultados para la búsqueda realizada.</h2>
-                    </nav>;
+            cartel = <div className={"row-edit"}>
+                         <Alert variant={"danger"}>
+                             <h6>No hay resultados para la búsqueda realizada.</h6>
+                         </Alert>
+                    </div>;
             tabla = <div></div>;
         }
 
         return (
 
-            <div className="container">
-             <Card className="card-edit">
-                    <Card.Body>
-                    
-            <h1>Grupos:</h1>
-            
-            
-            <div>
-                <label>Buscar grupo: </label>
-                <br />
-                <input type="text" name="searchKey" onChange={this.handleChangeSearch} />
-            </div>
-
-
-                 <div>
-
-                        {cartel}
-
-
-                        {tabla}
-
-
+             <Card className="card-long">
+                 <Card.Body>
+                    <div  className={"row-edit"}>
+                        <label className={"form-label"}>Buscar grupo</label>
+                        <br />
+                        <input type="text" name="searchKey" onChange={this.handleChangeSearch} />
+                        <img src="/search.png" alt=""/>
                     </div>
+                     <br/>
+                        <div className={"row-edit"}>
+                            {cartel}
+                            {tabla}
+                        </div>
+                     <img src="./group.png" alt=""/>
                     </Card.Body>
                 </Card>
-            </div>
-          
-           
+
         );
     }
 

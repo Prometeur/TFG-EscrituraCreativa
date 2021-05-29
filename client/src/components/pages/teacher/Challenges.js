@@ -93,7 +93,8 @@ class Challenges extends Component {
     render() {
         let formatedDate;
         const { categories, data } = this.state;
-        let tabla = <div className="table-margin">
+        let tabla = <div className="row-edit">
+            <label className={"form-label"}> Listado de desafíos</label>
             <Table bordered hover responsive>
                 <thead>
                     <tr>
@@ -124,19 +125,26 @@ class Challenges extends Component {
             </Table>
         </div>;
 
-        if (data.length === 0) {
-            tabla = <div className="row-edit">
-                <Alert variant={"info"}>
-                    No hay desafíos en estos momentos.
-                </Alert>
-            </div>;
-        }
+    if (data.length === 0)
+    {
+        tabla = <div className="row-edit">
+                        <Alert variant={"danger"}>
+                            No hay desafíos en estos momentos.
+                        </Alert>
+                </div>;
+    }
+
+
         return (
             <Card className={"card-long"}>
                 <Card.Body>
                     <div className="button-direction-left">
+
                         <Link to={`/teacher/createChallenge/${this.props.groupSelect}`}>
-                            <Button variant="outline-secondary">Crear desafio</Button>
+                            <Button variant="success">
+                                <img src="/add-white.png" alt=""/>
+                                Crear desafio
+                            </Button>
                         </Link>
                     </div>
                     {tabla}

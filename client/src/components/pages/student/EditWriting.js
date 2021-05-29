@@ -371,7 +371,7 @@ class EditWriting extends Component {
                             </div>
                         </div>
                         <div className="row-edit">
-                            <label className='form-label' >Descripción</label>
+                            <label className='form-label' >Escribe aquí</label>
                             <Editor
                                 editorState={editorState}
                                 // toolbarClassName="toolbarClassName"

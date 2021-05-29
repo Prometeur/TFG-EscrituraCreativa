@@ -14,7 +14,6 @@ import '../../../styles/styleCard.css';
 
 /** Estilos*/
 import Card from 'react-bootstrap/Card';
-import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import Alert from "react-bootstrap/Alert";
@@ -77,7 +76,6 @@ class SearchStudentRes extends Component {
     componentDidMount() {
 
         TeacherService.searchStudent(this.state.searchStudent, this.state.searchType).then(response => {
-            debugger;
             if (response.length > 0) {//si existen estudiantes
                 this.setState({ data: response });
                 this.setState({ filteredData: response });
@@ -92,14 +90,15 @@ class SearchStudentRes extends Component {
 
     /*Dibuja la pagina  */
     render() {
+
+
         let cartel = <div> </div>;
         let tabla = <ul className={"flex-items-row-start wrap"}>
             {this.state.filteredData.map((student) => (
                 <li className={"items-row"}>
                     <ul className={"container-column-list wrap"}>
                         <li className={"flex-item-list"}>
-                            <img src={(student.foto.data.length != 0) ? ("data:image/png;base64," +
-                                btoa(String.fromCharCode.apply(null, student.foto.data))) : "/chicaliteratura.png"}
+                            <img src={(student.ruta !="") ? (student.ruta) : "/chicaliteratura.png"}
                                 alt="" style={{ width: '2rem', borderRadius: '80%' }} >
                             </img>
                         </li>
@@ -112,7 +111,7 @@ class SearchStudentRes extends Component {
                         <li className={"flex-item-list"}>
                             {student.correo}
                         </li>
-                        <li>
+                        <li className={"flex-item-list"}>
                             <Link key={student.id} to={`/teacher/students/viewProfile/${student.id}`}>
                                 <Button size={"sm"} variant={"primary"} text='Ver Perfil'> Ver perfil </Button>
                             </Link>
@@ -167,9 +166,6 @@ class SearchStudentRes extends Component {
                                                 <option value="nombre">Nombre</option>
                                                 <option value="email">Email</option>
                                             </select>
-                                        </li>
-                                        <li className={"items-row"}>
-
                                         </li>
                                     </ul>
                                 </div>

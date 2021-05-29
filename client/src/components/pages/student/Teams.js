@@ -109,7 +109,7 @@ class Teams extends Component {
                                     </Alert>
                                 </div>
                                 <div className="row-edit">
-                                    <Table striped bordered hover>
+                                    <Table striped bordered hover responsive>
                                         <thead>
                                             <tr>
                                                 <th>Equipo</th>
@@ -129,7 +129,12 @@ class Teams extends Component {
                                                             <div>{item.nombre} {item.apellidos}</div>
                                                         )}
                                                         </td>
-                                                        <td><Link to={`/student/teamStudent/${team.idGrupo}`}><Button>Gestionar</Button></Link></td>
+                                                        <td>
+                                                            <Link to={`/student/teamStudent/${team.idGrupo}`}>
+                                                                <img src="/manage.png" alt=""/>
+                                                                <Button variant="link">Gestionar</Button>
+                                                            </Link>
+                                                        </td>
                                                     </tr>
                                                 )
                                             })}

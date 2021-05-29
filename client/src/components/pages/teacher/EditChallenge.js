@@ -481,7 +481,7 @@ class EditChallenge extends Component {
                             </Modal.Body>
                             <Modal.Footer>
                                 <Button onClick={() => this.editChallenge()}>Aceptar</Button>
-                                <Button onClick={() => this.onModalSave(false)}>Cancelar</Button>
+                                <Button variant={"danger"} onClick={() => this.onModalSave(false)}>Cancelar</Button>
                             </Modal.Footer>
                         </Modal>
 
@@ -501,7 +501,7 @@ class EditChallenge extends Component {
                             </Modal.Body>
                             <Modal.Footer>
                                 <Button onClick={() => this.deleteFile(this.state.deleteFileMedia)}>Aceptar</Button>
-                                <Button onClick={() => this.onModalDeleteFile(false)}>Cancelar</Button>
+                                <Button variant={"danger"} onClick={() => this.onModalDeleteFile(false)}>Cancelar</Button>
                             </Modal.Footer>
                         </Modal>
 

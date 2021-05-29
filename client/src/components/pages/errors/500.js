@@ -5,12 +5,8 @@ const InternalError = () =>{
     return(
         <div className="container">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-        <Card className="card-long">
-             <Card.Body>
-                 <h2>500</h2>
-                 <h3>Se ha dado un error interno del servidor. ¡Lo sentimos!</h3>
-             </Card.Body>
-        </Card>
+            <img className={"error"} src="/12.png" alt=""/>
+            <h2>500 <h4>Ups!...algo ha ocurrido mal.</h4></h2>
       </div>
     )
 }

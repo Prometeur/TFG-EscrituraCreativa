@@ -129,14 +129,13 @@ class CreateWriting extends Component {
                                     /*Envia los archivos multimedia del estudiante*/
                                     StudentService.sendMultimedia(this.state.imgCollection, this.state.form.idWriter, this.props.match.params.idChallenge, this.state.challenge.colaborativo)
                                         .then(response => {
-                                            // window.location.href = '/student/groups';
-                                            window.location.href = '/student';
+                                             window.location.href = '/student/groups';
                                         }).catch(error => {
                                             console.log(error.message);
                                         });
                                 }
                                 else {
-                                    window.location.href = '/student';
+                                    window.location.href = '/student/groups';
                                 }
                             })
                             .catch(error => {

@@ -99,18 +99,26 @@ class App extends Component {
               <link rel="preconnect" href="https://fonts.gstatic.com"></link>
               <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Pontano+Sans&family=Dawning+of+a+New+Day&display=swap" rel="stylesheet"></link>
               <Navbar collapseOnSelect expand="lg" >
-                <Navbar.Brand href={"/profile"}>Creativa</Navbar.Brand>
+                <Navbar.Brand href={"/profile"}>
+                  <img
+                      src="/puntapluma.png"
+                      width="45"
+                      height="45"
+                      alt="React Bootstrap logo"
+                  />
+                  Creativa
+                </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                   <Nav className="mr-auto">
                     {showAdmin && (
-                      <Nav.Link bsPrefix="nav-link" href="/admin/groups">Dashboard</Nav.Link>
+                      <Nav.Link bsPrefix="nav-link" href="/admin/groups">Tablero</Nav.Link>
                     )}
                     {showStudent && (
-                      <Nav.Link bsPrefix="nav-link" href="/student/groups">Dashboard</Nav.Link>
+                      <Nav.Link bsPrefix="nav-link" href="/student/groups">Tablero</Nav.Link>
                     )}
                     {showTeacher && (
-                      <Nav.Link bsPrefix="nav-link" href="/teacher/groups">Dashboard</Nav.Link>
+                      <Nav.Link bsPrefix="nav-link" href="/teacher/groups">Tablero</Nav.Link>
                     )}
                     <Nav.Link bsPrefix="nav-link" href="/profile"> {currentUser.username}</Nav.Link>
 
@@ -142,7 +150,15 @@ class App extends Component {
               <link rel="preconnect" href="https://fonts.gstatic.com"></link>
               <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Pontano+Sans&display=swap" rel="stylesheet"></link>
               <Navbar collapseOnSelect expand="lg" >
-                <Navbar.Brand href={"/login"}>Creativa</Navbar.Brand>
+                <Navbar.Brand href={"/login"}>
+                  <img
+                      src="/puntapluma.png"
+                      width="45"
+                      height="45"
+                      alt="React Bootstrap logo"
+                  />
+                  Creativa
+                </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                   <Nav className="mr-auto">

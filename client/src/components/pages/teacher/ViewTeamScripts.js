@@ -2,11 +2,23 @@
 *  Name_file :ViewTeamScripts.js
 *  Description: Componente que contiene la lista de escritos del equipo
 */
+
+
 import React, { Component } from 'react';
 import TeacherService from "../../../services/teacher/teacherService.js";
 import '../../../styles/ScriptList.css';
 import { Link } from "react-router-dom";
+
+
+/**Estilos Boostrap*/
 import Button from "react-bootstrap/Button";
+import  Alert from 'react-bootstrap/Alert';
+
+/**Estilos CSS*/
+import '../../../styles/styleGeneral.css';
+import '../../../styles/styleCard.css';
+import '../../../styles/ScriptList.css';
+import Card from "react-bootstrap/Card";
 
 class GroupTeacher extends Component {
 
@@ -18,7 +30,6 @@ class GroupTeacher extends Component {
             filteredData:[],
             searchKey: '',
             searchType: 'nombre'
-    
         };
 
      }
@@ -85,34 +96,44 @@ class GroupTeacher extends Component {
 
     /*Dibuja la pagina  */
     render() {
-        console.log("EL ESTADO DEL EQUIPO ES");
-        console.log(this.state);
-        let cartel =<div> </div>;
+        let cartel =<> </>;
         let tabla =
-        <div className = "scriptList">
-        
+        <div className ="scriptList">
             {this.state.filteredData.map(script => {
-                return (   
-                     <div className ="scriptCardContainer">
-                        <Link to={`/teacher/editWriting/${script.idGrupo}/${script.idDesafio}/${script.id}/${script.idEstudiante}`}>
-                             <div className ="scriptCard">
-                                 <h6>Nombre</h6>
-                                 <h5>{script.nombre}</h5>
-                                 <h6>Desafío</h6>
-                                 <h5>{script.titulo}</h5>
-                         </div>
-                         </Link>
-                 </div>
+                return (
+                <div className ="scriptCardContainer">
+                        <Card
+                            key={script.idGrupo}
+                            style={{ width: '19rem' , padding:'0 !important'}}
+                            clclassName="mb-2"
+                            bg={'Light'}
+                        >
+                        <Card.Header>
+                            <Link
+                                to={`/teacher/editWriting/${script.idGrupo}/${script.idDesafio}/${script.id}/${script.idEstudiante}`}>
+                                <h5>{script.nombre}</h5>
+                            </Link>
+                        </Card.Header>
+                        <Card.Body>
+                            <Card.Title>
+                               <h6>Desafío</h6>
+                            </Card.Title>
+                            <Card.Text>
+                                <h5>{script.titulo}</h5>
+                            </Card.Text>
+                        </Card.Body>
+                     </Card>
+                </div>
                 )
             })}
-
     </div>
     ;
         if(this.state.filteredData.length === 0)
         {
             cartel = <div className={"row-edit"}>
-                         <br/>
-                        <h2>No hay resultados para la búsqueda realizada.</h2>
+                        <Alert variant={"danger"}>
+                            <h6>No hay resultados para la búsqueda realizada.</h6>
+                        </Alert>
                     </div>;
             tabla = <></>;
         }
@@ -142,7 +163,7 @@ class GroupTeacher extends Component {
                     </li>
                 </ul>
                 <div className={"row-edit"}>
-                    <h4> Resultados de buscar escritos por {this.state.searchType} similar a {this.state.searchKey}</h4>
+                    <h6> Resultados de buscar escritos por {this.state.searchType} similar a {this.state.searchKey}</h6>
                 </div>
                     {cartel}
                     {tabla}

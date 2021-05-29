@@ -46,7 +46,6 @@ class WritingsStudent extends Component {
             StudentService.getWritingsStudent(AuthUser.getCurrentUser().id, this.props.groupSelect)
                 .then(response => {
                     if (response.length !== 0) {
-                        debugger;
                         this.setState({ data: response, showWritings: true });
                     }
                 })
@@ -92,12 +91,16 @@ class WritingsStudent extends Component {
         let formatedDate;
         let { data, showWritings } = this.state;
         return (
+
                 <Card className="card-long">
                     <Card.Body>
                         {showWritings ? (
-                            <div className="table-margin">
-                                <h4>Lista de escritos</h4>
-                                <Table striped bordered hover responsive>
+                            <>
+                            <div className={"row-edit"}>
+                                <label className={"form-label"} htmlFor="">Lista de escritos</label>
+                            </div>
+                            <div className="row-edit">
+                                <Table bordered hover responsive>
                                     <thead>
                                         <tr>
                                             <th >Escrito</th>
@@ -121,15 +124,32 @@ class WritingsStudent extends Component {
                                                 <td >{formatedDate = moment(writing.fechaFin).format('DD/MM/YYYY')}</td>
                                                 <td >{formatedDate = moment(writing.fechaFin).format('LT')}</td>
                                                 {this.challengeFinalized(writing) ? (
-                                                    <td><Link to={`/student/viewWriting/${this.props.groupSelect}/${writing.idDesafio}/${writing.id}`} ><Button variant="outline-primary" disabled={writing.finalizado === 1 ? false : true}>Ver Escrito</Button></Link></td>
+                                                    <td>
+                                                        <img src="/view.png" alt=""/>
+                                                        <Button
+                                                            href ={`/student/viewWriting/${this.props.groupSelect}/${writing.idDesafio}/${writing.id}`}
+                                                            variant="link"
+
+                                                        >
+                                                            Ver
+                                                        </Button>
+                                                    </td>
                                                 ) : (
-                                                    <td ><Link to={`/student/editWriting/${writing.idGrupo}/${writing.idDesafio}/${writing.id}`}><Button variant="outline-primary" disabled={this.challengeFinalized(writing)}>Editar Escrito</Button></Link></td>
+                                                    <td >
+                                                        <Link to={`/student/editWriting/${writing.idGrupo}/${writing.idDesafio}/${writing.id}`}>
+                                                            <img src="/edit.png" alt=""/>
+                                                            <Button variant="link" disabled={this.challengeFinalized(writing)}>
+                                                                 Editar
+                                                            </Button>
+                                                       </Link>
+                                                    </td>
                                                 )}
                                             </tr>
                                         ))}
                                     </tbody>
                                 </Table>
                             </div>
+                            </>
                         ) : (
 
                             <div className="row-edit">

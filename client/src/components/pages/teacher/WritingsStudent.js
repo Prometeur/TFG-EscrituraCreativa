@@ -148,7 +148,7 @@ class WritingsStudent extends Component {
         if (dataWritings.length === 0)
         {
             tabla = <div className="row-edit">
-                            <Alert variant={"info"}>
+                            <Alert variant={"danger"}>
                                 No hay escritos para este desafío en estos momentos.
                             </Alert>
                     </div>;

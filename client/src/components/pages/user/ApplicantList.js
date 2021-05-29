@@ -128,53 +128,86 @@ class SearchStudentRes extends Component {
         let tabla = <> </>;
 
         if (this.state.currentUserRole === "T") {
-            tabla = <ListGroup variant="flush">
+            tabla = <ul className={"flex-items-row-start wrap"}  >
 
                 {this.state.filteredData.map((student) =>
                 (
-                    <React.Fragment>
-                        <ListGroup.Item>
-                            {student.id}
-                            <img src={(student.foto.data.length != 0) ? ("data:image/png;base64," +
-                                btoa(String.fromCharCode.apply(null, student.foto.data))) : "/chicaliteratura.png"} alt="" style={{ width: '5%', borderRadius: '80%' }} ></img>
-                            {student.nombre} {student.apellidos}
-                            {student.correo}
-                            <Link key={student.id} to={`/teacher/students/viewProfile/${student.id}`}><button text='Ver Perfil'> Ver perfil </button></Link>
-                        </ListGroup.Item>
-                    </React.Fragment>
+                     <li className={"items-row"}>
+                         <ul className={"container-column-list wrap"}>
+                             <li className={"flex-item-list"}>
+                                 <img src={(student.ruta!= "") ? (student.ruta) : "../chicaliteratura.png"}
+                                      alt=""
+                                      style={{ width: '40%', borderRadius: '80%' }} >
+
+                                 </img>
+                             </li>
+                             <li className={"flex-item-list"}>
+                                 {student.nombre}
+                             </li>
+                             <li className={"flex-item-list"}>
+                                 {student.apellidos}
+                             </li>
+                             <li className={"flex-item-list"}>
+                                 {student.correo}
+                             </li>
+                             <li className={"flex-item-list"}>
+                                 <Link key={student.id} to={`/teacher/students/viewProfile/${student.id}`}>
+                                     <Button size={"sm"} text='Ver Perfil'> Ver perfil </Button>
+                                 </Link>
+                             </li>
+                         </ul>
+                         <hr/>
+                    </li>
 
                 )
                 )}
 
-            </ListGroup>;
+            </ul>;
         }
 
         if (this.state.currentUserRole === "A") {
 
-            tabla = <ListGroup variant="flush">
-
+            tabla = <ul className={"flex-items-row-start wrap"}>
                 {this.state.filteredData.map((student) =>
                 (
-                    <React.Fragment>
-                        <ListGroup.Item>
-                            {student.id}
-                            <img src={(student.foto.data.length != 0) ? ("data:image/png;base64," +
-                                btoa(String.fromCharCode.apply(null, student.foto.data))) : "/chicaliteratura.png"} alt="" style={{ width: '5%', borderRadius: '80%' }} ></img>
-                            {student.nombre} {student.apellidos}
-                            {student.correo}
-                            <Link key={student.id} to={`/admin/users/viewProfile/${student.id}`}><button text='Ver Perfil'> Ver perfil </button></Link>
-                        </ListGroup.Item>
-                    </React.Fragment>
+                    <li className={"items-row"}>
+                        <ul className={"container-column-list wrap"}>
+                            <li className={"flex-item-list"}>
+                                <img src={(student.ruta != "") ? (student.ruta) : "/chicaliteratura_sizebig.png"}
+                                     alt=""
+                                     style={{ width: '40%', borderRadius: '80%' ,marginLeft:'2rem'}} >
 
-                )
+                                </img>
+                            </li>
+                            <li className={"flex-item-list"}>
+                                {student.nombre}
+                            </li>
+                            <li className={"flex-item-list"}>
+                                {student.apellidos}
+                            </li>
+                            <li className={"flex-item-list"}>
+                                {student.correo}
+                            </li>
+                            <li className={"flex-item-list"}>
+                                <Link key={student.id} to={`/admin/users/viewProfile/${student.id}`}>
+                                    <Button  size={"sm"} text='Ver Perfil'> Ver perfil </Button>
+                                </Link>
+                            </li>
+                        </ul>
+                        <hr/>
+                    </li>
+                  )
                 )}
-
-            </ListGroup>;
+            </ul>;
         }
 
 
         if (this.state.filteredData.length === 0) {
-            cartel = <h4>No hay resultados para la búsqueda realizada.</h4>
+            cartel = <div className={"row-edit"}>
+                        <Alert variant={"danger"}>
+                            No hay resultados para la búsqueda realizada
+                        </Alert>
+                    </div>
 
             tabla = <></>;
         }
@@ -204,35 +237,32 @@ class SearchStudentRes extends Component {
 
         if (this.state.currentUserRole == "A") {
             searchtools =
-                <ul className={"container-column-list"}>
-                    <li className={"items-row"}>
-                        <label className={"form-label"}>Buscar estudiante</label>
+                <ul className={"flex-row"}>
+                    <li className={"flex-item-form"}>
+                        <div className={"form-select"}>
+                            <label className={"form-label"}>Buscar estudiante<img src="../../search.png" alt="" /></label>
+                            <input type="text" name="searchName" onChange={this.handleChangeSearch} />
+                        </div>
                     </li>
-                    <li className={"items-row"}>
-                        <input type="text" name="searchName" onChange={this.handleChangeSearch} />
+                    <li className={"flex-item-form"}>
+                        <div className={"form-select"}>
+                            <label className={"form-label"}>Escoja cómo buscar</label>
+                            <select name="searchType" id="searchType" onChange={this.handleChangeSearchType}>
+                                <option value="nombre">Nombre</option>
+                                <option value="email">Email</option>
+                            </select>
+                        </div>
                     </li>
-                    <li className={"items-row"}>
-                        <img src="../../search.png" alt="" />
-                    </li>
-                    <li className={"items-row"}>
-                        <label className={"form-label"}>Escoja cómo buscar</label>
-                    </li>
-                    <li className={"items-row"}>
-                        <select name="searchType" id="searchType" onChange={this.handleChangeSearchType}>
-                            <option value="nombre">Nombre</option>
-                            <option value="email">Email</option>
-                        </select>
-                    </li>
-                    <li className={"items-row"}>
-                        <label className={"form-label"}>Buscar por rol</label>
-                    </li>
-                    <li className={"items-row"}>
-                        <select name="searchRole" id="searchRole" onChange={this.handleChangeSearchRole}>
-                            <option value="none">Buscar por rol...</option>
-                            <option value="S">Estudiantes</option>
-                            <option value="T">Profesores</option>
-                            <option value="A">Administradores</option>
-                        </select>
+                    <li className={"flex-item-form"}>
+                        <div className={"form-select"}>
+                            <label className={"form-label"}>Buscar por rol</label>
+                            <select name="searchRole" id="searchRole" onChange={this.handleChangeSearchRole}>
+                                <option value="none">Todos</option>
+                                <option value="S">Estudiantes</option>
+                                <option value="T">Profesores</option>
+                                <option value="A">Administradores</option>
+                            </select>
+                        </div>
                     </li>
                 </ul>
         }
@@ -248,28 +278,29 @@ class SearchStudentRes extends Component {
                             <br />
                             <Alert variant={"info"}>
                                 <img src="/info.png" alt="" />
-                                Desde este espacio puede ver las solicitudes para acceder a la plataforma Creactiva.
+                                Desde este espacio puede ver las solicitudes para acceder a la plataforma Creativa.
                             </Alert>
                         </div>
 
                         {showListApplicants ? (
-                            <div>
+
                                 <div className={"row-edit"}>
                                     {searchtools}
-                                    <br />
-                                    <div className={"form-select"}>
-                                        <h6> Resultados de buscar solicitantes con {this.state.searchType} similar a {this.state.searchName}:</h6>
-                                    </div>
+                                    <Card className={"card-long"}>
+                                    <Card.Body>
+                                        <br/>
+                                        {cartel}
+                                        {tabla}
+                                    </Card.Body>
+                                    </Card>
                                 </div>
-                                <div className={"row-edit"}>
-                                    <br />
-                                    {cartel}
-                                    {tabla}
-                                </div>
-                            </div>
                         ) : (
-                            <div className="table-margin">
-                                <p>No hay solicitantes para mostrar</p>
+                            <div className="row-edit">
+                                <hr/>
+                                <br/>
+                                <Alert variant={"danger"}>
+                                    No hay solicitantes para mostrar
+                                </Alert>
                             </div>
                         )}
                     </Card.Body>

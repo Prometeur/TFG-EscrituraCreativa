@@ -101,10 +101,10 @@ class WritingsTeam extends Component {
             <Card className="card-long">
                 <Card.Body>
                     {showWritings ? (
-                        <>
-                            <h4>Lista de escritos</h4>
+                        <div className={"row-edit"}>
+                            <label className={"form-label"}>Lista de escritos</label>
                             <div className="table-margin">
-                                <Table striped bordered hover >
+                                <Table bordered hover responsive>
                                     <thead>
                                         <tr>
                                             <th>Escrito</th>
@@ -129,24 +129,36 @@ class WritingsTeam extends Component {
                                                 <td >{formatedDate = moment(writing.fechaFin).format('LT')}</td>
 
                                                 {this.challengeFinalized(writing) ? (
-                                                    <td><Link to={`/student/viewWriting/${this.props.groupSelect}/${writing.idDesafio}/${writing.id}`} ><Button variant="outline-primary" disabled={writing.finalizado === 1 ? false : true}>Ver</Button></Link></td>
+                                                    <td>
+                                                        <Link to={`/student/viewWriting/${this.props.groupSelect}/${writing.idDesafio}/${writing.id}`} >
+                                                            <img src="/view.png" alt=""/>
+                                                            <Button  size={"sm"} variant="link" disabled={writing.finalizado === 1 ? false : true}>
+                                                                Ver
+                                                            </Button>
+                                                         </Link>
+                                                    </td>
                                                 ) : (
-
-                                                    // <td ><Link to={`/student/editWritingTeam/${writing.idGrupo}/${writing.idDesafio}/${writing.id}`}><Button variant="outline-primary" disabled={this.challengeFinalized(writing)}>Editar Escrito BETA</Button></Link></td>
-                                                    <td ><Link to={`/student/editWriting/${writing.idGrupo}/${writing.idDesafio}/${writing.id}`}><Button variant="outline-primary" disabled={this.challengeFinalized(writing)}>Editar Escrito</Button></Link></td>
+                                                    <td>
+                                                        <Link to={`/student/editWriting/${writing.idGrupo}/${writing.idDesafio}/${writing.id}`}>
+                                                            <img src="/edit.png" alt=""/>
+                                                            <Button ize={"sm"}  variant="link" disabled={this.challengeFinalized(writing)}>
+                                                                Editar
+                                                            </Button>
+                                                        </Link>
+                                                    </td>
                                                 )}
                                             </tr>
                                         ))}
                                     </tbody>
                                 </Table>
                             </div>
-                        </>
+                        </div>
                     ) : (
 
                         <div className="row-edit">
                             <Alert variant={"danger"}>
                                 No dispones de escritos para mostrar
-                                    </Alert>
+                            </Alert>
                         </div>
                     )}
                 </Card.Body>

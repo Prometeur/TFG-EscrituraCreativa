@@ -4,9 +4,15 @@
 */
 import React, { Component } from 'react';
 import TeacherService from "../../../services/teacher/teacherService.js";
-import '../../../styles/ScriptList.css';
 import { Link } from "react-router-dom";
+
+/**Estilos CSS*/
+import '../../../styles/ScriptList.css';
+
+/**Estilos bootstrap*/
 import Button from "react-bootstrap/Button";
+import Alert from "react-bootstrap/Alert";
+import Card from "react-bootstrap/Card";
 
 class GroupTeacher extends Component {
 
@@ -18,7 +24,6 @@ class GroupTeacher extends Component {
             filteredData:[],
             searchKey: '',
             searchType: 'nombre'
-    
         };
 
      }
@@ -85,7 +90,7 @@ class GroupTeacher extends Component {
 
     /*Dibuja la pagina  */
     render() {
-        let cartel =<div> </div>;
+        let cartel =<></>;
         let tabla =
         <div className = "scriptList">
         
@@ -93,12 +98,24 @@ class GroupTeacher extends Component {
                 return (
                 <div className ="scriptCardContainer">
                     <Link to={`/teacher/editWriting/${script.idGrupo}/${script.idDesafio}/${script.id}/${script.idEscritor}`}>
-                            <div className ="scriptCard">
-                                <h6>Nombre</h6>
+                        <Card
+                            key={script.idGrupo}
+                            style={{ width: '18rem' }}
+                            className="mb-2"
+                            bg={'Light'}
+                        >
+                            <Card.Header>
                                 <h5>{script.nombre}</h5>
-                                <h6>Desafío</h6>
-                                <h5>{script.titulo}</h5>
-                        </div>
+                            </Card.Header>
+                            <Card.Body>
+                                <Card.Title>
+                                    <h6>Desafío</h6>
+                                </Card.Title>
+                                <Card.Text>
+                                    <h5>{script.titulo}</h5>
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
                     </Link>
                 </div>
                 )
@@ -108,39 +125,40 @@ class GroupTeacher extends Component {
     ;
         if(this.state.filteredData.length === 0)
         {
-            cartel = <nav>
-                        <h2>No hay resultados para la búsqueda realizada.</h2>
-                    </nav>;
-            tabla = <div></div>;
+            cartel = <div className={"row-edit"}>
+                        <Alert variant={"danger"}>
+                            No hay resultados para la búsqueda realizada.
+                        </Alert>
+                    </div>;
+            tabla = <></>;
         }
 
 
         return (
             <>
-                <h1>Escritos del estudiante:</h1>
-
-                <div>
-                
-                <h1></h1>
-                        <label>Buscar estudiante: </label>
-                        <br />
+                <ul className={"container-column-list"}>
+                    <li className={"items-row"}>
+                        <label className={"form-label"}>Buscar estudiante</label>
+                    </li>
+                    <li className={"items-row"}>
                         <input type="text" name="searchKey" onChange={this.handleChangeSearch} />
-                        <br />
-                        <label for="searchType">Escoja cómo buscar:</label>
+                    </li>
+                    <li className={"items-row"}>
+                        <img src="/search.png" alt="" />
+                    </li>
+                    <li className={"items-row"}>
+                        <label  className={"form-label"} htmlFor="searchType">Escoja cómo buscar</label>
+                    </li>
+                    <li className={"items-row"}>
                         <select name="searchType" id="searchType" onChange={this.handleChangeSearchType}>
                             <option value="nombre">Nombre</option>
                             <option value="titulo">Título</option>
-                        </select> 
-                        <h2> Resultados de buscar escritos con {this.state.searchType} similar a {this.state.searchKey}:</h2>
-                </div>
-                <div>
-                
+                        </select>
+                    </li>
+                </ul>
+                <div className={"row-edit"}>
                     {cartel}
-                
-
                     {tabla}
-
-
                 </div>
             </>
         );

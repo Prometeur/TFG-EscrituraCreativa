@@ -111,12 +111,17 @@ class ChallengesStudent extends Component {
         let finish = '';
         let writingAux = '';
         return (
+
                 <Card className="card-long">
                     <Card.Body>
                         {showChallenges ? (
-                            <div className="table-margin">
-                               <h3>Lista de desafios</h3>
-                                <Table striped bordered hover >
+                            <>
+                            <div className={"row-edit"}>
+                                <label className={"form-label"}>Lista de desafios</label>
+                            </div>
+                            <div className="row-edit">
+
+                                <Table bordered hover responsive>
                                     <thead>
                                         <tr>
                                             <th>Desafio</th>
@@ -126,6 +131,7 @@ class ChallengesStudent extends Component {
                                             <th>Fecha</th>
                                             <th>Hora</th>
                                             <th>Finalizado</th>
+                                            <th>Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -147,12 +153,21 @@ class ChallengesStudent extends Component {
                                                         writingAux = item;
                                                     }
                                                     )}
-                                                <td ><Link to={`/student/writing/${challenge.idGrupo}/${challenge.id}`}><Button variant="outline-primary" disabled={this.disabledButton(challenge) || writingExist}>Crear Escrito</Button></Link></td>
+                                                <td >
+                                                    <Button href={`/student/writing/${challenge.idGrupo}/${challenge.id}`}
+                                                            variant="primary"
+                                                            disabled={this.disabledButton(challenge) || writingExist}
+                                                            size={"sm"}
+                                                    >
+                                                        Crear Escrito
+                                                    </Button>
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
                                 </Table>
                             </div >
+                            </>
                         ) : (
                             <div className="row-edit">
                                 <Alert variant={"danger"}>

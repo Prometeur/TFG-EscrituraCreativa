@@ -31,12 +31,10 @@ function Routes() {
             <Sidebar  links={LinksStudent} url={url}/>
             <Switch>        
                 <Route exact path="/student/groups" component={GroupStudent} />
-                <Route exact path="/student/teams" component={Teams}/> 
-                {/* <Route exact path="/student/writings" component={Writings}/>  */}
-                {/* <Route exact path="/student/viewMultimedia" component={ViewMultimedia} /> */}
+                <Route exact path="/student/teams" component={Teams}/>
                 <Route exact path="/student/writingsTabs" component={WritingTabs}/>
                 <Route exact path="/student/ChallengesTabs" component={ChallengeTabs}/>
-                <Route exact path="/student/teamStudent/:idGroup" component={TeamStudent}/> 
+                <Route exact path="/student/teamStudent/:idGroup" component={TeamStudent}/>
                 <Route exact path="/student/writing/:idGroup/:idChallenge" component={CreateWriting} />
                 <Route exact path="/student/editWriting/:idGroup/:idChallenge/:idWriting" component={EditWriting} />
                 <Route exact path="/student/viewWriting/:idGroup/:idChallenge/:idWriting" component={ViewWriting} />

@@ -20,8 +20,12 @@ function ChallengeTabs(props) {
             { id: 2, name: "Desafios en Equipo", content: () => <ChallengesTeam key={props.groupSelect} groupSelect={props.groupSelect} />, state: "inactive" },
     ];
     return (
-        <div className={"row-edit"}>
-            <Tabs data={data} />
+        <div className={"container"}>
+            <Card className={"card-long"}>
+                <Card.Body>
+                    <Tabs data={data} />
+                </Card.Body>
+            </Card>
         </div>
     );
 }

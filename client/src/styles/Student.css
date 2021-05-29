@@ -143,3 +143,11 @@
     width:800px;
 
 } */
+
+@media screen and (min-width: 320px) {
+
+    .message-inputs {
+        padding: 0;
+    }
+
+}

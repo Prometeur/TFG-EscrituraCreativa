@@ -30,21 +30,9 @@ import '../../../styles/styleCard.css';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Alert from 'react-bootstrap/Alert';
 import Card from 'react-bootstrap/Card';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-// /*Componentes de estilo Reactstrap*/
-// import {
-//     Table,
-//     Container,
-//     Modal,
-//     ModalHeader,
-//     ModalBody,
-//     FormGroup,
-//     ModalFooter,
-// } from "reactstrap";
 
 class ViewWriting extends Component {
 
@@ -261,24 +249,33 @@ class ViewWriting extends Component {
         return (
             <>
                 <div className="container">
-                    <label className='form-label'>{this.showTypeChallenge()}</label>
                     <Card className="card-edit">
                         <Card.Body>
-                            <div className="row-edit">
-                                <h2 > {this.state.challenge.titulo} </h2>
+                            <div className={"row-edit"}>
+                                <div className={"section-title"}>
+                                    <h2>{this.showTypeChallenge()}</h2>
+                                </div>
                             </div>
-
-                            <div className="row-edit">
-
-                                <label className='form-label'>Categoria</label>
-                                <p>{this.state.challenge.nombre}</p>
+                            <div className={"row-edit"}>
+                                <label className={"form-label"} htmlFor="">
+                                    DETALLES DEL DESAFÍO
+                                </label>
                             </div>
-
+                            <hr/>
+                            <ul className={"flex-row"}>
+                                <li className={"flex-item-form"}>
+                                    <label className={"form-label"} htmlFor="">Nombre</label>
+                                    <h5> {this.state.challenge.titulo} </h5>
+                                </li>
+                                <li className={"flex-item-form"}>
+                                    <label className='form-label'>Categoria</label>
+                                    <h5>{this.state.challenge.nombre}</h5>
+                                </li>
+                            </ul>
                             <div className="row-edit">
                                 <label className='form-label'>Leer la descripción del Desafío</label>
                                 <div className="challenge-inputs" dangerouslySetInnerHTML={{ __html: this.state.challenge.descripcion }}></div>
                             </div>
-
                             <div className="row-edit">
                                 <label className='form-label'>Ficheros Multimedia: </label>
                                 <table>
@@ -294,40 +291,24 @@ class ViewWriting extends Component {
                                     </tbody>
                                 </table>
                             </div>
-
+                            <br/>
+                            <div className={"row-edit"}>
+                                <label className={"form-label"} htmlFor="">
+                                    Escrito
+                                </label>
+                            </div>
+                            <hr/>
                             <div className="row-edit">
                                 <label className='form-label'>Titulo </label>
-                                <div  >
-                                    <h5>{this.state.writing.nombre}</h5>
-                                </div>
-
+                                <h5>{this.state.writing.nombre}</h5>
                             </div>
                             <div className="row-edit">
                                 <label className='form-label'>Descripción </label>
-                                <div dangerouslySetInnerHTML={{ __html: this.state.form.escrito }}></div>
-
-                            </div>
-                            {/* <div className="row-edit" dangerouslySetInnerHTML={{ __html: this.state.form.escrito }}></div> */}
-
-                            {/* <div className="row-edit">
-                                <label className='form-label'>Descripción </label>
-                                <Editor
-                                    editorState={this.state.editorState}
-                                    toolbarClassName="toolbarClassName"
-                                    wrapperClassName="wrapperClassName"
-                                    editorClassName="editorClassName"
-                                    onEditorStateChange={this.onEditorStateChange}
-                                    onContentStateChange={this.onContentStateChange}
-                                    onChange={this.editorChange}
-                                />
-                            </div> */}
-
-                            {/* <div class="row-edit">
-                                <label className='form-label'>Puedes agregar un fichero multimedia si lo deseas (imagen,video o audio): </label>
-                                <div className="form">
-                                    <input type="file" name="imgCollection" onChange={this.onFileChange} multiple />
+                                <div className={"challenge-inputs"}>
+                                    <div dangerouslySetInnerHTML={{ __html: this.state.form.escrito }}></div>
                                 </div>
-                            </div> */}
+                            </div>
+
 
                             <div class="row-edit">
                                 <label className='form-label'>Ficheros Multimedia: </label>
@@ -338,7 +319,6 @@ class ViewWriting extends Component {
                                                 <tr key={writing.id}>
                                                     <td>{this.showTitle(writing)}</td>
                                                     <td><Button onClick={() => window.open(writing.ruta)}>Ver</Button></td>
-                                                    {/* <td><Button variant="danger" onClick={() => this.askDeleteFile(writing)}>Eliminar</Button></td> */}
                                                 </tr>
                                             ))}
                                         </div>
@@ -350,19 +330,15 @@ class ViewWriting extends Component {
                                 <label className='form-label'>Calificación: </label>
                                 <td><textarea rows="2" cols="10" value={this.state.writing.puntuacion} readOnly={true} style={{ resize: "none", textAlign: "center" }} ></textarea></td>
                             </div>
-                            {/* <td><textarea name="mensaje" rows="10" cols="70" value={this.state.message.mensaje} readOnly={true} style={{ resize: "none" }} ></textarea></td> */}
 
                             <div class="row-edit">
                                 <label className='form-label'>Comentarios: </label>
                                 <td><textarea rows="10" cols="70" value={this.state.writing.comentario} readOnly={true} style={{ resize: "none", justifyContent: "center" }} ></textarea></td>
                             </div>
-
-
-                            {/* <div className="form-select">
-                                <Button text='enviar' onClick={() => this.editWriting()}> Guardar  </Button>
-                            </div> */}
-                            <div className="form-select">
-                                <Button onClick={() => window.location.href = '/student'}>Volver</Button>
+                            <div className={"row-edit"}>
+                                <div className="form-button">
+                                    <Button onClick={() => window.location.href = '/student'}>Volver</Button>
+                                </div>
                             </div>
                         </Card.Body>
                     </Card>
@@ -373,8 +349,6 @@ class ViewWriting extends Component {
                         <div><h5>¿Estás seguro de eliminar {this.state.nameDeleteFileMedia}?</h5> </div>
                     </Modal.Header>
                     <Modal.Body>
-                        {/* <FormGroup>
-                        </FormGroup> */}
                     </Modal.Body>
 
                     <Modal.Footer>
