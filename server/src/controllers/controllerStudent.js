@@ -106,6 +106,7 @@ function createWriting(req, res) {
     });
 }
 
+
 /*Obtiene el escrito del estudiante segun su grupo*/
 function getWriting(req, res) {
     const idWriting = req.query.idWriting;
@@ -120,6 +121,26 @@ function getWriting(req, res) {
         }
     });
 }
+
+/*Obtiene todas las versiones de un mismo escrito del estudiante segun su grupo*/
+function getVersionfromWriting()
+{
+    const idVersionWriting = req.query.idWriting;
+
+    modelStudent.getVersionfromWriting(idWriting, idVersion, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else {
+            res.send(result);
+        }
+    });
+
+
+}
+
+
 
 /*Obtiene todos los escritos individuales activos del estudiante*/
 function getWritings(req, res) {
@@ -238,6 +259,7 @@ function editWritingTeam(req, res) {
         }
     });
 }
+
 
 //-----------------------------------------------------MULTIMEDIA WRITINGS---------------------------------------------------------------//
 

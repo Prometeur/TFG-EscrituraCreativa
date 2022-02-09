@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.3
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-05-2021 a las 14:15:35
--- Versión del servidor: 10.4.14-MariaDB
--- Versión de PHP: 7.4.11
+-- Tiempo de generación: 09-02-2022 a las 17:26:20
+-- Versión del servidor: 10.4.21-MariaDB
+-- Versión de PHP: 8.0.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -86,8 +86,18 @@ CREATE TABLE `desafio` (
 --
 
 INSERT INTO `desafio` (`id`, `idGrupo`, `titulo`, `descripcion`, `tipoCalificacion`, `idCategoria`, `colaborativo`, `fechaIni`, `fechaFin`, `activo`) VALUES
-(269, 3, 'Desafio1', '<p><span style=\"color: rgb(0,0,0);background-color: transparent;font-size: 37.5pt;font-family: Work Sans\", sans-serif;\"><em>“Quiero que escribas la continuación de la siguiente historia, que contenga los siguientes elementos: chica, refresco, eólica y pueblo”</em></span>&nbsp;</p>\n', 1, 11, 2, '2021-04-27 02:34:34', '2021-06-30 00:32:00', 1),
-(270, 3, 'Desafio3000', '<p><span style=\"color: rgb(0,0,0);background-color: transparent;font-size: 37.5pt;font-family: Work Sans\", sans-serif;\"><em>“Quiero que escribas la continuación de la siguiente historia, que contenga los siguientes elementos: chica, refresco, eólica y pueblo”</em></span>&nbsp;</p>\r\n', 1, 7, 1, '2021-04-27 02:34:34', '2021-06-30 00:32:00', 1);
+(3, 3, 'Relatar un Episodio Nacional', 'Narrar de forma satírica y breve uno de los Episodios Nacionales de Benito Pérez Galdós.', 0, 17, 1, '2021-11-29 16:09:45', '2022-11-30 16:04:51', 1),
+(40, 5, 'Redacta un poema dadaísta.', 'Dada', 10, 23, 1, '2021-11-29 16:27:17', '2022-11-30 16:26:20', 1),
+(50, 4, 'Desafío: resumen sobre la lingüística de Noam Chomsky.', 'Resumen donde el mejor texto será aquel que exprese con claridad y precisión las ideas aportadas al pensamiento y al lenguaje por Noam Chomsky.', 100, 20, 1, '2021-11-29 16:20:40', '2022-12-30 16:17:45', 1),
+(67, 2, 'Noticia sensacionalista.', 'Se trata de escribir la noticia de la forma más sensacionalista posible, pero de forma sútil.', 5, 20, 1, '2021-11-29 16:24:59', '2022-11-30 16:20:57', 1),
+(101, 1, 'Ensayo sobre el impacto de la movida madrileña en la escritura de Michi Panero.', 'Ensayo sobre el impacto que tuvo la movida madrileña, el fenómeno Almodóvar, etc. en la expresión y libros de Michi Panero.', 10, 20, 5, '2021-11-29 16:17:29', '2022-11-30 16:16:02', 1),
+(213, 4, 'La Dalia Blanca', 'Eres un policía en África e inestigas la muerte de una joven negra albina, cuyo asesinato es exactamente igual al de la Dalia negra.', 5, 4, 3, '2021-11-29 16:40:31', '2022-11-30 16:36:51', 1),
+(234, 6, 'Identifica y explica las diferencias entre un tiburón blanco y un tiburon martillo.', 'Hazlo de manera creativa empleando recursos y figuras literarias, para hacer alusión a su comportamiento y apariencia.', 50, 3, 1, '2021-11-29 16:30:06', '2022-12-30 16:27:23', 1),
+(269, 3, 'Desafio1', '<p><span style=\"color: rgb(0,0,0);background-color: transparent;font-size: 37.5pt;font-family: Work Sans\", sans-serif;\"><em>“Quiero que escribas la continuación de la siguiente historia, que contenga los siguientes elementos: chica, refresco, eólica y pueblo”</em></span>&nbsp;</p>\n', 1, 11, 2, '2021-04-27 02:34:34', '2022-11-30 00:32:00', 1),
+(270, 3, 'Desafio3000', '<p><span style=\"color: rgb(0,0,0);background-color: transparent;font-size: 37.5pt;font-family: Work Sans\", sans-serif;\"><em>“Quiero que escribas la continuación de la siguiente historia, que contenga los siguientes elementos: chica, refresco, eólica y pueblo”</em></span>&nbsp;</p>\r\n', 1, 7, 1, '2021-04-27 02:34:34', '2023-01-31 00:32:00', 1),
+(345, 3, 'Redactar una crónica de la historia presente en un mundo distópico', 'Narrar una historia del día a día basada en un mundo totalmente distópico y desolado, en la estética cyberpunk.', 5, 1, 2, '2021-11-29 16:34:09', '2024-10-31 16:30:23', 1),
+(432, 1, 'Ponte en la piel de John Galt y redacta tu propio diario', 'Escribe un diario a través de los ojos de John Galt.', 10, 11, 1, '2021-11-29 16:36:20', '2022-12-28 16:34:17', 1),
+(433, 9, 'Especial Desafío Febrero', '<p>Relato corto.</p>\n', 1, 22, 2, '2022-02-03 18:28:01', '2022-02-28 18:26:00', 1);
 
 -- --------------------------------------------------------
 
@@ -122,7 +132,9 @@ INSERT INTO `equipo` (`id`, `nombre`, `activo`, `idCreador`, `idGrupo`) VALUES
 (74, 'hipotenusa', 1, 6, 4),
 (75, 'equilatero', 1, 16, 3),
 (76, 'vector', 1, 6, 3),
-(78, 'pollo', 1, 9, 3);
+(78, 'pollo', 1, 9, 3),
+(79, 'multiplexor', 1, 22, 9),
+(80, 'yop', 1, 22, 3);
 
 -- --------------------------------------------------------
 
@@ -144,7 +156,9 @@ INSERT INTO `equipoestudiante` (`id`, `idEquipo`, `idEstudiante`) VALUES
 (137, 74, 6),
 (145, 75, 16),
 (148, 76, 6),
-(152, 78, 9);
+(152, 78, 9),
+(153, 79, 22),
+(154, 80, 22);
 
 -- --------------------------------------------------------
 
@@ -206,8 +220,13 @@ CREATE TABLE `grupo` (
 --
 
 INSERT INTO `grupo` (`id`, `idprofesor`, `nombre`, `activo`) VALUES
+(1, 4, 'Filosofía', 1),
+(2, 4, 'Periodismo', 1),
 (3, 4, 'Historia', 1),
-(4, 4, 'Lengua', 1);
+(4, 4, 'Lengua', 1),
+(5, 4, 'Poesía', 1),
+(6, 4, 'Biología', 1),
+(9, 23, 'Febrero', 1);
 
 -- --------------------------------------------------------
 
@@ -231,7 +250,12 @@ INSERT INTO `grupoestudiante` (`id`, `idGrupo`, `idEstudiante`) VALUES
 (3, 4, 9),
 (4, 3, 9),
 (5, 3, 16),
-(7, 4, 6);
+(7, 4, 6),
+(8, 9, 22),
+(9, 4, 16),
+(10, 1, 22),
+(11, 3, 22),
+(12, 5, 22);
 
 -- --------------------------------------------------------
 
@@ -250,6 +274,13 @@ CREATE TABLE `mensajeria` (
   `fecha` datetime NOT NULL DEFAULT current_timestamp(),
   `activo` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `mensajeria`
+--
+
+INSERT INTO `mensajeria` (`id`, `idGrupo`, `idEmisor`, `idReceptor`, `idCreador`, `mensaje`, `tipo`, `fecha`, `activo`) VALUES
+(80, 3, 22, 7, 22, 'Veronica Calzada te envía una invitación para unirte a su equipo yop del Grupo de Historia', 2, '2022-02-03 18:49:17', 1);
 
 -- --------------------------------------------------------
 
@@ -326,7 +357,9 @@ INSERT INTO `usuario` (`id`, `correo`, `password`, `nombre`, `apellidos`, `foto`
 (8, 'adrian@ucm.es', '$2a$08$yobEY52jl8G2FpN6Nhd7nOLVjNdn96A1GWGQwHuJFREpmMcsUye9G', 'adrian', 'riesco', '', '', 1, 'A'),
 (9, 'luis@ucm.es', '$2a$08$yobEY52jl8G2FpN6Nhd7nOLVjNdn96A1GWGQwHuJFREpmMcsUye9G', 'LuisJ', 'Jaramillo', 0x433a5c66616b65706174685c616c61736b612e6a7067, 'http://localhost:3001/multimedia/users/9/user9.jpg', 1, 'S'),
 (10, 'stefano@ucm.es', '$2a$08$yobEY52jl8G2FpN6Nhd7nOLVjNdn96A1GWGQwHuJFREpmMcsUye9G', 'Stefano', 'Flores', '', '', 1, 'S'),
-(16, 'pedro@ucm.es', '$2a$08$/fYrEGbexRF6udkEeon5CuNNhyzfex0iX/8rMafYfbW5YrayYwp6e', 'Pedro', 'Suárez', '', '', 1, 'S');
+(16, 'pedro@ucm.es', '$2a$08$/fYrEGbexRF6udkEeon5CuNNhyzfex0iX/8rMafYfbW5YrayYwp6e', 'Pedro', 'Suárez', '', '', 1, 'S'),
+(22, 'verocalz@ucm.es', '$2a$08$lgCGabRYw.tBLr1YpYvbhevYwqtR/4H0O1vLTojIE55hpU79OIBWu', 'Veronica', 'Calzada', '', '', 1, 'S'),
+(23, 'jaime@ucm.es', '$2a$08$PIaxHyktmBi0.UOWUWjJDOJgNf1EHe7IkjvC.w3sK4g.CUnhGQ0Au', 'Jaime', 'Madriñan', '', '', 1, 'T');
 
 --
 -- Índices para tablas volcadas
@@ -442,19 +475,19 @@ ALTER TABLE `categoria`
 -- AUTO_INCREMENT de la tabla `desafio`
 --
 ALTER TABLE `desafio`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=271;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=434;
 
 --
 -- AUTO_INCREMENT de la tabla `equipo`
 --
 ALTER TABLE `equipo`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 
 --
 -- AUTO_INCREMENT de la tabla `equipoestudiante`
 --
 ALTER TABLE `equipoestudiante`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=153;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=155;
 
 --
 -- AUTO_INCREMENT de la tabla `escrito`
@@ -466,19 +499,19 @@ ALTER TABLE `escrito`
 -- AUTO_INCREMENT de la tabla `grupo`
 --
 ALTER TABLE `grupo`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `grupoestudiante`
 --
 ALTER TABLE `grupoestudiante`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `mensajeria`
 --
 ALTER TABLE `mensajeria`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 
 --
 -- AUTO_INCREMENT de la tabla `multimediadesafio`
@@ -496,7 +529,7 @@ ALTER TABLE `multimediaescrito`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- Restricciones para tablas volcadas
