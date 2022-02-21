@@ -123,11 +123,12 @@ function getWriting(req, res) {
 }
 
 /*Obtiene todas las versiones de un mismo escrito del estudiante segun su grupo*/
-function getVersionfromWriting()
+function getVersionfromWriting(req, res)
 {
-    const idVersionWriting = req.query.idWriting;
+    const idWriting = req.query.idWriting;
+    const idStudent = req.query.idStudent;
 
-    modelStudent.getVersionfromWriting(idWriting, idVersion, function (err, result) {
+    modelStudent.getVersionfromWriting(idWriting, idStudent, function (err, result) {
         if (err) {
             res.status(500).send({ error: err.message });
             console.log(err.message);
@@ -136,10 +137,7 @@ function getVersionfromWriting()
             res.send(result);
         }
     });
-
-
 }
-
 
 
 /*Obtiene todos los escritos individuales activos del estudiante*/
@@ -238,6 +236,26 @@ function editWriting(req, res) {
         }
     });
 }
+
+/*Añado una nueva versión de un escrito */
+function insertVersionfromWriting(req, res) {
+    const idWriting = req.body.idWriting;
+    const idChallenge = req.body.idChallenge;
+    const idWriter = req.body.idWriter;
+    const title = req.body.title;
+    const texto = req.body.escrito;
+    const type = req.body.type;
+
+    modelStudent.insertVersionfromWriting(idWriting, idChallenge, idWriter, title, texto, type, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
+        else {
+            res.send(result);
+        }
+    });
+}
+
 
 /*Edita el escrito del estudiante */
 function editWritingTeam(req, res) {
@@ -674,8 +692,10 @@ module.exports = {
     //Writings
     createWriting: createWriting,
     getWriting: getWriting,
+    getVersionfromWriting: getVersionfromWriting,
     getWritings: getWritings,
     editWriting: editWriting,
+    insertVersionfromWriting: insertVersionfromWriting,
     editWritingTeam: editWritingTeam,
     getWritingsCollaborative: getWritingsCollaborative,
     getWritingWriter: getWritingWriter,

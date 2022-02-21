@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-02-2022 a las 17:26:20
--- Versión del servidor: 10.4.21-MariaDB
--- Versión de PHP: 8.0.11
+-- Tiempo de generación: 11-02-2022 a las 12:05:51
+-- Versión del servidor: 10.4.22-MariaDB
+-- Versión de PHP: 8.1.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -361,6 +361,32 @@ INSERT INTO `usuario` (`id`, `correo`, `password`, `nombre`, `apellidos`, `foto`
 (22, 'verocalz@ucm.es', '$2a$08$lgCGabRYw.tBLr1YpYvbhevYwqtR/4H0O1vLTojIE55hpU79OIBWu', 'Veronica', 'Calzada', '', '', 1, 'S'),
 (23, 'jaime@ucm.es', '$2a$08$PIaxHyktmBi0.UOWUWjJDOJgNf1EHe7IkjvC.w3sK4g.CUnhGQ0Au', 'Jaime', 'Madriñan', '', '', 1, 'T');
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `versionescrito`
+--
+
+CREATE TABLE `versionescrito` (
+  `idEscrito` int(11) NOT NULL,
+  `idVersion` int(11) NOT NULL,
+  `idDesafio` int(9) NOT NULL,
+  `idEscritor` int(9) NOT NULL,
+  `nombre` varchar(250) CHARACTER SET utf8 NOT NULL,
+  `texto` longtext CHARACTER SET utf8 NOT NULL,
+  `colaboartivo` tinyint(1) NOT NULL,
+  `fecha` datetime NOT NULL DEFAULT current_timestamp(),
+  `activo` tinyint(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `versionescrito`
+--
+
+INSERT INTO `versionescrito` (`idEscrito`, `idVersion`, `idDesafio`, `idEscritor`, `nombre`, `texto`, `colaboartivo`, `fecha`, `activo`) VALUES
+(145, 1, 269, 72, 'Escrito8', 'El otro día conocí a una chica en una reunión que me presentaron unos amigos. La chica me contó que en su pueblo se estaba construyendo una mini-central eólica usando latas de refresco. La gente estaba muy contenta.\r\n', 2, '2021-04-27 09:42:50', 1),
+(146, 1, 270, 35, 'Escrito40', 'El otro día conocí a una chica en una reunión que me presentaron unos amigos. La chica me contó que en su pueblo se estaba construyendo una mini-central eólica usando latas de refresco. La gente estaba muy contenta.', 2, '2021-04-27 09:42:50', 1);
+
 --
 -- Índices para tablas volcadas
 --
@@ -462,6 +488,14 @@ ALTER TABLE `usuario`
   ADD UNIQUE KEY `correo` (`correo`);
 
 --
+-- Indices de la tabla `versionescrito`
+--
+ALTER TABLE `versionescrito`
+  ADD PRIMARY KEY (`idVersion`,`idEscrito`),
+  ADD KEY `idDesafio` (`idDesafio`),
+  ADD KEY `idEscrito` (`idEscrito`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -530,6 +564,12 @@ ALTER TABLE `multimediaescrito`
 --
 ALTER TABLE `usuario`
   MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
+-- AUTO_INCREMENT de la tabla `versionescrito`
+--
+ALTER TABLE `versionescrito`
+  MODIFY `idVersion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas
@@ -607,6 +647,13 @@ ALTER TABLE `multimediadesafio`
 --
 ALTER TABLE `multimediaescrito`
   ADD CONSTRAINT `multimediaescrito_ibfk_1` FOREIGN KEY (`idDesafio`) REFERENCES `desafio` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `versionescrito`
+--
+ALTER TABLE `versionescrito`
+  ADD CONSTRAINT `versionescrito_ibfk_1` FOREIGN KEY (`idDesafio`) REFERENCES `desafio` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `versionescrito_ibfk_2` FOREIGN KEY (`idEscrito`) REFERENCES `escrito` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -122,6 +122,23 @@ class modelStudent {
         });
     }
 
+    /*Obtiene todas las versiones de un mismo escrito del estudiante */
+    getVersionfromWriting(idWriting, idStudent, callback) {
+        const sqlSelect = "SELECT * FROM versionescrito where idEscrito=?;";
+        // "SELECT w.idVersion, u.nombre ,u.apellidos, c.titulo as nombreDesafio, c.fechaFin, w.idEscrito, w.idDesafio, w.idEscritor, w.nombre as nombreEscrito, w.colaborativo, w.fecha, w.activo FROM versionescrito as w INNER JOIN usuario as u ON w.idEscritor= u.id INNER JOIN desafio as c ON w.idDesafio= c.id where w.idEscrito=? AND w.idEscritor=?;";
+        // "SELECT * FROM versionescrito where idEscrito=?;"
+
+        this.pool.query(sqlSelect, [idWriting, idStudent], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+            }
+        });
+    }
+
+
     /*Obtiene el escrito del estudiante segun su grupo*/
     getWritingWriter(idGroup, idChallenge, idWriter, callback) {
         const sqlSelect = "SELECT * FROM escrito where idGrupo= ? AND idDesafio=? AND idEscritor=?;";
@@ -134,6 +151,8 @@ class modelStudent {
             }
         });
     }
+
+        
 
     /*Obtiene los escritos del estudiante*/
     getWritingsStudent(idStudent, idGroup, callback) {
@@ -188,7 +207,8 @@ class modelStudent {
         });
     }
 
-    insertVersionfromWriting(idWriting, idGroup, idChallenge, idWriter, title, text, type, callback)
+    /*Añado una nueva versión de un escrito */
+    insertVersionfromWriting(idWriting, idChallenge, idWriter, title, text, type, callback)
     {
         const sqlInsert = "INSERT INTO versionescrito (idEscrito, idVersion, idDesafio, idEscritor, nombre, texto, colaborativo, fecha, activo) VALUES (?,?,?,?,?,?,?,?,?)";
         this.pool.query(sqlInsert, [idWriting, idGroup, idChallenge, idWriter, title, text, type, callback], (err, result) => {

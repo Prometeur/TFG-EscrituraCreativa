@@ -41,6 +41,9 @@ router.get("/getMultimediaWriting", controller.getMultimediaWriting);
 /*Obtiene el escrito del estudiante segun su grupo*/
 router.get("/getWriting", controller.getWriting);
 
+/*Obtiene todas las versiones de un mismo escrito del estudiante segun su grupo*/
+router.get("/getVersionfromWriting", controller.getVersionfromWriting);
+
 /*Obtiene todos los escritos activos del estudiante*/
 router.get("/getWritings", controller.getWritings);
 

@@ -96,6 +96,20 @@ class StudentService {
             })
     }
 
+    /* Obtiene el escrito del estudiante con todas la versiones */
+    getVersionfromWriting(idWriting, idStudent)
+    {
+        return axios.get("/student/getVersionfromWriting", { params: { idWriting: idWriting, idStudent: idStudent} },
+            {
+                headers: { "Authorization": `Bearer ${authHeader()}` }
+            }).then(response => {
+                return response;
+            }).catch(error => {
+                console.log(error.message);
+                window.location.href = '/500';
+            })
+    }
+
     /*Obtiene todos los escritos colaborativos activos del equipo del estudiante*/
     getWritingsCollaborative(idStudent) {
         return axios.get("/student/getWritingsCollaborative", { params: { idStudent: idStudent } },
