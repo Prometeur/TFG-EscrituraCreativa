@@ -53,7 +53,8 @@ class CreateWriting extends Component {
                 idWriter: '',//idUser/idTeam según el tipo de desafío
                 title: '',//nombre del escrito 
                 escrito: '',//descripcion del escrito
-            }
+            },
+            maxIdWriting: -1
         }
     }
 
@@ -110,9 +111,20 @@ class CreateWriting extends Component {
             }).catch(error => {
                 console.log(error.message);
             });
+
+        /* Obtiene el último escrito, es decir, el máximo id de escrito */
+        StudentService.getHighestidWriting()
+            .then(response => {
+                this.setState({
+                    maxIdWriting: response[0].maxIdWriting
+            });
+        }).catch(error => {
+            console.log(error.message);
+        });
+        
     }
 
-    /*Envia el escrito y multimedia del estudiante*/
+    /*Envia el escrito y multimedia del estudiante y también añade una entrada en la tabla versionescrito */
     createWriting = () => {
         this.onModalCreateWriting(false);
         //Compruebo si no se ha creado un escrito anteriormente 
@@ -141,6 +153,9 @@ class CreateWriting extends Component {
                             .catch(error => {
                                 console.log(error.message);
                             });
+
+                        StudentService.insertVersionfromWriting(this.state.maxIdWriting + 1, 1, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.title, this.state.form.escrito, this.state.challenge.colaborativo)
+                    
                     }
                 }
                 else {

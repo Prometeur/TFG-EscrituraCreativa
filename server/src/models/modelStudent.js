@@ -110,9 +110,10 @@ class modelStudent {
     }
 
     /*Obtiene el escrito del estudiante */
-    getWriting(idWriting, callback) {
-        const sqlSelect = "SELECT * FROM escrito where id= ?;";
-        this.pool.query(sqlSelect, idWriting, (err, result) => {
+    getWriting(idWriting, idVersion, callback) {
+        const sqlSelect = "SELECT vw.idEscrito, vw.idDesafio, vw.idEscritor, vw.nombre, vw.texto, vw.colaborativo, vw.fecha, vw.activo, w.idGrupo FROM escrito as w INNER JOIN versionescrito as vw ON w.id=vw.idEscrito where w.id=? AND vw.idVersion=?;";
+        
+        this.pool.query(sqlSelect, [idWriting, idVersion], (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }
@@ -123,12 +124,25 @@ class modelStudent {
     }
 
     /*Obtiene todas las versiones de un mismo escrito del estudiante */
-    getVersionfromWriting(idWriting, idStudent, callback) {
-        const sqlSelect = "SELECT * FROM versionescrito where idEscrito=?;";
-        // "SELECT w.idVersion, u.nombre ,u.apellidos, c.titulo as nombreDesafio, c.fechaFin, w.idEscrito, w.idDesafio, w.idEscritor, w.nombre as nombreEscrito, w.colaborativo, w.fecha, w.activo FROM versionescrito as w INNER JOIN usuario as u ON w.idEscritor= u.id INNER JOIN desafio as c ON w.idDesafio= c.id where w.idEscrito=? AND w.idEscritor=?;";
-        // "SELECT * FROM versionescrito where idEscrito=?;"
+    getVersionsfromWriting(idWriting, callback) {
+        const sqlSelect = "SELECT vw.idVersion, vw.texto, u.nombre ,u.apellidos, c.titulo as nombreDesafio, c.fechaFin, vw.idEscrito, vw.idDesafio, vw.idEscritor, vw.nombre as nombreEscrito, vw.colaborativo, vw.fecha, vw.activo, w.idGrupo FROM versionescrito as vw INNER JOIN escrito as w ON w.id = vw.idEscrito INNER JOIN usuario as u ON vw.idEscritor= u.id INNER JOIN desafio as c ON vw.idDesafio= c.id where vw.idEscrito=? ORDER BY vw.idVersion;";
+        // comprobar que en el modo colaborativo se muestran todos los usuarios
 
-        this.pool.query(sqlSelect, [idWriting, idStudent], (err, result) => {
+        this.pool.query(sqlSelect, idWriting, (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+            }
+        });
+    }
+
+    /* Devuelve la última versión de un escrito, es decir, el mayor id */
+    getHighestidVersionfromWriting(idWriting, callback) {
+        const sqlSelect = "SELECT MAX(idVersion) as maxId from versionescrito where idEscrito=?;";
+        
+        this.pool.query(sqlSelect, idWriting, (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }
@@ -208,12 +222,26 @@ class modelStudent {
     }
 
     /*Añado una nueva versión de un escrito */
-    insertVersionfromWriting(idWriting, idChallenge, idWriter, title, text, type, callback)
+    insertVersionfromWriting(idWriting, idVersion, idChallenge, idWriter, title, text, type, callback)
     {
-        const sqlInsert = "INSERT INTO versionescrito (idEscrito, idVersion, idDesafio, idEscritor, nombre, texto, colaborativo, fecha, activo) VALUES (?,?,?,?,?,?,?,?,?)";
-        this.pool.query(sqlInsert, [idWriting, idGroup, idChallenge, idWriter, title, text, type, callback], (err, result) => {
+        const sqlInsert = "INSERT INTO versionescrito (idEscrito, idVersion, idDesafio, idEscritor, nombre, texto, colaborativo) VALUES (?,?,?,?,?,?,?)";
+        this.pool.query(sqlInsert, [idWriting, idVersion, idChallenge, idWriter, title, text, type, callback], (err, result) => {
             if (err) {
                 console.log("Error");
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+            }
+        });
+    }
+
+    /* Obtiene el último escrito, es decir, el máximo id de escrito */
+    getHighestidWriting(callback) {
+        const sqlSelect = "SELECT MAX(id) as maxIdWriting from escrito;";
+        
+        this.pool.query(sqlSelect, (err, result) => {
+            if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }
             else {

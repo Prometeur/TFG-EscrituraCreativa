@@ -42,7 +42,10 @@ router.get("/getMultimediaWriting", controller.getMultimediaWriting);
 router.get("/getWriting", controller.getWriting);
 
 /*Obtiene todas las versiones de un mismo escrito del estudiante segun su grupo*/
-router.get("/getVersionfromWriting", controller.getVersionfromWriting);
+router.get("/getVersionsfromWriting", controller.getVersionsfromWriting);
+
+/* Devuelve la última versión de un escrito, es decir, el mayor id */
+router.get("/getHighestidVersionfromWriting", controller.getHighestidVersionfromWriting);
 
 /*Obtiene todos los escritos activos del estudiante*/
 router.get("/getWritings", controller.getWritings);
@@ -64,6 +67,12 @@ router.post("/createWriting", controller.createWriting);
 
 /*Edito el escrito del estudiante */
 router.post("/editWriting", controller.editWriting);
+
+/*Añado una nueva versión de un escrito */
+router.post("/insertVersionfromWriting", controller.insertVersionfromWriting);
+
+/* Obtiene el último escrito, es decir, el máximo id de escrito */
+router.post("/getHighestidWriting", controller.getHighestidWriting);
 
 /*Edito el escrito en equipo del estudiante */
 router.post("/editWritingTeam", controller.editWritingTeam);

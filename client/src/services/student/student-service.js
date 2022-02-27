@@ -71,8 +71,8 @@ class StudentService {
     //-----------------------------------------------------WRITINGS----------------------------------------------------------------//    
 
     /*Obtiene el escrito del estudiante */
-    getWriting(idWriting) {
-        return axios.get("/student/getWriting", { params: { idWriting: idWriting } },
+    getWriting(idWriting, idVersion) {
+        return axios.get("/student/getWriting", { params: { idWriting: idWriting, idVersion: idVersion } },
             {
                 headers: { "Authorization": `Bearer ${authHeader()}` }
             }).then(response => {
@@ -97,13 +97,28 @@ class StudentService {
     }
 
     /* Obtiene el escrito del estudiante con todas la versiones */
-    getVersionfromWriting(idWriting, idStudent)
+    getVersionsfromWriting(idWriting)
     {
-        return axios.get("/student/getVersionfromWriting", { params: { idWriting: idWriting, idStudent: idStudent} },
+        return axios.get("/student/getVersionsfromWriting", { params: { idWriting: idWriting } },
             {
                 headers: { "Authorization": `Bearer ${authHeader()}` }
             }).then(response => {
                 return response;
+            }).catch(error => {
+                console.log(error.message);
+                window.location.href = '/500';
+            })
+    }
+
+    /* Devuelve la última versión de un escrito, es decir, el mayor id */
+    getHighestidVersionfromWriting(idWriting)
+    {
+        return axios.get("/student/getHighestidVersionfromWriting", { params: { idWriting: idWriting } },
+            {
+                headers: { "Authorization": `Bearer ${authHeader()}` }
+            }).then(response => {
+                return response.data;
+                
             }).catch(error => {
                 console.log(error.message);
                 window.location.href = '/500';
@@ -171,6 +186,33 @@ class StudentService {
             window.location.href = '/500';
         })
     }
+
+    /*Añado una nueva versión de un escrito */
+    insertVersionfromWriting(idWriting, idVersion, idChallenge, idWriter, title, text, type)
+    {
+        return axios.post("/student/insertVersionfromWriting", { idWriting: idWriting, idVersion: idVersion, idChallenge: idChallenge, idWriter: idWriter, title: title, text: text, type: type }, {
+            headers: { "Authorization": `Bearer ${authHeader()}` }
+        }).then(response => {
+            return response.data;
+        }).catch(error => {
+            console.log(error.message);
+            window.location.href = '/500';
+        })
+    }
+
+    /* Obtiene el último escrito, es decir, el máximo id de escrito */
+    getHighestidWriting()
+    {
+        return axios.post("/student/getHighestidWriting", { }, {
+            headers: { "Authorization": `Bearer ${authHeader()}` }
+        }).then(response => {
+            return response.data;
+        }).catch(error => {
+            console.log(error.message);
+            window.location.href = '/500';
+        })
+    }
+
 
     /*Edito el escrito del estudiante */
     editWritingTeam(idWriting, idGroup, idChallenge, idWriter, title, escrito, log, type) {

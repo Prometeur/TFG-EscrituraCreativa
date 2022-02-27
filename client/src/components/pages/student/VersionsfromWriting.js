@@ -23,18 +23,17 @@ class VersionsfromWriting extends Component
         super(props);
         this.state = {
             data: [],
-            challenge: '', //contiene el desafio 
+            challenge: ''
         }
     
     }
 
-
     componentDidMount() {
         //obtiene las versiones del escrito del estudiante o del grupo
-        StudentService.getVersionfromWriting(this.props.match.params.idWriting, AuthUser.getCurrentUser().id)
+        StudentService.getVersionsfromWriting(this.props.match.params.idWriting)
             .then(response => {
                 if (response.length !== 0) {
-                    this.setState({ data: response.data });
+                    this.setState({ data: response.data, challenge: response.data[0].nombreDesafio });
                 }
             })
             .catch(error => {
@@ -77,7 +76,7 @@ class VersionsfromWriting extends Component
     /*Dibuja la pagina  */
     render() {
         let formatedDate;
-        let { data } = this.state;
+        let { data, challenge } = this.state;
         return (
             <div class="container">
                 <Card className="card-long">
@@ -85,17 +84,23 @@ class VersionsfromWriting extends Component
                         {
                             <>
                             <div className={"row-edit"}>
-                                <label className={"form-label"} htmlFor="">Lista de escritos</label>
+                                <label className={"form-label"} htmlFor="">Lista de versiones</label>
                             </div>
+                            <hr />
+                            <ul className={"flex-row"}>
+                                <li className={"flex-item-form"}>
+                                    <label className='form-label'>Desafío</label>
+                                    <h5> {challenge} </h5>
+                                </li>
+                            </ul>
                             <div className="row-edit">
                                 <Table bordered hover responsive>
                                     <thead>
                                         <tr>
-                                            <th >Escrito</th>
-                                            <th> Version</th>
-                                            <th >Desafío</th>
+                                            <th> Versión</th>
+                                            <th> Título</th>
                                             <th >Estudiante</th>
-                                            <th >Fecha</th>
+                                            <th >Fecha de modificación</th>
                                             <th >Hora</th>
                                             <th >Acciones</th>
                                         </tr>
@@ -103,22 +108,19 @@ class VersionsfromWriting extends Component
                                     <tbody>
                                         {data.map((writing) => (
                                             < tr key={writing.idEscrito}>
-                                                <td>{writing.nombreEscrito}</td>
                                                 <td>{writing.idVersion}</td>
-                                                <td>{writing.nombreDesafio}</td>
+                                                <td>{writing.nombreEscrito}</td>
                                                 <td>{writing.nombre} {writing.apellidos}</td>
-                                                <td >{formatedDate = moment(writing.fechaFin).format('DD/MM/YYYY')}</td>
-                                                <td >{formatedDate = moment(writing.fechaFin).format('LT')}</td>
-
+                                                <td >{formatedDate = moment(writing.fecha).format('DD/MM/YYYY')}</td>
+                                                <td >{formatedDate = moment(writing.fecha).format('LT')}</td>
                                                 <td >
-                                                        <Link to={`/student/editVersionfromWriting/${writing.idGrupo}/${writing.idDesafio}/${writing.id}`}>
+                                                        <Link to={`/student/editVersionfromWriting/${writing.idGrupo}/${writing.idDesafio}/${writing.idEscrito}/${writing.idVersion}`}>
                                                             <img src="/edit.png" alt=""/>
                                                             <Button variant="link">
                                                                  Editar
                                                             </Button>
                                                        </Link>
                                                 </td>
-
                                             </tr>
                                         ))}
                                     </tbody>

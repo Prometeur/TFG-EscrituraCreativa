@@ -110,8 +110,9 @@ function createWriting(req, res) {
 /*Obtiene el escrito del estudiante segun su grupo*/
 function getWriting(req, res) {
     const idWriting = req.query.idWriting;
+    const idVersion = req.query.idVersion;
 
-    modelStudent.getWriting(idWriting, function (err, result) {
+    modelStudent.getWriting(idWriting, idVersion, function (err, result) {
         if (err) {
             res.status(500).send({ error: err.message });
             console.log(err.message);
@@ -123,12 +124,11 @@ function getWriting(req, res) {
 }
 
 /*Obtiene todas las versiones de un mismo escrito del estudiante segun su grupo*/
-function getVersionfromWriting(req, res)
+function getVersionsfromWriting(req, res)
 {
     const idWriting = req.query.idWriting;
-    const idStudent = req.query.idStudent;
 
-    modelStudent.getVersionfromWriting(idWriting, idStudent, function (err, result) {
+    modelStudent.getVersionsfromWriting(idWriting, function (err, result) {
         if (err) {
             res.status(500).send({ error: err.message });
             console.log(err.message);
@@ -139,6 +139,22 @@ function getVersionfromWriting(req, res)
     });
 }
 
+/* Devuelve la última versión de un escrito, es decir, el mayor id */
+function getHighestidVersionfromWriting(req, res)
+{
+    const idWriting = req.query.idWriting;
+
+    modelStudent.getHighestidVersionfromWriting(idWriting, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else {
+            res.send(result);
+        }
+    });
+
+}
 
 /*Obtiene todos los escritos individuales activos del estudiante*/
 function getWritings(req, res) {
@@ -240,13 +256,27 @@ function editWriting(req, res) {
 /*Añado una nueva versión de un escrito */
 function insertVersionfromWriting(req, res) {
     const idWriting = req.body.idWriting;
+    const idVersion = req.body.idVersion;
     const idChallenge = req.body.idChallenge;
     const idWriter = req.body.idWriter;
     const title = req.body.title;
-    const texto = req.body.escrito;
+    const texto = req.body.text;
     const type = req.body.type;
 
-    modelStudent.insertVersionfromWriting(idWriting, idChallenge, idWriter, title, texto, type, function (err, result) {
+    modelStudent.insertVersionfromWriting(idWriting, idVersion, idChallenge, idWriter, title, texto, type, function (err, result) {
+        if (err) {
+            console.log(err.message);
+        }
+        else {
+            res.send(result);
+        }
+    });
+}
+
+/* Obtiene el último escrito, es decir, el máximo id de escrito */
+function getHighestidWriting(req, res) {
+    
+    modelStudent.getHighestidWriting(function (err, result) {
         if (err) {
             console.log(err.message);
         }
@@ -692,10 +722,12 @@ module.exports = {
     //Writings
     createWriting: createWriting,
     getWriting: getWriting,
-    getVersionfromWriting: getVersionfromWriting,
+    getVersionsfromWriting: getVersionsfromWriting,
+    getHighestidVersionfromWriting: getHighestidVersionfromWriting,
     getWritings: getWritings,
     editWriting: editWriting,
     insertVersionfromWriting: insertVersionfromWriting,
+    getHighestidWriting: getHighestidWriting,
     editWritingTeam: editWritingTeam,
     getWritingsCollaborative: getWritingsCollaborative,
     getWritingWriter: getWritingWriter,
