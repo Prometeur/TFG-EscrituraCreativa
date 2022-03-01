@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-02-2022 a las 12:05:51
+-- Tiempo de generación: 01-03-2022 a las 12:10:38
 -- Versión del servidor: 10.4.22-MariaDB
 -- Versión de PHP: 8.1.2
 
@@ -60,7 +60,9 @@ INSERT INTO `categoria` (`id`, `nombre`) VALUES
 (21, 'literaturas digitales literaturas expandidas'),
 (22, 'literaturas digitales cibernarrativa'),
 (23, 'literaturas digitales ciberpoesía'),
-(24, 'literaturas transmediales');
+(24, 'literaturas transmediales'),
+(25, 'cine'),
+(26, 'storyboard');
 
 -- --------------------------------------------------------
 
@@ -97,7 +99,17 @@ INSERT INTO `desafio` (`id`, `idGrupo`, `titulo`, `descripcion`, `tipoCalificaci
 (270, 3, 'Desafio3000', '<p><span style=\"color: rgb(0,0,0);background-color: transparent;font-size: 37.5pt;font-family: Work Sans\", sans-serif;\"><em>“Quiero que escribas la continuación de la siguiente historia, que contenga los siguientes elementos: chica, refresco, eólica y pueblo”</em></span>&nbsp;</p>\r\n', 1, 7, 1, '2021-04-27 02:34:34', '2023-01-31 00:32:00', 1),
 (345, 3, 'Redactar una crónica de la historia presente en un mundo distópico', 'Narrar una historia del día a día basada en un mundo totalmente distópico y desolado, en la estética cyberpunk.', 5, 1, 2, '2021-11-29 16:34:09', '2024-10-31 16:30:23', 1),
 (432, 1, 'Ponte en la piel de John Galt y redacta tu propio diario', 'Escribe un diario a través de los ojos de John Galt.', 10, 11, 1, '2021-11-29 16:36:20', '2022-12-28 16:34:17', 1),
-(433, 9, 'Especial Desafío Febrero', '<p>Relato corto.</p>\n', 1, 22, 2, '2022-02-03 18:28:01', '2022-02-28 18:26:00', 1);
+(433, 9, 'Especial Desafío Febrero', '<p>Relato corto.</p>\n', 1, 22, 2, '2022-02-03 18:28:01', '2022-02-28 18:26:00', 1),
+(434, 5, 'C. Bukowski', '<p>Transforma el poema de Bukowski en un guion audiovisual que no sobrepase las dos páginas. Busca equivalentes semióticos visuales y sonoros. Presta atención a la transcripción de la voz narrativa (nivel y persona).</p>\n', 1, 21, 1, '2022-02-19 17:32:56', '2022-07-12 17:30:00', 1),
+(435, 7, 'R. Bolaño', '<p>Transforma el fragmento de Llamadas telefónicas de Bolaño en un diálogo audiovisual (no literario). Utiliza un narrador silente (no uses voz off ni voz over).</p>\n', 1, 25, 1, '2022-02-19 17:38:42', '2022-06-13 17:37:00', 1),
+(436, 7, 'Murakami', '<p>Transforma el fragmento de After Dark de Murakami en un storyboard que no sobrepase las dos páginas. Elige el número y la distribución de las viñetas. Puedes utilizar una viñeta multimagen. No puedes utilizar splash page. Utiliza distintos encuadres (angulación, planos, altura, movilidad y distancia).</p>\n', 1, 26, 1, '2022-02-19 17:41:01', '2022-08-15 17:40:00', 1),
+(437, 1, 'C. Jung', '<p>Desarrolla el arquetipo jungueano del niño feral en un texto narrativo de no más de dos páginas. Utiliza focalización interna y cero, y al menos un narrador homodiegético.</p>\n', 2, 20, 1, '2022-02-19 17:42:53', '2022-08-14 17:41:00', 1),
+(438, 8, 'Empleo de décadrage', '<p>Crea una imagen en décadrage (en ilustración, fotografía, collage, etc.) a partir de la siguiente imagen de Bencicova. Puedes utilizar plano errante, nómada, etc. Ten en cuenta los equivalentes semióticos de los existentes (espaciales y personajes).</p>\n', 1, 22, 1, '2022-02-19 17:45:48', '2022-06-08 17:45:00', 1),
+(439, 7, 'Changes - D. Bowie', '<p>Crea un storyboard de Changes (Bowie: https://www.youtube.com/watch?v=4BgF7Y3q-as) que tenga, por lo menos, tres niveles narrativos distintos. Puedes usar metalepsis si la historia lo requiere.</p>\n', 2, 26, 2, '2022-02-19 17:47:40', '2022-07-12 17:46:00', 1),
+(440, 8, 'Rui Palha', '<p>Desarrolla la historia de la fotografía de Rui Palha en no más de dos páginas. Utiliza una estructura no cronológica y diferentes subestructuras durativas (igualdad, inserción, expansión, compresión, elipsis).</p>\n', 1, 15, 2, '2022-02-19 17:49:42', '2022-07-12 17:48:00', 1),
+(441, 8, 'Requiem - Mozart', '<p>Crea una historia de no más de dos páginas en la que el hipotexto sea Dies Irae del Requiem de Mozart: https://www.youtube.com/watch?v=Zi8vJ_lMxQI</p>\n', 1, 24, 1, '2022-02-19 17:52:22', '2022-09-13 17:50:00', 1),
+(442, 7, 'Desarrollo de una historia', '<p>Desarrolla una historia de no más de dos páginas en la que existan por los menos tres textos en relación intertextual. Sólo puedes utilizar la repetición de contenido si aporta nueva información al texto. Considera los equivalentes semióticos presentes en todas las líneas diegéticas.</p>\n', 2, 21, 1, '2022-02-19 17:54:27', '2022-05-10 17:53:00', 1),
+(443, 7, 'Elección de un cuento infantil y desarrollo de dos mundos conectados a él', '<p>Elige un cuento infantil y desarrolla dos mundos posibles asociados a él. Puedes usar imagen (fija o en movimiento), palabras o sonido. Las líneas narrativas de todos los mundos deben mantener relaciones semióticas (denotativas y connotativas).</p>\n', 1, 19, 1, '2022-02-19 17:56:10', '2022-05-01 17:54:00', 1);
 
 -- --------------------------------------------------------
 
@@ -188,7 +200,9 @@ CREATE TABLE `escrito` (
 
 INSERT INTO `escrito` (`id`, `idGrupo`, `idDesafio`, `idEscritor`, `nombre`, `texto`, `registro`, `puntuacion`, `comentario`, `colaborativo`, `finalizado`, `fecha`, `activo`) VALUES
 (145, 3, 269, 72, 'Escrito8', '<p><em>El otro día conocí a una chica en una reunión que me presentaron unos amigos. La chica me contó que en su pueblo se estaba construyendo una mini-central eólica usando latas de refresco. La gente estaba muy contenta.</em></p>\n<p></p>\n', '', 6, 'Me parece muy buena historia quizás mejoraría algunas cosas como.....', 2, 0, '2021-04-27 09:42:50', 1),
-(146, 3, 270, 35, 'Escrito40', '<p><em>El otro día conocí a una chica en una reunión que me presentaron unos amigos. La chica me contó que en su pueblo se estaba construyendo una mini-central eólica usando latas de refresco. La gente estaba muy contenta.</em></p>\r\n<p></p>\r\n', '', 6, 'Me parece muy buena historia quizás mejoraría algunas cosas como.....', 2, 0, '2021-04-27 09:42:50', 1);
+(146, 3, 270, 35, 'Escrito40', '<p><em>El otro día conocí a una chica en una reunión que me presentaron unos amigos. La chica me contó que en su pueblo se estaba construyendo una mini-central eólica usando latas de refresco. La gente estaba muy contenta.</em></p>\r\n<p></p>\r\n', '', 6, 'Me parece muy buena historia quizás mejoraría algunas cosas como.....', 2, 0, '2021-04-27 09:42:50', 1),
+(147, 1, 432, 22, '1', '<p>2</p>\n', '', 0, '', 1, 0, '2022-02-21 19:28:49', 1),
+(151, 3, 3, 22, 'Prueba 4.2', '<p>12345678</p>\n', '', 0, '', 1, 0, '2022-02-27 19:13:27', 1);
 
 -- --------------------------------------------------------
 
@@ -226,6 +240,8 @@ INSERT INTO `grupo` (`id`, `idprofesor`, `nombre`, `activo`) VALUES
 (4, 4, 'Lengua', 1),
 (5, 4, 'Poesía', 1),
 (6, 4, 'Biología', 1),
+(7, 4, 'Literatura', 1),
+(8, 4, 'Arte', 1),
 (9, 23, 'Febrero', 1);
 
 -- --------------------------------------------------------
@@ -255,7 +271,13 @@ INSERT INTO `grupoestudiante` (`id`, `idGrupo`, `idEstudiante`) VALUES
 (9, 4, 16),
 (10, 1, 22),
 (11, 3, 22),
-(12, 5, 22);
+(12, 5, 22),
+(13, 5, 23),
+(14, 1, 23),
+(15, 2, 23),
+(16, 3, 23),
+(17, 4, 23),
+(18, 6, 23);
 
 -- --------------------------------------------------------
 
@@ -301,7 +323,12 @@ CREATE TABLE `multimediadesafio` (
 
 INSERT INTO `multimediadesafio` (`id`, `idDesafio`, `ruta`, `fecha`) VALUES
 (247, 269, 'http://localhost:3001/multimedia/users/4/269/video/eolica.mp4', '2021-04-27 09:32:39'),
-(248, 269, 'http://localhost:3001/multimedia/users/4/269/image/pueblo.jpg', '2021-04-27 09:32:39');
+(248, 269, 'http://localhost:3001/multimedia/users/4/269/image/pueblo.jpg', '2021-04-27 09:32:39'),
+(249, 434, 'http://localhost:3001/multimedia/users/4/434/application/1. The Bluebird.pdf', '2022-02-19 17:59:41'),
+(250, 435, 'http://localhost:3001/multimedia/users/4/435/application/2. Llamadas telefónicas.pdf', '2022-02-19 18:00:09'),
+(251, 436, 'http://localhost:3001/multimedia/users/4/436/application/3. After Dark.pdf', '2022-02-19 18:00:48'),
+(252, 438, 'http://localhost:3001/multimedia/users/4/438/image/5. Evelyn Bencicova.jpg', '2022-02-19 18:01:21'),
+(253, 440, 'http://localhost:3001/multimedia/users/4/440/image/7. Rui Palha.jpg', '2022-02-19 18:01:45');
 
 -- --------------------------------------------------------
 
@@ -359,7 +386,7 @@ INSERT INTO `usuario` (`id`, `correo`, `password`, `nombre`, `apellidos`, `foto`
 (10, 'stefano@ucm.es', '$2a$08$yobEY52jl8G2FpN6Nhd7nOLVjNdn96A1GWGQwHuJFREpmMcsUye9G', 'Stefano', 'Flores', '', '', 1, 'S'),
 (16, 'pedro@ucm.es', '$2a$08$/fYrEGbexRF6udkEeon5CuNNhyzfex0iX/8rMafYfbW5YrayYwp6e', 'Pedro', 'Suárez', '', '', 1, 'S'),
 (22, 'verocalz@ucm.es', '$2a$08$lgCGabRYw.tBLr1YpYvbhevYwqtR/4H0O1vLTojIE55hpU79OIBWu', 'Veronica', 'Calzada', '', '', 1, 'S'),
-(23, 'jaime@ucm.es', '$2a$08$PIaxHyktmBi0.UOWUWjJDOJgNf1EHe7IkjvC.w3sK4g.CUnhGQ0Au', 'Jaime', 'Madriñan', '', '', 1, 'T');
+(23, 'jaime@ucm.es', '$2a$08$PIaxHyktmBi0.UOWUWjJDOJgNf1EHe7IkjvC.w3sK4g.CUnhGQ0Au', 'Jaime', 'Madriñan', '', '', 1, 'S');
 
 -- --------------------------------------------------------
 
@@ -374,7 +401,7 @@ CREATE TABLE `versionescrito` (
   `idEscritor` int(9) NOT NULL,
   `nombre` varchar(250) CHARACTER SET utf8 NOT NULL,
   `texto` longtext CHARACTER SET utf8 NOT NULL,
-  `colaboartivo` tinyint(1) NOT NULL,
+  `colaborativo` tinyint(1) NOT NULL,
   `fecha` datetime NOT NULL DEFAULT current_timestamp(),
   `activo` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -383,9 +410,17 @@ CREATE TABLE `versionescrito` (
 -- Volcado de datos para la tabla `versionescrito`
 --
 
-INSERT INTO `versionescrito` (`idEscrito`, `idVersion`, `idDesafio`, `idEscritor`, `nombre`, `texto`, `colaboartivo`, `fecha`, `activo`) VALUES
+INSERT INTO `versionescrito` (`idEscrito`, `idVersion`, `idDesafio`, `idEscritor`, `nombre`, `texto`, `colaborativo`, `fecha`, `activo`) VALUES
 (145, 1, 269, 72, 'Escrito8', 'El otro día conocí a una chica en una reunión que me presentaron unos amigos. La chica me contó que en su pueblo se estaba construyendo una mini-central eólica usando latas de refresco. La gente estaba muy contenta.\r\n', 2, '2021-04-27 09:42:50', 1),
-(146, 1, 270, 35, 'Escrito40', 'El otro día conocí a una chica en una reunión que me presentaron unos amigos. La chica me contó que en su pueblo se estaba construyendo una mini-central eólica usando latas de refresco. La gente estaba muy contenta.', 2, '2021-04-27 09:42:50', 1);
+(146, 1, 270, 35, 'Escrito40', 'El otro día conocí a una chica en una reunión que me presentaron unos amigos. La chica me contó que en su pueblo se estaba construyendo una mini-central eólica usando latas de refresco. La gente estaba muy contenta.', 2, '2021-04-27 09:42:50', 1),
+(147, 1, 432, 22, '1', '2', 1, '2022-02-21 19:28:49', 1),
+(151, 1, 3, 22, 'Prueba 4', '<p>123456</p>\n', 1, '2022-02-27 19:13:27', 0),
+(147, 2, 432, 22, 'Hola', 'Me llamo Juan', 1, '2022-02-21 19:28:49', 1),
+(151, 2, 3, 22, 'Prueba 4.2', '<p>12345678</p>\n', 1, '2022-02-27 20:14:59', 0),
+(147, 3, 432, 22, 'H', '3', 1, '2022-02-23 19:19:13', 1),
+(151, 3, 3, 22, 'Prueba 4.3', '<p>12</p>\n', 1, '2022-02-27 20:20:58', 0),
+(147, 4, 432, 22, 'Hola J.A.', '<p>Me llamo Juan Antonio</p>\n', 1, '2022-02-26 12:12:45', 0),
+(147, 5, 432, 22, '1, 2', '<p>2, 3, 4, 5</p>\n', 1, '2022-02-26 12:14:17', 0);
 
 --
 -- Índices para tablas volcadas
@@ -503,13 +538,13 @@ ALTER TABLE `versionescrito`
 -- AUTO_INCREMENT de la tabla `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de la tabla `desafio`
 --
 ALTER TABLE `desafio`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=434;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=444;
 
 --
 -- AUTO_INCREMENT de la tabla `equipo`
@@ -527,7 +562,7 @@ ALTER TABLE `equipoestudiante`
 -- AUTO_INCREMENT de la tabla `escrito`
 --
 ALTER TABLE `escrito`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=147;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=152;
 
 --
 -- AUTO_INCREMENT de la tabla `grupo`
@@ -539,7 +574,7 @@ ALTER TABLE `grupo`
 -- AUTO_INCREMENT de la tabla `grupoestudiante`
 --
 ALTER TABLE `grupoestudiante`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `mensajeria`
@@ -551,7 +586,7 @@ ALTER TABLE `mensajeria`
 -- AUTO_INCREMENT de la tabla `multimediadesafio`
 --
 ALTER TABLE `multimediadesafio`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=249;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=254;
 
 --
 -- AUTO_INCREMENT de la tabla `multimediaescrito`
@@ -564,12 +599,6 @@ ALTER TABLE `multimediaescrito`
 --
 ALTER TABLE `usuario`
   MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
-
---
--- AUTO_INCREMENT de la tabla `versionescrito`
---
-ALTER TABLE `versionescrito`
-  MODIFY `idVersion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas
@@ -653,7 +682,7 @@ ALTER TABLE `multimediaescrito`
 --
 ALTER TABLE `versionescrito`
   ADD CONSTRAINT `versionescrito_ibfk_1` FOREIGN KEY (`idDesafio`) REFERENCES `desafio` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `versionescrito_ibfk_2` FOREIGN KEY (`idEscrito`) REFERENCES `escrito` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `versionescrito_ibfk_2` FOREIGN KEY (`idEscrito`) REFERENCES `escrito` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
