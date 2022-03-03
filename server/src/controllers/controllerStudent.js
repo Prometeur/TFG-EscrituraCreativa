@@ -1,4 +1,5 @@
 const modelo = require("../models/modelStudent");
+const modelo = require("../models/modelTeacher");
 
 const fs = require('fs')
 
@@ -691,6 +692,31 @@ function deleteMessage(req, res) {
     });
 }
 
+//Pide al profesor ser invitado a un grupo
+function askTeacherToJoinGroup(request, response, next) {
+    let grupo = request.body.grupo;
+    let id = request.body.idTeacher;
+
+    modelStudent.askTeacherToJoinGroup(grupo, id, function (err, res) {
+        if (err) {
+            if (err.message == "No se puede conectar a la base de datos.") {
+                //next(err);
+                console.log("No se puede conectar a la base de datos");
+            }
+            response.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else if (res == null) {
+            response.status(500).send({ error: "No se ha podido enviar la solicitud al grupo." });
+            console.log("No se ha podido enviar la solicitud al grupo.");
+        }
+        else {
+            response.status(200);
+            response.send(JSON.stringify(res));
+        }
+    });
+}
+
 /*Envio el mensaje*/
 function sendMessage(req, res) {
     const idGroup = req.body.idGroup;
@@ -713,6 +739,7 @@ function sendMessage(req, res) {
 module.exports = {
     //Groups
     getGroups: getGroups,
+    askTeacherToJoinGroup: askTeacherToJoinGroup,
     //Challenges
     getChallenge: getChallenge,
     getChallenges: getChallenges,

@@ -588,6 +588,25 @@ class modelStudent {
             }
         });
     }
+
+    askTeacherToJoinGroup(grupo, id, callback) {
+        this.pool.getConnection(function (err, connection) {
+            if (err) {
+                callback(new Error("No se puede conectar a la base de datos."))
+            } else {
+                const sql = 'SELECT INTO grupoestudiante (idGrupo, idProfesor) VALUES (?,?);';
+                const valores = [grupo, id];
+                connection.query(sql, valores, function (err, res) {
+                    connection.release();
+                    if (err) {
+                        callback(new Error("Error al enviar la solicitud al grupo."));
+                    } else {
+                        callback(null, res);
+                    }
+                })
+            }
+        });
+    }
 }
 
 //Data export
