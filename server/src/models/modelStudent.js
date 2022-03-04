@@ -590,7 +590,7 @@ class modelStudent {
     }
     /*Te muestra los grupos donde no se encuentre el estudiante*/
     askTeacherToJoinGroup(idStudent, callback) {
-        const sqlSelect ="SELECT grupo.nombre, grupo.id FROM grupo WHERE grupo.id NOT IN(SELECT grupoestudiante.idGrupo FROM grupoestudiante WHERE idEstudiante=? ) ";
+        const sqlSelect ="SELECT grupo.nombre, grupo.id FROM grupo WHERE grupo.id NOT IN(SELECT grupoestudiante.idGrupo FROM grupoestudiante WHERE idEstudiante = 7) ";
         // "SELECT grupo.nombre FROM grupo WHERE grupo.id NOT IN(SELECT grupoestudiante.idGrupo FROM grupoestudiante)
         this.pool.query(sqlSelect, idStudent, (err, result) => {
             if (err) {

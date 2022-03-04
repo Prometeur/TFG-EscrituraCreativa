@@ -29,24 +29,6 @@ import Button from 'react-bootstrap/Button';
 import IconButton from '@material-ui/core/IconButton';
 
 
- // Envía la solicitud de unirse al grupo
-//  applyGroup = () => {
-//   this.onModalApply(false)
-//   StudentService.applyForGroup(this.state.)
-//   .then(response => {
-//       // Falta gestionar los archivos multimedia
-//           window.location.href = `/student/versionsWriting/${this.props.match.params.idGroup}/${this.props.match.params.idChallenge}/${this.props.match.params.idWriting}`;
-//   })
-//   .catch(error => {
-//       console.log(error.message);
-//   });
-// }
-
-// onModalApply = (modal) => {
-//   this.setState({
-//       modalApply: modal,
-//   });
-// };
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
   <a
     href=""
@@ -106,6 +88,8 @@ class GroupStudent extends Component {
       showWritings: false,
       showTeams: false,
       dataRemainingGroup: [],
+      groupSelectNR: "",
+      nameGroupSelectNR: "",
     };
   }
 
@@ -122,10 +106,10 @@ class GroupStudent extends Component {
         }
 
       })
-      StudentService.askTeacherToJoinGroup(AuthUser.getCurrentUser().id)
+      StudentService.askTeacherToJoinGroup(dataUser.id)
       .then(response => {
         if (response.length > 0) {
-          this.setState({dataRemainingGroup: response });
+          this.setState({dataRemainingGroup: response, groupSelectNR: response[0].idGrupo, nameGroupSelectNR: response[0].nombre });
         }
 
       })
@@ -159,6 +143,10 @@ class GroupStudent extends Component {
     this.setState({ groupSelect: group.idGrupo, nameGroupSelect: group.nombre});
   }
 
+  handleSelectNR(group) {
+    this.setState({ groupSelectNR: group.idGrupo, nameGroupSelectNR: group.nombre});
+  }
+
   disabledButton = () => {
     if (this.state.dataGroup.length > 0) {
       return false;
@@ -166,8 +154,26 @@ class GroupStudent extends Component {
     return true;
   }
 
+  //Envía la solicitud de unirse al grupo
+    applyGroup = () => {
+    this.onModalApply(false)
+    StudentService.applyForGroup(this.state.currentUser, this.state.groupSelectNR)
+    .then(response => {
+            window.location.href = `/student/groups`;
+    })
+    .catch(error => {
+        console.log(error.message);
+    });
+  }
+
+  onModalApply = (modal) => {
+    this.setState({
+        modalApply: modal,
+    });
+  };
+
   render() {
-    const { dataGroup, groupSelect, showChallenges, showWritings, showTeams, dataRemainingGroup } = this.state;
+    const { dataGroup, groupSelect, showChallenges, showWritings, showTeams, dataRemainingGroup, nameGroupSelectNR } = this.state;
     return (
       <div className="container">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
@@ -189,13 +195,13 @@ class GroupStudent extends Component {
                     <DropdownToggle as={CustomToggle} id="dropdown-custom-components"> Grupos restantes</DropdownToggle>
                     <DropdownMenu as={CustomMenu}>
                       {dataRemainingGroup.map((row) => (
-                          <DropdownItem eventKey={row.idGrupo} onClick={() => this.handleSelect(row)}>{row.nombre}</DropdownItem>
+                          <DropdownItem eventKey={row.idGrupo} onClick={() => this.handleSelectNR(row)}>{row.nombre}</DropdownItem>
                       ))}
                     </DropdownMenu>
                   </Dropdown>
                 </li>
                 <li className={"flex-item-form"}>
-                    {/* <h4 style={{color: "#717172"}}>{this.state.nameGroupSelect}</h4> */}
+                    { <h4 style={{color: "#717172"}}>{this.state.nameGroupSelectNR}</h4> }
                 </li>
                 <li className={"flex-item-form"}>
                   <div className="form-button">
