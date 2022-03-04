@@ -25,9 +25,28 @@ import FormControl from 'react-bootstrap/FormControl';
 import Card from 'react-bootstrap/Card';
 import Icon from '@material-ui/core/Icon';
 import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
+import Button from 'react-bootstrap/Button';
+import IconButton from '@material-ui/core/IconButton';
 
 
+ // Envía la solicitud de unirse al grupo
+//  applyGroup = () => {
+//   this.onModalApply(false)
+//   StudentService.applyForGroup(this.state.)
+//   .then(response => {
+//       // Falta gestionar los archivos multimedia
+//           window.location.href = `/student/versionsWriting/${this.props.match.params.idGroup}/${this.props.match.params.idChallenge}/${this.props.match.params.idWriting}`;
+//   })
+//   .catch(error => {
+//       console.log(error.message);
+//   });
+// }
 
+// onModalApply = (modal) => {
+//   this.setState({
+//       modalApply: modal,
+//   });
+// };
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
   <a
     href=""
@@ -79,13 +98,14 @@ class GroupStudent extends Component {
 
     this.state = {
       dataGroup: [],//contiene todos los grupos del estudiante
-      currentUser: { id: "" },
+      currentUser: 0,
       groupSelect: "",
       nameGroupSelect: "",
       itemSelect: "",
       showChallenges: false,
       showWritings: false,
       showTeams: false,
+      dataRemainingGroup: [],
     };
   }
 
@@ -99,6 +119,13 @@ class GroupStudent extends Component {
       .then(response => {
         if (response.length > 0) {
           this.setState({ dataGroup: response, groupSelect: response[0].idGrupo, nameGroupSelect: response[0].nombre, showChallenges: true });
+        }
+
+      })
+      StudentService.askTeacherToJoinGroup(AuthUser.getCurrentUser().id)
+      .then(response => {
+        if (response.length > 0) {
+          this.setState({dataRemainingGroup: response });
         }
 
       })
@@ -129,7 +156,7 @@ class GroupStudent extends Component {
   };
 
   handleSelect(group) {
-    this.setState({ groupSelect: group.idGrupo, nameGroupSelect: group.nombre });
+    this.setState({ groupSelect: group.idGrupo, nameGroupSelect: group.nombre});
   }
 
   disabledButton = () => {
@@ -140,7 +167,7 @@ class GroupStudent extends Component {
   }
 
   render() {
-    const { dataGroup, groupSelect, showChallenges, showWritings, showTeams } = this.state;
+    const { dataGroup, groupSelect, showChallenges, showWritings, showTeams, dataRemainingGroup } = this.state;
     return (
       <div className="container">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
@@ -151,7 +178,37 @@ class GroupStudent extends Component {
                 <h2>Gestionar grupos</h2>
               </div>
             </div>
+
             <div className={"border-group"}>
+              <div className={"section-title"}>
+                <h2>Entrar a nuevos grupos</h2>
+              </div>
+              <ul className={"flex-items-row-evenly"}>
+                <li className={"flex-item-form"}>
+                  <Dropdown className="drop-down" >
+                    <DropdownToggle as={CustomToggle} id="dropdown-custom-components"> Grupos restantes</DropdownToggle>
+                    <DropdownMenu as={CustomMenu}>
+                      {dataRemainingGroup.map((row) => (
+                          <DropdownItem eventKey={row.idGrupo} onClick={() => this.handleSelect(row)}>{row.nombre}</DropdownItem>
+                      ))}
+                    </DropdownMenu>
+                  </Dropdown>
+                </li>
+                <li className={"flex-item-form"}>
+                    {/* <h4 style={{color: "#717172"}}>{this.state.nameGroupSelect}</h4> */}
+                </li>
+                <li className={"flex-item-form"}>
+                  <div className="form-button">
+                    <Button text='enviar' onClick={() => this.onModalApplyVersion(true)} > Solicitar entrar </Button>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div className={"border-group"}>
+              <div className={"section-title"}>
+                <h2>Mis grupos</h2>
+              </div>
               <ul className={"flex-items-row-evenly"}>
                 <li className={"flex-item-form"}>
                   <Dropdown className="drop-down" >
@@ -178,8 +235,8 @@ class GroupStudent extends Component {
                 </li>
               </ul>
             </div>
-
-
+         
+            
             {showChallenges ? (
               <>
                 <ChallengeTabs key={groupSelect} groupSelect={groupSelect} />

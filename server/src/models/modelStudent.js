@@ -588,25 +588,20 @@ class modelStudent {
             }
         });
     }
-
-    askTeacherToJoinGroup(grupo, id, callback) {
-        this.pool.getConnection(function (err, connection) {
+    /*Te muestra los grupos donde no se encuentre el estudiante*/
+    askTeacherToJoinGroup(idStudent, callback) {
+        const sqlSelect ="SELECT grupo.nombre, grupo.id FROM grupo WHERE grupo.id NOT IN(SELECT grupoestudiante.idGrupo FROM grupoestudiante WHERE idEstudiante=? ) ";
+        // "SELECT grupo.nombre FROM grupo WHERE grupo.id NOT IN(SELECT grupoestudiante.idGrupo FROM grupoestudiante)
+        this.pool.query(sqlSelect, idStudent, (err, result) => {
             if (err) {
-                callback(new Error("No se puede conectar a la base de datos."))
-            } else {
-                const sql = 'SELECT INTO grupoestudiante (idGrupo, idProfesor) VALUES (?,?);';
-                const valores = [grupo, id];
-                connection.query(sql, valores, function (err, res) {
-                    connection.release();
-                    if (err) {
-                        callback(new Error("Error al enviar la solicitud al grupo."));
-                    } else {
-                        callback(null, res);
-                    }
-                })
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
             }
         });
     }
+
 }
 
 //Data export

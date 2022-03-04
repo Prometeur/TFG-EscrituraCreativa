@@ -125,6 +125,21 @@ class StudentService {
             })
     }
 
+    /* Se muestran los grupos donde no se encuentra el estudiante */
+    askTeacherToJoinGroup(idStudent)
+    {
+        return axios.post("/student/askTeacherToJoinGroup", { params: { idStudent: idStudent } },
+            {
+                headers: { "Authorization": `Bearer ${authHeader()}` }
+            }).then(response => {
+                return response.data;
+                
+            }).catch(error => {
+                console.log(error.message);
+                window.location.href = '/500';
+            })
+    }
+
     /*Obtiene todos los escritos colaborativos activos del equipo del estudiante*/
     getWritingsCollaborative(idStudent) {
         return axios.get("/student/getWritingsCollaborative", { params: { idStudent: idStudent } },
