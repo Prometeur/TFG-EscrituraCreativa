@@ -1,6 +1,5 @@
 const modelo = require("../models/modelStudent");
-
-const fs = require('fs')
+const fs = require('fs');
 
 //importar la conexion
 const mysql = require("mysql");
@@ -12,6 +11,7 @@ const modelStudent = new modelo(pool);
 /*Obtiene los grupos del estudiante*/
 function getGroups(req, res) {
     const student = req.body.idStudent;
+
     modelStudent.getGroups(student, function (err, result) {
         if (err) {
             res.status(500).send({ error: err.message });
@@ -21,6 +21,39 @@ function getGroups(req, res) {
             res.send(JSON.stringify(result));
         }
 
+    });
+}
+
+//Pide al profesor ser invitado a un grupo
+function getRemainingGroups(req, res) {
+    const idStudent = req.query.idStudent;
+    // console.log("Id student:" + req.query.idStudent);
+
+    modelStudent.getRemainingGroups(idStudent, function (err, result)  {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else {
+            res.send(result);
+        }
+    });
+}
+
+/* Mandar a un profesor una petición de unión a un grupo */
+function sendGroupRequest(req, res)
+{
+    const idGroup = req.body.idGroup;
+    const idStudent = req.body.idStudent;
+
+    modelStudent.sendGroupRequest(idGroup, idStudent, function (err, result)  {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else {
+            res.send(result);
+        }
     });
 }
 
@@ -691,20 +724,6 @@ function deleteMessage(req, res) {
     });
 }
 
-//Pide al profesor ser invitado a un grupo
-function askTeacherToJoinGroup(req, res) {
-    const idStudent = req.body.idStudent;
-
-    modelStudent.askTeacherToJoinGroup(idStudent, function (err, result)  {
-        if (err) {
-            res.status(500).send({ error: err.message });
-            console.log(err.message);
-        }
-        else {
-            res.send(result);
-        }
-    });
-}
 
 /*Envio el mensaje*/
 function sendMessage(req, res) {
@@ -728,7 +747,8 @@ function sendMessage(req, res) {
 module.exports = {
     //Groups
     getGroups: getGroups,
-    askTeacherToJoinGroup: askTeacherToJoinGroup,
+    getRemainingGroups: getRemainingGroups,
+    sendGroupRequest: sendGroupRequest,
     //Challenges
     getChallenge: getChallenge,
     getChallenges: getChallenges,

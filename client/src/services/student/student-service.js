@@ -15,6 +15,34 @@ class StudentService {
             })
     }
 
+    /* Se muestran los grupos donde no se encuentra el estudiante */
+    getRemainingGroups(idStudent)
+    {
+        return axios.get("/student/getRemainingGroups", { params: { idStudent: idStudent } },
+            {
+                headers: { "Authorization": `Bearer ${authHeader()}` }
+            }).then(response => {
+                return response.data;
+            }).catch(error => {
+                console.log(error.message);
+                window.location.href = '/500';
+            })
+    }
+
+    /* Mandar a un profesor una petición de unión a un grupo */
+    sendGroupRequest(idGroup, idStudent)
+    {
+        return axios.post("/student/sendGroupRequest", { idGroup: idGroup, idStudent: idStudent },
+        {
+            headers: { "Authorization": `Bearer ${authHeader()}` }
+        }).then(response => {
+            return response.data;
+        }).catch(error => {
+            console.log(error.message);
+            window.location.href = '/500';
+        })
+    }
+
     //-----------------------------------------------------CHALLENGES----------------------------------------------------------------//
 
     /**Obtiene el desafio del estudiante segun su grupo */
@@ -114,21 +142,6 @@ class StudentService {
     getHighestidVersionfromWriting(idWriting)
     {
         return axios.get("/student/getHighestidVersionfromWriting", { params: { idWriting: idWriting } },
-            {
-                headers: { "Authorization": `Bearer ${authHeader()}` }
-            }).then(response => {
-                return response.data;
-                
-            }).catch(error => {
-                console.log(error.message);
-                window.location.href = '/500';
-            })
-    }
-
-    /* Se muestran los grupos donde no se encuentra el estudiante */
-    askTeacherToJoinGroup(idStudent)
-    {
-        return axios.post("/student/askTeacherToJoinGroup", { params: { idStudent: idStudent } },
             {
                 headers: { "Authorization": `Bearer ${authHeader()}` }
             }).then(response => {

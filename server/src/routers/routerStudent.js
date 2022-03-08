@@ -19,7 +19,12 @@ router.use(function (request, response, next) {
 
 /*Obtiene los grupos del estudiante*/
 router.post("/getGroups", controller.getGroups);
-router.post("/askTeacherToJoinGroup", controller.askTeacherToJoinGroup);
+
+//Pide al profesor ser invitado a un grupo
+router.get("/getRemainingGroups", controller.getRemainingGroups);
+
+/* Mandar a un profesor una petición de unión a un grupo */
+router.post("/sendGroupRequest", controller.sendGroupRequest);
 
 //-----------------------------------------------------CHALLENGES----------------------------------------------------------------//
 

@@ -27,6 +27,7 @@ import Icon from '@material-ui/core/Icon';
 import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
 import Button from 'react-bootstrap/Button';
 import IconButton from '@material-ui/core/IconButton';
+import Modal from 'react-bootstrap/Modal';
 
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
@@ -80,7 +81,7 @@ class GroupStudent extends Component {
 
     this.state = {
       dataGroup: [],//contiene todos los grupos del estudiante
-      currentUser: 0,
+      currentUser: { id: "" }, // 0,
       groupSelect: "",
       nameGroupSelect: "",
       itemSelect: "",
@@ -88,8 +89,9 @@ class GroupStudent extends Component {
       showWritings: false,
       showTeams: false,
       dataRemainingGroup: [],
-      groupSelectNR: "",
-      nameGroupSelectNR: "",
+      groupSelect2: -1,
+      nameGroupSelect2: "",
+      modalApply: false,
     };
   }
 
@@ -98,22 +100,47 @@ class GroupStudent extends Component {
     const dataUser = AuthUser.getCurrentUser();
     this.setState({ currentUser: dataUser.id });
 
-    /**Obtiene todos los grupos del estudiante */
-    StudentService.getGroups(dataUser.id)
+      /**Obtiene todos los grupos del estudiante */
+      StudentService.getGroups(dataUser.id)
       .then(response => {
         if (response.length > 0) {
           this.setState({ dataGroup: response, groupSelect: response[0].idGrupo, nameGroupSelect: response[0].nombre, showChallenges: true });
         }
-
       })
-      StudentService.askTeacherToJoinGroup(dataUser.id)
+
+      /* Se muestran los grupos donde no se encuentra el estudiante */
+      StudentService.getRemainingGroups(dataUser.id)
       .then(response => {
         if (response.length > 0) {
-          this.setState({dataRemainingGroup: response, groupSelectNR: response[0].idGrupo, nameGroupSelectNR: response[0].nombre });
+          this.setState({dataRemainingGroup: response, groupSelect2: response[0].id, nameGroupSelect2: response[0].nombre });
         }
-
       })
+      .catch(error => {
+        console.log(error.message);
+      })
+
   }
+
+
+  // Envía la solicitud de unirse al grupo
+   applyGroup = () => {
+    this.onModalApply(false)
+    StudentService.sendGroupRequest(this.state.groupSelect2, AuthUser.getCurrentUser().id)
+    .then(response => {
+        // Falta gestionar los archivos multimedia
+            window.location.href = `/student/groups`;
+    })
+    .catch(error => {
+        console.log(error.message);
+    });
+  }
+
+  onModalApply = (modal) => {
+    this.setState({
+        modalApply: modal,
+    });
+  };
+
 
   itemSelection = event => {
     if (event.target.value === "1") {
@@ -143,8 +170,8 @@ class GroupStudent extends Component {
     this.setState({ groupSelect: group.idGrupo, nameGroupSelect: group.nombre});
   }
 
-  handleSelectNR(group) {
-    this.setState({ groupSelectNR: group.idGrupo, nameGroupSelectNR: group.nombre});
+  handleSelect2(group) {
+    this.setState({ groupSelect2: group.id, nameGroupSelect2: group.nombre});
   }
 
   disabledButton = () => {
@@ -153,24 +180,6 @@ class GroupStudent extends Component {
     }
     return true;
   }
-
-  //Envía la solicitud de unirse al grupo
-    applyGroup = () => {
-    this.onModalApply(false)
-    StudentService.applyForGroup(this.state.currentUser, this.state.groupSelectNR)
-    .then(response => {
-            window.location.href = `/student/groups`;
-    })
-    .catch(error => {
-        console.log(error.message);
-    });
-  }
-
-  onModalApply = (modal) => {
-    this.setState({
-        modalApply: modal,
-    });
-  };
 
   render() {
     const { dataGroup, groupSelect, showChallenges, showWritings, showTeams, dataRemainingGroup, nameGroupSelectNR } = this.state;
@@ -185,6 +194,7 @@ class GroupStudent extends Component {
               </div>
             </div>
 
+
             <div className={"border-group"}>
               <div className={"section-title"}>
                 <h2>Entrar a nuevos grupos</h2>
@@ -192,24 +202,25 @@ class GroupStudent extends Component {
               <ul className={"flex-items-row-evenly"}>
                 <li className={"flex-item-form"}>
                   <Dropdown className="drop-down" >
-                    <DropdownToggle as={CustomToggle} id="dropdown-custom-components"> Grupos restantes</DropdownToggle>
+                    <DropdownToggle as={CustomToggle} id="dropdown-custom-components"> Selecciona grupo</DropdownToggle>
                     <DropdownMenu as={CustomMenu}>
                       {dataRemainingGroup.map((row) => (
-                          <DropdownItem eventKey={row.idGrupo} onClick={() => this.handleSelectNR(row)}>{row.nombre}</DropdownItem>
+                          <DropdownItem eventKey={row.id} onClick={() => this.handleSelect2(row)}>{row.nombre}</DropdownItem>
                       ))}
                     </DropdownMenu>
                   </Dropdown>
                 </li>
                 <li className={"flex-item-form"}>
-                    { <h4 style={{color: "#717172"}}>{this.state.nameGroupSelectNR}</h4> }
+                    { <h4 style={{color: "#717172"}}>{this.state.nameGroupSelect2}</h4> }
                 </li>
                 <li className={"flex-item-form"}>
                   <div className="form-button">
-                    <Button text='enviar' onClick={() => this.onModalApplyVersion(true)} > Solicitar entrar </Button>
+                    <Button text='enviar' onClick={() => this.onModalApply(true)}> Solicitar entrar </Button>
                   </div>
                 </li>
               </ul>
             </div>
+
 
             <div className={"border-group"}>
               <div className={"section-title"}>
@@ -269,6 +280,22 @@ class GroupStudent extends Component {
 
           </Card.Body>
         </Card>
+
+
+        <Modal show={this.state.modalApply}>
+                    <Modal.Header>
+                    </Modal.Header>
+                    <Modal.Body>
+                    <p> ¿Deseas enviar petición?</p>
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <Button onClick={() => this.applyGroup()}>Aceptar</Button>
+                        <Button variant="danger" onClick={() => this.onModalApply(false)}>Cancelar</Button>
+                    </Modal.Footer>
+          </Modal> 
+
+
       </div>
     );
   }

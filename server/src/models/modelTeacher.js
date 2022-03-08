@@ -86,6 +86,13 @@ class modelTeacher {
         });
     }
 
+    /* Listar todas las peticiones (de solicitantes) */
+
+    /* Aceptar petición */
+    
+    /* Rechazar petición */
+
+    
     //-------------------------------------------------CHALLENGE------------------------------------------------------------------//
 
     /*Obtiene todas las categorias de los desafios*/

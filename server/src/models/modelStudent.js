@@ -9,8 +9,34 @@ class modelStudent {
     
     /*Obtiene los grupos del estudiante*/
     getGroups(student, callback) {
-        const sqlSelect = "SELECT grupoestudiante.idGrupo, grupoestudiante.idEstudiante, grupo.nombre, grupo.idProfesor FROM grupoestudiante INNER JOIN grupo ON grupoestudiante.idGrupo = grupo.id WHERE grupoestudiante.idEstudiante=?";
+        const sqlSelect = "SELECT grupoestudiante.idGrupo, grupoestudiante.idEstudiante, grupo.nombre, grupo.idProfesor FROM grupoestudiante INNER JOIN grupo ON grupoestudiante.idGrupo = grupo.id WHERE grupoestudiante.idEstudiante=?;";
         this.pool.query(sqlSelect, student, (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+            }
+        });
+    }
+
+    /*Te muestra los grupos donde no se encuentre el estudiante*/
+    getRemainingGroups(idStudent, callback) {
+        const sqlSelect = "SELECT grupo.nombre, grupo.id FROM grupo WHERE grupo.id NOT IN (SELECT grupoestudiante.idGrupo FROM grupoestudiante WHERE grupoestudiante.idEstudiante = ?);";
+        this.pool.query(sqlSelect, idStudent, (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+            }
+        });
+    }
+
+    /* Mandar a un profesor una petición de unión a un grupo */
+    sendGroupRequest(idGroup, idStudent, callback) {
+        const sqlInsert = "INSERT INTO grupoestudiante (idGrupo, idEstudiante, activo) VALUES (?, ?, ?);";
+        this.pool.query(sqlInsert, [idGroup, idStudent, 0], (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }
@@ -534,8 +560,8 @@ class modelStudent {
         });
     }
 
-       /*busca mensaje del estudiante por receptor*/
-       searchMessageByReceiver(idGroup,idReceiver,idCreatorTeam, callback) {
+    /*busca mensaje del estudiante por receptor*/
+    searchMessageByReceiver(idGroup,idReceiver,idCreatorTeam, callback) {
         // const sqlSelect = "SELECT m.id as id, m.idEmisor as idEmisor, m.mensaje as mensaje, u.nombre as nombreEmisor FROM mensajeria AS m INNER JOIN usuario AS u ON m.idEmisor = u.id WHERE m.id = ? ";
         const sqlSelect = "SELECT * FROM mensajeria WHERE idGrupo = ? AND idReceptor=? AND idCreador=?";
         this.pool.query(sqlSelect, [idGroup,idReceiver,idCreatorTeam], (err, result) => {
@@ -580,19 +606,6 @@ class modelStudent {
     sendMessage(idGroup,idSender, idReceiver, idCreator, message, type, callback) {
         const sqlInsert = "INSERT INTO mensajeria (idGrupo,idEmisor,idReceptor, idCreador,mensaje,tipo,activo) VALUES (?,?,?,?,?,?,?)";
         this.pool.query(sqlInsert, [idGroup,idSender, idReceiver, idCreator, message, type, 1], (err, result) => {
-            if (err) {
-                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
-            }
-            else {
-                callback(null, result);
-            }
-        });
-    }
-    /*Te muestra los grupos donde no se encuentre el estudiante*/
-    askTeacherToJoinGroup(idStudent, callback) {
-        const sqlSelect ="SELECT grupo.nombre, grupo.id FROM grupo WHERE grupo.id NOT IN(SELECT grupoestudiante.idGrupo FROM grupoestudiante WHERE idEstudiante = 7) ";
-        // "SELECT grupo.nombre FROM grupo WHERE grupo.id NOT IN(SELECT grupoestudiante.idGrupo FROM grupoestudiante)
-        this.pool.query(sqlSelect, idStudent, (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }
