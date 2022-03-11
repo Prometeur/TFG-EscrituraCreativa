@@ -32,6 +32,7 @@ class SearchStudentRes extends Component {
             searchType: 'nombre',
             searchRole: "none",
             showListApplicants: false,//muestra solicitantes
+            filteredData2: [],
         };
     }
 
@@ -65,6 +66,18 @@ class SearchStudentRes extends Component {
         }
 
         this.setState({ filteredData: finalArray });
+    }
+
+    //Aceptar solicitud de grupo
+    acceptGroupRequest = (idGrupo, idEstudiante) => {
+        /*Edita escrito del estudiante*/
+        TeacherService.acceptGroupRequest(idGrupo, idEstudiante)
+            .then(response => {
+                    window.location.href = '/teacher/applicants';
+            })
+            .catch(error => {
+                console.log(error.message);
+            });
     }
 
     /*Lo que escribamos en el input lo guarda en el state async para que lo veamos en tiempo real */
@@ -119,6 +132,15 @@ class SearchStudentRes extends Component {
                     this.filterData();
                 }
             })
+
+        TeacherService.showGroupRequest()
+        .then(response => {
+            if (response.length > 0) {//Si existen solicitantes
+                this.setState({ filteredData2: response });
+                this.filterData();
+            }
+        })
+        
     }
 
 
@@ -126,7 +148,6 @@ class SearchStudentRes extends Component {
     render() {
         let cartel = <> </>;
         let tabla = <> </>;
-
         if (this.state.currentUserRole === "T") {
             tabla = <ul className={"flex-items-row-start wrap"}  >
 
@@ -164,6 +185,48 @@ class SearchStudentRes extends Component {
 
             </ul>;
         }
+
+        if (this.state.currentUserRole === "T") {
+            tabla = <ul className={"flex-items-row-start wrap"}  >
+
+                {this.state.filteredData2.map((student) =>
+                (
+                     <li className={"items-row"}>
+                         <ul className={"container-column-list wrap"}>
+                             <li className={"flex-item-list"}>
+                                 <img src={(student.ruta!= "") ? (student.ruta) : "../chicaliteratura.png"}
+                                      alt=""
+                                      style={{ width: '40%', borderRadius: '80%' }} >
+
+                                 </img>
+                             </li>
+                             <li className={"flex-item-list"}>
+                                 {student.nombre}
+                             </li>
+                             <li className={"flex-item-list"}>
+                                 {student.apellidos}
+                             </li>
+                             <li className={"flex-item-list"}>
+                                 {student.correo}
+                             </li>
+                             <li className={"flex-item-list"}>
+                                 {student.nombregrupo}
+                             </li>
+                             <li className={"flex-item-list"}>
+                             <div className="form-button">
+                                <Button variant="success" onClick={() => this.acceptGroupRequest(student.idGrupo, student.idEstudiante)}>Aceptar</Button>
+                            </div>
+                             </li>
+                         </ul>
+                         <hr/>
+                    </li>
+
+                )
+                )}
+
+            </ul>;
+        }
+
 
         if (this.state.currentUserRole === "A") {
 
@@ -211,7 +274,6 @@ class SearchStudentRes extends Component {
 
             tabla = <></>;
         }
-
 
         let searchtools =
             <ul className={"container-column-list"}>
@@ -278,7 +340,7 @@ class SearchStudentRes extends Component {
                             <br />
                             <Alert variant={"info"}>
                                 <img src="/info.png" alt="" />
-                                Desde este espacio puede ver las solicitudes para acceder a la plataforma Creativa.
+                                Desde este espacio puede ver las solicitudes.
                             </Alert>
                         </div>
 

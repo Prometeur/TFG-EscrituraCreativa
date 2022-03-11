@@ -40,6 +40,29 @@ class TeacherService {
 
     }
 
+    showGroupRequest() {
+
+        return axios.get("/teacher/showGroupRequest", { headers: { "Authorization": `Bearer ${authHeader()}` } })
+            .then(response => {
+                return response.data;
+            }).catch(error => {
+                console.log(error.message);
+                window.location.href = '/500';
+            })
+
+    }
+    acceptGroupRequest(idGroup, idStudent) {
+
+        return axios.post("/teacher/acceptGroupRequest", {id: idGroup, idEstudiante: idStudent } , { headers: { "Authorization": `Bearer ${authHeader()}` } })
+            .then(response => {
+                return response.data;
+            }).catch(error => {
+                console.log(error.message);
+                window.location.href = '/500';
+            })
+
+    }
+
     getScriptsByStudent(idStudent) {
 
         return axios.get("/teacher/getScriptsByStudent", { params: { id: idStudent } }, { headers: { "Authorization": `Bearer ${authHeader()}` } })

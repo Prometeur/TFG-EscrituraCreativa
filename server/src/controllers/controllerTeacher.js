@@ -34,6 +34,54 @@ function getGroups(req, res) {
     });
 }
 
+ /*Mostrar todos los estudiantes que quieren acceder a un grupo*/
+ function showGroupRequest(request, response, next) {
+
+    modelTeacher.showGroupRequest(function (err, res) {
+        if (err) {
+            if (err.message == "No se puede conectar a la base de datos.") {
+                //next(err);
+                console.log("No se puede conectar a la base de datos");
+            }
+            response.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else if (res == null) {
+            response.status(500).send({ error: "No se ha podido invitar el estudiante al grupo." });
+            console.log("No se ha podido invitar el estudiante al grupo.");
+        }
+        else {
+            response.status(200);
+            response.send(JSON.stringify(res));
+        }
+    });
+}
+
+/*Aceptar una petición de unión a un grupo de un alumno*/
+function acceptGroupRequest(request, response, next) {
+    let grupo = request.body.id;
+    let id = request.body.idEstudiante;
+    console.log(grupo,id);
+    modelTeacher.acceptGroupRequest(grupo, id, function (err, res) {
+        if (err) {
+            if (err.message == "No se puede conectar a la base de datos.") {
+                //next(err);
+                console.log("No se puede conectar a la base de datos");
+            }
+            response.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else if (res == null) {
+            response.status(500).send({ error: "No se ha podido invitar el estudiante al grupo." });
+            console.log("No se ha podido invitar el estudiante al grupo.");
+        }
+        else {
+            response.status(200);
+            response.send(JSON.stringify(res));
+        }
+    });
+}
+
 //Invita a un estudiante a un grupo.
 function inviteStudentToGroup(request, response, next) {
     let grupo = request.body.grupo;
@@ -467,6 +515,7 @@ module.exports = {
     searchApplicant:searchApplicant,
     acceptApplicant:acceptApplicant,
     createGroup:createGroup,
-
+    acceptGroupRequest: acceptGroupRequest,
+    showGroupRequest: showGroupRequest,
 
 };

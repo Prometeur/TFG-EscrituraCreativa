@@ -33,6 +33,10 @@ router.get("/getStudentGroups",controller_user.getStudentGroups);
 
 router.post("/searchStudent", controller_user.searchStudent);
 
+router.post("/acceptGroupRequest", controller_teacher.acceptGroupRequest);
+
+router.get("/showGroupRequest", controller_teacher.showGroupRequest);
+
 /*Obtiene los datos del usuario */
 router.get("/getProfile",controller_user.getProfile);
 

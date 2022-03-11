@@ -26,6 +26,34 @@ class modelTeacher {
         });
     }
 
+     /*Mostrar todos los estudiantes que quieren acceder a un grupo*/
+     showGroupRequest(callback) {
+        const sqlSelect = "SELECT ge.idGrupo, ge.idEstudiante, grupo.nombre as nombregrupo, usuario.correo, usuario.apellidos, usuario.nombre, usuario.ruta FROM grupoestudiante  as ge JOIN usuario ON ge.idEstudiante = usuario.id JOIN grupo ON ge.idGrupo = grupo.id WHERE ge.activo = ? ;";
+    
+        this.pool.query(sqlSelect, 0, (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+            }
+        });
+    }
+
+    /*Aceptar una petición de unión a un grupo de un alumno*/
+    acceptGroupRequest(idGroup, idStudent, callback) {
+    const sqlUpdate = "UPDATE grupoestudiante SET activo =? WHERE idGrupo=? AND idEstudiante=?;";
+
+    this.pool.query(sqlUpdate, [1, idGroup, idStudent], (err, result) => {
+        if (err) {
+            callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+        }
+        else {
+            callback(null, result);
+        }
+    });
+    }
+
     //Busca todos los estudiantes que contengan "clave" bien en su nombre o en su correo. Esta elección está pensada para elegirse desde un combobox.
     inviteStudentToGroup(grupo, id, callback) {
         this.pool.getConnection(function (err, connection) {

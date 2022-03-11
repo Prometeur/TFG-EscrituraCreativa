@@ -297,7 +297,7 @@ class ProfileInfo extends Component {
                     </li>
                     <li className={"flex-item-profile"}>
                         <select name="groupSelect" id="groupSelect" onChange={this.handleChangeGroupSelect}>
-                            <option selected value= "-1" selected>Elija un grupo</option>
+                            <option selected value= "-1" >Elija un grupo</option>
                             {this.state.finalGroupData.map(group => {
                                 return (
                                     <option value={group.id}>{group.nombre}</option>

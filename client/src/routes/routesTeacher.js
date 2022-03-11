@@ -27,7 +27,7 @@ function Routes() {
       <BrowserRouter>
         <Sidebar links={LinksTeacher} url={url} />
         <Switch>
-          <Route exact path="/teacher/groups" component={GroupTeacher} />/}
+          <Route exact path="/teacher/groups" component={GroupTeacher} />
           <Route exact path="/teacher/createGroup" component={CrearGrupo} />
           <Route exact path="/teacher/viewGroup/:idGroup" component={Grupo} />
           <Route exact path="/teacher/viewTeam/:idTeam" component={Team} />
