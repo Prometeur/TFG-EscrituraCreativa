@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-03-2022 a las 12:10:38
+-- Tiempo de generación: 11-03-2022 a las 17:40:15
 -- Versión del servidor: 10.4.22-MariaDB
 -- Versión de PHP: 8.1.2
 
@@ -99,7 +99,6 @@ INSERT INTO `desafio` (`id`, `idGrupo`, `titulo`, `descripcion`, `tipoCalificaci
 (270, 3, 'Desafio3000', '<p><span style=\"color: rgb(0,0,0);background-color: transparent;font-size: 37.5pt;font-family: Work Sans\", sans-serif;\"><em>“Quiero que escribas la continuación de la siguiente historia, que contenga los siguientes elementos: chica, refresco, eólica y pueblo”</em></span>&nbsp;</p>\r\n', 1, 7, 1, '2021-04-27 02:34:34', '2023-01-31 00:32:00', 1),
 (345, 3, 'Redactar una crónica de la historia presente en un mundo distópico', 'Narrar una historia del día a día basada en un mundo totalmente distópico y desolado, en la estética cyberpunk.', 5, 1, 2, '2021-11-29 16:34:09', '2024-10-31 16:30:23', 1),
 (432, 1, 'Ponte en la piel de John Galt y redacta tu propio diario', 'Escribe un diario a través de los ojos de John Galt.', 10, 11, 1, '2021-11-29 16:36:20', '2022-12-28 16:34:17', 1),
-(433, 9, 'Especial Desafío Febrero', '<p>Relato corto.</p>\n', 1, 22, 2, '2022-02-03 18:28:01', '2022-02-28 18:26:00', 1),
 (434, 5, 'C. Bukowski', '<p>Transforma el poema de Bukowski en un guion audiovisual que no sobrepase las dos páginas. Busca equivalentes semióticos visuales y sonoros. Presta atención a la transcripción de la voz narrativa (nivel y persona).</p>\n', 1, 21, 1, '2022-02-19 17:32:56', '2022-07-12 17:30:00', 1),
 (435, 7, 'R. Bolaño', '<p>Transforma el fragmento de Llamadas telefónicas de Bolaño en un diálogo audiovisual (no literario). Utiliza un narrador silente (no uses voz off ni voz over).</p>\n', 1, 25, 1, '2022-02-19 17:38:42', '2022-06-13 17:37:00', 1),
 (436, 7, 'Murakami', '<p>Transforma el fragmento de After Dark de Murakami en un storyboard que no sobrepase las dos páginas. Elige el número y la distribución de las viñetas. Puedes utilizar una viñeta multimagen. No puedes utilizar splash page. Utiliza distintos encuadres (angulación, planos, altura, movilidad y distancia).</p>\n', 1, 26, 1, '2022-02-19 17:41:01', '2022-08-15 17:40:00', 1),
@@ -145,8 +144,8 @@ INSERT INTO `equipo` (`id`, `nombre`, `activo`, `idCreador`, `idGrupo`) VALUES
 (75, 'equilatero', 1, 16, 3),
 (76, 'vector', 1, 6, 3),
 (78, 'pollo', 1, 9, 3),
-(79, 'multiplexor', 1, 22, 9),
-(80, 'yop', 1, 22, 3);
+(80, 'yop', 1, 22, 3),
+(81, 'Química', 1, 23, 5);
 
 -- --------------------------------------------------------
 
@@ -169,8 +168,8 @@ INSERT INTO `equipoestudiante` (`id`, `idEquipo`, `idEstudiante`) VALUES
 (145, 75, 16),
 (148, 76, 6),
 (152, 78, 9),
-(153, 79, 22),
-(154, 80, 22);
+(154, 80, 22),
+(155, 81, 23);
 
 -- --------------------------------------------------------
 
@@ -241,8 +240,7 @@ INSERT INTO `grupo` (`id`, `idprofesor`, `nombre`, `activo`) VALUES
 (5, 4, 'Poesía', 1),
 (6, 4, 'Biología', 1),
 (7, 4, 'Literatura', 1),
-(8, 4, 'Arte', 1),
-(9, 23, 'Febrero', 1);
+(8, 4, 'Arte', 1);
 
 -- --------------------------------------------------------
 
@@ -253,31 +251,34 @@ INSERT INTO `grupo` (`id`, `idprofesor`, `nombre`, `activo`) VALUES
 CREATE TABLE `grupoestudiante` (
   `id` int(9) NOT NULL,
   `idGrupo` int(9) NOT NULL,
-  `idEstudiante` int(9) NOT NULL
+  `idEstudiante` int(9) NOT NULL,
+  `activo` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `grupoestudiante`
 --
 
-INSERT INTO `grupoestudiante` (`id`, `idGrupo`, `idEstudiante`) VALUES
-(1, 3, 6),
-(2, 3, 7),
-(3, 4, 9),
-(4, 3, 9),
-(5, 3, 16),
-(7, 4, 6),
-(8, 9, 22),
-(9, 4, 16),
-(10, 1, 22),
-(11, 3, 22),
-(12, 5, 22),
-(13, 5, 23),
-(14, 1, 23),
-(15, 2, 23),
-(16, 3, 23),
-(17, 4, 23),
-(18, 6, 23);
+INSERT INTO `grupoestudiante` (`id`, `idGrupo`, `idEstudiante`, `activo`) VALUES
+(1, 3, 6, 1),
+(2, 3, 7, 1),
+(3, 4, 9, 1),
+(4, 3, 9, 1),
+(5, 3, 16, 1),
+(7, 4, 6, 1),
+(9, 4, 16, 1),
+(10, 1, 22, 1),
+(11, 3, 22, 1),
+(12, 5, 22, 1),
+(13, 5, 23, 1),
+(14, 1, 23, 1),
+(15, 2, 23, 1),
+(16, 3, 23, 1),
+(17, 4, 23, 1),
+(18, 6, 23, 1),
+(19, 7, 23, 1),
+(20, 2, 22, 0),
+(21, 8, 22, 0);
 
 -- --------------------------------------------------------
 
@@ -302,7 +303,8 @@ CREATE TABLE `mensajeria` (
 --
 
 INSERT INTO `mensajeria` (`id`, `idGrupo`, `idEmisor`, `idReceptor`, `idCreador`, `mensaje`, `tipo`, `fecha`, `activo`) VALUES
-(80, 3, 22, 7, 22, 'Veronica Calzada te envía una invitación para unirte a su equipo yop del Grupo de Historia', 2, '2022-02-03 18:49:17', 1);
+(80, 3, 22, 7, 22, 'Veronica Calzada te envía una invitación para unirte a su equipo yop del Grupo de Historia', 2, '2022-02-03 18:49:17', 1),
+(81, 3, 22, 23, 22, 'Veronica Calzada te envía una invitación para unirte a su equipo yop del Grupo de Historia', 2, '2022-03-08 17:46:21', 1);
 
 -- --------------------------------------------------------
 
@@ -550,13 +552,13 @@ ALTER TABLE `desafio`
 -- AUTO_INCREMENT de la tabla `equipo`
 --
 ALTER TABLE `equipo`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- AUTO_INCREMENT de la tabla `equipoestudiante`
 --
 ALTER TABLE `equipoestudiante`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=155;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
 
 --
 -- AUTO_INCREMENT de la tabla `escrito`
@@ -574,13 +576,13 @@ ALTER TABLE `grupo`
 -- AUTO_INCREMENT de la tabla `grupoestudiante`
 --
 ALTER TABLE `grupoestudiante`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de la tabla `mensajeria`
 --
 ALTER TABLE `mensajeria`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- AUTO_INCREMENT de la tabla `multimediadesafio`
