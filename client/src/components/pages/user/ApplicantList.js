@@ -148,7 +148,10 @@ class SearchStudentRes extends Component {
     render() {
         let cartel = <> </>;
         let tabla = <> </>;
+        let header = <> </>;
+        let header1 = <> </>;
         if (this.state.currentUserRole === "T") {
+            header = <div><label className={"form-label"}>Listado de estudiantes que quieren unirse a Creativa: </label></div>;
             tabla = <ul className={"flex-items-row-start wrap"}  >
 
                 {this.state.filteredData.map((student) =>
@@ -186,8 +189,10 @@ class SearchStudentRes extends Component {
             </ul>;
         }
 
+        let tabla1 = <> </>;
         if (this.state.currentUserRole === "T") {
-            tabla = <ul className={"flex-items-row-start wrap"}  >
+            header1 = <div><label className={"form-label"}>Listado de estudiantes que quieren unirse a un grupo: </label></div>;
+            tabla1 = <ul className={"flex-items-row-start wrap"}  >
 
                 {this.state.filteredData2.map((student) =>
                 (
@@ -200,18 +205,15 @@ class SearchStudentRes extends Component {
 
                                  </img>
                              </li>
-                             <li className={"flex-item-list"}>
+                              <li className={"flex-item-list"}>
                                  {student.nombre}
                              </li>
                              <li className={"flex-item-list"}>
                                  {student.apellidos}
                              </li>
                              <li className={"flex-item-list"}>
-                                 {student.correo}
-                             </li>
-                             <li className={"flex-item-list"}>
                                  {student.nombregrupo}
-                             </li>
+                             </li> 
                              <li className={"flex-item-list"}>
                              <div className="form-button">
                                 <Button variant="success" onClick={() => this.acceptGroupRequest(student.idGrupo, student.idEstudiante)}>Aceptar</Button>
@@ -229,7 +231,7 @@ class SearchStudentRes extends Component {
 
 
         if (this.state.currentUserRole === "A") {
-
+            header = <div><label className={"form-label"}>Listado de estudiantes que quieren unirse a Creativa: </label></div>;
             tabla = <ul className={"flex-items-row-start wrap"}>
                 {this.state.filteredData.map((student) =>
                 (
@@ -352,7 +354,10 @@ class SearchStudentRes extends Component {
                                     <Card.Body>
                                         <br/>
                                         {cartel}
+                                        {header}
                                         {tabla}
+                                        {header1}
+                                        {tabla1}
                                     </Card.Body>
                                     </Card>
                                 </div>
