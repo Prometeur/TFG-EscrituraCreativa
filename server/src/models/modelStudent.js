@@ -220,6 +220,21 @@ class modelStudent {
         });
     }
 
+    /* Obtiene todas las versiones de un escrito colaborativo */
+    getVersionsfromWritingTeam(idWriting, callback)
+    {
+        const sqlSelect = "SELECT * FROM escrito;";
+        //"SELECT t.nombre as nombreEquipo, c.titulo as nombreDesafio, w.colaborativo, vw.idEscrito, vw.nombre as nombreEscrito, vw.idVersion, vw.fecha FROM escrito as w INNER JOIN versionescrito as vw ON w.id = vw.idEscrito INNER JOIN equipo as t ON w.idEscritor= t.id INNER JOIN desafio as c ON w.idDesafio= c.id where vw.idEscrito = ? ORDER BY vw.idVersion;";
+        this.pool.query(sqlSelect, idWriting, (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+            }
+        });
+    }
+
     /*Envio el escrito del estudiante */
     createWriting(idGroup, desafio, idWriter, title, texto, type, callback) {
         const sqlInsert = "INSERT INTO escrito (idGrupo,idDesafio,idEscritor,nombre,texto,colaborativo,activo) VALUES (?,?,?,?,?,?,?)";

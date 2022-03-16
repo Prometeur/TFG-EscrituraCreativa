@@ -203,6 +203,19 @@ class StudentService {
         })
     }
 
+    /* Obtiene todas las versiones de un escrito colaborativo */
+    getVersionsfromWritingTeam(idWriting)
+    {
+        return axios.get("student/getVersionsfromWritingTeam", { params: { idEscrito: idWriting } }, {
+            headers: { "Authorization": `Bearer ${authHeader()}` }
+        }).then(response => {
+            return response;
+        }).catch(error => {
+            console.log(error.message);
+            window.location.href = '/500';
+        })
+    }
+
     /*Edito el escrito del estudiante */
     editWriting(idWriting, idGroup, idChallenge, idWriter, title, escrito, type) {
         return axios.post("/student/editWriting", { idWriting: idWriting, idGroup: idGroup, idChallenge: idChallenge, idWriter: idWriter, title: title, escrito: escrito, type: type }, {

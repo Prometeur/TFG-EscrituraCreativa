@@ -251,6 +251,22 @@ function getWritingsTeam(req, res) {
     });
 }
 
+/* Obtiene todas las versiones de un escrito colaborativo */
+function getVersionsfromWritingTeam(req, res)
+{
+    const idWriting = req.query.idEscrito;
+
+    modelStudent.getWritingsTeam(idWriting, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else {
+            res.send(result);
+        }
+    });
+}
+
 /*Obtiene los escritos del estudiante de un grupo*/
 function getWritingsStudent(req, res) {
     const idStudent = req.query.idStudent;
@@ -768,6 +784,7 @@ module.exports = {
     getWritingsCollaborative: getWritingsCollaborative,
     getWritingWriter: getWritingWriter,
     getWritingsTeam: getWritingsTeam,
+    getVersionsfromWritingTeam: getVersionsfromWritingTeam,
     getWritingsStudent: getWritingsStudent,
     //MultimediaWritings
     sendMultimedia: sendMultimedia,

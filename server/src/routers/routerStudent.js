@@ -65,6 +65,9 @@ router.get("/getWritingWriter", controller.getWritingWriter);
 /*Obtiene los escritos de un equipo*/
 router.get("/getWritingsTeam", controller.getWritingsTeam);
 
+/* Obtiene todas las versiones de un escrito colaborativo */
+router.get("/getVersionsfromWritingTeam", controller.getVersionsfromWritingTeam);
+
 /*Obtiene los escritos de un estudiante según grupo*/
 router.get("/getWritingsStudent", controller.getWritingsStudent);
 

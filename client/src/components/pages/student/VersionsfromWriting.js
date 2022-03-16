@@ -23,7 +23,9 @@ class VersionsfromWriting extends Component
         super(props);
         this.state = {
             data: [],
-            challenge: ''
+            challenge: '',
+            dataTeam: [],
+            colaborativo: false,
         }
     
     }
@@ -39,6 +41,17 @@ class VersionsfromWriting extends Component
             .catch(error => {
                 console.log(error.message);
             })
+
+        StudentService.getVersionsfromWritingTeam(this.props.match.params.idWriting)
+            .then(response => {
+                if (response.length !== 0) {
+                    this.setState({ dataTeam: response.data, challenge: response.data[0].nombreDesafio, colaborativo: true });
+                }
+            })
+            .catch(error => {
+                console.log(error.message);
+            })
+        
             
     }
 
@@ -77,7 +90,7 @@ class VersionsfromWriting extends Component
     /*Dibuja la pagina  */
     render() {
         let formatedDate;
-        let { data, challenge } = this.state;
+        let { data, challenge, dataTeam, colaborativo } = this.state;
         return (
             <div class="container">
                 <Card className="card-long">
@@ -107,23 +120,47 @@ class VersionsfromWriting extends Component
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {data.map((writing) => (
-                                            < tr key={writing.idEscrito}>
-                                                <td>{writing.idVersion}</td>
-                                                <td>{writing.nombreEscrito}</td>
-                                                <td>{writing.nombre} {writing.apellidos}</td>
-                                                <td >{formatedDate = moment(writing.fecha).format('DD/MM/YYYY')}</td>
-                                                <td >{formatedDate = moment(writing.fecha).format('LT')}</td>
-                                                <td >
-                                                        <Link to={`/student/editVersionfromWriting/${writing.idGrupo}/${writing.idDesafio}/${writing.idEscrito}/${writing.idVersion}`}>
-                                                            <img src="/edit.png" alt=""/>
-                                                            <Button variant="link">
-                                                                 Editar
-                                                            </Button>
-                                                       </Link>
-                                                </td>
-                                            </tr>
-                                        ))}
+
+                                        { !colaborativo ?
+                                        (
+                                            data.map((writing) => (
+                                                < tr key={writing.idEscrito}>
+                                                    <td>{writing.idVersion}</td>
+                                                    <td>{writing.nombreEscrito}</td>
+                                                    <td>{writing.nombre} {writing.apellidos}</td>
+                                                    <td >{formatedDate = moment(writing.fecha).format('DD/MM/YYYY')}</td>
+                                                    <td >{formatedDate = moment(writing.fecha).format('LT')}</td>
+                                                    <td >
+                                                            <Link to={`/student/editVersionfromWriting/${writing.idGrupo}/${writing.idDesafio}/${writing.idEscrito}/${writing.idVersion}`}>
+                                                                <img src="/edit.png" alt=""/>
+                                                                <Button variant="link">
+                                                                    Editar
+                                                                </Button>
+                                                        </Link>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        ) : 
+                                        (
+                                            dataTeam.map((writingTeam) => (
+                                                < tr key={writingTeam.idEscrito}>
+                                                    <td>{writingTeam.idVersion}</td>
+                                                    <td>{writingTeam.nombreEscrito}</td>
+                                                    <td>{writingTeam.nombreEquipo }</td>
+                                                    <td >{formatedDate = moment(writingTeam.fecha).format('DD/MM/YYYY')}</td>
+                                                    <td >{formatedDate = moment(writingTeam.fecha).format('LT')}</td>
+                                                    <td >
+                                                            <Link to={`/student/editVersionfromWriting/${writingTeam.idGrupo}/${writingTeam.idDesafio}/${writingTeam.idEscrito}/${writingTeam.idVersion}`}>
+                                                                <img src="/edit.png" alt=""/>
+                                                                <Button variant="link">
+                                                                    Editar
+                                                                </Button>
+                                                        </Link>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        )}
+
                                     </tbody>
                                 </Table>
                             </div>
