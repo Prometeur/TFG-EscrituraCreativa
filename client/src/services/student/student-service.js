@@ -206,10 +206,10 @@ class StudentService {
     /* Obtiene todas las versiones de un escrito colaborativo */
     getVersionsfromWritingTeam(idWriting)
     {
-        return axios.get("student/getVersionsfromWritingTeam", { params: { idEscrito: idWriting } }, {
+        return axios.get("student/getVersionsfromWritingTeam", { params: { idWriting: idWriting } }, {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
-            return response;
+            return response.data;
         }).catch(error => {
             console.log(error.message);
             window.location.href = '/500';

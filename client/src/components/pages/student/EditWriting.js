@@ -63,7 +63,8 @@ class EditWriting extends Component {
                 title: '',
                 escrito: ''
             },
-            maxIdVersion: -1
+            maxIdVersion: -1,
+            colaborativo: 0,
         }
     }
 
@@ -118,11 +119,12 @@ class EditWriting extends Component {
                 console.log(error.message);
             });
 
+
+
         /* Devuelve la última versión de un escrito, es decir, el mayor id */
         StudentService.getHighestidVersionfromWriting(this.props.match.params.idWriting)
         .then(response => {
             this.setState({ maxIdVersion: response[0].maxId });
-
 
             /*Obtiene el escrito */
             StudentService.getWriting(this.props.match.params.idWriting, this.state.maxIdVersion)
@@ -136,13 +138,13 @@ class EditWriting extends Component {
                     form: {
                         ...this.state.form,
                         title: response.data[0].nombre,
-                        escrito: response.data[0].texto
-                    }
+                        escrito: response.data[0].texto,
+                    },
+                    collaborative: response.data[0].colaborativo
             });
             }).catch(error => {
                 console.log(error.message);
             });
-
 
         }).catch(error => {
             console.log(error.message);
@@ -497,7 +499,7 @@ onModalEditWriting = (modal) => {
                                 <Button text='enviar' onClick={() => this.onModalEditWriting(true)} disabled={this.disabledButton()} > Guardar  </Button>
                             </div>
                             <div className="form-button">
-                                <Button onClick={() => window.location.href = '/student/groups'}>Cancelar</Button>
+                                <Button onClick={() => window.location.href = '/student/writingsTabs'}>Cancelar</Button>
                             </div>
 
                             <div className="form-button">

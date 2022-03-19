@@ -149,10 +149,9 @@ class modelStudent {
         });
     }
 
-    /*Obtiene todas las versiones de un mismo escrito del estudiante */
+    /*Obtiene todas las versiones de un mismo escrito de un estudiante */
     getVersionsfromWriting(idWriting, callback) {
         const sqlSelect = "SELECT vw.idVersion, vw.texto, u.nombre ,u.apellidos, c.titulo as nombreDesafio, c.fechaFin, vw.idEscrito, vw.idDesafio, vw.idEscritor, vw.nombre as nombreEscrito, vw.colaborativo, vw.fecha, vw.activo, w.idGrupo FROM versionescrito as vw INNER JOIN escrito as w ON w.id = vw.idEscrito INNER JOIN usuario as u ON vw.idEscritor= u.id INNER JOIN desafio as c ON vw.idDesafio= c.id where vw.idEscrito=? ORDER BY vw.idVersion;";
-        // comprobar que en el modo colaborativo se muestran todos los usuarios
 
         this.pool.query(sqlSelect, idWriting, (err, result) => {
             if (err) {
@@ -223,9 +222,9 @@ class modelStudent {
     /* Obtiene todas las versiones de un escrito colaborativo */
     getVersionsfromWritingTeam(idWriting, callback)
     {
-        const sqlSelect = "SELECT * FROM escrito;";
-        //"SELECT t.nombre as nombreEquipo, c.titulo as nombreDesafio, w.colaborativo, vw.idEscrito, vw.nombre as nombreEscrito, vw.idVersion, vw.fecha FROM escrito as w INNER JOIN versionescrito as vw ON w.id = vw.idEscrito INNER JOIN equipo as t ON w.idEscritor= t.id INNER JOIN desafio as c ON w.idDesafio= c.id where vw.idEscrito = ? ORDER BY vw.idVersion;";
-        this.pool.query(sqlSelect, idWriting, (err, result) => {
+        //console.log("AQUI");
+        const sqlSelect = "SELECT t.nombre as nombreEquipo, c.titulo as nombreDesafio, w.idGrupo, w.idDesafio, w.colaborativo, vw.idEscrito, vw.nombre as nombreEscrito, vw.idVersion, vw.fecha, vw.texto FROM escrito as w INNER JOIN versionescrito as vw ON w.id = vw.idEscrito INNER JOIN equipo as t ON w.idEscritor= t.id INNER JOIN desafio as c ON w.idDesafio= c.id where vw.idEscrito = ? ORDER BY vw.idVersion;";
+        this.pool.query(sqlSelect, [idWriting], (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }

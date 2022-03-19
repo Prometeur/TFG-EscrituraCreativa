@@ -254,9 +254,10 @@ function getWritingsTeam(req, res) {
 /* Obtiene todas las versiones de un escrito colaborativo */
 function getVersionsfromWritingTeam(req, res)
 {
-    const idWriting = req.query.idEscrito;
+    const idWriting = req.query.idWriting;
+    //console.log("ID ESCRITO: " + idWriting);
 
-    modelStudent.getWritingsTeam(idWriting, function (err, result) {
+    modelStudent.getVersionsfromWritingTeam(idWriting, function (err, result) {
         if (err) {
             res.status(500).send({ error: err.message });
             console.log(err.message);
