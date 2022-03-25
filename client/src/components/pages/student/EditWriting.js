@@ -2,7 +2,7 @@
 *  Name_file :EditWriting.js
 *  Description: Pagina de editar Escrito
 */
-import React, { Component } from 'react';
+import React, { Component, useState } from "react";
 import { Link } from "react-router-dom";
 
 /*Importaciones del editor */
@@ -26,15 +26,62 @@ import '../../../styles/styleGeneral.css';
 import '../../../styles/styleCard.css';
 
 /*Componentes de estilo Bootstrap*/
-import ListGroup from 'react-bootstrap/ListGroup';
-import Alert from 'react-bootstrap/Alert';
 import Card from 'react-bootstrap/Card';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
 import Button from 'react-bootstrap/Button';
-import Table from "react-bootstrap/Table";
 import Modal from 'react-bootstrap/Modal';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownMenu from 'react-bootstrap/DropdownMenu';
+import DropdownItem from 'react-bootstrap/DropdownItem';
+import DropdownToggle from 'react-bootstrap/DropdownToggle';
+import IconButton from '@material-ui/core/IconButton';
+import FormControl from 'react-bootstrap/FormControl';
+import Icon from '@material-ui/core/Icon';
+import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
 
+
+
+const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
+    <a
+      href=""
+      ref={ref}
+      onClick={(e) => {
+        e.preventDefault();
+        onClick(e);
+      }}
+    >
+      {children}
+      { <Icon><ExpandMoreRoundedIcon></ExpandMoreRoundedIcon></Icon>}
+    </a>
+  ));
+  
+  const CustomMenu = React.forwardRef(
+    ({ children, style, className, 'aria-labelledby': labeledBy }, ref) => {
+      const [value, setValue] = useState('');
+  
+      return (
+        <div
+          ref={ref}
+          style={style}
+          className={className}
+          aria-labelledby={labeledBy}
+        >
+          <FormControl
+            autoFocus
+            className="mx-3 my-2 w-auto"
+            placeholder="Type to filter..."
+            onChange={(e) => setValue(e.target.value)}
+            value={value}
+          />
+          <ul className="list-unstyled">
+            {React.Children.toArray(children).filter(
+              (child) =>
+                !value || child.props.children.toLowerCase().startsWith(value) || child.props.children.toUpperCase().startsWith(value),
+            )}
+          </ul>
+        </div>
+      );
+    },
+  );
 
 
 class EditWriting extends Component {
@@ -65,6 +112,12 @@ class EditWriting extends Component {
             },
             maxIdVersion: -1,
             colaborativo: 0,
+            textoEscritoCombinado: '',
+            modalCombinarEscrito: false,
+            escritosNoCombinados: [],
+            writingSelect2: -1,
+            nameWritingSelect2: '',
+
         }
     }
 
@@ -170,9 +223,37 @@ class EditWriting extends Component {
         //     console.log(error.message);
         // });
 
+        StudentService.getWritings(AuthUser.getCurrentUser().id)
+        .then(response => {
+            this.setState({ escritosNoCombinados: response.data });
+        }).catch(error => {
+            console.log(error.message);
+        });
 
     }
 
+    combinarEscrito = (idEscritoCombinado) => {
+        
+        StudentService.getWriting(idEscritoCombinado, this.state.maxIdVersion)
+        .then(response => {
+            this.setState({ textoEscritoCombinado : response.data[0].texto });
+        })
+
+        this.onModalCombinarEscrito(false)
+        
+        // editar escrito
+    }
+
+    onModalCombinarEscrito = (modal) => {
+        this.setState({
+            modalCombinarEscrito: modal,
+        });
+    };
+
+
+    handleSelect2(writing) {
+        this.setState({ writingSelect2: writing.id, nameWritingSelect2: writing.nombreEscrito});
+    }
 
     //Envia el escrito editado 
     editWriting = () => {
@@ -333,7 +414,7 @@ onModalEditWriting = (modal) => {
 
     /*Dibuja la pagina */
     render() {
-        const { editorState, dataMediaChallenge, dataMediaWriting, formErrors, data } = this.state;
+        const { editorState, dataMediaChallenge, dataMediaWriting, formErrors, data, escritosNoCombinados, textoEscritoCombinado } = this.state;
         return (
             <div className="container">
                 <Card className="card-edit">
@@ -443,6 +524,7 @@ onModalEditWriting = (modal) => {
                                             form: {
                                                 ...this.state.form,
                                                 escrito: draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))
+                                                // textoEscritoCombinado
                                             }
                                         });
                                     }
@@ -505,6 +587,31 @@ onModalEditWriting = (modal) => {
                             <div className="form-button">
                                 <Button onClick={() => window.location.href = `/student/versionsWriting/${this.props.match.params.idGroup}/${this.props.match.params.idChallenge}/${this.props.match.params.idWriting}`}>Acceder a versiones anteriores</Button>
                             </div>
+
+
+                            <div className={"border-group"}>
+                                <ul className={"flex-items-row-evenly"}>
+                                    <li className={"flex-item-form"}>
+                                    <Dropdown className="drop-down" >
+                                        <DropdownToggle as={CustomToggle} id="dropdown-custom-components"> Selecciona escrito</DropdownToggle>
+                                        <DropdownMenu as={CustomMenu}>
+                                        {escritosNoCombinados.map((row) => (
+                                            <DropdownItem eventKey={row.id} onClick={() => this.handleSelect2(row)}>{row.nombreEscrito}</DropdownItem>
+                                        ))}
+                                        </DropdownMenu>
+                                    </Dropdown>
+                                    </li>
+                                    <li className={"flex-item-form"}>
+                                        { <h4 style={{color: "#717172"}}>{this.state.nameWritingSelect2}</h4> }
+                                    </li>
+                                    <li className={"flex-item-form"}>
+                                    <div className="form-button">
+                                        <Button text='enviar' onClick={() => this.onModalCombinarEscrito(true)}> Combinar escrito </Button>
+                                    </div>
+                                    </li>
+                                </ul>
+                                </div>
+
                         </div>
 
                     </Card.Body>
@@ -536,7 +643,23 @@ onModalEditWriting = (modal) => {
                         <Button onClick={() => this.editWriting()}>Aceptar</Button>
                         <Button variant="danger" onClick={() => this.onModalEditWriting(false)}>Cancelar</Button>
                     </Modal.Footer>
-                </Modal>               
+                </Modal>
+
+
+
+                <Modal show={this.state.modalCombinarEscrito}>
+                    <Modal.Header>
+                    </Modal.Header>
+                    <Modal.Body>
+                    <p> ¿Deseas enviar petición?</p>
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <Button onClick={() => this.combinarEscrito(this.state.writingSelect2)}>Aceptar</Button>
+                        <Button variant="danger" onClick={() => this.onModalCombinarEscrito(false)}>Cancelar</Button>
+                    </Modal.Footer>
+                </Modal> 
+
             </div>
         );
     }

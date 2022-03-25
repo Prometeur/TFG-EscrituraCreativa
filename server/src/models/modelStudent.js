@@ -304,6 +304,21 @@ class modelStudent {
         });
     }
 
+    /* Muestra dos escritos juntos (los combina) */
+    showCombinedWritings()
+    {
+        const sqlSelect = "SELECT * FROM escrito WHERE id = ? ";
+        this.pool.query(sqlSelect, [], (err, result) => {
+            if (err) {
+                console.log("Error");
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+            }
+        });
+    }
+
     //---------------------------------------------MULTIMEDIA-WRITING----------------------------------------------------------------//
 
     /*Obtiene los ficheros multimedia del escrito del estudiante*/
