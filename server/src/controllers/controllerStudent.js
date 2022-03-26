@@ -143,9 +143,8 @@ function createWriting(req, res) {
 /*Obtiene el escrito del estudiante segun su grupo*/
 function getWriting(req, res) {
     const idWriting = req.query.idWriting;
-    const idVersion = req.query.idVersion;
 
-    modelStudent.getWriting(idWriting, idVersion, function (err, result) {
+    modelStudent.getWriting(idWriting, function (err, result) {
         if (err) {
             res.status(500).send({ error: err.message });
             console.log(err.message);

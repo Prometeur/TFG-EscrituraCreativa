@@ -136,10 +136,10 @@ class modelStudent {
     }
 
     /*Obtiene el escrito del estudiante */
-    getWriting(idWriting, idVersion, callback) {
-        const sqlSelect = "SELECT vw.idEscrito, vw.idDesafio, vw.idEscritor, vw.nombre, vw.texto, vw.colaborativo, vw.fecha, vw.activo, w.idGrupo FROM escrito as w INNER JOIN versionescrito as vw ON w.id=vw.idEscrito where w.id=? AND vw.idVersion=?;";
+    getWriting(idWriting, callback) {
+        const sqlSelect = "SELECT * FROM escrito WHERE id=?;";
         
-        this.pool.query(sqlSelect, [idWriting, idVersion], (err, result) => {
+        this.pool.query(sqlSelect, [idWriting], (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }
@@ -303,21 +303,7 @@ class modelStudent {
             }
         });
     }
-
-    /* Muestra dos escritos juntos (los combina) */
-    showCombinedWritings()
-    {
-        const sqlSelect = "SELECT * FROM escrito WHERE id = ? ";
-        this.pool.query(sqlSelect, [], (err, result) => {
-            if (err) {
-                console.log("Error");
-                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
-            }
-            else {
-                callback(null, result);
-            }
-        });
-    }
+    
 
     //---------------------------------------------MULTIMEDIA-WRITING----------------------------------------------------------------//
 

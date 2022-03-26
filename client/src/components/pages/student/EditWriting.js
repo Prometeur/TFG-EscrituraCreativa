@@ -111,13 +111,13 @@ class EditWriting extends Component {
                 escrito: ''
             },
             maxIdVersion: -1,
-            colaborativo: 0,
+            //colaborativo: 0,
             textoEscritoCombinado: '',
             modalCombinarEscrito: false,
             escritosNoCombinados: [],
-            writingSelect2: -1,
-            nameWritingSelect2: '',
-
+            idWritingSelect: -1,
+            nameWritingSelect: '',
+            maxVersionIdCombinado: -1,
         }
     }
 
@@ -173,55 +173,61 @@ class EditWriting extends Component {
             });
 
 
-
         /* Devuelve la última versión de un escrito, es decir, el mayor id */
         StudentService.getHighestidVersionfromWriting(this.props.match.params.idWriting)
         .then(response => {
             this.setState({ maxIdVersion: response[0].maxId });
-
-            /*Obtiene el escrito */
-            StudentService.getWriting(this.props.match.params.idWriting, this.state.maxIdVersion)
-            .then(response => {
-                var contentState = stateFromHTML(response.data[0].texto);
-                let editorState = EditorState.createWithContent(contentState);
-                // this.setState({ editorState: editorState });
-                this.setState({
-                    writing: response.data[0],
-                    editorState: editorState,
-                    form: {
-                        ...this.state.form,
-                        title: response.data[0].nombre,
-                        escrito: response.data[0].texto,
-                    },
-                    collaborative: response.data[0].colaborativo
-            });
-            }).catch(error => {
-                console.log(error.message);
-            });
-
         }).catch(error => {
             console.log(error.message);
         });
 
-
-        /*Obtiene el escrito */
-        // StudentService.getWriting(this.props.match.params.idWriting, this.state.maxIdVersion)
+        /* Devuelve la última versión de un escrito, es decir, el mayor id */
+        // StudentService.getHighestidVersionfromWriting(this.props.match.params.idWriting)
         // .then(response => {
-        //     var contentState = stateFromHTML(response.data[0].texto);
-        //     let editorState = EditorState.createWithContent(contentState);
-        //     // this.setState({ editorState: editorState });
-        //     this.setState({
-        //         writing: response.data[0],
-        //         editorState: editorState,
-        //         form: {
-        //             ...this.state.form,
-        //             title: response.data[0].nombre,
-        //             escrito: response.data[0].texto
-        //         }
-        // });
+        //     this.setState({ maxIdVersion: response[0].maxId });
+
+        //     /*Obtiene el escrito */
+        //     StudentService.getWriting(this.props.match.params.idWriting, this.state.maxIdVersion)
+        //     .then(response => {
+        //         var contentState = stateFromHTML(response.data[0].texto);
+        //         let editorState = EditorState.createWithContent(contentState);
+        //         // this.setState({ editorState: editorState });
+        //         this.setState({
+        //             writing: response.data[0],
+        //             editorState: editorState,
+        //             form: {
+        //                 ...this.state.form,
+        //                 title: response.data[0].nombre,
+        //                 escrito: response.data[0].texto,
+        //             },
+        //     });
+        //     }).catch(error => {
+        //         console.log(error.message);
+        //     });
+
         // }).catch(error => {
         //     console.log(error.message);
         // });
+
+
+        /*Obtiene el escrito */
+        StudentService.getWriting(this.props.match.params.idWriting)
+        .then(response => {
+            var contentState = stateFromHTML(response.data[0].texto);
+            let editorState = EditorState.createWithContent(contentState);
+            // this.setState({ editorState: editorState });
+            this.setState({
+                writing: response.data[0],
+                editorState: editorState,
+                form: {
+                    ...this.state.form,
+                    title: response.data[0].nombre,
+                    escrito: response.data[0].texto
+                }
+        });
+        }).catch(error => {
+            console.log(error.message);
+        });
 
         StudentService.getWritings(AuthUser.getCurrentUser().id)
         .then(response => {
@@ -230,18 +236,47 @@ class EditWriting extends Component {
             console.log(error.message);
         });
 
+
     }
 
+    // combina el escrito actual con otro que se elija
     combinarEscrito = (idEscritoCombinado) => {
-        
-        StudentService.getWriting(idEscritoCombinado, this.state.maxIdVersion)
-        .then(response => {
-            this.setState({ textoEscritoCombinado : response.data[0].texto });
-        })
-
         this.onModalCombinarEscrito(false)
+
+        StudentService.getWriting(idEscritoCombinado)
+        .then(response => {
+            if (response.data.length > 0)
+            {
+                this.setState({ textoEscritoCombinado : response.data[0].texto });
+
+                let nuevo_texto = this.state.textoEscritoCombinado.concat(this.state.form.escrito)
+                //nuevo_texto.concat("\n");
+                var contentState2 = stateFromHTML(nuevo_texto);
+                let editorState2 = EditorState.createWithContent(contentState2); // + '<br/>'
+                this.setState({ editorState: editorState2 })
+
+
+                // editar escrito
+                StudentService.editWriting(this.props.match.params.idWriting, this.props.match.params.idGroup, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.title, nuevo_texto, this.state.challenge.colaborativo)
+                .catch(error => {
+                    console.log(error.message);
+                });
+
+                /* Devuelve la última versión de un escrito, es decir, el mayor id */
+                StudentService.getHighestidVersionfromWriting(idEscritoCombinado)
+                .then(response => {
+                    this.setState({ maxVersionIdCombinado: response[0].maxId });
+
+                    // insertar nueva versión en el escrito
+                    StudentService.insertVersionfromWriting(this.props.match.params.idWriting , this.state.maxVersionIdCombinado + 1, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.title, nuevo_texto, this.state.challenge.colaborativo)
+                    .catch(error => {
+                        console.log(error.message);
+                    });
+                })
+
+            }
+        })
         
-        // editar escrito
     }
 
     onModalCombinarEscrito = (modal) => {
@@ -251,8 +286,8 @@ class EditWriting extends Component {
     };
 
 
-    handleSelect2(writing) {
-        this.setState({ writingSelect2: writing.id, nameWritingSelect2: writing.nombreEscrito});
+    handleSelect(writing) {
+        this.setState({ idWritingSelect: writing.id, nameWritingSelect: writing.nombreEscrito});
     }
 
     //Envia el escrito editado 
@@ -264,13 +299,13 @@ class EditWriting extends Component {
                 if (this.state.imgCollection.length > 0) {
                     StudentService.sendMultimedia(this.state.imgCollection, this.state.form.idWriter, this.props.match.params.idChallenge, this.state.challenge.colaborativo)
                         .then(response => {
-                            window.location.href = '/student/groups';
+                            window.location.href = '/student/writingsTabs';
                         }).catch(error => {
                             console.log(error.message);
                         });
                 }
                 else {
-                    window.location.href = '/student/groups';
+                    window.location.href = '/student/writingsTabs';
                 }
             })
             .catch(error => {
@@ -414,6 +449,7 @@ onModalEditWriting = (modal) => {
 
     /*Dibuja la pagina */
     render() {
+        let contentState, editorState2;
         const { editorState, dataMediaChallenge, dataMediaWriting, formErrors, data, escritosNoCombinados, textoEscritoCombinado } = this.state;
         return (
             <div className="container">
@@ -498,8 +534,10 @@ onModalEditWriting = (modal) => {
                         </div>
                         <div className="row-edit">
                             <label className='form-label' >Escribe aquí</label>
+
                             <Editor
-                                editorState={editorState}
+                                
+                                editorState = {editorState}
                                 // toolbarClassName="toolbarClassName"
                                 // // wrapperClassName="demo-wrapper"
                                 // // editorClassName="border-edit"
@@ -524,7 +562,6 @@ onModalEditWriting = (modal) => {
                                             form: {
                                                 ...this.state.form,
                                                 escrito: draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))
-                                                // textoEscritoCombinado
                                             }
                                         });
                                     }
@@ -596,13 +633,13 @@ onModalEditWriting = (modal) => {
                                         <DropdownToggle as={CustomToggle} id="dropdown-custom-components"> Selecciona escrito</DropdownToggle>
                                         <DropdownMenu as={CustomMenu}>
                                         {escritosNoCombinados.map((row) => (
-                                            <DropdownItem eventKey={row.id} onClick={() => this.handleSelect2(row)}>{row.nombreEscrito}</DropdownItem>
+                                            <DropdownItem eventKey={row.id} onClick={() => this.handleSelect(row)}>{row.nombreEscrito}</DropdownItem>
                                         ))}
                                         </DropdownMenu>
                                     </Dropdown>
                                     </li>
                                     <li className={"flex-item-form"}>
-                                        { <h4 style={{color: "#717172"}}>{this.state.nameWritingSelect2}</h4> }
+                                        { <h4 style={{color: "#717172"}}>{this.state.nameWritingSelect}</h4> }
                                     </li>
                                     <li className={"flex-item-form"}>
                                     <div className="form-button">
@@ -651,11 +688,11 @@ onModalEditWriting = (modal) => {
                     <Modal.Header>
                     </Modal.Header>
                     <Modal.Body>
-                    <p> ¿Deseas enviar petición?</p>
+                    <p> ¿Deseas combinar este escrito?</p>
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <Button onClick={() => this.combinarEscrito(this.state.writingSelect2)}>Aceptar</Button>
+                        <Button onClick={() => this.combinarEscrito(this.state.idWritingSelect)}>Aceptar</Button>
                         <Button variant="danger" onClick={() => this.onModalCombinarEscrito(false)}>Cancelar</Button>
                     </Modal.Footer>
                 </Modal> 

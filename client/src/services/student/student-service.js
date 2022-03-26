@@ -99,8 +99,8 @@ class StudentService {
     //-----------------------------------------------------WRITINGS----------------------------------------------------------------//    
 
     /*Obtiene el escrito del estudiante */
-    getWriting(idWriting, idVersion) {
-        return axios.get("/student/getWriting", { params: { idWriting: idWriting, idVersion: idVersion } },
+    getWriting(idWriting) {
+        return axios.get("/student/getWriting", { params: { idWriting: idWriting } },
             {
                 headers: { "Authorization": `Bearer ${authHeader()}` }
             }).then(response => {
