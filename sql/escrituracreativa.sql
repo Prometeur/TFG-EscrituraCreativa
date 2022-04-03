@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-03-2022 a las 17:40:15
+-- Tiempo de generación: 03-04-2022 a las 11:26:15
 -- Versión del servidor: 10.4.22-MariaDB
 -- Versión de PHP: 8.1.2
 
@@ -108,7 +108,8 @@ INSERT INTO `desafio` (`id`, `idGrupo`, `titulo`, `descripcion`, `tipoCalificaci
 (440, 8, 'Rui Palha', '<p>Desarrolla la historia de la fotografía de Rui Palha en no más de dos páginas. Utiliza una estructura no cronológica y diferentes subestructuras durativas (igualdad, inserción, expansión, compresión, elipsis).</p>\n', 1, 15, 2, '2022-02-19 17:49:42', '2022-07-12 17:48:00', 1),
 (441, 8, 'Requiem - Mozart', '<p>Crea una historia de no más de dos páginas en la que el hipotexto sea Dies Irae del Requiem de Mozart: https://www.youtube.com/watch?v=Zi8vJ_lMxQI</p>\n', 1, 24, 1, '2022-02-19 17:52:22', '2022-09-13 17:50:00', 1),
 (442, 7, 'Desarrollo de una historia', '<p>Desarrolla una historia de no más de dos páginas en la que existan por los menos tres textos en relación intertextual. Sólo puedes utilizar la repetición de contenido si aporta nueva información al texto. Considera los equivalentes semióticos presentes en todas las líneas diegéticas.</p>\n', 2, 21, 1, '2022-02-19 17:54:27', '2022-05-10 17:53:00', 1),
-(443, 7, 'Elección de un cuento infantil y desarrollo de dos mundos conectados a él', '<p>Elige un cuento infantil y desarrolla dos mundos posibles asociados a él. Puedes usar imagen (fija o en movimiento), palabras o sonido. Las líneas narrativas de todos los mundos deben mantener relaciones semióticas (denotativas y connotativas).</p>\n', 1, 19, 1, '2022-02-19 17:56:10', '2022-05-01 17:54:00', 1);
+(443, 7, 'Elección de un cuento infantil y desarrollo de dos mundos conectados a él', '<p>Elige un cuento infantil y desarrolla dos mundos posibles asociados a él. Puedes usar imagen (fija o en movimiento), palabras o sonido. Las líneas narrativas de todos los mundos deben mantener relaciones semióticas (denotativas y connotativas).</p>\n', 1, 19, 1, '2022-02-19 17:56:10', '2022-05-01 17:54:00', 1),
+(444, 3, 'AAAAAAAAAAAAAA', '<p>AAAAAAAAAAAAA</p>\n', 1, 3, 1, '2022-04-03 10:52:40', '2022-10-06 10:33:00', 1);
 
 -- --------------------------------------------------------
 
@@ -190,18 +191,25 @@ CREATE TABLE `escrito` (
   `colaborativo` tinyint(1) NOT NULL,
   `finalizado` tinyint(1) NOT NULL,
   `fecha` datetime NOT NULL DEFAULT current_timestamp(),
-  `activo` tinyint(1) NOT NULL
+  `activo` tinyint(1) NOT NULL,
+  `idCombinado` tinyint(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `escrito`
 --
 
-INSERT INTO `escrito` (`id`, `idGrupo`, `idDesafio`, `idEscritor`, `nombre`, `texto`, `registro`, `puntuacion`, `comentario`, `colaborativo`, `finalizado`, `fecha`, `activo`) VALUES
-(145, 3, 269, 72, 'Escrito8', '<p><em>El otro día conocí a una chica en una reunión que me presentaron unos amigos. La chica me contó que en su pueblo se estaba construyendo una mini-central eólica usando latas de refresco. La gente estaba muy contenta.</em></p>\n<p></p>\n', '', 6, 'Me parece muy buena historia quizás mejoraría algunas cosas como.....', 2, 0, '2021-04-27 09:42:50', 1),
-(146, 3, 270, 35, 'Escrito40', '<p><em>El otro día conocí a una chica en una reunión que me presentaron unos amigos. La chica me contó que en su pueblo se estaba construyendo una mini-central eólica usando latas de refresco. La gente estaba muy contenta.</em></p>\r\n<p></p>\r\n', '', 6, 'Me parece muy buena historia quizás mejoraría algunas cosas como.....', 2, 0, '2021-04-27 09:42:50', 1),
-(147, 1, 432, 22, '1', '<p>2</p>\n', '', 0, '', 1, 0, '2022-02-21 19:28:49', 1),
-(151, 3, 3, 22, 'Prueba 4.2', '<p>12345678</p>\n', '', 0, '', 1, 0, '2022-02-27 19:13:27', 1);
+INSERT INTO `escrito` (`id`, `idGrupo`, `idDesafio`, `idEscritor`, `nombre`, `texto`, `registro`, `puntuacion`, `comentario`, `colaborativo`, `finalizado`, `fecha`, `activo`, `idCombinado`) VALUES
+(145, 3, 269, 72, 'Escrito8', '<p><em>El otro día conocí a una chica en una reunión que me presentaron unos amigos. La chica me contó que en su pueblo se estaba construyendo una mini-central eólica usando latas de refresco. La gente estaba muy contenta.</em></p>\n<p></p>\n', '', 6, 'Me parece muy buena historia quizás mejoraría algunas cosas como.....', 2, 0, '2021-04-27 09:42:50', 1, NULL),
+(146, 3, 270, 35, 'Escrito40', '<p><em>El otro día conocí a una chica en una reunión que me presentaron unos amigos. La chica me contó que en su pueblo se estaba construyendo una mini-central eólica usando latas de refresco. La gente estaba muy contenta.</em></p>\r\n<p></p>\r\n', '', 6, 'Me parece muy buena historia quizás mejoraría algunas cosas como.....', 2, 0, '2021-04-27 09:42:50', 1, NULL),
+(147, 1, 432, 22, '1', '<p>2</p>\n', '', 0, '', 1, 0, '2022-02-21 19:28:49', 1, NULL),
+(151, 3, 3, 22, 'Prueba 4.4', '<p>4.4</p>\r\n\r\n', '', 0, '', 1, 0, '2022-02-27 19:13:27', 1, NULL),
+(152, 3, 345, 80, 'Prueba7.3', '<p>AACC</p>\n', '', 0, '', 2, 0, '2022-03-16 16:20:11', 1, NULL),
+(153, 3, 269, 80, 'T1', '<p>D1</p>\n', '', 0, '', 2, 0, '2022-03-18 10:02:23', 1, NULL),
+(154, 8, 441, 22, 'Escrito Mozart', '<p>Érase una vez ...</p>\n', '', 0, '', 1, 0, '2022-03-25 11:18:10', 1, NULL),
+(155, 1, 432, 22, '2.0', '<p>Este el 2º escrito para este desafío.</p>\n', '', 0, '', 1, 0, '2022-04-03 09:43:07', 1, NULL),
+(156, 3, 269, 80, 'Prueba 2.0', '<p>2.0</p>\n', '', 0, '', 2, 0, '2022-04-03 09:45:08', 1, NULL),
+(157, 3, 444, 22, 'EEEEEEEEEEE', '<p>EEEEEEEEEEEEE</p>\n', '', 0, '', 1, 0, '2022-04-03 11:01:05', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -304,7 +312,8 @@ CREATE TABLE `mensajeria` (
 
 INSERT INTO `mensajeria` (`id`, `idGrupo`, `idEmisor`, `idReceptor`, `idCreador`, `mensaje`, `tipo`, `fecha`, `activo`) VALUES
 (80, 3, 22, 7, 22, 'Veronica Calzada te envía una invitación para unirte a su equipo yop del Grupo de Historia', 2, '2022-02-03 18:49:17', 1),
-(81, 3, 22, 23, 22, 'Veronica Calzada te envía una invitación para unirte a su equipo yop del Grupo de Historia', 2, '2022-03-08 17:46:21', 1);
+(81, 3, 22, 23, 22, 'Veronica Calzada te envía una invitación para unirte a su equipo yop del Grupo de Historia', 0, '2022-03-08 17:46:21', 1),
+(82, 3, 22, 23, 22, 'Veronica Calzada te envía una invitación para unirte a su equipo yop del Grupo de Historia', 0, '2022-03-27 17:42:23', 1);
 
 -- --------------------------------------------------------
 
@@ -326,11 +335,12 @@ CREATE TABLE `multimediadesafio` (
 INSERT INTO `multimediadesafio` (`id`, `idDesafio`, `ruta`, `fecha`) VALUES
 (247, 269, 'http://localhost:3001/multimedia/users/4/269/video/eolica.mp4', '2021-04-27 09:32:39'),
 (248, 269, 'http://localhost:3001/multimedia/users/4/269/image/pueblo.jpg', '2021-04-27 09:32:39'),
-(249, 434, 'http://localhost:3001/multimedia/users/4/434/application/1. The Bluebird.pdf', '2022-02-19 17:59:41'),
 (250, 435, 'http://localhost:3001/multimedia/users/4/435/application/2. Llamadas telefónicas.pdf', '2022-02-19 18:00:09'),
 (251, 436, 'http://localhost:3001/multimedia/users/4/436/application/3. After Dark.pdf', '2022-02-19 18:00:48'),
 (252, 438, 'http://localhost:3001/multimedia/users/4/438/image/5. Evelyn Bencicova.jpg', '2022-02-19 18:01:21'),
-(253, 440, 'http://localhost:3001/multimedia/users/4/440/image/7. Rui Palha.jpg', '2022-02-19 18:01:45');
+(253, 440, 'http://localhost:3001/multimedia/users/4/440/image/7. Rui Palha.jpg', '2022-02-19 18:01:45'),
+(254, 444, 'http://localhost:3001/multimedia/users/4/444/image/descarga.jpg', '2022-04-03 10:52:40'),
+(256, 434, 'http://localhost:3001/multimedia/users/4/434/application/1. The Bluebird.pdf', '2022-04-03 11:23:52');
 
 -- --------------------------------------------------------
 
@@ -355,7 +365,8 @@ INSERT INTO `multimediaescrito` (`id`, `idEscritor`, `idDesafio`, `ruta`, `fecha
 (131, 9, 269, 'http://localhost:3001/multimedia/users/9/269/image/alaska.jpg', '2021-04-27 09:37:04', 0),
 (134, 32, 269, 'http://localhost:3001/multimedia/teams/32/269/image/alaska.jpg', '2021-04-27 09:50:48', 0),
 (136, 33, 269, 'http://localhost:3001/multimedia/teams/33/269/audio/Daft Punk - Get Lucky.mp3', '2021-04-29 15:58:08', 0),
-(137, 72, 269, 'http://localhost:3001/multimedia/teams/72/269/image/alaska.jpg', '2021-05-07 23:58:18', 0);
+(137, 72, 269, 'http://localhost:3001/multimedia/teams/72/269/image/alaska.jpg', '2021-05-07 23:58:18', 0),
+(139, 22, 432, 'http://localhost:3001/multimedia/users/22/432/image/descarga.jpg', '2022-04-03 10:02:06', 0);
 
 -- --------------------------------------------------------
 
@@ -417,12 +428,32 @@ INSERT INTO `versionescrito` (`idEscrito`, `idVersion`, `idDesafio`, `idEscritor
 (146, 1, 270, 35, 'Escrito40', 'El otro día conocí a una chica en una reunión que me presentaron unos amigos. La chica me contó que en su pueblo se estaba construyendo una mini-central eólica usando latas de refresco. La gente estaba muy contenta.', 2, '2021-04-27 09:42:50', 1),
 (147, 1, 432, 22, '1', '2', 1, '2022-02-21 19:28:49', 1),
 (151, 1, 3, 22, 'Prueba 4', '<p>123456</p>\n', 1, '2022-02-27 19:13:27', 0),
+(152, 1, 345, 80, 'Prueba1', '<p>AAAA</p>\r\n', 2, '2022-03-19 12:31:40', 0),
+(153, 1, 269, 80, 'T1', '<p>D1</p>\n', 2, '2022-03-18 10:02:23', 0),
+(154, 1, 441, 22, 'Escrito Mozart', '<p>Érase una vez ...</p>\n', 1, '2022-03-25 11:18:10', 0),
+(155, 1, 432, 22, '2.0', '<p>Este el 2º escrito para este desafío.</p>\n', 1, '2022-04-03 09:43:07', 0),
+(156, 1, 269, 80, 'Prueba 2.0', '<p>2.0</p>\n', 2, '2022-04-03 09:45:08', 0),
+(157, 1, 444, 22, 'EEEEEEEEEEE', '<p>EEEEEEEEEEEEE</p>\n', 1, '2022-04-03 11:01:05', 0),
 (147, 2, 432, 22, 'Hola', 'Me llamo Juan', 1, '2022-02-21 19:28:49', 1),
 (151, 2, 3, 22, 'Prueba 4.2', '<p>12345678</p>\n', 1, '2022-02-27 20:14:59', 0),
+(152, 2, 345, 80, 'Prueba2', '<p>BBBB</p>\n', 2, '2022-03-19 11:46:40', 0),
 (147, 3, 432, 22, 'H', '3', 1, '2022-02-23 19:19:13', 1),
 (151, 3, 3, 22, 'Prueba 4.3', '<p>12</p>\n', 1, '2022-02-27 20:20:58', 0),
+(152, 3, 345, 80, 'Prueba3', '<p>AABB</p>\n<p></p>\n', 2, '2022-03-19 11:47:03', 0),
 (147, 4, 432, 22, 'Hola J.A.', '<p>Me llamo Juan Antonio</p>\n', 1, '2022-02-26 12:12:45', 0),
-(147, 5, 432, 22, '1, 2', '<p>2, 3, 4, 5</p>\n', 1, '2022-02-26 12:14:17', 0);
+(151, 4, 3, 22, 'Prueba 4.4', '<p>4.4</p>\n', 1, '2022-03-19 13:18:10', 0),
+(152, 4, 345, 80, 'Prueba4', '<p>ABCD</p>\n', 2, '2022-03-19 12:18:14', 0),
+(147, 5, 432, 22, '1, 2', '<p>2, 3, 4, 5</p>\n', 1, '2022-02-26 12:14:17', 0),
+(151, 5, 3, 22, 'Prueba 4.4', '<p>4.4</p>\r\n\r\n', 1, '2022-04-03 10:01:15', 0),
+(152, 5, 345, 80, 'Prueba2', '<p>BBBB</p>\n', 2, '2022-03-19 12:19:12', 0),
+(147, 6, 432, 22, 'Hola J.A.', '<p>Me llamo Juan Antonio</p>\n', 1, '2022-03-17 19:12:06', 0),
+(152, 6, 345, 80, 'Prueba5', '<p>AABB</p>\n<p></p>\n', 2, '2022-03-19 12:21:23', 0),
+(147, 7, 432, 22, '1', '<p>4.4</p>\n<p>2</p>\n<p>4.4</p>\n<p>2</p>\n', 1, '2022-03-26 18:04:52', 0),
+(152, 7, 345, 80, 'Prueba6.2', '<p>AACC</p>\n', 2, '2022-03-19 12:33:03', 0),
+(147, 8, 432, 22, '1', '<p>2</p>\n', 1, '2022-04-03 10:02:06', 0),
+(152, 8, 345, 80, 'Prueba7', '<p>DDDD</p>\n', 2, '2022-03-19 12:55:49', 0),
+(152, 9, 345, 80, 'Prueba7.2', '<p>ABCD</p>\n', 2, '2022-03-19 13:13:20', 0),
+(152, 10, 345, 80, 'Prueba7.3', '<p>AACC</p>\n', 2, '2022-03-19 13:17:32', 0);
 
 --
 -- Índices para tablas volcadas
@@ -546,7 +577,7 @@ ALTER TABLE `categoria`
 -- AUTO_INCREMENT de la tabla `desafio`
 --
 ALTER TABLE `desafio`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=444;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=445;
 
 --
 -- AUTO_INCREMENT de la tabla `equipo`
@@ -564,7 +595,7 @@ ALTER TABLE `equipoestudiante`
 -- AUTO_INCREMENT de la tabla `escrito`
 --
 ALTER TABLE `escrito`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=152;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=158;
 
 --
 -- AUTO_INCREMENT de la tabla `grupo`
@@ -582,19 +613,19 @@ ALTER TABLE `grupoestudiante`
 -- AUTO_INCREMENT de la tabla `mensajeria`
 --
 ALTER TABLE `mensajeria`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 
 --
 -- AUTO_INCREMENT de la tabla `multimediadesafio`
 --
 ALTER TABLE `multimediadesafio`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=254;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=257;
 
 --
 -- AUTO_INCREMENT de la tabla `multimediaescrito`
 --
 ALTER TABLE `multimediaescrito`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=138;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=140;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
