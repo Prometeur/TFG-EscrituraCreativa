@@ -384,6 +384,37 @@ class modelTeacher {
             }
         });
     }
+
+    //-----------------------------------------COLLECTIONS-----------------------------------------//
+
+    // Crea una colección
+    createCollection(nombreColeccion, idProfesor, idGrupo, callback) {
+
+        const sqlInsert = "INSERT INTO coleccion (nombre, activo, idProfesor, idGrupo) VALUES (?, ?, ?, ?);";
+        this.pool.query(sqlInsert, [nombreColeccion, 1, idProfesor, idGrupo], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+              }
+        });
+    }
+
+    // Añadir un desafío a una colección
+    addChallengeToCollection(idColeccion, idDesafio)
+    {
+        const sqlInsert = "INSERT INTO coleccionescrito (id, idColeccion, idDesafio) VALUES (?, ?, ?);";
+        this.pool.query(sqlInsert, [idColeccion, idDesafio], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+              }
+        });
+    }
+
 }
 
 

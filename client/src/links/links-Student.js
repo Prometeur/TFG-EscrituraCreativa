@@ -1,6 +1,5 @@
-const linksTeacher = [
+const linksStudent = [
     {
-
         path: "/groups",
         name: "Grupos",
         icon:"/group.png",
@@ -17,14 +16,19 @@ const linksTeacher = [
         name: "Escritos",
         icon:"/writing.png",
         id: "escritos"
-    }
-    ,
+    },
     {
         path: "/teams",
         name: "Equipos",
         icon:"/team.png",
         id: "teams"
+    },
+    {
+        path: "/collections",
+        name: "Colecciones",
+        icon: "/collection.png",
+        id: "colecciones",
     }
 ];
 
-export default linksTeacher;
+export default linksStudent;

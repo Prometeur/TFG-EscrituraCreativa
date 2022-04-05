@@ -490,8 +490,42 @@ function acceptApplicant(request, response, next){
            response.send(JSON.stringify(res));
         }
     });
-
 }
+
+
+//-----------------------------------------COLLECTIONS-----------------------------------------//
+
+// Crea una colección
+function createCollection(req, res)
+{
+    const nombreColeccion = req.body.nombreColeccion;
+    const idProfesor = req.body.idProfesor;
+    const idGrupo = req.body.idGrupo;
+
+    modelTeacher.createCollection(nombreColeccion, idProfesor, idGrupo, function (err, result) {
+        if (err) {
+            console.log(err.message);
+            res.status(500).send({ error: err.message });
+        }
+        res.send(result);
+    });
+}
+
+// Añadir un desafío a una colección
+function addChallengeToCollection(req, res)
+{
+    const idColeccion = req.body.idColeccion;
+    const idDesafio = req.body.idDesafio;
+
+    modelTeacher.addChallengeToCollection(idColeccion, idDesafio, function (err, result) {
+        if (err) {
+            console.log(err.message);
+            res.status(500).send({ error: err.message });
+        }
+        res.send(result);
+    });
+}
+
 
 module.exports = {
     getGroups: getGroups,
@@ -517,5 +551,7 @@ module.exports = {
     createGroup:createGroup,
     acceptGroupRequest: acceptGroupRequest,
     showGroupRequest: showGroupRequest,
+    createCollection: createCollection,
+    addChallengeToCollection: addChallengeToCollection,
 
 };

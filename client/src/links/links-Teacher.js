@@ -24,8 +24,13 @@ const linksTeacher = [
         name: "Crear Grupo",
         icon: "/add-member.png",
         id: "createGroup"
+    },
+    {
+        path: "/collections",
+        name: "Colecciones",
+        icon: "/collection.png",
+        id: "coleccionesProfesor"
     }
-
 ];
 
 export default linksTeacher;

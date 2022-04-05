@@ -387,6 +387,34 @@ class TeacherService {
             })
     }
 
+    //-----------------------------------------COLLECTIONS-----------------------------------------//
+
+    // Crea una colección
+    createCollection(nombreColeccion, idProfesor, idGrupo)
+    {
+        return axios.post("/teacher/createCollection", { nombreColeccion: nombreColeccion, idProfesor: idProfesor, idGrupo: idGrupo }, {
+            headers: { "Authorization": `Bearer ${authHeader()}` }
+        }).then(response => {
+            return response.data;
+        }).catch(error => {
+            console.log(error.message);
+            window.location.href = '/500';
+        })
+    }
+
+    // Añadir un desafío a una colección
+    addChallengeToCollection(idColeccion, idDesafio)
+    {
+        return axios.post("/teacher/addChallengeToCollection", { idColeccion: idColeccion, idDesafio: idDesafio }, {
+            headers: { "Authorization": `Bearer ${authHeader()}` }
+        }).then(response => {
+            return response.data;
+        }).catch(error => {
+            console.log(error.message);
+            window.location.href = '/500';
+        })
+    }
+
 }
 
 

@@ -140,5 +140,13 @@ router.post("/searchApplicant", controller_user.searchApplicant);
 router.get("/acceptApplicant",controller_teacher.acceptApplicant);
 
 
+//-----------------------------------------COLLECTIONS-----------------------------------------//
+
+// Crea una colección
+router.post("/createCollection", controller_teacher.createCollection);
+
+// Añadir un desafío a una colección
+router.post("/addChallengeToCollection", controllerTeacher.addChallengeToCollection);
+
 
 module.exports = router;

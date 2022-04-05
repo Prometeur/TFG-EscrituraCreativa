@@ -19,6 +19,7 @@ import LinksStudent from '../links/links-Student.js';
 import EditWritingTeam from '../components/pages/student/EditWritingTeam.js';
 import VersionsfromWriting from '../components/pages/student/VersionsfromWriting.js';
 import EditVersionfromWriting from '../components/pages/student/EditVersionfromWriting.js';
+import Collections from '../components/pages/student/Collections.js';
 
 // import Teams from '../components/pages/student/Teams.js';
 // import Messenger from '../components/pages/student/Messenger.js';
@@ -44,6 +45,7 @@ function Routes() {
                 <Route exact path="/student/editWritingTeam/:idGroup/:idChallenge/:idWriting" component={EditWritingTeam} />
                 <Route exact path="/student/versionsWriting/:idGroup/:idChallenge/:idWriting" component={VersionsfromWriting} />
                 <Route exact path="/student/editVersionfromWriting/:idGroup/:idChallenge/:idWriting/:idVersion" component={EditVersionfromWriting} />
+                <Route exact path="/student/collections" component={Collections} />
             </Switch>
         </BrowserRouter>
     );

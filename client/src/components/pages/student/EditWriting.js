@@ -112,12 +112,6 @@ class EditWriting extends Component {
             },
             maxIdVersion: -1,
             //colaborativo: 0,
-            textoEscritoCombinado: '',
-            modalCombinarEscrito: false,
-            escritosNoCombinados: [],
-            idWritingSelect: -1,
-            nameWritingSelect: '',
-            maxVersionIdCombinado: -1,
         }
     }
 
@@ -181,35 +175,6 @@ class EditWriting extends Component {
             console.log(error.message);
         });
 
-        /* Devuelve la última versión de un escrito, es decir, el mayor id */
-        // StudentService.getHighestidVersionfromWriting(this.props.match.params.idWriting)
-        // .then(response => {
-        //     this.setState({ maxIdVersion: response[0].maxId });
-
-        //     /*Obtiene el escrito */
-        //     StudentService.getWriting(this.props.match.params.idWriting, this.state.maxIdVersion)
-        //     .then(response => {
-        //         var contentState = stateFromHTML(response.data[0].texto);
-        //         let editorState = EditorState.createWithContent(contentState);
-        //         // this.setState({ editorState: editorState });
-        //         this.setState({
-        //             writing: response.data[0],
-        //             editorState: editorState,
-        //             form: {
-        //                 ...this.state.form,
-        //                 title: response.data[0].nombre,
-        //                 escrito: response.data[0].texto,
-        //             },
-        //     });
-        //     }).catch(error => {
-        //         console.log(error.message);
-        //     });
-
-        // }).catch(error => {
-        //     console.log(error.message);
-        // });
-
-
         /*Obtiene el escrito */
         StudentService.getWriting(this.props.match.params.idWriting)
         .then(response => {
@@ -235,59 +200,7 @@ class EditWriting extends Component {
         }).catch(error => {
             console.log(error.message);
         });
-
-
-    }
-
-    // combina el escrito actual con otro que se elija
-    combinarEscrito = (idEscritoCombinado) => {
-        this.onModalCombinarEscrito(false)
-
-        StudentService.getWriting(idEscritoCombinado)
-        .then(response => {
-            if (response.data.length > 0)
-            {
-                this.setState({ textoEscritoCombinado : response.data[0].texto });
-
-                let nuevo_texto = this.state.textoEscritoCombinado.concat(this.state.form.escrito)
-                //nuevo_texto.concat("\n");
-                var contentState2 = stateFromHTML(nuevo_texto);
-                let editorState2 = EditorState.createWithContent(contentState2); // + '<br/>'
-                this.setState({ editorState: editorState2 })
-
-
-                // editar escrito
-                StudentService.editWriting(this.props.match.params.idWriting, this.props.match.params.idGroup, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.title, nuevo_texto, this.state.challenge.colaborativo)
-                .catch(error => {
-                    console.log(error.message);
-                });
-
-                /* Devuelve la última versión de un escrito, es decir, el mayor id */
-                StudentService.getHighestidVersionfromWriting(idEscritoCombinado)
-                .then(response => {
-                    this.setState({ maxVersionIdCombinado: response[0].maxId });
-
-                    // insertar nueva versión en el escrito
-                    StudentService.insertVersionfromWriting(this.props.match.params.idWriting , this.state.maxVersionIdCombinado + 1, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.title, nuevo_texto, this.state.challenge.colaborativo)
-                    .catch(error => {
-                        console.log(error.message);
-                    });
-                })
-
-            }
-        })
         
-    }
-
-    onModalCombinarEscrito = (modal) => {
-        this.setState({
-            modalCombinarEscrito: modal,
-        });
-    };
-
-
-    handleSelect(writing) {
-        this.setState({ idWritingSelect: writing.id, nameWritingSelect: writing.nombreEscrito});
     }
 
     //Envia el escrito editado 
@@ -624,30 +537,6 @@ onModalEditWriting = (modal) => {
                             <div className="form-button">
                                 <Button onClick={() => window.location.href = `/student/versionsWriting/${this.props.match.params.idGroup}/${this.props.match.params.idChallenge}/${this.props.match.params.idWriting}`}>Acceder a versiones anteriores</Button>
                             </div>
-
-
-                            <div className={"border-group"}>
-                                <ul className={"flex-items-row-evenly"}>
-                                    <li className={"flex-item-form"}>
-                                    <Dropdown className="drop-down" >
-                                        <DropdownToggle as={CustomToggle} id="dropdown-custom-components"> Selecciona escrito</DropdownToggle>
-                                        <DropdownMenu as={CustomMenu}>
-                                        {escritosNoCombinados.map((row) => (
-                                            <DropdownItem eventKey={row.id} onClick={() => this.handleSelect(row)}>{row.nombreEscrito}</DropdownItem>
-                                        ))}
-                                        </DropdownMenu>
-                                    </Dropdown>
-                                    </li>
-                                    <li className={"flex-item-form"}>
-                                        { <h4 style={{color: "#717172"}}>{this.state.nameWritingSelect}</h4> }
-                                    </li>
-                                    <li className={"flex-item-form"}>
-                                    <div className="form-button">
-                                        <Button text='enviar' onClick={() => this.onModalCombinarEscrito(true)}> Combinar escrito </Button>
-                                    </div>
-                                    </li>
-                                </ul>
-                                </div>
 
                         </div>
 
