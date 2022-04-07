@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-04-2022 a las 11:26:15
+-- Tiempo de generación: 07-04-2022 a las 10:48:40
 -- Versión del servidor: 10.4.22-MariaDB
 -- Versión de PHP: 8.1.2
 
@@ -63,6 +63,32 @@ INSERT INTO `categoria` (`id`, `nombre`) VALUES
 (24, 'literaturas transmediales'),
 (25, 'cine'),
 (26, 'storyboard');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `coleccion`
+--
+
+CREATE TABLE `coleccion` (
+  `id` int(9) NOT NULL,
+  `nombre` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `activo` tinyint(1) NOT NULL,
+  `idProfesor` int(9) NOT NULL,
+  `idGrupo` int(9) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `colecciondesafio`
+--
+
+CREATE TABLE `colecciondesafio` (
+  `id` int(9) NOT NULL,
+  `idColeccion` int(9) NOT NULL,
+  `idDesafio` int(9) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -191,25 +217,24 @@ CREATE TABLE `escrito` (
   `colaborativo` tinyint(1) NOT NULL,
   `finalizado` tinyint(1) NOT NULL,
   `fecha` datetime NOT NULL DEFAULT current_timestamp(),
-  `activo` tinyint(1) NOT NULL,
-  `idCombinado` tinyint(4) DEFAULT NULL
+  `activo` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `escrito`
 --
 
-INSERT INTO `escrito` (`id`, `idGrupo`, `idDesafio`, `idEscritor`, `nombre`, `texto`, `registro`, `puntuacion`, `comentario`, `colaborativo`, `finalizado`, `fecha`, `activo`, `idCombinado`) VALUES
-(145, 3, 269, 72, 'Escrito8', '<p><em>El otro día conocí a una chica en una reunión que me presentaron unos amigos. La chica me contó que en su pueblo se estaba construyendo una mini-central eólica usando latas de refresco. La gente estaba muy contenta.</em></p>\n<p></p>\n', '', 6, 'Me parece muy buena historia quizás mejoraría algunas cosas como.....', 2, 0, '2021-04-27 09:42:50', 1, NULL),
-(146, 3, 270, 35, 'Escrito40', '<p><em>El otro día conocí a una chica en una reunión que me presentaron unos amigos. La chica me contó que en su pueblo se estaba construyendo una mini-central eólica usando latas de refresco. La gente estaba muy contenta.</em></p>\r\n<p></p>\r\n', '', 6, 'Me parece muy buena historia quizás mejoraría algunas cosas como.....', 2, 0, '2021-04-27 09:42:50', 1, NULL),
-(147, 1, 432, 22, '1', '<p>2</p>\n', '', 0, '', 1, 0, '2022-02-21 19:28:49', 1, NULL),
-(151, 3, 3, 22, 'Prueba 4.4', '<p>4.4</p>\r\n\r\n', '', 0, '', 1, 0, '2022-02-27 19:13:27', 1, NULL),
-(152, 3, 345, 80, 'Prueba7.3', '<p>AACC</p>\n', '', 0, '', 2, 0, '2022-03-16 16:20:11', 1, NULL),
-(153, 3, 269, 80, 'T1', '<p>D1</p>\n', '', 0, '', 2, 0, '2022-03-18 10:02:23', 1, NULL),
-(154, 8, 441, 22, 'Escrito Mozart', '<p>Érase una vez ...</p>\n', '', 0, '', 1, 0, '2022-03-25 11:18:10', 1, NULL),
-(155, 1, 432, 22, '2.0', '<p>Este el 2º escrito para este desafío.</p>\n', '', 0, '', 1, 0, '2022-04-03 09:43:07', 1, NULL),
-(156, 3, 269, 80, 'Prueba 2.0', '<p>2.0</p>\n', '', 0, '', 2, 0, '2022-04-03 09:45:08', 1, NULL),
-(157, 3, 444, 22, 'EEEEEEEEEEE', '<p>EEEEEEEEEEEEE</p>\n', '', 0, '', 1, 0, '2022-04-03 11:01:05', 1, NULL);
+INSERT INTO `escrito` (`id`, `idGrupo`, `idDesafio`, `idEscritor`, `nombre`, `texto`, `registro`, `puntuacion`, `comentario`, `colaborativo`, `finalizado`, `fecha`, `activo`) VALUES
+(145, 3, 269, 72, 'Escrito8', '<p><em>El otro día conocí a una chica en una reunión que me presentaron unos amigos. La chica me contó que en su pueblo se estaba construyendo una mini-central eólica usando latas de refresco. La gente estaba muy contenta.</em></p>\n<p></p>\n', '', 6, 'Me parece muy buena historia quizás mejoraría algunas cosas como.....', 2, 0, '2021-04-27 09:42:50', 1),
+(146, 3, 270, 35, 'Escrito40', '<p><em>El otro día conocí a una chica en una reunión que me presentaron unos amigos. La chica me contó que en su pueblo se estaba construyendo una mini-central eólica usando latas de refresco. La gente estaba muy contenta.</em></p>\r\n<p></p>\r\n', '', 6, 'Me parece muy buena historia quizás mejoraría algunas cosas como.....', 2, 0, '2021-04-27 09:42:50', 1),
+(147, 1, 432, 22, '1', '<p>2</p>\n<p>2</p>\n', '', 0, '', 1, 0, '2022-02-21 19:28:49', 1),
+(151, 3, 3, 22, 'Prueba 4.4', '<p>4.4</p>\r\n\r\n', '', 0, '', 1, 0, '2022-02-27 19:13:27', 1),
+(152, 3, 345, 80, 'Prueba7.3', '<p>AACC</p>\n', '', 0, '', 2, 0, '2022-03-16 16:20:11', 1),
+(153, 3, 269, 80, 'T1', '<p>D1</p>\n', '', 0, '', 2, 0, '2022-03-18 10:02:23', 1),
+(154, 8, 441, 22, 'Escrito Mozart', '<p>Érase una vez ...</p>\n', '', 0, '', 1, 0, '2022-03-25 11:18:10', 1),
+(155, 1, 432, 22, '2.0', '<p>Este el 2º escrito para este desafío.</p>\n', '', 0, '', 1, 0, '2022-04-03 09:43:07', 1),
+(156, 3, 269, 80, 'Prueba 2.0', '<p>2.0</p>\n', '', 0, '', 2, 0, '2022-04-03 09:45:08', 1),
+(157, 3, 444, 22, 'EEEEEEEEEEE', '<p>EEEEEEEEEEEEE</p>\n', '', 0, '', 1, 0, '2022-04-03 11:01:05', 1);
 
 -- --------------------------------------------------------
 
@@ -248,7 +273,8 @@ INSERT INTO `grupo` (`id`, `idprofesor`, `nombre`, `activo`) VALUES
 (5, 4, 'Poesía', 1),
 (6, 4, 'Biología', 1),
 (7, 4, 'Literatura', 1),
-(8, 4, 'Arte', 1);
+(8, 4, 'Arte', 1),
+(10, 4, 'n1', 1);
 
 -- --------------------------------------------------------
 
@@ -365,8 +391,7 @@ INSERT INTO `multimediaescrito` (`id`, `idEscritor`, `idDesafio`, `ruta`, `fecha
 (131, 9, 269, 'http://localhost:3001/multimedia/users/9/269/image/alaska.jpg', '2021-04-27 09:37:04', 0),
 (134, 32, 269, 'http://localhost:3001/multimedia/teams/32/269/image/alaska.jpg', '2021-04-27 09:50:48', 0),
 (136, 33, 269, 'http://localhost:3001/multimedia/teams/33/269/audio/Daft Punk - Get Lucky.mp3', '2021-04-29 15:58:08', 0),
-(137, 72, 269, 'http://localhost:3001/multimedia/teams/72/269/image/alaska.jpg', '2021-05-07 23:58:18', 0),
-(139, 22, 432, 'http://localhost:3001/multimedia/users/22/432/image/descarga.jpg', '2022-04-03 10:02:06', 0);
+(137, 72, 269, 'http://localhost:3001/multimedia/teams/72/269/image/alaska.jpg', '2021-05-07 23:58:18', 0);
 
 -- --------------------------------------------------------
 
@@ -452,6 +477,7 @@ INSERT INTO `versionescrito` (`idEscrito`, `idVersion`, `idDesafio`, `idEscritor
 (152, 7, 345, 80, 'Prueba6.2', '<p>AACC</p>\n', 2, '2022-03-19 12:33:03', 0),
 (147, 8, 432, 22, '1', '<p>2</p>\n', 1, '2022-04-03 10:02:06', 0),
 (152, 8, 345, 80, 'Prueba7', '<p>DDDD</p>\n', 2, '2022-03-19 12:55:49', 0),
+(147, 9, 432, 22, '1', '<p>2</p>\n<p>2</p>\n', 1, '2022-04-04 17:17:11', 0),
 (152, 9, 345, 80, 'Prueba7.2', '<p>ABCD</p>\n', 2, '2022-03-19 13:13:20', 0),
 (152, 10, 345, 80, 'Prueba7.3', '<p>AACC</p>\n', 2, '2022-03-19 13:17:32', 0);
 
@@ -464,6 +490,22 @@ INSERT INTO `versionescrito` (`idEscrito`, `idVersion`, `idDesafio`, `idEscritor
 --
 ALTER TABLE `categoria`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `coleccion`
+--
+ALTER TABLE `coleccion`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idCreador` (`idProfesor`),
+  ADD KEY `idGrupo` (`idGrupo`);
+
+--
+-- Indices de la tabla `colecciondesafio`
+--
+ALTER TABLE `colecciondesafio`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idColeccion` (`idColeccion`),
+  ADD KEY `idDesafio` (`idDesafio`);
 
 --
 -- Indices de la tabla `desafio`
@@ -574,6 +616,18 @@ ALTER TABLE `categoria`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
+-- AUTO_INCREMENT de la tabla `coleccion`
+--
+ALTER TABLE `coleccion`
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `colecciondesafio`
+--
+ALTER TABLE `colecciondesafio`
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `desafio`
 --
 ALTER TABLE `desafio`
@@ -601,7 +655,7 @@ ALTER TABLE `escrito`
 -- AUTO_INCREMENT de la tabla `grupo`
 --
 ALTER TABLE `grupo`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `grupoestudiante`
@@ -636,6 +690,20 @@ ALTER TABLE `usuario`
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `coleccion`
+--
+ALTER TABLE `coleccion`
+  ADD CONSTRAINT `coleccion_ibfk_1` FOREIGN KEY (`idProfesor`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `coleccion_ibfk_2` FOREIGN KEY (`idGrupo`) REFERENCES `grupo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `colecciondesafio`
+--
+ALTER TABLE `colecciondesafio`
+  ADD CONSTRAINT `colecciondesafio_ibfk_1` FOREIGN KEY (`idColeccion`) REFERENCES `coleccion` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `colecciondesafio_ibfk_2` FOREIGN KEY (`idDesafio`) REFERENCES `desafio` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `desafio`
