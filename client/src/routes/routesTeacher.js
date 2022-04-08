@@ -18,6 +18,7 @@ import Profile from '../components/pages/user/Profile.js';
 import EditWriting from '../components/pages/teacher/EditWriting.js';
 import GroupTeacher from '../components/pages/teacher/GroupTeacher.js';
 import Collections from '../components/pages/teacher/Collections';
+import SingleCollection from '../components/pages/teacher/SingleCollection';
 
 /*defino las rutas de los componentes
 Rutas o urls del Teacher asociado a la componente pages/teacher*/
@@ -39,6 +40,8 @@ function Routes() {
           <Route exact path="/teacher/students/viewProfile/:idStudent" component={Profile} />
           <Route exact path="/teacher/editWriting/:idGroup/:idChallenge/:idWriting/:idStudent" component={EditWriting} />
           <Route exact path="/teacher/collections" component={Collections} />
+          <Route exact path="/teacher/collections/viewCollection/:idCollection" component={SingleCollection} />
+
         </Switch>
       </BrowserRouter>
     </>

@@ -541,6 +541,41 @@ function getCollections(req, res)
     });
 }
 
+/*Obtiene la colección seleccionada*/
+function getCollection(req, res) {
+    
+    let idCollection = req.query.idCollection;
+    
+    if (idUser != null) {
+        modelTeacher.getCollection(idCollection, function(err, result) {
+            if(err) 
+            {
+                if (err.message == "No se puede conectar a la base de datos.") 
+                {
+                    //next(err);
+                    console.log("No se puede conectar a la base de datos");
+                }
+                res.status(500).send({ error: err.message });
+                console.log(err.message);
+            } 
+            else if (result == null) 
+            {
+                res.status(500).send({ error: "El usuairo no existe" });
+                console.log("El usuario no existe");
+            } 
+            else
+            {
+                res.status(200);
+               res.send(JSON.stringify(result[0]));
+            }
+        });
+    }
+    else 
+    {
+        res.status(500);
+        console.log("El id es nulo");
+    }
+}
 
 module.exports = {
     getGroups: getGroups,
@@ -569,5 +604,5 @@ module.exports = {
     createCollection: createCollection,
     addChallengeToCollection: addChallengeToCollection,
     getCollections: getCollections,
-
+    getCollection: getCollection,
 };

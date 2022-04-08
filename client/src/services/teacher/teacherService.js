@@ -429,6 +429,17 @@ class TeacherService {
             })
     }
 
+    getCollection(idCollection) {
+
+        return axios.get("/teacher/getCollection", { params: { idCollection: idCollection } }, { headers: { "Authorization": `Bearer ${authHeader()}` } })
+            .then(response => {
+                return response.data;
+            }).catch(error => {
+                console.log(error.message);
+                window.location.href = '/500';
+            })
+    }
+
 }
 
 

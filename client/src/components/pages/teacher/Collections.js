@@ -192,8 +192,13 @@ class Collections extends Component {
                             {collection.nombreGrupo}
                         </li>
                         <li className={"flex-item-list"}>
+                            <Link key={collection.id} to={`/teacher/collections/viewCollection/${collection.id}`}> 
+                                <Button size={"sm"} variant={"primary"}> Ver </Button>
+                            </Link> 
+                        </li>
+                        <li className={"flex-item-list"}>
                             {/* <Link key={student.id} to={`/teacher/students/viewProfile/${student.id}`}> */}
-                                <Button size={"sm"} variant={"primary"}> Ver colección </Button>
+                                <Button size={"sm"} variant={"primary"}> Editar </Button>
                             {/* </Link> */}
                         </li>
                     </ul>
