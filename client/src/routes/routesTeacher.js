@@ -17,6 +17,12 @@ import Profile from '../components/pages/user/Profile.js';
 
 import EditWriting from '../components/pages/teacher/EditWriting.js';
 import GroupTeacher from '../components/pages/teacher/GroupTeacher.js';
+<<<<<<< Updated upstream
+=======
+import Collections from '../components/pages/teacher/Collections';
+import SingleCollection from '../components/pages/teacher/SingleCollection';
+import EditCollection from '../components/pages/teacher/EditCollection';
+>>>>>>> Stashed changes
 
 /*defino las rutas de los componentes
 Rutas o urls del Teacher asociado a la componente pages/teacher*/
@@ -37,6 +43,12 @@ function Routes() {
           <Route exact path="/teacher/applicants" component={ApplicantList} />
           <Route exact path="/teacher/students/viewProfile/:idStudent" component={Profile} />
           <Route exact path="/teacher/editWriting/:idGroup/:idChallenge/:idWriting/:idStudent" component={EditWriting} />
+<<<<<<< Updated upstream
+=======
+          <Route exact path="/teacher/collections" component={Collections} />
+          <Route exact path="/teacher/collections/viewCollection/:idCollection" component={SingleCollection} />
+          <Route exact path="/teacher/collections/editCollection/:idCollection" component={EditCollection} />
+>>>>>>> Stashed changes
         </Switch>
       </BrowserRouter>
     </>
