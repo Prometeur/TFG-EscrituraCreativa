@@ -86,7 +86,10 @@ class Collections extends Component {
             nombreColeccion: "",
             onCreateCollectionModal: false,
             onAlert: false,
-
+            dataCollection: [],
+            filtroBusqueda: '',
+            dataCollectionFiltered: [],
+            showListCollections: false,
         }
     }
 
@@ -100,6 +103,38 @@ class Collections extends Component {
         }
         })
         
+        TeacherService.getCollections(AuthUser.getCurrentUser().id, this.state.filtroBusqueda)
+          .then(response => {
+              if (response.length > 0)
+              {
+                this.setState({ dataCollection: response, dataCollectionFiltered: response, showListCollections: true });
+                this.filterData();
+              }
+          })
+    }
+
+
+    //Filtra los datos de las colecciones buscadas para solo buscar en la base de datos una vez
+    filterData = () => {
+      let auxArray = [];
+      //this.state.filteredData = [];
+      for (let i = 0; i < this.state.dataCollection.length; i++) 
+      {
+          if (new RegExp(this.state.filtroBusqueda, 'i').test(this.state.dataCollection[i].nombreColeccion) ||
+                (new RegExp(this.state.filtroBusqueda, 'i').test(this.state.dataCollection[i].nombreGrupo)))
+          {
+              auxArray.push(this.state.dataCollection[i]);
+          }
+      }
+      this.setState({ dataCollectionFiltered: auxArray });
+    }
+
+    /*Lo que escribamos en el input lo guarda en el state async para que lo veamos en tiempo real */
+    handleChangeSearch = async e => {
+        await this.setState({
+            [e.target.name]: e.target.value
+        });
+        this.filterData();
     }
 
     crearColeccion = () => {
@@ -144,7 +179,39 @@ class Collections extends Component {
 
     /*Dibuja la pagina  */
     render() {
-        const { dataGroup,  idGroupSelect } = this.state;
+
+      let cartel = <div> </div>;
+        let tabla = <ul className={"flex-items-row-start wrap"}>
+            {this.state.dataCollectionFiltered.map((collection) => (
+                <li className={"items-row"}>
+                    <ul className={"flex-items-row-evenly"}>
+                        <li className={"flex-item-list"}>
+                            {collection.nombreColeccion}
+                        </li>
+                        <li className={"flex-item-list"}>
+                            {collection.nombreGrupo}
+                        </li>
+                        <li className={"flex-item-list"}>
+                            {/* <Link key={student.id} to={`/teacher/students/viewProfile/${student.id}`}> */}
+                                <Button size={"sm"} variant={"primary"}> Ver colección </Button>
+                            {/* </Link> */}
+                        </li>
+                    </ul>
+                    <hr />
+                </li>
+            ))}
+        </ul>;
+
+        if (this.state.dataCollectionFiltered.length === 0) {
+            cartel = <div className={"row-edit"}>
+                <br />
+                <h4>No hay resultados para la búsqueda realizada.</h4>
+            </div>;
+            tabla = <></>;
+        }
+
+
+        const { dataGroup,  showListCollections } = this.state;
         return (
             <div className="container">
                <Card className="card-long">
@@ -175,18 +242,37 @@ class Collections extends Component {
                                 <Button variant="primary" onClick={() => this.onModal(true)}>Crear colección</Button>
                                 </li>
                             </ul>
-                            {/* <ul className={"flex-items-row-evenly"}>
-                                <li className={"flex-item-form"}>
-                                    <p>Introduce el nombre para la colección:</p>
-                                </li>
-                                <li className={"flex-item-form"}>
-                                    <input class="form-control" type="text"/>
-                                </li>
-
-                            </ul> */}
                         </div>
 
-
+                        {showListCollections ? (
+                            <div>
+                                <div className={"row-edit"}>
+                                    <ul className={"container-column-list"}>
+                                        <li className={"items-row"}>
+                                            <label className={"form-label"}>Buscar colección por su nombre o por grupo: </label>
+                                        </li>
+                                        <li className={"items-row"}>
+                                            <input type="text" name="filtroBusqueda" onChange={this.handleChangeSearch} />
+                                        </li>
+                                        <li className={"items-row"}>
+                                            <img src="../../search.png" alt="" />
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div className={"row-edit"}>
+                                    <Card className={"card-long"}>
+                                        <Card.Body >
+                                            {cartel}
+                                            {tabla}
+                                        </Card.Body>
+                                    </Card>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="table-margin">
+                                <p>No hay colecciones para mostrar</p>
+                            </div>
+                        )}
 
                    </Card.Body>
                </Card>

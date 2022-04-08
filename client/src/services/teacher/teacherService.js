@@ -394,12 +394,12 @@ class TeacherService {
     {
         return axios.post("/teacher/createCollection", { nombreColeccion: nombreColeccion, idProfesor: idProfesor, idGrupo: idGrupo }, {
             headers: { "Authorization": `Bearer ${authHeader()}` }
-        }).then(response => {
-            return response.data;
-        }).catch(error => {
-            console.log(error.message);
-            window.location.href = '/500';
-        })
+            }).then(response => {
+                return response.data;
+            }).catch(error => {
+                console.log(error.message);
+                window.location.href = '/500';
+            })
     }
 
     // Añadir un desafío a una colección
@@ -407,12 +407,26 @@ class TeacherService {
     {
         return axios.post("/teacher/addChallengeToCollection", { idColeccion: idColeccion, idDesafio: idDesafio }, {
             headers: { "Authorization": `Bearer ${authHeader()}` }
-        }).then(response => {
-            return response.data;
-        }).catch(error => {
-            console.log(error.message);
-            window.location.href = '/500';
-        })
+            }).then(response => {
+                return response.data;
+            }).catch(error => {
+                console.log(error.message);
+                window.location.href = '/500';
+            })
+    }
+
+    // Obtiene las colecciones de un profesor, pudiendo filtrar por nombre de grupo o nombre de colección
+    getCollections(idProfesor, filtroBusqueda)
+    {
+        return axios.get("/teacher/getCollections", { params: { idProfesor: idProfesor, filtroBusqueda: filtroBusqueda } },
+            {
+                headers: { "Authorization": `Bearer ${authHeader()}` }
+            }).then(response => {
+                return response.data;
+            }).catch(error => {
+                console.log(error.message);
+                window.location.href = '/500';
+            })
     }
 
 }

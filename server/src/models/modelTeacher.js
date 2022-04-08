@@ -402,10 +402,26 @@ class modelTeacher {
     }
 
     // Añadir un desafío a una colección
-    addChallengeToCollection(idColeccion, idDesafio)
+    addChallengeToCollection(idColeccion, idDesafio, callback)
     {
         const sqlInsert = "INSERT INTO coleccionescrito (id, idColeccion, idDesafio) VALUES (?, ?, ?);";
         this.pool.query(sqlInsert, [idColeccion, idDesafio], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+              }
+        });
+    }
+
+    // Obtiene las colecciones de un profesor, pudiendo filtrar por nombre de grupo o nombre de colección
+    getCollections(idProfesor, filtroBusqueda, callback)
+    {
+        const sqlSelect = "SELECT c.nombre as nombreColeccion, g.nombre as nombreGrupo FROM coleccion c JOIN grupo g ON g.id=c.idGrupo WHERE c.idProfesor=? AND (c.nombre LIKE ? OR g.nombre LIKE ?);";
+        const valores = ["%" + filtroBusqueda + "%"];
+
+        this.pool.query(sqlSelect, [idProfesor, valores, valores], (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }
