@@ -431,10 +431,10 @@ class modelTeacher {
         });
     }
 
-    // Obtiene una colección con sus desafíos
+    // Obtiene una colección
     getCollection(idCollection, callback)
     {
-        const sqlSelect = "SELECT g.id as idGrupo, c.nombre as nombreColeccion, g.nombre as nombreGrupo, d.titulo, d.colaborativo FROM coleccion c JOIN grupo g ON g.id=c.idGrupo JOIN colecciondesafio cd ON c.id=cd.idColeccion JOIN desafio d ON d.id=cd.idDesafio WHERE c.id=?;";
+        const sqlSelect = "SELECT g.id as idGrupo, c.nombre as nombreColeccion, g.nombre as nombreGrupo FROM coleccion c JOIN grupo g ON g.id=c.idGrupo WHERE c.id=?;";
 
         this.pool.query(sqlSelect, [idCollection], (err, result) => {
             if (err) {
@@ -446,6 +446,35 @@ class modelTeacher {
         });
     }
 
+    // Obtiene los desafíos de una colección
+    getChallengesFromCollection(idCollection, callback)
+    {
+        const sqlSelect = "SELECT d.titulo, d.colaborativo FROM colecciondesafio cd JOIN desafio d ON d.id=cd.idDesafio WHERE cd.idColeccion=?;";
+
+        this.pool.query(sqlSelect, [idCollection], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+                }
+        });
+    }
+
+    // Obtiene los desafíos que no están en una determinada colección
+    getChallengesNotInCollection(idGroup, idCollection, callback)
+    {
+        const sqlSelect = "SELECT d2.id, d2.titulo FROM desafio d2 where d2.idGrupo=? AND d2.id NOT IN (SELECT d.id FROM colecciondesafio cd JOIN desafio d ON d.id=cd.idDesafio WHERE cd.idColeccion=?)";
+
+        this.pool.query(sqlSelect, [idGroup, idCollection], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+              }
+        });
+    }
 
 
 }

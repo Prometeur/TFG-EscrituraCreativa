@@ -541,12 +541,41 @@ function getCollections(req, res)
     });
 }
 
-// Obtiene una colección con sus desafíos
+// Obtiene una colección
 function getCollection(req, res)
 {
     const idCollection = req.query.idCollection;
 
     modelTeacher.getCollection(idCollection, function (err, result) {
+        if (err) {
+            console.log(err.message);
+            res.status(500).send({ error: err.message });
+        }
+        res.send(result);
+    });
+}
+
+// Obtiene los desafíos de una colección
+function getChallengesFromCollection(req, res)
+{
+    const idCollection = req.query.idCollection;
+
+    modelTeacher.getChallengesFromCollection(idCollection, function (err, result) {
+        if (err) {
+            console.log(err.message);
+            res.status(500).send({ error: err.message });
+        }
+        res.send(result);
+    });
+}
+
+// Obtiene los desafíos que no están en una determinada colección
+function getChallengesNotInCollection(req, res)
+{
+    const idGroup = req.query.idGroup;
+    const idCollection = req.query.idCollection;
+
+    modelTeacher.getChallengesNotInCollection(idGroup, idCollection, function (err, result) {
         if (err) {
             console.log(err.message);
             res.status(500).send({ error: err.message });
@@ -584,5 +613,7 @@ module.exports = {
     addChallengeToCollection: addChallengeToCollection,
     getCollections: getCollections,
     getCollection: getCollection,
+    getChallengesFromCollection: getChallengesFromCollection,
+    getChallengesNotInCollection: getChallengesNotInCollection,
 
 };

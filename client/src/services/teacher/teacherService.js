@@ -429,7 +429,7 @@ class TeacherService {
             })
     }
 
-    // Obtiene una colección con sus desafíos
+    // Obtiene una colección
     getCollection(idCollection)
     {
         return axios.get("/teacher/getCollection", { params: { idCollection: idCollection } },
@@ -442,6 +442,35 @@ class TeacherService {
                 window.location.href = '/500';
             })
     }
+
+    // Obtiene los desafíos de una colección
+    getChallengesFromCollection(idCollection)
+    {
+        return axios.get("/teacher/getChallengesFromCollection", { params: { idCollection: idCollection } },
+            {
+                headers: { "Authorization": `Bearer ${authHeader()}` }
+            }).then(response => {
+                return response.data;
+            }).catch(error => {
+                console.log(error.message);
+                window.location.href = '/500';
+            })
+    }
+
+    // Obtiene los desafíos que no están en una determinada colección
+    getChallengesNotInCollection(idGroup, idCollection)
+    {
+        return axios.get("/teacher/getChallengesNotInCollection", { params: { idGroup: idGroup, idCollection: idCollection } },
+        {
+            headers: { "Authorization": `Bearer ${authHeader()}` }
+        }).then(response => {
+            return response.data;
+        }).catch(error => {
+            console.log(error.message);
+            window.location.href = '/500';
+        })
+    }
+
 
 }
 

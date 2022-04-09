@@ -151,9 +151,14 @@ router.post("/addChallengeToCollection", controllerTeacher.addChallengeToCollect
 // Obtiene las colecciones de un profesor, pudiendo filtrar por nombre de grupo o nombre de colección
 router.get("/getCollections", controllerTeacher.getCollections);
 
-// Obtiene una colección con sus desafíos
+// Obtiene una colección
 router.get("/getCollection", controller_teacher.getCollection);
 
+// Obtiene los desafíos de una colección
+router.get("/getChallengesFromCollection", controller_teacher.getChallengesFromCollection);
+
+// Obtiene los desafíos que no están en una determinada colección
+router.get("/getChallengesNotInCollection", controller_teacher.getChallengesNotInCollection);
 
 
 module.exports = router;
