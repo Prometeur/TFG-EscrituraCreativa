@@ -541,6 +541,20 @@ function getCollections(req, res)
     });
 }
 
+// Obtiene una colección con sus desafíos
+function getCollection(req, res)
+{
+    const idCollection = req.query.idCollection;
+
+    modelTeacher.getCollection(idCollection, function (err, result) {
+        if (err) {
+            console.log(err.message);
+            res.status(500).send({ error: err.message });
+        }
+        res.send(result);
+    });
+}
+
 
 module.exports = {
     getGroups: getGroups,
@@ -569,5 +583,6 @@ module.exports = {
     createCollection: createCollection,
     addChallengeToCollection: addChallengeToCollection,
     getCollections: getCollections,
+    getCollection: getCollection,
 
 };

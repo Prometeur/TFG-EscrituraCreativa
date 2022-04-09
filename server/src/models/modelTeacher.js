@@ -404,7 +404,7 @@ class modelTeacher {
     // Añadir un desafío a una colección
     addChallengeToCollection(idColeccion, idDesafio, callback)
     {
-        const sqlInsert = "INSERT INTO coleccionescrito (id, idColeccion, idDesafio) VALUES (?, ?, ?);";
+        const sqlInsert = "INSERT INTO colecciondesafio (idColeccion, idDesafio) VALUES (?, ?);";
         this.pool.query(sqlInsert, [idColeccion, idDesafio], (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
@@ -418,7 +418,7 @@ class modelTeacher {
     // Obtiene las colecciones de un profesor, pudiendo filtrar por nombre de grupo o nombre de colección
     getCollections(idProfesor, filtroBusqueda, callback)
     {
-        const sqlSelect = "SELECT c.nombre as nombreColeccion, g.nombre as nombreGrupo FROM coleccion c JOIN grupo g ON g.id=c.idGrupo WHERE c.idProfesor=? AND (c.nombre LIKE ? OR g.nombre LIKE ?);";
+        const sqlSelect = "SELECT c.id as idCollection, c.nombre as nombreColeccion, g.nombre as nombreGrupo FROM coleccion c JOIN grupo g ON g.id=c.idGrupo WHERE c.idProfesor=? AND (c.nombre LIKE ? OR g.nombre LIKE ?);";
         const valores = ["%" + filtroBusqueda + "%"];
 
         this.pool.query(sqlSelect, [idProfesor, valores, valores], (err, result) => {
@@ -430,6 +430,23 @@ class modelTeacher {
               }
         });
     }
+
+    // Obtiene una colección con sus desafíos
+    getCollection(idCollection, callback)
+    {
+        const sqlSelect = "SELECT g.id as idGrupo, c.nombre as nombreColeccion, g.nombre as nombreGrupo, d.titulo, d.colaborativo FROM coleccion c JOIN grupo g ON g.id=c.idGrupo JOIN colecciondesafio cd ON c.id=cd.idColeccion JOIN desafio d ON d.id=cd.idDesafio WHERE c.id=?;";
+
+        this.pool.query(sqlSelect, [idCollection], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+              }
+        });
+    }
+
+
 
 }
 
