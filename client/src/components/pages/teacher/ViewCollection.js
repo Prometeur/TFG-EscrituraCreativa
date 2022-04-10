@@ -11,6 +11,7 @@ import TeacherService from '../../../services/teacher/teacherService.js';
 import  Card from 'react-bootstrap/Card';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
+import Modal from "react-bootstrap/Modal";
 
 /**Estilos css*/
 import 'react-tabs/style/react-tabs.css';
@@ -33,6 +34,8 @@ class ViewCollection extends Component {
             idChallengeSelect: -1,
             dataChallenges: [],
             hayDesafios: false,
+            onModalDelete: false,
+            idBorrado: -1,
         };
     }
 
@@ -68,13 +71,30 @@ class ViewCollection extends Component {
     {
         TeacherService.addChallengeToCollection(this.props.match.params.idCollection, idChallenge)
         .then(response => {
-            // this.setState({ dataChallenges: response });
-        
+            window.location.replace(`/teacher/collections/${this.props.match.params.idCollection}`); 
+
         }).catch(error => {
             console.log(error.message);
         })
+    }
 
-        
+    deleteChallenge = () =>
+    {
+        this.onModalDeleteChallenge(false, -1);
+        TeacherService.deleteChallengeFromCollection(this.props.match.params.idCollection, this.state.idBorrado)
+        .then(response => {
+            window.location.href = `/teacher/collections/${this.props.match.params.idCollection}`;
+
+        }).catch(error => {
+            console.log(error.message);
+        })
+    }
+
+    onModalDeleteChallenge(modal, idChallenge) {
+        this.setState({
+          onModalDelete: modal,
+          idBorrado: idChallenge
+        });
     }
 
     handleChangeChallengeSelect = async e => {
@@ -107,67 +127,73 @@ class ViewCollection extends Component {
                 <div className={"row-edit"}>
                     <Card className={"card-long"}>
                     <Card.Body >
-                        <ul className={"container-column-list wrap"}>
-                            <div className={"row-edit"}>
-                                <li className={"flex-item-data"}>
-                                    <h5>Grupo: {this.state.nameGroup}</h5>
-                                </li>
-                                <li className={"flex-item-data"}>
-                                    <h5>Desafíos:</h5>
-                                </li>
-                                <li className={"items-row"}>
-                                    {this.state.hayDesafios == true ? (
-                                        this.state.dataChallenges.map((challenge) => (
-                                            <>
-                                                <ul className={"flex-items-row-evenly"}>
-                                                    <li className={"flex-item-list"}>
-                                                        {challenge.titulo}
-                                                    </li>
-                                                    <li className={"flex-item-list"}>
-                                                        {challenge.colaborativo == 1  ? (
-                                                            "Individual"
-                                                        ) : (
-                                                            "Colaborativo"
-                                                        )}
-                                                    </li>
-                                                </ul>
-                                            </>
-                                        ))
-                                    ) : (
-                                        <Alert variant={"danger"}>
-                                            No hay ningún desafío en esta colección
-                                        </Alert>
-                                    )}
+                        <ul className={"flex-items-row-start wrap"}>
 
-                                </li>
-                                <div className={"row-edit"}>
-                                    <ul className={"container-column-list wrap"}>
-                                        <li className={"flex-item-profile"}>
-                                            <label className={"form-label"} htmlFor="idChallengeSelect">Añadir un desafío</label>
-                                        </li>
-                                        <li className={"flex-item-profile"}>
-                                            <select name="idChallengeSelect" id="idChallengeSelect" onChange={this.handleChangeChallengeSelect}>
-                                                <option selected value= "-1" >Elija un desafío</option>
-                                                {this.state.challengesNotInCollection.map(challenge => {
-                                                    return (
-                                                        <option value={challenge.id}>{challenge.titulo}</option>
-                                                    )
-                                                })}
-                                            </select>
-                                        </li>
-                                        <li className={"flex-item-profile"}>
-                                            {this.state.selectedChallenge == false ? (
-                                                <Button size={"sm"} text='Anyadir desafio' disabled>
-                                                    Añadir
-                                                </Button>
-                                            ) : (
-                                                <Button size={"sm"} text='Anyadir desafio' onClick={() => this.addChallengeToCollection(this.state.idChallengeSelect)}>
-                                                    Añadir
-                                                </Button>
-                                            )}
-                                        </li>
-                                    </ul>
-                                </div>
+                            <li className={"flex-item-data"}>
+                                <h5>Grupo: {this.state.nameGroup}</h5>
+                            </li>
+                            <li className={"flex-item-data"}>
+                                <h5>Desafíos:</h5>
+                            </li>
+                            <li className={"items-row"}>
+                                
+                                {this.state.hayDesafios == true ? (
+                                    this.state.dataChallenges.map((challenge) => (
+                                        <>
+                                            <ul className={"flex-items-row-evenly"}>
+                                                <li className={"flex-item-list"}>
+                                                    {challenge.titulo}
+                                                </li>
+                                                <li className={"flex-item-list"}>
+                                                    {challenge.colaborativo == 1  ? (
+                                                        "Individual"
+                                                    ) : (
+                                                        "Colaborativo"
+                                                    )}
+                                                </li>
+                                                <li className={"flex-item-list"}>
+                                                    <Button size={"sm"} variant="danger" onClick={() => this.onModalDeleteChallenge(true, challenge.id)}>
+                                                        Eliminar
+                                                    </Button>
+                                                </li>
+                                            </ul>
+                                            <hr />
+                                        </>
+                                    ))
+                                ) : (
+                                    <Alert variant={"danger"}>
+                                        No hay ningún desafío en esta colección
+                                    </Alert>
+                                )}
+
+                            </li>
+                            <div className={"row-edit"}>
+                                <ul className={"container-column-list wrap"}>
+                                    <li className={"flex-item-profile"}>
+                                        <label className={"form-label"} htmlFor="idChallengeSelect">Añadir un desafío</label>
+                                    </li>
+                                    <li className={"flex-item-profile"}>
+                                        <select name="idChallengeSelect" id="idChallengeSelect" onChange={this.handleChangeChallengeSelect}>
+                                            <option selected value= "-1" >Elija un desafío</option>
+                                            {this.state.challengesNotInCollection.map(challenge => {
+                                                return (
+                                                    <option value={challenge.id}>{challenge.titulo}</option>
+                                                )
+                                            })}
+                                        </select>
+                                    </li>
+                                    <li className={"flex-item-profile"}>
+                                        {this.state.selectedChallenge == false ? (
+                                            <Button size={"sm"} text='Anyadir desafio' disabled>
+                                                Añadir
+                                            </Button>
+                                        ) : (
+                                            <Button size={"sm"} text='Anyadir desafio' onClick={() => this.addChallengeToCollection(this.state.idChallengeSelect)}>
+                                                Añadir
+                                            </Button>
+                                        )}
+                                    </li>
+                                </ul>
                             </div>
                         </ul>
                     </Card.Body>
@@ -176,6 +202,19 @@ class ViewCollection extends Component {
 
             </Card.Body>
             </Card>
+
+            <Modal
+                show={this.state.onModalDelete}
+            >
+            <Modal.Header>
+                <Modal.Title>¿Seguro que deseas eliminar el desafío?</Modal.Title>
+            </Modal.Header>
+            <Modal.Footer>
+                <Button variant="primary" onClick={() => this.deleteChallenge()}>Aceptar</Button>
+                <Button variant="danger" onClick={() => this.onModalDeleteChallenge(false, -1)}>Cancelar</Button>
+            </Modal.Footer>
+            </Modal>
+
         </div>
         );
     }

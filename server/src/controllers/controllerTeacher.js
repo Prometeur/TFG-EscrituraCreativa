@@ -584,6 +584,37 @@ function getChallengesNotInCollection(req, res)
     });
 }
 
+// Elimina un desafío de una colección
+function deleteChallengeFromCollection(req, res)
+{
+    const idCollection = req.body.idCollection;
+    const idChallenge = req.body.idChallenge;
+
+    modelTeacher.deleteChallengeFromCollection(idCollection, idChallenge, function (err, result) {
+        if (err) {
+            console.log(err.message);
+            res.status(500).send({ error: err.message });
+        }
+        res.send(result);
+    });
+}
+
+// Elimina una colección
+function deleteCollection(req, res)
+{
+    const idCollection = req.body.idCollection;
+    console.info("ID COLECCION: " + idCollection);
+
+    modelTeacher.deleteCollection(idCollection, function (err, result) {
+        if (err) {
+            console.log(err.message);
+            res.status(500).send({ error: err.message });
+        }
+        res.send(result);
+    });
+}
+
+
 
 module.exports = {
     getGroups: getGroups,
@@ -615,5 +646,7 @@ module.exports = {
     getCollection: getCollection,
     getChallengesFromCollection: getChallengesFromCollection,
     getChallengesNotInCollection: getChallengesNotInCollection,
+    deleteChallengeFromCollection: deleteChallengeFromCollection,
+    deleteCollection:deleteCollection,
 
 };

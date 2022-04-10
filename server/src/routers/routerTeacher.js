@@ -160,5 +160,11 @@ router.get("/getChallengesFromCollection", controller_teacher.getChallengesFromC
 // Obtiene los desafíos que no están en una determinada colección
 router.get("/getChallengesNotInCollection", controller_teacher.getChallengesNotInCollection);
 
+// Elimina un desafío de una colección
+router.post("/deleteChallengeFromCollection", controller_teacher.deleteChallengeFromCollection);
+
+// Elimina una colección
+router.post("/deleteCollection", controller_teacher.deleteCollection);
+
 
 module.exports = router;

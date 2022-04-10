@@ -471,6 +471,32 @@ class TeacherService {
         })
     }
 
+    // Elimina un desafío de una colección
+    deleteChallengeFromCollection(idColeccion, idDesafio)
+    {
+        return axios.post("/teacher/deleteChallengeFromCollection", { idCollection: idColeccion, idChallenge: idDesafio }, {
+            headers: { "Authorization": `Bearer ${authHeader()}` }
+            }).then(response => {
+                return response.data;
+            }).catch(error => {
+                console.log(error.message);
+                window.location.href = '/500';
+            })
+    }
+
+    // Elimina una colección
+    deleteCollection(idColeccion)
+    {
+        return axios.post("/teacher/deleteCollection", { idCollection: idColeccion }, {
+            headers: { "Authorization": `Bearer ${authHeader()}` }
+            }).then(response => {
+                return response.data;
+            }).catch(error => {
+                console.log(error.message);
+                window.location.href = '/500';
+            })
+    }
+
 
 }
 
