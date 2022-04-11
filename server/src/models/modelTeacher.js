@@ -506,6 +506,27 @@ class modelTeacher {
         });
     }
 
+     /*Obtiene la colección seleccionada*/
+     getCollection(idCollection, callback) {
+        this.pool.getConnection(function (err, connection) {
+            if (err) {
+                callback(new Error("No se puede conectar a la base de datos."))
+            }
+            else {
+                const sql = "SELECT d.titulo as nombreDesafio FROM desafio d JOIN colecciondesafio cd where cd.idColeccion =  ?";
+                const valores = [idCollection];
+                connection.query(sql, valores, function (err, res) {
+                    connection.release();
+                    if (err) {
+                        callback(new Error("Error al buscar al usuario."));
+                    } else {
+                        callback(null, res);
+                    }
+                })
+            }
+        });
+    }
+
 }
 
 
