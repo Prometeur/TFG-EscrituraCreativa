@@ -308,9 +308,9 @@ class modelStudent {
     //---------------------------------------------MULTIMEDIA-WRITING----------------------------------------------------------------//
 
     /*Obtiene los ficheros multimedia del escrito del estudiante*/
-    getMultimedia(idChallenge, idWriter, callback) {
-        const sqlSelect = "SELECT * FROM multimediaescrito where idEscritor= ? AND idDesafio=?";
-        this.pool.query(sqlSelect, [idWriter, idChallenge], (err, result) => {
+    getMultimedia(idChallenge, idWriter, idVersion, callback) {
+        const sqlSelect = "SELECT * FROM multimediaescrito where idEscritor= ? AND idDesafio=? AND idVersionEscrito=?";
+        this.pool.query(sqlSelect, [idWriter, idChallenge, idVersion], (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }
@@ -518,7 +518,6 @@ class modelStudent {
 
     /*Elimina un estudiante de un equipo*/
     leaveStudentTeam(idTeam, idStudent, callback) {
-        //  const sqlDelete = "DELETE FROM multimediaescrito WHERE id=?";
         const sqlDelete = "DELETE FROM equipoestudiante WHERE idEquipo=? and idEstudiante=? ";
         this.pool.query(sqlDelete, [idTeam, idStudent], (err, result) => {
             if (err) {

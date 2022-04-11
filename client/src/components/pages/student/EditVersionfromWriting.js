@@ -80,7 +80,7 @@ class EditVersionfromWriting extends Component {
                         .then(response => {
                             this.setState({ form: { ...this.state.form, idWriter: response[0].idEquipo } });
                             /*Obtiene multimedia del escrito del equipo */
-                            StudentService.getMultimediaWriting(this.props.match.params.idChallenge, response[0].idEquipo)
+                            StudentService.getMultimediaWriting(this.props.match.params.idChallenge, response[0].idEquipo, this.props.match.params.idVersion)
                                 .then(response => {
                                     this.setState({ dataMediaWriting: response.data });
                                 }).catch(error => {
@@ -99,7 +99,7 @@ class EditVersionfromWriting extends Component {
                     });
 
                     /*Obtiene multimedia del escrito del estudiante */
-                    StudentService.getMultimediaWriting(this.props.match.params.idChallenge, AuthUser.getCurrentUser().id)
+                    StudentService.getMultimediaWriting(this.props.match.params.idChallenge, AuthUser.getCurrentUser().id, this.props.match.params.idVersion)
                         .then(response => {
                             this.setState({ dataMediaWriting: response.data });
                         }).catch(error => {

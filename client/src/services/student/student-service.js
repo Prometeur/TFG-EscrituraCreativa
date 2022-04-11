@@ -300,8 +300,8 @@ class StudentService {
     }
 
     /*Obtiene multimedia del escrito del estudiante */
-    getMultimediaWriting(idChallenge, idWriter) {
-        return axios.get("/student/getMultimediaWriting", { params: { idChallenge: idChallenge, idWriter: idWriter } },
+    getMultimediaWriting(idChallenge, idWriter, idVersion) {
+        return axios.get("/student/getMultimediaWriting", { params: { idChallenge: idChallenge, idWriter: idWriter, idVersion: idVersion } },
             {
                 headers: { "Authorization": `Bearer ${authHeader()}` }
             }).then(response => {

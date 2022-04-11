@@ -115,7 +115,13 @@ class EditWriting extends Component {
         }
     }
 
-    componentDidMount() {
+    componentDidMount()
+    {
+        /* Devuelve la última versión de un escrito, es decir, el mayor id */
+        StudentService.getHighestidVersionfromWriting(this.props.match.params.idWriting)
+        .then(response => {
+            this.setState({ maxIdVersion: response[0].maxId });
+
         /*Obtiene el desafio seleccionado*/
         StudentService.getChallenge(this.props.match.params.idChallenge)
             .then(response => {
@@ -127,7 +133,7 @@ class EditWriting extends Component {
                         .then(response => {
                             this.setState({ form: { ...this.state.form, idWriter: response[0].idEquipo } });
                             /*Obtiene multimedia del escrito del equipo */
-                            StudentService.getMultimediaWriting(this.props.match.params.idChallenge, response[0].idEquipo)
+                            StudentService.getMultimediaWriting(this.props.match.params.idChallenge, response[0].idEquipo, this.state.maxIdVersion)
                                 .then(response => {
                                     this.setState({ dataMediaWriting: response.data });
                                 }).catch(error => {
@@ -146,7 +152,7 @@ class EditWriting extends Component {
                     });
 
                     /*Obtiene multimedia del escrito del estudiante */
-                    StudentService.getMultimediaWriting(this.props.match.params.idChallenge, AuthUser.getCurrentUser().id)
+                    StudentService.getMultimediaWriting(this.props.match.params.idChallenge, AuthUser.getCurrentUser().id, this.state.maxIdVersion)
                         .then(response => {
                             this.setState({ dataMediaWriting: response.data });
                         }).catch(error => {
@@ -157,6 +163,9 @@ class EditWriting extends Component {
             }).catch(error => {
                 console.log(error.message);
             });
+        }).catch(error => {
+            console.log(error.message);
+        });
 
         /*Obtiene multimedia del desafio*/
         StudentService.getMultimediaChallenge(this.props.match.params.idChallenge)
