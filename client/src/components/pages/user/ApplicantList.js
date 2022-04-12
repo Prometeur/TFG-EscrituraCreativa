@@ -33,6 +33,7 @@ class SearchStudentRes extends Component {
             searchRole: "none",
             showListApplicants: false,//muestra solicitantes
             filteredData2: [],
+            showApplicantsGroups: false,
         };
     }
 
@@ -136,7 +137,7 @@ class SearchStudentRes extends Component {
         TeacherService.showGroupRequest()
         .then(response => {
             if (response.length > 0) {//Si existen solicitantes
-                this.setState({ filteredData2: response });
+                this.setState({ filteredData2: response, showApplicantsGroups: true });
                 this.filterData();
             }
         })
@@ -330,7 +331,7 @@ class SearchStudentRes extends Component {
                     </li>
                 </ul>
         }
-        const { showListApplicants } = this.state;
+        const { showListApplicants, showApplicantsGroups } = this.state;
         return (
             <div className="container">
                 <Card className="card-long">
@@ -356,6 +357,28 @@ class SearchStudentRes extends Component {
                                         {cartel}
                                         {header}
                                         {tabla}
+                                        {/* {header1}
+                                        {tabla1} */}
+                                    </Card.Body>
+                                    </Card>
+                                </div>
+                        ) : (
+                            <div className="row-edit">
+                                {/* <hr/>
+                                <br/>
+                                <Alert variant={"danger"}>
+                                    No hay solicitantes para mostrar
+                                </Alert> */}
+                            </div>
+                        )}
+
+                        {showApplicantsGroups ? (
+
+                                <div className={"row-edit"}>
+                                    {searchtools}
+                                    <Card className={"card-long"}>
+                                    <Card.Body>
+                                        <br/>
                                         {header1}
                                         {tabla1}
                                     </Card.Body>
@@ -369,7 +392,8 @@ class SearchStudentRes extends Component {
                                     No hay solicitantes para mostrar
                                 </Alert>
                             </div>
-                        )}
+                        )}                        
+
                     </Card.Body>
                 </Card>
             </div>

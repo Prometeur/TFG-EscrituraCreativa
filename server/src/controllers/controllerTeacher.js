@@ -603,7 +603,6 @@ function deleteChallengeFromCollection(req, res)
 function deleteCollection(req, res)
 {
     const idCollection = req.body.idCollection;
-    console.info("ID COLECCION: " + idCollection);
 
     modelTeacher.deleteCollection(idCollection, function (err, result) {
         if (err) {

@@ -364,10 +364,9 @@ function editWritingTeam(req, res) {
 function getMultimediaWriting(req, res) {
     const idChallenge = req.query.idChallenge;
     const idWriter = req.query.idWriter;
-    const idVersion = req.query.idVersion;
-    //console.log("ID VERSION: " + idVersion);
+    //const idVersion = req.query.idVersion;
 
-    modelStudent.getMultimedia(idChallenge, idWriter, idVersion, function (err, result) {
+    modelStudent.getMultimedia(idChallenge, idWriter/*, idVersion*/, function (err, result) {
         if (err) {
             res.status(500).send({ error: err.message });
             console.log(err.message);
