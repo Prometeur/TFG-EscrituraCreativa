@@ -32,7 +32,7 @@ class SearchStudentRes extends Component {
             searchType: 'nombre',
             searchRole: "none",
             showListApplicants: false,//muestra solicitantes
-            filteredData2: [],
+            dataGroups: [],
             showApplicantsGroups: false,
         };
     }
@@ -137,7 +137,7 @@ class SearchStudentRes extends Component {
         TeacherService.showGroupRequest()
         .then(response => {
             if (response.length > 0) {//Si existen solicitantes
-                this.setState({ filteredData2: response, showApplicantsGroups: true });
+                this.setState({ dataGroups: response, showApplicantsGroups: true });
                 this.filterData();
             }
         })
@@ -148,9 +148,8 @@ class SearchStudentRes extends Component {
     /*Dibuja la pagina  */
     render() {
         let cartel = <> </>;
-        let tabla = <> </>;
         let header = <> </>;
-        let header1 = <> </>;
+        let tabla = <> </>;
         if (this.state.currentUserRole === "T") {
             header = <div><label className={"form-label"}>Listado de estudiantes que quieren unirse a Creativa: </label></div>;
             tabla = <ul className={"flex-items-row-start wrap"}  >
@@ -190,12 +189,13 @@ class SearchStudentRes extends Component {
             </ul>;
         }
 
-        let tabla1 = <> </>;
+        let headerGroups = <> </>;
+        let tablaGroups = <> </>;
         if (this.state.currentUserRole === "T") {
-            header1 = <div><label className={"form-label"}>Listado de estudiantes que quieren unirse a un grupo: </label></div>;
-            tabla1 = <ul className={"flex-items-row-start wrap"}  >
+            headerGroups = <div><label className={"form-label"}>Listado de estudiantes que quieren unirse a un grupo: </label></div>;
+            tablaGroups = <ul className={"flex-items-row-start wrap"}  >
 
-                {this.state.filteredData2.map((student) =>
+                {this.state.dataGroups.map((student) =>
                 (
                      <li className={"items-row"}>
                          <ul className={"container-column-list wrap"}>
@@ -345,55 +345,48 @@ class SearchStudentRes extends Component {
                                 <img src="/info.png" alt="" />
                                 Desde este espacio puede ver las solicitudes.
                             </Alert>
+                            <br />
                         </div>
 
+                        {header}
                         {showListApplicants ? (
 
                                 <div className={"row-edit"}>
                                     {searchtools}
                                     <Card className={"card-long"}>
                                     <Card.Body>
-                                        <br/>
                                         {cartel}
-                                        {header}
                                         {tabla}
-                                        {/* {header1}
-                                        {tabla1} */}
                                     </Card.Body>
                                     </Card>
                                 </div>
                         ) : (
                             <div className="row-edit">
-                                {/* <hr/>
-                                <br/>
-                                <Alert variant={"danger"}>
-                                    No hay solicitantes para mostrar
-                                </Alert> */}
-                            </div>
-                        )}
-
-                        {showApplicantsGroups ? (
-
-                                <div className={"row-edit"}>
-                                    {searchtools}
-                                    <Card className={"card-long"}>
-                                    <Card.Body>
-                                        <br/>
-                                        {header1}
-                                        {tabla1}
-                                    </Card.Body>
-                                    </Card>
-                                </div>
-                        ) : (
-                            <div className="row-edit">
-                                <hr/>
-                                <br/>
                                 <Alert variant={"danger"}>
                                     No hay solicitantes para mostrar
                                 </Alert>
                             </div>
-                        )}                        
+                        )}
+                        <br/>
 
+                        {headerGroups}
+                        {showApplicantsGroups ? (
+
+                                <div className={"row-edit"}>
+                                    <Card className={"card-long"}>
+                                    <Card.Body>
+                                        {tablaGroups}
+                                    </Card.Body>
+                                    </Card>
+                                </div>
+                        ) : (
+                            <div className="row-edit">
+                                <Alert variant={"danger"}>
+                                    No hay solicitantes para mostrar
+                                </Alert>
+                            </div>
+                        )}
+                        <br/>
                     </Card.Body>
                 </Card>
             </div>
