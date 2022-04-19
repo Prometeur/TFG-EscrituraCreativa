@@ -574,7 +574,6 @@ class TeamStudent extends Component {
                                         <th>Integrantes</th>
                                         <th>Lider</th>
                                         <th>Acciones</th>
-                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -583,23 +582,27 @@ class TeamStudent extends Component {
                                             <tr key={team.id}>
                                                 <td>{team.nombreEquipo}</td>
                                                 <td>{team.nombreGrupo}</td>
+                                                <td>
                                                 {dataMembersTeam.map(item =>
-                                                    <td>
-                                                        <div>{item.nombreEstudiante} {item.apellidoEstudiante}</div>
-                                                    </td>
+                                                        <div>
+                                                            {item.nombreEstudiante} {item.apellidoEstudiante}
+                                                        </div>
                                                 )}
+                                                </td>
                                                 <td>{this.state.nameLider}</td>
                                                 <td>
-                                                    <img src="/delete.png" alt=""/>
-                                                    <Button variant="link" disabled={this.disabledButtonDeleteTeam()} onClick={() => this.askDeleteTeam()} >
-                                                        Eliminar
-                                                    </Button>
-                                                </td>
-                                                <td>
-                                                    <img src="/exit.png" alt=""/>
-                                                    <Button variant="link" disabled={this.state.dataMembersTeam.length < 2 ? true : null} onClick={() => this.askLeaveTeam()} >
-                                                        Dejar Equipo
-                                                    </Button>  
+                                                    <div>
+                                                        <img src="/delete.png" alt=""/>
+                                                        <Button variant="link" disabled={this.disabledButtonDeleteTeam()} onClick={() => this.askDeleteTeam()} >
+                                                            Eliminar
+                                                        </Button>
+                                                    </div>
+                                                    <div>
+                                                        <img src="/exit.png" alt=""/>
+                                                        <Button variant="link" disabled={this.state.dataMembersTeam.length < 2 ? true : null} onClick={() => this.askLeaveTeam()} >
+                                                            Dejar Equipo
+                                                        </Button>  
+                                                    </div>
                                                 </td>
                                             </tr>
                                         )

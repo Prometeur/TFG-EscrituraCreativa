@@ -46,6 +46,7 @@ class Message extends Component {
             modalSenderHasTeam:false,
             senderHasTeamAsABoss: false,
             idEmisor: -1,
+            idBossTeam: -1,
         }
     }
 
@@ -63,7 +64,7 @@ class Message extends Component {
                 StudentService.getTeam(this.state.message.idCreador)
                     .then(response => {
                         if(response.length > 0){//si el mensaje tiene equipo
-                            this.setState({ team: response[0] });
+                            this.setState({ team: response[0], idBossTeam: response[0].idCreador });
 
                         // si el líder del equipo es quien envía el mensaje
                         if (response[0].idCreador == this.state.idEmisor)
@@ -125,7 +126,7 @@ class Message extends Component {
             var idMember;
             //Obtengo el id del futuro miembro del equipo, identifica si el idEmisor/idReceptor
             //es el futuro miembro
-            if (dataMessage[0].idCreador === dataMessage[0].idEmisor) 
+            if (this.state.idBossTeam === dataMessage[0].idEmisor)
                 idMember = dataMessage[0].idReceptor;
             else 
                 idMember = dataMessage[0].idEmisor;
