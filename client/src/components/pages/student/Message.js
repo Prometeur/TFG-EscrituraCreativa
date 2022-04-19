@@ -44,6 +44,8 @@ class Message extends Component {
             modalAnswerJoinTeam: false,
             senderHasTeam:false,
             modalSenderHasTeam:false,
+            senderHasTeamAsABoss: false,
+            idEmisor: -1,
         }
     }
 
@@ -56,12 +58,18 @@ class Message extends Component {
                 if (response[0].tipo === 0 || response[0].tipo === 2) {
                     showButtons = true;
                 }
-                this.setState({ message: response[0], showButtons: showButtons });
+                this.setState({ message: response[0], showButtons: showButtons, idEmisor: response[0].idEmisor });
                 //Obtiene el equipo del mensaje
                 StudentService.getTeam(this.state.message.idCreador)
                     .then(response => {
                         if(response.length > 0){//si el mensaje tiene equipo
                             this.setState({ team: response[0] });
+
+                        // si el líder del equipo es quien envía el mensaje
+                        if (response[0].idCreador == this.state.idEmisor)
+                        {
+                            this.setState({ senderHasTeamAsABoss: true });
+                        }
                     }
                     }).catch(error => {
                         console.log(error.message);
@@ -83,8 +91,8 @@ class Message extends Component {
     }
 
     askAcceptRequest = () => {
-        //Si el mensaje es una solicitud para unirse a un equipo(tipo 2) y si el estudiante remitente no tiene equipo
-        if (this.state.message.tipo === 2 && !this.state.senderHasTeam ) {
+        //Si el mensaje es una solicitud para unirse a un equipo(tipo 2) y (si el estudiante remitente no tiene equipo o si el líder del equipo es quien envía el mensaje)
+        if (this.state.message.tipo === 2 && (!this.state.senderHasTeam || this.state.senderHasTeamAsABoss)) {
             this.acceptRequest();
         }
         //Si el mensaje ya fue respondido(tipo 0)

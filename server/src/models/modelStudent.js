@@ -547,7 +547,7 @@ class modelStudent {
         });
     }
 
-    /*Obtiene los mensajes del estudiante*/
+    /*Obtiene un mensaje del estudiante*/
     getMessage(idMessage, callback) {
         // const sqlSelect = "SELECT m.id as id, m.idEmisor as idEmisor, m.mensaje as mensaje, u.nombre as nombreEmisor FROM mensajeria AS m INNER JOIN usuario AS u ON m.idEmisor = u.id WHERE m.id = ? ";
         const sqlSelect = "SELECT * FROM mensajeria WHERE id = ? ";
@@ -562,10 +562,10 @@ class modelStudent {
     }
 
     
-    /*busca mensaje del estudiante*/
+    /*busca mensaje del estudiante por emisor*/
     searchMessageByIssuer(idGroup,idIssuer,idCreatorTeam, callback) {
         // const sqlSelect = "SELECT m.id as id, m.idEmisor as idEmisor, m.mensaje as mensaje, u.nombre as nombreEmisor FROM mensajeria AS m INNER JOIN usuario AS u ON m.idEmisor = u.id WHERE m.id = ? ";
-        const sqlSelect = "SELECT * FROM mensajeria WHERE idGrupo = ? AND idEmisor=? AND idCreador=?";
+        const sqlSelect = "SELECT * FROM mensajeria WHERE idGrupo = ? AND idEmisor=? AND idCreador=? AND activo=1";
         this.pool.query(sqlSelect, [idGroup,idIssuer,idCreatorTeam], (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
@@ -579,7 +579,7 @@ class modelStudent {
     /*busca mensaje del estudiante por receptor*/
     searchMessageByReceiver(idGroup,idReceiver,idCreatorTeam, callback) {
         // const sqlSelect = "SELECT m.id as id, m.idEmisor as idEmisor, m.mensaje as mensaje, u.nombre as nombreEmisor FROM mensajeria AS m INNER JOIN usuario AS u ON m.idEmisor = u.id WHERE m.id = ? ";
-        const sqlSelect = "SELECT * FROM mensajeria WHERE idGrupo = ? AND idReceptor=? AND idCreador=?";
+        const sqlSelect = "SELECT * FROM mensajeria WHERE idGrupo = ? AND idReceptor=? AND idCreador=? AND activo=1";
         this.pool.query(sqlSelect, [idGroup,idReceiver,idCreatorTeam], (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
@@ -605,9 +605,9 @@ class modelStudent {
         });
     }
 
-    /*Elimina el fichero multimedia del desafio*/
+    /* "Elimina" (pone activo = 0) el fichero multimedia del desafio*/
     deleteMessage(idMessage, callback) {
-        const sqlDelete = "DELETE FROM mensajeria WHERE id=?";
+        const sqlDelete = "UPDATE mensajeria SET activo = 0 WHERE id=?";
         this.pool.query(sqlDelete, idMessage, (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));

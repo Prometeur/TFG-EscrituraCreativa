@@ -219,7 +219,7 @@ class TeamStudent extends Component {
             .then(response => {
                 if (response.length === 0) {
                     //Comprueba si recibió una solicitud antes por el estudiante a invitar
-                    StudentService.searchMessageByIssuer(this.props.groupSelect, idReceiver, idTeam)
+                    StudentService.searchMessageByIssuer(idGroup, idReceiver, idTeam)
                         .then(response => {
                             if (response.length === 0) {
                                 this.invite()
@@ -250,7 +250,7 @@ class TeamStudent extends Component {
         var equipo = this.state.dataTeamStudentGroup[0].nombreEquipo;
         var grupo = this.state.dataTeamStudentGroup[0].nombreGrupo;
         var message = nombre + " " + apellidos + " " + messageBody + " " + equipo + " del Grupo de " + grupo;
-        StudentService.sendMessage(idGroup, AuthUser.getCurrentUser().id, this.state.idGuest, AuthUser.getCurrentUser().id, message, 2)
+        StudentService.sendMessage(idGroup, AuthUser.getCurrentUser().id, this.state.idGuest, this.state.dataTeamStudentGroup[0].idEquipo, message, 2)
             .then(response => {
                 this.showModalSuccesfulInvitation();
             }).catch(error => {
