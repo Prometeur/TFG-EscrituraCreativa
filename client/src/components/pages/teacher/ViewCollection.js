@@ -5,6 +5,7 @@
 */
 
 import React, { Component } from 'react';
+import { Link } from "react-router-dom";
 import TeacherService from '../../../services/teacher/teacherService.js';
 
 /**Estilos bibliotecas externas*/
@@ -130,7 +131,7 @@ class ViewCollection extends Component {
                         <ul className={"flex-items-row-start wrap"}>
 
                             <li className={"flex-item-data"}>
-                                <h5>Grupo: {this.state.nameGroup}</h5>
+                                <h5>Grupo: <u>{this.state.nameGroup}</u> </h5>
                             </li>
                             <li className={"flex-item-data"}>
                                 <h5>Desafíos:</h5>
@@ -150,6 +151,13 @@ class ViewCollection extends Component {
                                                     ) : (
                                                         "Colaborativo"
                                                     )}
+                                                </li>
+                                                <li className={"flex-item-list"}>
+                                                    <Link key={challenge.id} to={`/teacher/collections/${this.props.match.params.idCollection}/${challenge.id}`}>
+                                                        <Button size={"sm"} variant={"primary"}>
+                                                            Ver escritos
+                                                        </Button>
+                                                    </Link>
                                                 </li>
                                                 <li className={"flex-item-list"}>
                                                     <Button size={"sm"} variant="danger" onClick={() => this.onModalDeleteChallenge(true, challenge.id)}>
