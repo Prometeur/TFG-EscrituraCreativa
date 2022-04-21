@@ -490,8 +490,130 @@ function acceptApplicant(request, response, next){
            response.send(JSON.stringify(res));
         }
     });
-
 }
+
+
+//-----------------------------------------COLLECTIONS-----------------------------------------//
+
+// Crea una colección
+function createCollection(req, res)
+{
+    const nombreColeccion = req.body.nombreColeccion;
+    const idProfesor = req.body.idProfesor;
+    const idGrupo = req.body.idGrupo;
+
+    modelTeacher.createCollection(nombreColeccion, idProfesor, idGrupo, function (err, result) {
+        if (err) {
+            console.log(err.message);
+            res.status(500).send({ error: err.message });
+        }
+        res.send(result);
+    });
+}
+
+// Añadir un desafío a una colección
+function addChallengeToCollection(req, res)
+{
+    const idColeccion = req.body.idColeccion;
+    const idDesafio = req.body.idDesafio;
+
+    modelTeacher.addChallengeToCollection(idColeccion, idDesafio, function (err, result) {
+        if (err) {
+            console.log(err.message);
+            res.status(500).send({ error: err.message });
+        }
+        res.send(result);
+    });
+}
+
+// Obtiene las colecciones de un profesor, pudiendo filtrar por nombre de grupo o nombre de colección
+function getCollections(req, res)
+{
+    const idProfesor = req.query.idProfesor;
+    const filtroBusqueda = req.query.filtroBusqueda;
+
+    modelTeacher.getCollections(idProfesor, filtroBusqueda, function (err, result) {
+        if (err) {
+            console.log(err.message);
+            res.status(500).send({ error: err.message });
+        }
+        res.send(result);
+    });
+}
+
+// Obtiene una colección
+function getCollection(req, res)
+{
+    const idCollection = req.query.idCollection;
+
+    modelTeacher.getCollection(idCollection, function (err, result) {
+        if (err) {
+            console.log(err.message);
+            res.status(500).send({ error: err.message });
+        }
+        res.send(result);
+    });
+}
+
+// Obtiene los desafíos de una colección
+function getChallengesFromCollection(req, res)
+{
+    const idCollection = req.query.idCollection;
+
+    modelTeacher.getChallengesFromCollection(idCollection, function (err, result) {
+        if (err) {
+            console.log(err.message);
+            res.status(500).send({ error: err.message });
+        }
+        res.send(result);
+    });
+}
+
+// Obtiene los desafíos que no están en una determinada colección
+function getChallengesNotInCollection(req, res)
+{
+    const idGroup = req.query.idGroup;
+    const idCollection = req.query.idCollection;
+
+    modelTeacher.getChallengesNotInCollection(idGroup, idCollection, function (err, result) {
+        if (err) {
+            console.log(err.message);
+            res.status(500).send({ error: err.message });
+        }
+        res.send(result);
+    });
+}
+
+// Elimina un desafío de una colección
+function deleteChallengeFromCollection(req, res)
+{
+    const idCollection = req.body.idCollection;
+    const idChallenge = req.body.idChallenge;
+
+    modelTeacher.deleteChallengeFromCollection(idCollection, idChallenge, function (err, result) {
+        if (err) {
+            console.log(err.message);
+            res.status(500).send({ error: err.message });
+        }
+        res.send(result);
+    });
+}
+
+// Elimina una colección
+function deleteCollection(req, res)
+{
+    const idCollection = req.body.idCollection;
+
+    modelTeacher.deleteCollection(idCollection, function (err, result) {
+        if (err) {
+            console.log(err.message);
+            res.status(500).send({ error: err.message });
+        }
+        res.send(result);
+    });
+}
+
+
 
 module.exports = {
     getGroups: getGroups,
@@ -517,5 +639,13 @@ module.exports = {
     createGroup:createGroup,
     acceptGroupRequest: acceptGroupRequest,
     showGroupRequest: showGroupRequest,
+    createCollection: createCollection,
+    addChallengeToCollection: addChallengeToCollection,
+    getCollections: getCollections,
+    getCollection: getCollection,
+    getChallengesFromCollection: getChallengesFromCollection,
+    getChallengesNotInCollection: getChallengesNotInCollection,
+    deleteChallengeFromCollection: deleteChallengeFromCollection,
+    deleteCollection:deleteCollection,
 
 };

@@ -29,7 +29,8 @@ import Accordion from 'react-bootstrap/Accordion';
 
 //Estilos
  import '../../../styles/styleCard.css';
-
+ import '../../../styles/styleGeneral.css';
+ import '../../../styles/styleButton.css';
 
  const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
     <a
@@ -90,6 +91,8 @@ class Collections extends Component {
             filtroBusqueda: '',
             dataCollectionFiltered: [],
             showListCollections: false,
+            onModalDelete: false,
+            idColeccionBorrado: -1,
         }
     }
 
@@ -139,16 +142,38 @@ class Collections extends Component {
 
     crearColeccion = () => {
         if (this.state.nombreColeccion != '') {
-          TeacherService.createCollection(this.state.nombreColeccion, AuthUser.getCurrentUser().id, this.state.idGroupSelect)
+            TeacherService.createCollection(this.state.nombreColeccion, AuthUser.getCurrentUser().id, this.state.idGroupSelect)
             .then(response => {
                 this.onModal(false);
                 
-          }).catch(error => {
+            }).catch(error => {
             console.log(error.message);
-          })
+            })
+
+            let new_dataCollection = this.state.dataCollection;
+            let last_pos = [];
+
+            last_pos = [5, this.state.nombreColeccion, this.state.nameGroupSelect];
+        // last_pos["idCollection"] = this.state.nombreColeccion;
+        // last_pos["nombreColeccion"] = this.state.nombreColeccion;
+        // last_pos["nombreGrupo"] = this.state.nombreColeccion;
+        //new_dataCollection.splice(new_dataCollection.length, 0, last_pos);
+        //new_dataCollection.push(this.state.nombreColeccion, 1, AuthUser.getCurrentUser().id, this.state.idGroupSelect);
+        //    new_dataCollection.splice(this.state.dataCollection.length - 1, 0, last_pos);
+
+        //   
+        //     new_dataCollection.map((collection, i) => {
+        //         if (new_dataCollection.length == 5)
+        //         {
+        //             new_dataCollection.splice(new_dataCollection.length, 0, last_pos);
+        //         }
+        //      });
+        //    this.setState({ dataCollection: new_dataCollection });
+
+            window.location.replace(`/teacher/collections`); 
         }
         else {
-          this.onAlert(true)
+            this.onAlert(true)
         }
       }
 
@@ -156,6 +181,25 @@ class Collections extends Component {
 
         this.setState({
           onCreateCollectionModal: modal
+        });
+    }
+
+    deleteCollection = () => 
+    {
+        this.onModalDeleteCollection(false, -1);
+        TeacherService.deleteCollection(this.state.idColeccionBorrado)
+        .then(response => {
+            window.location.href = `/teacher/collections`;
+
+        }).catch(error => {
+            console.log(error.message);
+        })
+    }
+
+    onModalDeleteCollection(modal, idCollection) {
+        this.setState({
+          onModalDelete: modal,
+          idColeccionBorrado: idCollection
         });
     }
 
@@ -192,14 +236,14 @@ class Collections extends Component {
                             {collection.nombreGrupo}
                         </li>
                         <li className={"flex-item-list"}>
-                            <Link key={collection.id} to={`/teacher/collections/viewCollection/${collection.id}`}> 
-                                <Button size={"sm"} variant={"primary"}> Ver </Button>
-                            </Link> 
+                            <Link key={collection.idColeccion} to={`/teacher/collections/${collection.idColeccion}`}>
+                                <Button size={"sm"} variant={"primary"}> Ver colección </Button>
+                            </Link>
                         </li>
                         <li className={"flex-item-list"}>
-                            <Link key={collection.id} to={`/teacher/collections/editCollection/${collection.id}`}> 
-                                <Button size={"sm"} variant={"primary"}> Editar </Button>
-                            </Link>
+                            <Button size={"sm"} variant="danger" onClick={() => this.onModalDeleteCollection(true, collection.idColeccion)}>
+                                Eliminar
+                            </Button>
                         </li>
                     </ul>
                     <hr />
@@ -300,6 +344,19 @@ class Collections extends Component {
                 <Modal.Footer>
                     <Button variant="primary" onClick={() => this.crearColeccion()}>Acepto</Button>
                     <Button variant="danger" onClick={() => this.onModal(false)}>Cancelar</Button>
+                </Modal.Footer>
+                </Modal>
+
+                <Modal 
+                    show={this.state.onModalDelete}
+                    onHide={this.state.onModalDelete}
+                >
+                <Modal.Header>
+                    <Modal.Title>¿Seguro que deseas eliminar la colección?</Modal.Title>
+                </Modal.Header>
+                <Modal.Footer>
+                    <Button variant="primary" onClick={() => this.deleteCollection()}>Aceptar</Button>
+                    <Button variant="danger" onClick={() => this.onModalDeleteCollection(false, -1)}>Cancelar</Button>
                 </Modal.Footer>
                 </Modal>
 

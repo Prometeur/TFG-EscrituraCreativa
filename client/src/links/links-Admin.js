@@ -1,4 +1,4 @@
-const linksTeacher = [
+const linksAdmin = [
 
     {
         path: "/groups",
@@ -22,4 +22,4 @@ const linksTeacher = [
 
 ];
 
-export default linksTeacher;
+export default linksAdmin;

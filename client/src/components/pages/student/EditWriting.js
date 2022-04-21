@@ -2,7 +2,7 @@
 *  Name_file :EditWriting.js
 *  Description: Pagina de editar Escrito
 */
-import React, { Component } from 'react';
+import React, { Component, useState } from "react";
 import { Link } from "react-router-dom";
 
 /*Importaciones del editor */
@@ -26,15 +26,62 @@ import '../../../styles/styleGeneral.css';
 import '../../../styles/styleCard.css';
 
 /*Componentes de estilo Bootstrap*/
-import ListGroup from 'react-bootstrap/ListGroup';
-import Alert from 'react-bootstrap/Alert';
 import Card from 'react-bootstrap/Card';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
 import Button from 'react-bootstrap/Button';
-import Table from "react-bootstrap/Table";
 import Modal from 'react-bootstrap/Modal';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownMenu from 'react-bootstrap/DropdownMenu';
+import DropdownItem from 'react-bootstrap/DropdownItem';
+import DropdownToggle from 'react-bootstrap/DropdownToggle';
+import IconButton from '@material-ui/core/IconButton';
+import FormControl from 'react-bootstrap/FormControl';
+import Icon from '@material-ui/core/Icon';
+import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
 
+
+
+const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
+    <a
+      href=""
+      ref={ref}
+      onClick={(e) => {
+        e.preventDefault();
+        onClick(e);
+      }}
+    >
+      {children}
+      { <Icon><ExpandMoreRoundedIcon></ExpandMoreRoundedIcon></Icon>}
+    </a>
+  ));
+  
+  const CustomMenu = React.forwardRef(
+    ({ children, style, className, 'aria-labelledby': labeledBy }, ref) => {
+      const [value, setValue] = useState('');
+  
+      return (
+        <div
+          ref={ref}
+          style={style}
+          className={className}
+          aria-labelledby={labeledBy}
+        >
+          <FormControl
+            autoFocus
+            className="mx-3 my-2 w-auto"
+            placeholder="Type to filter..."
+            onChange={(e) => setValue(e.target.value)}
+            value={value}
+          />
+          <ul className="list-unstyled">
+            {React.Children.toArray(children).filter(
+              (child) =>
+                !value || child.props.children.toLowerCase().startsWith(value) || child.props.children.toUpperCase().startsWith(value),
+            )}
+          </ul>
+        </div>
+      );
+    },
+  );
 
 
 class EditWriting extends Component {
@@ -63,11 +110,18 @@ class EditWriting extends Component {
                 title: '',
                 escrito: ''
             },
-            maxIdVersion: -1
+            maxIdVersion: -1,
+            //colaborativo: 0,
         }
     }
 
-    componentDidMount() {
+    componentDidMount()
+    {
+        /* Devuelve la última versión de un escrito, es decir, el mayor id */
+        StudentService.getHighestidVersionfromWriting(this.props.match.params.idWriting)
+        .then(response => {
+            this.setState({ maxIdVersion: response[0].maxId });
+
         /*Obtiene el desafio seleccionado*/
         StudentService.getChallenge(this.props.match.params.idChallenge)
             .then(response => {
@@ -79,7 +133,7 @@ class EditWriting extends Component {
                         .then(response => {
                             this.setState({ form: { ...this.state.form, idWriter: response[0].idEquipo } });
                             /*Obtiene multimedia del escrito del equipo */
-                            StudentService.getMultimediaWriting(this.props.match.params.idChallenge, response[0].idEquipo)
+                            StudentService.getMultimediaWriting(this.props.match.params.idChallenge, response[0].idEquipo/*, this.state.maxIdVersion*/)
                                 .then(response => {
                                     this.setState({ dataMediaWriting: response.data });
                                 }).catch(error => {
@@ -98,7 +152,7 @@ class EditWriting extends Component {
                     });
 
                     /*Obtiene multimedia del escrito del estudiante */
-                    StudentService.getMultimediaWriting(this.props.match.params.idChallenge, AuthUser.getCurrentUser().id)
+                    StudentService.getMultimediaWriting(this.props.match.params.idChallenge, AuthUser.getCurrentUser().id/*, this.state.maxIdVersion*/)
                         .then(response => {
                             this.setState({ dataMediaWriting: response.data });
                         }).catch(error => {
@@ -109,6 +163,9 @@ class EditWriting extends Component {
             }).catch(error => {
                 console.log(error.message);
             });
+        }).catch(error => {
+            console.log(error.message);
+        });
 
         /*Obtiene multimedia del desafio*/
         StudentService.getMultimediaChallenge(this.props.match.params.idChallenge)
@@ -118,59 +175,42 @@ class EditWriting extends Component {
                 console.log(error.message);
             });
 
+
         /* Devuelve la última versión de un escrito, es decir, el mayor id */
         StudentService.getHighestidVersionfromWriting(this.props.match.params.idWriting)
         .then(response => {
             this.setState({ maxIdVersion: response[0].maxId });
-
-
-            /*Obtiene el escrito */
-            StudentService.getWriting(this.props.match.params.idWriting, this.state.maxIdVersion)
-            .then(response => {
-                var contentState = stateFromHTML(response.data[0].texto);
-                let editorState = EditorState.createWithContent(contentState);
-                // this.setState({ editorState: editorState });
-                this.setState({
-                    writing: response.data[0],
-                    editorState: editorState,
-                    form: {
-                        ...this.state.form,
-                        title: response.data[0].nombre,
-                        escrito: response.data[0].texto
-                    }
-            });
-            }).catch(error => {
-                console.log(error.message);
-            });
-
-
         }).catch(error => {
             console.log(error.message);
         });
 
-
         /*Obtiene el escrito */
-        // StudentService.getWriting(this.props.match.params.idWriting, this.state.maxIdVersion)
-        // .then(response => {
-        //     var contentState = stateFromHTML(response.data[0].texto);
-        //     let editorState = EditorState.createWithContent(contentState);
-        //     // this.setState({ editorState: editorState });
-        //     this.setState({
-        //         writing: response.data[0],
-        //         editorState: editorState,
-        //         form: {
-        //             ...this.state.form,
-        //             title: response.data[0].nombre,
-        //             escrito: response.data[0].texto
-        //         }
-        // });
-        // }).catch(error => {
-        //     console.log(error.message);
-        // });
+        StudentService.getWriting(this.props.match.params.idWriting)
+        .then(response => {
+            var contentState = stateFromHTML(response.data[0].texto);
+            let editorState = EditorState.createWithContent(contentState);
+            // this.setState({ editorState: editorState });
+            this.setState({
+                writing: response.data[0],
+                editorState: editorState,
+                form: {
+                    ...this.state.form,
+                    title: response.data[0].nombre,
+                    escrito: response.data[0].texto
+                }
+        });
+        }).catch(error => {
+            console.log(error.message);
+        });
 
-
+        StudentService.getWritings(AuthUser.getCurrentUser().id)
+        .then(response => {
+            this.setState({ escritosNoCombinados: response.data });
+        }).catch(error => {
+            console.log(error.message);
+        });
+        
     }
-
 
     //Envia el escrito editado 
     editWriting = () => {
@@ -181,13 +221,13 @@ class EditWriting extends Component {
                 if (this.state.imgCollection.length > 0) {
                     StudentService.sendMultimedia(this.state.imgCollection, this.state.form.idWriter, this.props.match.params.idChallenge, this.state.challenge.colaborativo)
                         .then(response => {
-                            window.location.href = '/student/groups';
+                            window.location.href = '/student/writingsTabs';
                         }).catch(error => {
                             console.log(error.message);
                         });
                 }
                 else {
-                    window.location.href = '/student/groups';
+                    window.location.href = '/student/writingsTabs';
                 }
             })
             .catch(error => {
@@ -331,7 +371,8 @@ onModalEditWriting = (modal) => {
 
     /*Dibuja la pagina */
     render() {
-        const { editorState, dataMediaChallenge, dataMediaWriting, formErrors, data } = this.state;
+        let contentState, editorState2;
+        const { editorState, dataMediaChallenge, dataMediaWriting, formErrors, data, escritosNoCombinados, textoEscritoCombinado } = this.state;
         return (
             <div className="container">
                 <Card className="card-edit">
@@ -415,8 +456,10 @@ onModalEditWriting = (modal) => {
                         </div>
                         <div className="row-edit">
                             <label className='form-label' >Escribe aquí</label>
+
                             <Editor
-                                editorState={editorState}
+                                
+                                editorState = {editorState}
                                 // toolbarClassName="toolbarClassName"
                                 // // wrapperClassName="demo-wrapper"
                                 // // editorClassName="border-edit"
@@ -497,12 +540,13 @@ onModalEditWriting = (modal) => {
                                 <Button text='enviar' onClick={() => this.onModalEditWriting(true)} disabled={this.disabledButton()} > Guardar  </Button>
                             </div>
                             <div className="form-button">
-                                <Button onClick={() => window.location.href = '/student/groups'}>Cancelar</Button>
+                                <Button onClick={() => window.location.href = '/student/writingsTabs'}>Cancelar</Button>
                             </div>
 
                             <div className="form-button">
                                 <Button onClick={() => window.location.href = `/student/versionsWriting/${this.props.match.params.idGroup}/${this.props.match.params.idChallenge}/${this.props.match.params.idWriting}`}>Acceder a versiones anteriores</Button>
                             </div>
+
                         </div>
 
                     </Card.Body>
@@ -534,7 +578,23 @@ onModalEditWriting = (modal) => {
                         <Button onClick={() => this.editWriting()}>Aceptar</Button>
                         <Button variant="danger" onClick={() => this.onModalEditWriting(false)}>Cancelar</Button>
                     </Modal.Footer>
-                </Modal>               
+                </Modal>
+
+
+
+                <Modal show={this.state.modalCombinarEscrito}>
+                    <Modal.Header>
+                    </Modal.Header>
+                    <Modal.Body>
+                    <p> ¿Deseas combinar este escrito?</p>
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <Button onClick={() => this.combinarEscrito(this.state.idWritingSelect)}>Aceptar</Button>
+                        <Button variant="danger" onClick={() => this.onModalCombinarEscrito(false)}>Cancelar</Button>
+                    </Modal.Footer>
+                </Modal> 
+
             </div>
         );
     }

@@ -118,7 +118,10 @@ class Challenges extends Component {
                             <td className="challenge-td">{formatedDate = moment(challenge.fechaFin).format('DD/MM/YYYY')}</td>
                             <td className="challenge-td">{formatedDate = moment(challenge.fechaFin).format('LT')}</td>
                             <td ><Link to={`/teacher/editChallenge/${this.props.groupSelect}/${challenge.id}`}><img src={"../edit.png"} alt={"editar"}></img> Editar</Link></td>
-                            <td><img className={"img-icon"} src="../delete.png" alt="delete"></img><Link onClick={() => this.askDeleteChallenge(challenge)}>Borrar</Link></td>
+                            {/* <td><img className={"img-icon"} src="../delete.png" alt="delete"></img><Link onClick={() => this.askDeleteChallenge(challenge)}>Borrar</Link></td> */}
+                            <td><Button size={"sm"} variant="danger" onClick={() => this.askDeleteChallenge(challenge)}>
+                                    Borrar
+                                </Button></td>
                         </tr>
                     )}
                 </tbody>

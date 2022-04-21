@@ -384,6 +384,128 @@ class modelTeacher {
             }
         });
     }
+
+    //-----------------------------------------COLLECTIONS-----------------------------------------//
+
+    // Crea una colección
+    createCollection(nombreColeccion, idProfesor, idGrupo, callback) {
+
+        const sqlInsert = "INSERT INTO coleccion (nombre, activo, idProfesor, idGrupo) VALUES (?, ?, ?, ?);";
+        this.pool.query(sqlInsert, [nombreColeccion, 1, idProfesor, idGrupo], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+              }
+        });
+    }
+
+    // Añadir un desafío a una colección
+    addChallengeToCollection(idColeccion, idDesafio, callback)
+    {
+        const sqlInsert = "INSERT INTO colecciondesafio (idColeccion, idDesafio) VALUES (?, ?);";
+        this.pool.query(sqlInsert, [idColeccion, idDesafio], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+              }
+        });
+    }
+
+    // Obtiene las colecciones de un profesor, pudiendo filtrar por nombre de grupo o nombre de colección
+    getCollections(idProfesor, filtroBusqueda, callback)
+    {
+        const sqlSelect = "SELECT c.id as idColeccion, c.nombre as nombreColeccion, g.nombre as nombreGrupo FROM coleccion c JOIN grupo g ON g.id=c.idGrupo WHERE c.idProfesor=? AND (c.nombre LIKE ? OR g.nombre LIKE ?) AND c.activo=?;";
+        const valores = ["%" + filtroBusqueda + "%"];
+
+        this.pool.query(sqlSelect, [idProfesor, valores, valores, 1], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+              }
+        });
+    }
+
+    // Obtiene una colección
+    getCollection(idCollection, callback)
+    {
+        const sqlSelect = "SELECT g.id as idGrupo, c.nombre as nombreColeccion, g.nombre as nombreGrupo FROM coleccion c JOIN grupo g ON g.id=c.idGrupo WHERE c.id=?;";
+
+        this.pool.query(sqlSelect, [idCollection], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+              }
+        });
+    }
+
+    // Obtiene los desafíos de una colección
+    getChallengesFromCollection(idCollection, callback)
+    {
+        const sqlSelect = "SELECT d.id, d.titulo, d.colaborativo FROM colecciondesafio cd JOIN desafio d ON d.id=cd.idDesafio WHERE cd.idColeccion=?;";
+
+        this.pool.query(sqlSelect, [idCollection], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+                }
+        });
+    }
+
+    // Obtiene los desafíos que no están en una determinada colección
+    getChallengesNotInCollection(idGroup, idCollection, callback)
+    {
+        const sqlSelect = "SELECT d2.id, d2.titulo FROM desafio d2 where d2.idGrupo=? AND d2.id NOT IN (SELECT d.id FROM colecciondesafio cd JOIN desafio d ON d.id=cd.idDesafio WHERE cd.idColeccion=?)";
+
+        this.pool.query(sqlSelect, [idGroup, idCollection], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+              }
+        });
+    }
+
+    // Elimina un desafío de una colección
+    deleteChallengeFromCollection(idCollection, idChallenge, callback)
+    {
+        const sqlDelete = "DELETE FROM colecciondesafio WHERE idColeccion=? AND idDesafio=?";
+
+        this.pool.query(sqlDelete, [idCollection, idChallenge], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+              }
+        });
+    }
+
+    // Elimina una colección
+    deleteCollection(idCollection, callback)
+    {
+        const sqlUpdate = "UPDATE coleccion SET activo = ? WHERE id=?;";
+
+        this.pool.query(sqlUpdate, [0, idCollection], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+              }
+        });
+    }
+
 }
 
 

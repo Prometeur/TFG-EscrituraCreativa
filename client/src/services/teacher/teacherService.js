@@ -387,6 +387,117 @@ class TeacherService {
             })
     }
 
+    //-----------------------------------------COLLECTIONS-----------------------------------------//
+
+    // Crea una colección
+    createCollection(nombreColeccion, idProfesor, idGrupo)
+    {
+        return axios.post("/teacher/createCollection", { nombreColeccion: nombreColeccion, idProfesor: idProfesor, idGrupo: idGrupo }, {
+            headers: { "Authorization": `Bearer ${authHeader()}` }
+            }).then(response => {
+                return response.data;
+            }).catch(error => {
+                console.log(error.message);
+                window.location.href = '/500';
+            })
+    }
+
+    // Añadir un desafío a una colección
+    addChallengeToCollection(idColeccion, idDesafio)
+    {
+        return axios.post("/teacher/addChallengeToCollection", { idColeccion: idColeccion, idDesafio: idDesafio }, {
+            headers: { "Authorization": `Bearer ${authHeader()}` }
+            }).then(response => {
+                return response.data;
+            }).catch(error => {
+                console.log(error.message);
+                window.location.href = '/500';
+            })
+    }
+
+    // Obtiene las colecciones de un profesor, pudiendo filtrar por nombre de grupo o nombre de colección
+    getCollections(idProfesor, filtroBusqueda)
+    {
+        return axios.get("/teacher/getCollections", { params: { idProfesor: idProfesor, filtroBusqueda: filtroBusqueda } },
+            {
+                headers: { "Authorization": `Bearer ${authHeader()}` }
+            }).then(response => {
+                return response.data;
+            }).catch(error => {
+                console.log(error.message);
+                window.location.href = '/500';
+            })
+    }
+
+    // Obtiene una colección
+    getCollection(idCollection)
+    {
+        return axios.get("/teacher/getCollection", { params: { idCollection: idCollection } },
+            {
+                headers: { "Authorization": `Bearer ${authHeader()}` }
+            }).then(response => {
+                return response.data;
+            }).catch(error => {
+                console.log(error.message);
+                window.location.href = '/500';
+            })
+    }
+
+    // Obtiene los desafíos de una colección
+    getChallengesFromCollection(idCollection)
+    {
+        return axios.get("/teacher/getChallengesFromCollection", { params: { idCollection: idCollection } },
+            {
+                headers: { "Authorization": `Bearer ${authHeader()}` }
+            }).then(response => {
+                return response.data;
+            }).catch(error => {
+                console.log(error.message);
+                window.location.href = '/500';
+            })
+    }
+
+    // Obtiene los desafíos que no están en una determinada colección
+    getChallengesNotInCollection(idGroup, idCollection)
+    {
+        return axios.get("/teacher/getChallengesNotInCollection", { params: { idGroup: idGroup, idCollection: idCollection } },
+        {
+            headers: { "Authorization": `Bearer ${authHeader()}` }
+        }).then(response => {
+            return response.data;
+        }).catch(error => {
+            console.log(error.message);
+            window.location.href = '/500';
+        })
+    }
+
+    // Elimina un desafío de una colección
+    deleteChallengeFromCollection(idColeccion, idDesafio)
+    {
+        return axios.post("/teacher/deleteChallengeFromCollection", { idCollection: idColeccion, idChallenge: idDesafio }, {
+            headers: { "Authorization": `Bearer ${authHeader()}` }
+            }).then(response => {
+                return response.data;
+            }).catch(error => {
+                console.log(error.message);
+                window.location.href = '/500';
+            })
+    }
+
+    // Elimina una colección
+    deleteCollection(idColeccion)
+    {
+        return axios.post("/teacher/deleteCollection", { idCollection: idColeccion }, {
+            headers: { "Authorization": `Bearer ${authHeader()}` }
+            }).then(response => {
+                return response.data;
+            }).catch(error => {
+                console.log(error.message);
+                window.location.href = '/500';
+            })
+    }
+
+
 }
 
 

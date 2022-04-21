@@ -80,7 +80,7 @@ class EditVersionfromWriting extends Component {
                         .then(response => {
                             this.setState({ form: { ...this.state.form, idWriter: response[0].idEquipo } });
                             /*Obtiene multimedia del escrito del equipo */
-                            StudentService.getMultimediaWriting(this.props.match.params.idChallenge, response[0].idEquipo)
+                            StudentService.getMultimediaWriting(this.props.match.params.idChallenge, response[0].idEquipo/*, this.props.match.params.idVersion*/)
                                 .then(response => {
                                     this.setState({ dataMediaWriting: response.data });
                                 }).catch(error => {
@@ -99,7 +99,7 @@ class EditVersionfromWriting extends Component {
                     });
 
                     /*Obtiene multimedia del escrito del estudiante */
-                    StudentService.getMultimediaWriting(this.props.match.params.idChallenge, AuthUser.getCurrentUser().id)
+                    StudentService.getMultimediaWriting(this.props.match.params.idChallenge, AuthUser.getCurrentUser().id/*, this.props.match.params.idVersion*/)
                         .then(response => {
                             this.setState({ dataMediaWriting: response.data });
                         }).catch(error => {
@@ -119,43 +119,60 @@ class EditVersionfromWriting extends Component {
                 console.log(error.message);
             });
 
-        /*Obtiene el escrito */
-        StudentService.getWriting(this.props.match.params.idWriting)
-            .then(response => {
-                var contentState = stateFromHTML(response.data[0].texto);
-                let editorState = EditorState.createWithContent(contentState);
-                // this.setState({ editorState: editorState });
-                this.setState({
-                    writing: response.data[0],
-                    editorState: editorState,
-                    form: {
-                        ...this.state.form,
-                        title: response.data[0].nombre,
-                        escrito: response.data[0].texto
-                    }
-                });
-            }).catch(error => {
-                console.log(error.message);
-            });
 
-        /*Obtiene el escrito con su correspondiente versión */
-        StudentService.getVersionsfromWriting(this.props.match.params.idWriting)
+        // Obtiene el escrito
+        StudentService.getChallenge(this.props.match.params.idChallenge)
         .then(response => {
-            var contentState = stateFromHTML(response.data[this.props.match.params.idVersion - 1].texto);
-            let editorState = EditorState.createWithContent(contentState);
-            // this.setState({ editorState: editorState });
-            this.setState({
-                writing: response.data[this.props.match.params.idVersion - 1],
-                editorState: editorState,
-                form: {
-                    ...this.state.form,
-                    title: response.data[this.props.match.params.idVersion - 1].nombreEscrito,
-                    escrito: response.data[this.props.match.params.idVersion - 1].texto
-                }
-            });
+            this.setState({ challenge: response[0] });
+            //Si es individual
+            if (response[0].colaborativo === 1)
+            {
+                /*Obtiene el escrito de un estudiante con su correspondiente versión */
+                StudentService.getVersionsfromWriting(this.props.match.params.idWriting)
+                .then(response => {
+                    var contentState = stateFromHTML(response.data[this.props.match.params.idVersion - 1].texto);
+                    let editorState = EditorState.createWithContent(contentState);
+                    // this.setState({ editorState: editorState });
+                    this.setState({
+                        writing: response.data[this.props.match.params.idVersion - 1],
+                        editorState: editorState,
+                        form: {
+                            ...this.state.form,
+                            title: response.data[this.props.match.params.idVersion - 1].nombreEscrito,
+                            escrito: response.data[this.props.match.params.idVersion - 1].texto
+                        }
+                    });
+                }).catch(error => {
+                    console.log(error.message);
+                });
+            }
+            // Es colaborativo
+            else
+            {
+                 /*Obtiene el escrito de un equipo con su correspondiente versión */
+                 StudentService.getVersionsfromWritingTeam(this.props.match.params.idWriting)
+                 .then(response => {
+                     var contentState = stateFromHTML(response[this.props.match.params.idVersion - 1].texto);
+                     let editorState = EditorState.createWithContent(contentState);
+                     // this.setState({ editorState: editorState });
+                     this.setState({
+                         writing: response[this.props.match.params.idVersion - 1],
+                         editorState: editorState,
+                         form: {
+                             ...this.state.form,
+                             title: response[this.props.match.params.idVersion - 1].nombreEscrito,
+                             escrito: response[this.props.match.params.idVersion - 1].texto
+                         }
+                     });
+                 }).catch(error => {
+                     console.log(error.message);
+                 });
+            }
+            
         }).catch(error => {
             console.log(error.message);
         });
+
 
         /* Devuelve la última versión de un escrito, es decir, el mayor id */
         StudentService.getHighestidVersionfromWriting(this.props.match.params.idWriting)
@@ -166,25 +183,16 @@ class EditVersionfromWriting extends Component {
         });
     }
 
-    // Comrpueba si se quiere modificar la version de un escrito
-    editingVersionfromWriting = () =>
-    {
-        // if(this.props.match.params.idVersion < StudentService.getHighestidVersionfromWriting(this.props.match.params.idWriting))
-        // {
-        //     return true;
-        // }
-        // else
-        // {
-        //     return false;
-        // }
-    }
-
+    
     // Envía la nueva versión del escrito
     insertVersion = () => {
         this.onModalInsertVersion(false)
         /*Añade una nueva versión de un escrito */
         StudentService.insertVersionfromWriting(this.props.match.params.idWriting, this.state.maxIdVersion + 1, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.title, this.state.form.escrito, this.state.challenge.colaborativo)
         .then(response => {
+            // Edito el escrito en la tabla escrito con los datos de la última versión
+            StudentService.editWriting(this.props.match.params.idWriting, this.props.match.params.idGroup, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.title, this.state.form.escrito, this.state.challenge.colaborativo)
+
             // Falta gestionar los archivos multimedia
                 window.location.href = `/student/versionsWriting/${this.props.match.params.idGroup}/${this.props.match.params.idChallenge}/${this.props.match.params.idWriting}`;
         })
@@ -198,30 +206,6 @@ class EditVersionfromWriting extends Component {
             modalInsertVersion: modal,
         });
     };
-
-
-    //Envia el escrito editado 
-    editWriting = () => {
-        this.onModalEditWriting(false)
-        /*Edita escrito del estudiante*/
-        StudentService.editWriting(this.props.match.params.idWriting, this.props.match.params.idGroup, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.title, this.state.form.escrito, this.state.challenge.colaborativo)
-            .then(response => {
-                if (this.state.imgCollection.length > 0) {
-                    StudentService.sendMultimedia(this.state.imgCollection, this.state.form.idWriter, this.props.match.params.idChallenge, this.state.challenge.colaborativo)
-                        .then(response => {
-                            window.location.href = '/student/groups';
-                        }).catch(error => {
-                            console.log(error.message);
-                        });
-                }
-                else {
-                    window.location.href = '/student/groups';
-                }
-            })
-            .catch(error => {
-                console.log(error.message);
-            });
-    }
 
     //Elimina el fichero multimedia del escrito
     deleteFile = (writing) => {
@@ -522,7 +506,7 @@ class EditVersionfromWriting extends Component {
                                 <Button text='enviar' onClick={() => this.onModalInsertVersion(true)} > Guardar como escrito actual </Button>
                             </div>
                             <div className="form-button">
-                                <Button onClick={() => window.location.href = '/student/groups'}>Cancelar</Button>
+                                <Button onClick={() => window.location.href = `/student/versionsWriting/${this.props.match.params.idGroup}/${this.props.match.params.idChallenge}/${this.props.match.params.idWriting}`}>Cancelar</Button>
                             </div>
                         </div>
 
@@ -542,20 +526,7 @@ class EditVersionfromWriting extends Component {
                         <Button onClick={() => this.deleteFile(this.state.deleteFileMedia)}>Aceptar</Button>
                         <Button variant="danger" onClick={() => this.closeModalDeleteFile()}>Cancelar</Button>
                     </Modal.Footer>
-                </Modal>
-                
-                <Modal show={this.state.modalEditWriting}>
-                    <Modal.Header>
-                    </Modal.Header>
-                    <Modal.Body>
-                    <p> ¿Deseas guardar los cambios?</p>
-                    </Modal.Body>
-
-                    <Modal.Footer>
-                        <Button onClick={() => this.editWriting()}>Aceptar</Button>
-                        <Button variant="danger" onClick={() => this.onModalEditWriting(false)}>Cancelar</Button>
-                    </Modal.Footer>
-                </Modal>               
+                </Modal>          
 
                 <Modal show={this.state.modalInsertVersion}>
                     <Modal.Header>

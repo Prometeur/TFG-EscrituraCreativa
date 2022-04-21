@@ -153,9 +153,11 @@ class Messenger extends Component {
                                                                     className={"img-icon"}
                                                                     src="/delete.png"
                                                                     alt=""
-
                                                                 />
-                                                                <Link onClick={() => this.askDeleteMessage(message)} >Eliminar</Link>
+                                                                {/* <Link onClick={() => this.askDeleteMessage(message)} >Eliminar</Link> */}
+                                                                <Button size={"sm"} variant="danger" onClick={() => this.askDeleteMessage(message)}>
+                                                                    Eliminar
+                                                                </Button>
                                                             </td>
                                                         </tr>
                                                     )
@@ -176,9 +178,7 @@ class Messenger extends Component {
                         </Card.Body>
                     </Card>
                 </div>
-
-                {/* <td><Link to={`/teacher/createChallenge/${this.props.groupSelect}`}><button >Crear Desafio</button></Link></td> */}
-
+                
 
                 <Modal show={this.state.modalDeleteMessage}>
                     <Modal.Header>

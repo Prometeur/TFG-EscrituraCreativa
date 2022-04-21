@@ -39,8 +39,8 @@ router.get("/getChallengesIndividual", controller.getChallengesIndividual);
 
 //-----------------------------------------------------MULTIMEDIA-CHALLENGES---------------------------------------------------------------//
 
-/*Obtiene los ficheros multimedia del escrito del estudiante*/
-router.get("/getMultimediaWriting", controller.getMultimediaWriting);
+/*Obtiene los ficheros multimedia del desafio */
+router.get("/getMultimediaChallenge", controller.getMultimediaChallenge);
 
 //-----------------------------------------------------WRITINGS----------------------------------------------------------------//
 
@@ -65,6 +65,9 @@ router.get("/getWritingWriter", controller.getWritingWriter);
 /*Obtiene los escritos de un equipo*/
 router.get("/getWritingsTeam", controller.getWritingsTeam);
 
+/* Obtiene todas las versiones de un escrito colaborativo */
+router.get("/getVersionsfromWritingTeam", controller.getVersionsfromWritingTeam);
+
 /*Obtiene los escritos de un estudiante según grupo*/
 router.get("/getWritingsStudent", controller.getWritingsStudent);
 
@@ -85,8 +88,8 @@ router.post("/editWritingTeam", controller.editWritingTeam);
 
 //-----------------------------------------------------MULTIMEDIA-WRITINGS---------------------------------------------------------------//
 
-/*Obtiene los ficheros multimedia del desafio */
-router.get("/getMultimediaChallenge", controller.getMultimediaChallenge);
+/*Obtiene los ficheros multimedia del escrito del estudiante*/
+router.get("/getMultimediaWriting", controller.getMultimediaWriting);
 
 /*Envia los ficheros multimedia del escrito del estudiante*/
 router.post("/sendMultimedia", uploader.array('imgCollection', 20), controller.sendMultimedia);

@@ -143,9 +143,8 @@ function createWriting(req, res) {
 /*Obtiene el escrito del estudiante segun su grupo*/
 function getWriting(req, res) {
     const idWriting = req.query.idWriting;
-    const idVersion = req.query.idVersion;
 
-    modelStudent.getWriting(idWriting, idVersion, function (err, result) {
+    modelStudent.getWriting(idWriting, function (err, result) {
         if (err) {
             res.status(500).send({ error: err.message });
             console.log(err.message);
@@ -241,6 +240,23 @@ function getWritingsTeam(req, res) {
     const idTeam = req.query.idTeam;
     const idGroup = req.query.idGroup;
     modelStudent.getWritingsTeam(idTeam, idGroup, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else {
+            res.send(result);
+        }
+    });
+}
+
+/* Obtiene todas las versiones de un escrito colaborativo */
+function getVersionsfromWritingTeam(req, res)
+{
+    const idWriting = req.query.idWriting;
+    //console.log("ID ESCRITO: " + idWriting);
+
+    modelStudent.getVersionsfromWritingTeam(idWriting, function (err, result) {
         if (err) {
             res.status(500).send({ error: err.message });
             console.log(err.message);
@@ -348,7 +364,9 @@ function editWritingTeam(req, res) {
 function getMultimediaWriting(req, res) {
     const idChallenge = req.query.idChallenge;
     const idWriter = req.query.idWriter;
-    modelStudent.getMultimedia(idChallenge, idWriter, function (err, result) {
+    //const idVersion = req.query.idVersion;
+
+    modelStudent.getMultimedia(idChallenge, idWriter/*, idVersion*/, function (err, result) {
         if (err) {
             res.status(500).send({ error: err.message });
             console.log(err.message);
@@ -768,6 +786,7 @@ module.exports = {
     getWritingsCollaborative: getWritingsCollaborative,
     getWritingWriter: getWritingWriter,
     getWritingsTeam: getWritingsTeam,
+    getVersionsfromWritingTeam: getVersionsfromWritingTeam,
     getWritingsStudent: getWritingsStudent,
     //MultimediaWritings
     sendMultimedia: sendMultimedia,

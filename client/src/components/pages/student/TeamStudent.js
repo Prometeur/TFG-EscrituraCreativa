@@ -219,7 +219,7 @@ class TeamStudent extends Component {
             .then(response => {
                 if (response.length === 0) {
                     //Comprueba si recibió una solicitud antes por el estudiante a invitar
-                    StudentService.searchMessageByIssuer(this.props.groupSelect, idReceiver, idTeam)
+                    StudentService.searchMessageByIssuer(idGroup, idReceiver, idTeam)
                         .then(response => {
                             if (response.length === 0) {
                                 this.invite()
@@ -250,7 +250,7 @@ class TeamStudent extends Component {
         var equipo = this.state.dataTeamStudentGroup[0].nombreEquipo;
         var grupo = this.state.dataTeamStudentGroup[0].nombreGrupo;
         var message = nombre + " " + apellidos + " " + messageBody + " " + equipo + " del Grupo de " + grupo;
-        StudentService.sendMessage(idGroup, AuthUser.getCurrentUser().id, this.state.idGuest, AuthUser.getCurrentUser().id, message, 2)
+        StudentService.sendMessage(idGroup, AuthUser.getCurrentUser().id, this.state.idGuest, this.state.dataTeamStudentGroup[0].idEquipo, message, 2)
             .then(response => {
                 this.showModalSuccesfulInvitation();
             }).catch(error => {
@@ -574,7 +574,6 @@ class TeamStudent extends Component {
                                         <th>Integrantes</th>
                                         <th>Lider</th>
                                         <th>Acciones</th>
-                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -583,23 +582,27 @@ class TeamStudent extends Component {
                                             <tr key={team.id}>
                                                 <td>{team.nombreEquipo}</td>
                                                 <td>{team.nombreGrupo}</td>
+                                                <td>
                                                 {dataMembersTeam.map(item =>
-                                                    <td>
-                                                        <div>{item.nombreEstudiante} {item.apellidoEstudiante}</div>
-                                                    </td>
+                                                        <div>
+                                                            {item.nombreEstudiante} {item.apellidoEstudiante}
+                                                        </div>
                                                 )}
+                                                </td>
                                                 <td>{this.state.nameLider}</td>
                                                 <td>
-                                                    <img src="/delete.png" alt=""/>
-                                                    <Button variant="link" disabled={this.disabledButtonDeleteTeam()} onClick={() => this.askDeleteTeam()} >
-                                                        Eliminar
-                                                    </Button>
-                                                </td>
-                                                <td>
-                                                    <img src="/exit.png" alt=""/>
-                                                    <Button variant="link" disabled={this.state.dataMembersTeam.length < 2 ? true : null} onClick={() => this.askLeaveTeam()} >
-                                                        Dejar Equipo
-                                                    </Button>  
+                                                    <div>
+                                                        <img src="/delete.png" alt=""/>
+                                                        <Button variant="link" disabled={this.disabledButtonDeleteTeam()} onClick={() => this.askDeleteTeam()} >
+                                                            Eliminar
+                                                        </Button>
+                                                    </div>
+                                                    <div>
+                                                        <img src="/exit.png" alt=""/>
+                                                        <Button variant="link" disabled={this.state.dataMembersTeam.length < 2 ? true : null} onClick={() => this.askLeaveTeam()} >
+                                                            Dejar Equipo
+                                                        </Button>  
+                                                    </div>
                                                 </td>
                                             </tr>
                                         )

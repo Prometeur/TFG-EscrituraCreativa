@@ -99,8 +99,8 @@ class StudentService {
     //-----------------------------------------------------WRITINGS----------------------------------------------------------------//    
 
     /*Obtiene el escrito del estudiante */
-    getWriting(idWriting, idVersion) {
-        return axios.get("/student/getWriting", { params: { idWriting: idWriting, idVersion: idVersion } },
+    getWriting(idWriting) {
+        return axios.get("/student/getWriting", { params: { idWriting: idWriting } },
             {
                 headers: { "Authorization": `Bearer ${authHeader()}` }
             }).then(response => {
@@ -203,6 +203,19 @@ class StudentService {
         })
     }
 
+    /* Obtiene todas las versiones de un escrito colaborativo */
+    getVersionsfromWritingTeam(idWriting)
+    {
+        return axios.get("student/getVersionsfromWritingTeam", { params: { idWriting: idWriting } }, {
+            headers: { "Authorization": `Bearer ${authHeader()}` }
+        }).then(response => {
+            return response.data;
+        }).catch(error => {
+            console.log(error.message);
+            window.location.href = '/500';
+        })
+    }
+
     /*Edito el escrito del estudiante */
     editWriting(idWriting, idGroup, idChallenge, idWriter, title, escrito, type) {
         return axios.post("/student/editWriting", { idWriting: idWriting, idGroup: idGroup, idChallenge: idChallenge, idWriter: idWriter, title: title, escrito: escrito, type: type }, {
@@ -287,8 +300,8 @@ class StudentService {
     }
 
     /*Obtiene multimedia del escrito del estudiante */
-    getMultimediaWriting(idChallenge, idWriter) {
-        return axios.get("/student/getMultimediaWriting", { params: { idChallenge: idChallenge, idWriter: idWriter } },
+    getMultimediaWriting(idChallenge, idWriter/*, idVersion*/) {
+        return axios.get("/student/getMultimediaWriting", { params: { idChallenge: idChallenge, idWriter: idWriter/*, idVersion: idVersion */} },
             {
                 headers: { "Authorization": `Bearer ${authHeader()}` }
             }).then(response => {
