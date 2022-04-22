@@ -19,7 +19,9 @@ import LinksStudent from '../links/links-Student.js';
 import EditWritingTeam from '../components/pages/student/EditWritingTeam.js';
 import VersionsfromWriting from '../components/pages/student/VersionsfromWriting.js';
 import EditVersionfromWriting from '../components/pages/student/EditVersionfromWriting.js';
-import Collections from '../components/pages/student/Collections.js';
+import VisualizeCollections from '../components/pages/student/VisualizeCollections.js';
+import VisualizeSingleCollection from '../components/pages/student/VisualizeSingleCollection.js';
+import VisualizeChallengeFromCollection from '../components/pages/student/VisualizeChallengeFromCollection.js';
 
 // import Teams from '../components/pages/student/Teams.js';
 // import Messenger from '../components/pages/student/Messenger.js';
@@ -45,7 +47,9 @@ function Routes() {
                 <Route exact path="/student/editWritingTeam/:idGroup/:idChallenge/:idWriting" component={EditWritingTeam} />
                 <Route exact path="/student/versionsWriting/:idGroup/:idChallenge/:idWriting" component={VersionsfromWriting} />
                 <Route exact path="/student/editVersionfromWriting/:idGroup/:idChallenge/:idWriting/:idVersion" component={EditVersionfromWriting} />
-                <Route exact path="/student/collections" component={Collections} />
+                <Route exact path="/student/visualizecollections" component={VisualizeCollections} />
+                <Route exact path="/student/visualizecollections/:idCollection" component={VisualizeSingleCollection} />
+                <Route exact path="/student/visualizecollections/:idCollection/:idChallenge" component={VisualizeChallengeFromCollection} />
             </Switch>
         </BrowserRouter>
     );

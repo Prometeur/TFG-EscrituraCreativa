@@ -161,4 +161,15 @@ router.get("/searchMessageByIssuer", controller.searchMessageByIssuer);
 /*busca mensaje por receptor estudiante segun su grupo*/
 router.get("/searchMessageByReceiver", controller.searchMessageByReceiver);
 
+//-----------------------------------------COLLECTIONS-----------------------------------------//
+
+// Obtiene las colecciones de un profesor, pudiendo filtrar por nombre de grupo o nombre de colección
+router.get("/getCollections", controllerTeacher.getCollections);
+
+// Obtiene una colección
+router.get("/getCollection", controller_teacher.getCollection);
+
+// Obtiene los desafíos de una colección
+router.get("/getChallengesFromCollection", controller_teacher.getChallengesFromCollection);
+
 module.exports = router;

@@ -631,6 +631,55 @@ class modelStudent {
         });
     }
 
+
+     //-----------------------------------------COLLECTIONS-----------------------------------------//
+
+    // Obtiene las colecciones de un profesor, pudiendo filtrar por nombre de grupo o nombre de colección
+    getCollections(idProfesor, filtroBusqueda, callback)
+    {
+        const sqlSelect = "SELECT c.id as idColeccion, c.nombre as nombreColeccion, g.nombre as nombreGrupo FROM coleccion c JOIN grupo g ON g.id=c.idGrupo WHERE c.idProfesor=? AND (c.nombre LIKE ? OR g.nombre LIKE ?) AND c.activo=?;";
+        const valores = ["%" + filtroBusqueda + "%"];
+
+        this.pool.query(sqlSelect, [idProfesor, valores, valores, 1], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+              }
+        });
+    }
+
+    // Obtiene una colección
+    getCollection(idCollection, callback)
+    {
+        const sqlSelect = "SELECT g.id as idGrupo, c.nombre as nombreColeccion, g.nombre as nombreGrupo FROM coleccion c JOIN grupo g ON g.id=c.idGrupo WHERE c.id=?;";
+
+        this.pool.query(sqlSelect, [idCollection], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+              }
+        });
+    }
+
+    // Obtiene los desafíos de una colección
+    getChallengesFromCollection(idCollection, callback)
+    {
+        const sqlSelect = "SELECT d.id, d.titulo, d.colaborativo FROM colecciondesafio cd JOIN desafio d ON d.id=cd.idDesafio WHERE cd.idColeccion=?;";
+
+        this.pool.query(sqlSelect, [idCollection], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+                }
+        });
+    }
+
 }
 
 //Data export

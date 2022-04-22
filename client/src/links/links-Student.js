@@ -24,7 +24,7 @@ const linksStudent = [
         id: "teams"
     },
     {
-        path: "/collections",
+        path: "/visualizecollections",
         name: "Colecciones",
         icon: "/collection.png",
         id: "colecciones",

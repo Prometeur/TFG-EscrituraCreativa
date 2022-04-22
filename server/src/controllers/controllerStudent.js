@@ -762,6 +762,54 @@ function sendMessage(req, res) {
     });
 }
 
+//-----------------------------------------COLLECTIONS-----------------------------------------//
+
+// Obtiene las colecciones de un profesor, pudiendo filtrar por nombre de grupo o nombre de colección
+function getCollections(req, res)
+{
+    const idProfesor = req.query.idProfesor;
+    const filtroBusqueda = req.query.filtroBusqueda;
+
+    modelTeacher.getCollections(idProfesor, filtroBusqueda, function (err, result) {
+        if (err) {
+            console.log(err.message);
+            res.status(500).send({ error: err.message });
+        }
+        res.send(result);
+    });
+}
+
+// Obtiene una colección
+function getCollection(req, res)
+{
+    const idCollection = req.query.idCollection;
+
+    modelTeacher.getCollection(idCollection, function (err, result) {
+        if (err) {
+            console.log(err.message);
+            res.status(500).send({ error: err.message });
+        }
+        res.send(result);
+    });
+}
+
+// Obtiene los desafíos de una colección
+function getChallengesFromCollection(req, res)
+{
+    const idCollection = req.query.idCollection;
+
+    modelTeacher.getChallengesFromCollection(idCollection, function (err, result) {
+        if (err) {
+            console.log(err.message);
+            res.status(500).send({ error: err.message });
+        }
+        res.send(result);
+    });
+}
+
+
+
+
 module.exports = {
     //Groups
     getGroups: getGroups,
@@ -814,4 +862,8 @@ module.exports = {
     deleteMessage: deleteMessage,
     searchMessageByIssuer: searchMessageByIssuer,
     searchMessageByReceiver: searchMessageByReceiver,
+    //Collections
+    getCollections: getCollections,
+    getCollection: getCollection,
+    getChallengesFromCollection: getChallengesFromCollection,
 };
