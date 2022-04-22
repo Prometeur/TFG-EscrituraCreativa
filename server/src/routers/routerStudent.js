@@ -164,12 +164,12 @@ router.get("/searchMessageByReceiver", controller.searchMessageByReceiver);
 //-----------------------------------------COLLECTIONS-----------------------------------------//
 
 // Obtiene las colecciones de un profesor, pudiendo filtrar por nombre de grupo o nombre de colección
-router.get("/getCollections", controllerTeacher.getCollections);
+router.get("/getCollections", controller.getCollections);
 
 // Obtiene una colección
-router.get("/getCollection", controller_teacher.getCollection);
+router.get("/getCollection", controller.getCollection);
 
 // Obtiene los desafíos de una colección
-router.get("/getChallengesFromCollection", controller_teacher.getChallengesFromCollection);
+router.get("/getChallengesFromCollection", controller.getChallengesFromCollection);
 
 module.exports = router;

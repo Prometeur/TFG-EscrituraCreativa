@@ -282,14 +282,15 @@ class StudentService {
     //--------------------------------------------------MULTIMEDIA-WRITINGS----------------------------------------------------------------//
 
     /*Envia los archivos multimedia del estudiante*/
-    sendMultimedia(imgCollection, idWriter, idChallenge, type) {
+    sendMultimedia(imgCollection, idWriter, idChallenge, type, idVersion) {
         const form = new FormData();
         for (const key of Object.keys(imgCollection)) {
             form.append('imgCollection', imgCollection[key])
         }
         form.append("idWriter", idWriter);
         form.append("idChallenge", idChallenge);
-        return axios.post("/student/sendMultimedia", form, { params: { id: idWriter, idFolder: idChallenge, type: type } }, {
+        form.append("idVersion", idVersion);
+        return axios.post("/student/sendMultimedia", form, { params: { id: idWriter, idFolder: idChallenge, type: type, idVersion: idVersion } }, {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
             return response.data;
@@ -300,8 +301,8 @@ class StudentService {
     }
 
     /*Obtiene multimedia del escrito del estudiante */
-    getMultimediaWriting(idChallenge, idWriter/*, idVersion*/) {
-        return axios.get("/student/getMultimediaWriting", { params: { idChallenge: idChallenge, idWriter: idWriter/*, idVersion: idVersion */} },
+    getMultimediaWriting(idChallenge, idWriter, idVersion) {
+        return axios.get("/student/getMultimediaWriting", { params: { idChallenge: idChallenge, idWriter: idWriter, idVersion: idVersion} },
             {
                 headers: { "Authorization": `Bearer ${authHeader()}` }
             }).then(response => {
@@ -313,11 +314,12 @@ class StudentService {
     }
 
     /*Edita los archivos multimedia del estudiante*/
-    editMultimedia(idMultimedia, idWriter, idChallenge, path) {
+    editMultimedia(idMultimedia, idWriter, idChallenge, idVersion, path) {
         const form = new FormData();
         form.append("idMultimedia", idMultimedia);
         form.append("idWriter", idWriter);
         form.append("idChallenge", idChallenge);
+        form.append("idVersion", idVersion);
         form.append("path", path);
         return axios.post("/student/editMultimedia", form, {
             headers: { "Authorization": `Bearer ${authHeader()}` }

@@ -308,11 +308,11 @@ class modelStudent {
     //---------------------------------------------MULTIMEDIA-WRITING----------------------------------------------------------------//
 
     /*Obtiene los ficheros multimedia del escrito del estudiante*/
-    getMultimedia(idChallenge, idWriter, /*idVersion,*/ callback) {
-        const sqlSelect = "SELECT * FROM multimediaescrito where idEscritor= ? AND idDesafio=?";
-        // AND idVersionEscrito=?";
+    getMultimedia(idChallenge, idWriter, idVersion, callback) {
+        const sqlSelect = "SELECT * FROM multimediaescrito where idEscritor= ? AND idDesafio=? AND idVersionEscrito=?;";
+        
 
-        this.pool.query(sqlSelect, [idWriter, idChallenge/*, idVersion*/], (err, result) => {
+        this.pool.query(sqlSelect, [idWriter, idChallenge, idVersion], (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }
@@ -324,7 +324,7 @@ class modelStudent {
 
     /*Envia los ficheros multimedia del escrito del estudiante*/
     sendMultimedia(reqFiles, callback) {
-        const sqlInsert = "INSERT INTO multimediaescrito (idEscritor,idDesafio,ruta) VALUES ?";
+        const sqlInsert = "INSERT INTO multimediaescrito (idEscritor,idDesafio, idVersionEscrito, ruta) VALUES ?";
         this.pool.query(sqlInsert, [reqFiles], (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));

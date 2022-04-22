@@ -80,7 +80,7 @@ class EditVersionfromWriting extends Component {
                         .then(response => {
                             this.setState({ form: { ...this.state.form, idWriter: response[0].idEquipo } });
                             /*Obtiene multimedia del escrito del equipo */
-                            StudentService.getMultimediaWriting(this.props.match.params.idChallenge, response[0].idEquipo/*, this.props.match.params.idVersion*/)
+                            StudentService.getMultimediaWriting(this.props.match.params.idChallenge, response[0].idEquipo, this.props.match.params.idVersion)
                                 .then(response => {
                                     this.setState({ dataMediaWriting: response.data });
                                 }).catch(error => {
@@ -99,7 +99,7 @@ class EditVersionfromWriting extends Component {
                     });
 
                     /*Obtiene multimedia del escrito del estudiante */
-                    StudentService.getMultimediaWriting(this.props.match.params.idChallenge, AuthUser.getCurrentUser().id/*, this.props.match.params.idVersion*/)
+                    StudentService.getMultimediaWriting(this.props.match.params.idChallenge, AuthUser.getCurrentUser().id, this.props.match.params.idVersion)
                         .then(response => {
                             this.setState({ dataMediaWriting: response.data });
                         }).catch(error => {
@@ -192,9 +192,22 @@ class EditVersionfromWriting extends Component {
         .then(response => {
             // Edito el escrito en la tabla escrito con los datos de la última versión
             StudentService.editWriting(this.props.match.params.idWriting, this.props.match.params.idGroup, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.title, this.state.form.escrito, this.state.challenge.colaborativo)
-
-            // Falta gestionar los archivos multimedia
-                window.location.href = `/student/versionsWriting/${this.props.match.params.idGroup}/${this.props.match.params.idChallenge}/${this.props.match.params.idWriting}`;
+            .then(response => {
+                if (this.state.imgCollection.length > 0) {
+                    StudentService.sendMultimedia(this.state.imgCollection, this.state.form.idWriter, this.props.match.params.idChallenge, this.state.challenge.colaborativo, this.state.maxIdVersion + 1)
+                        .then(response => {
+                            window.location.href = `/student/versionsWriting/${this.props.match.params.idGroup}/${this.props.match.params.idChallenge}/${this.props.match.params.idWriting}`;
+                        }).catch(error => {
+                            console.log(error.message);
+                        });
+                }
+                else {
+                    window.location.href = `/student/versionsWriting/${this.props.match.params.idGroup}/${this.props.match.params.idChallenge}/${this.props.match.params.idWriting}`;
+                }
+            })
+            .catch(error => {
+                console.log(error.message);
+            });
         })
         .catch(error => {
             console.log(error.message);

@@ -120,8 +120,12 @@ class EditWriting extends Component {
         /* Devuelve la última versión de un escrito, es decir, el mayor id */
         StudentService.getHighestidVersionfromWriting(this.props.match.params.idWriting)
         .then(response => {
-            this.setState({ maxIdVersion: response[0].maxId });
-
+            if(response.length > 0){
+                this.setState({ maxIdVersion: response[0].maxId });
+            }
+            else{
+                this.setState({maxIdVersion: 0});
+            }
         /*Obtiene el desafio seleccionado*/
         StudentService.getChallenge(this.props.match.params.idChallenge)
             .then(response => {
@@ -133,7 +137,7 @@ class EditWriting extends Component {
                         .then(response => {
                             this.setState({ form: { ...this.state.form, idWriter: response[0].idEquipo } });
                             /*Obtiene multimedia del escrito del equipo */
-                            StudentService.getMultimediaWriting(this.props.match.params.idChallenge, response[0].idEquipo/*, this.state.maxIdVersion*/)
+                            StudentService.getMultimediaWriting(this.props.match.params.idChallenge, response[0].idEquipo, this.state.maxIdVersion)
                                 .then(response => {
                                     this.setState({ dataMediaWriting: response.data });
                                 }).catch(error => {
@@ -152,7 +156,7 @@ class EditWriting extends Component {
                     });
 
                     /*Obtiene multimedia del escrito del estudiante */
-                    StudentService.getMultimediaWriting(this.props.match.params.idChallenge, AuthUser.getCurrentUser().id/*, this.state.maxIdVersion*/)
+                    StudentService.getMultimediaWriting(this.props.match.params.idChallenge, AuthUser.getCurrentUser().id, this.state.maxIdVersion)
                         .then(response => {
                             this.setState({ dataMediaWriting: response.data });
                         }).catch(error => {
@@ -179,7 +183,12 @@ class EditWriting extends Component {
         /* Devuelve la última versión de un escrito, es decir, el mayor id */
         StudentService.getHighestidVersionfromWriting(this.props.match.params.idWriting)
         .then(response => {
-            this.setState({ maxIdVersion: response[0].maxId });
+            if(response.length > 0){
+                this.setState({ maxIdVersion: response[0].maxId });
+            }
+            else{
+                this.setState({maxIdVersion: 0});
+            }
         }).catch(error => {
             console.log(error.message);
         });
@@ -219,7 +228,7 @@ class EditWriting extends Component {
         StudentService.editWriting(this.props.match.params.idWriting, this.props.match.params.idGroup, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.title, this.state.form.escrito, this.state.challenge.colaborativo)
             .then(response => {
                 if (this.state.imgCollection.length > 0) {
-                    StudentService.sendMultimedia(this.state.imgCollection, this.state.form.idWriter, this.props.match.params.idChallenge, this.state.challenge.colaborativo)
+                    StudentService.sendMultimedia(this.state.imgCollection, this.state.form.idWriter, this.props.match.params.idChallenge, this.state.challenge.colaborativo, this.state.maxIdVersion + 1)
                         .then(response => {
                             window.location.href = '/student/writingsTabs';
                         }).catch(error => {
