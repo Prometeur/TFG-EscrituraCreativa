@@ -587,6 +587,49 @@ class StudentService {
             })
     }
 
+
+    //----------------------------------COLLECTIONS-----------------------------------------------------//
+        // Obtiene las colecciones de un profesor, pudiendo filtrar por nombre de grupo o nombre de colección
+        getCollections(idProfesor, filtroBusqueda)
+        {
+            return axios.get("/teacher/getCollections", { params: { idProfesor: idProfesor, filtroBusqueda: filtroBusqueda } },
+                {
+                    headers: { "Authorization": `Bearer ${authHeader()}` }
+                }).then(response => {
+                    return response.data;
+                }).catch(error => {
+                    console.log(error.message);
+                    window.location.href = '/500';
+                })
+        }
+    
+        // Obtiene una colección
+        getCollection(idCollection)
+        {
+            return axios.get("/teacher/getCollection", { params: { idCollection: idCollection } },
+                {
+                    headers: { "Authorization": `Bearer ${authHeader()}` }
+                }).then(response => {
+                    return response.data;
+                }).catch(error => {
+                    console.log(error.message);
+                    window.location.href = '/500';
+                })
+        }
+    
+        // Obtiene los desafíos de una colección
+        getChallengesFromCollection(idCollection)
+        {
+            return axios.get("/teacher/getChallengesFromCollection", { params: { idCollection: idCollection } },
+                {
+                    headers: { "Authorization": `Bearer ${authHeader()}` }
+                }).then(response => {
+                    return response.data;
+                }).catch(error => {
+                    console.log(error.message);
+                    window.location.href = '/500';
+                })
+        }
 }
 
 export default new StudentService();
