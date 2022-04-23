@@ -364,9 +364,9 @@ function editWritingTeam(req, res) {
 function getMultimediaWriting(req, res) {
     const idChallenge = req.query.idChallenge;
     const idWriter = req.query.idWriter;
-    const idVersion = req.query.idVersion;
+    // const idVersion = req.query.idVersion;
 
-    modelStudent.getMultimedia(idChallenge, idWriter, idVersion, function (err, result) {
+    modelStudent.getMultimedia(idChallenge, idWriter/*, idVersion*/, function (err, result) {
         if (err) {
             res.status(500).send({ error: err.message });
             console.log(err.message);
@@ -382,7 +382,7 @@ function getMultimediaWriting(req, res) {
 function sendMultimedia(req, res) {
     const idWriter = req.body.idWriter;
     const idChallenge = req.body.idChallenge;
-    const idVersion = req.body.idVersion;
+    // const idVersion = req.body.idVersion;
     const reqFiles = [];
     var typeChallenge;
 
@@ -396,10 +396,10 @@ function sendMultimedia(req, res) {
         var str = req.files[i].mimetype;
         var type = str.split("/");
         //dir->idWriter/idChallenge/tipo/
-        const dir = idWriter + "/" + idChallenge + "/"+ idVersion + "/" + type[0] + "/";
+        const dir = idWriter + "/" + idChallenge +/* "/"+ idVersion + */"/" + type[0] + "/";
         // let path = "http://localhost:3001/multimedia/" + typeChallenge +"/"+ dir + req.files[i].filename;
         let path = "http://" + req.headers.host + "/multimedia/" + typeChallenge + "/" + dir + req.files[i].filename;
-        reqFiles.push([idWriter, idChallenge, idVersion, path])
+        reqFiles.push([idWriter, idChallenge/*, idVersion*/, path])
     }
     modelStudent.sendMultimedia(reqFiles, function (err, result) {
         if (err) {

@@ -282,15 +282,15 @@ class StudentService {
     //--------------------------------------------------MULTIMEDIA-WRITINGS----------------------------------------------------------------//
 
     /*Envia los archivos multimedia del estudiante*/
-    sendMultimedia(imgCollection, idWriter, idChallenge, type, idVersion) {
+    sendMultimedia(imgCollection, idWriter, idChallenge, type/*, idVersion*/) {
         const form = new FormData();
         for (const key of Object.keys(imgCollection)) {
             form.append('imgCollection', imgCollection[key])
         }
         form.append("idWriter", idWriter);
         form.append("idChallenge", idChallenge);
-        form.append("idVersion", idVersion);
-        return axios.post("/student/sendMultimedia", form, { params: { id: idWriter, idFolder: idChallenge, type: type, idVersion: idVersion } }, {
+        // form.append("idVersion", idVersion);
+        return axios.post("/student/sendMultimedia", form, { params: { id: idWriter, idFolder: idChallenge, type: type/*, idVersion: idVersion*/ } }, {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
             return response.data;
@@ -301,8 +301,8 @@ class StudentService {
     }
 
     /*Obtiene multimedia del escrito del estudiante */
-    getMultimediaWriting(idChallenge, idWriter, idVersion) {
-        return axios.get("/student/getMultimediaWriting", { params: { idChallenge: idChallenge, idWriter: idWriter, idVersion: idVersion} },
+    getMultimediaWriting(idChallenge, idWriter/*, idVersion*/) {
+        return axios.get("/student/getMultimediaWriting", { params: { idChallenge: idChallenge, idWriter: idWriter, /*idVersion: idVersion*/} },
             {
                 headers: { "Authorization": `Bearer ${authHeader()}` }
             }).then(response => {
