@@ -282,6 +282,34 @@ function getWritingsStudent(req, res) {
     });
 }
 
+/*Obtiene escritos de estudiantes */
+function getWritingsStudentCollection(req, res) {
+    const idGroup = req.query.idGroup;
+    const idChallenge = req.query.idChallenge;
+
+    modelStudent.getWritingsStudentCollection(idGroup, idChallenge, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        res.send(result);
+    });
+}
+
+/*Obtiene escritos colaborativos  de equipos*/
+function getWritingsTeamCollection(req, res) {
+    const idGroup = req.query.idGroup;
+    const idChallenge = req.query.idChallenge;
+
+    modelStudent.getWritingsTeamCollection(idGroup, idChallenge, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        res.send(result);
+    });
+}
+
 /*Edita el escrito del estudiante */
 function editWriting(req, res) {
     const idWriting = req.body.idWriting;
@@ -768,10 +796,10 @@ function sendMessage(req, res) {
 // Obtiene las colecciones de un profesor, pudiendo filtrar por nombre de grupo o nombre de colección
 function getCollections(req, res)
 {
-    const idProfesor = req.query.idProfesor;
+    const idEstudiante = req.query.idEstudiante;
     const filtroBusqueda = req.query.filtroBusqueda;
-
-    modelTeacher.getCollections(idProfesor, filtroBusqueda, function (err, result) {
+    console.log(idEstudiante);
+    modelStudent.getCollections(idEstudiante, filtroBusqueda, function (err, result) {
         if (err) {
             console.log(err.message);
             res.status(500).send({ error: err.message });
@@ -785,7 +813,7 @@ function getCollection(req, res)
 {
     const idCollection = req.query.idCollection;
 
-    modelTeacher.getCollection(idCollection, function (err, result) {
+    modelStudent.getCollection(idCollection, function (err, result) {
         if (err) {
             console.log(err.message);
             res.status(500).send({ error: err.message });
@@ -799,7 +827,7 @@ function getChallengesFromCollection(req, res)
 {
     const idCollection = req.query.idCollection;
 
-    modelTeacher.getChallengesFromCollection(idCollection, function (err, result) {
+    modelStudent.getChallengesFromCollection(idCollection, function (err, result) {
         if (err) {
             console.log(err.message);
             res.status(500).send({ error: err.message });
@@ -837,6 +865,8 @@ module.exports = {
     getWritingsTeam: getWritingsTeam,
     getVersionsfromWritingTeam: getVersionsfromWritingTeam,
     getWritingsStudent: getWritingsStudent,
+    getWritingsStudentCollection: getWritingsStudentCollection,
+    getWritingsTeamCollection: getWritingsTeamCollection,
     //MultimediaWritings
     sendMultimedia: sendMultimedia,
     getMultimediaWriting: getMultimediaWriting,

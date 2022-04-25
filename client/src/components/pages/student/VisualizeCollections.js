@@ -86,14 +86,6 @@ class VisualizeCollections extends Component {
     }
 
     componentDidMount() {
-
-        /**Obtiene todos los grupos del profesor */
-        StudentService.getGroups(AuthUser.getCurrentUser().id).then(response => {
-        this.setState({ dataGroup: response });
-        if (this.state.dataGroup.length > 0) {
-            this.setState({ idGroupSelect: this.state.dataGroup[0].id, nameGroupSelect: this.state.dataGroup[0].nombre, showListGroups: true });
-        }
-        })
         
         StudentService.getCollections(AuthUser.getCurrentUser().id, this.state.filtroBusqueda)
           .then(response => {
@@ -129,11 +121,6 @@ class VisualizeCollections extends Component {
         this.filterData();
     }
 
-
-
-    handleSelect(group) {
-        this.setState({ idGroupSelect: group.id, nameGroupSelect: group.nombre });
-    }
 
     onAlert(modal) {
         this.setState({
@@ -186,25 +173,6 @@ class VisualizeCollections extends Component {
                                <h2>Colecciones</h2>
                            </div>
                        </div>
-
-                        <div className={"border-group"}>
-                            <br />
-                            <ul className={"flex-items-row-evenly"}>
-                                <li className={"flex-item-form"}>
-                                <Dropdown className="drop-down">
-                                    <DropdownToggle as={CustomToggle} id="dropdown-custom-components">Selecciona grupo</DropdownToggle>
-                                    <DropdownMenu as={CustomMenu}>
-                                    {dataGroup.map((row) => (
-                                        <DropdownItem eventKey={row.idGrupo} onClick={() => this.handleSelect(row)}>{row.nombre}</DropdownItem>
-                                    ))}
-                                    </DropdownMenu>
-                                </Dropdown>
-                                </li>
-                                <li className={"flex-item-form"}>
-                                <h4  style={{color: "#717172"}}>{this.state.nameGroupSelect}</h4>
-                                </li>
-                            </ul>
-                        </div>
 
                         {showListCollections ? (
                             <div>

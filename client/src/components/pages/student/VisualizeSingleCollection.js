@@ -41,11 +41,6 @@ class VisualizeSingleCollection extends Component {
             {
                 this.setState({ nameCollection: response[0].nombreColeccion, nameGroup: response[0].nombreGrupo, idGroup: response[0].idGrupo });
 
-                // Obtenemos los desafíos que no están en la colección
-                StudentService.getChallengesNotInCollection(response[0].idGrupo, this.props.match.params.idCollection)
-                    .then(response => {
-                        this.setState({ challengesNotInCollection: response});
-                    })
             }
         })
 
@@ -84,7 +79,7 @@ class VisualizeSingleCollection extends Component {
                     <br/>
                     <Alert variant={"info"}>
                         <img src="/info.png" alt=""/>
-                        Puede usar este espacio para ver los desafíos asociados a la colección, y añadir nuevos desafíos si así lo desea.
+                        Puede usar este espacio para ver los desafíos asociados a la colección.
                     </Alert>
                 </div>
 
@@ -116,7 +111,7 @@ class VisualizeSingleCollection extends Component {
                                                     )}
                                                 </li>
                                                 <li className={"flex-item-list"}>
-                                                    <Link key={challenge.id} to={`/teacher/collections/${this.props.match.params.idCollection}/${challenge.id}`}>
+                                                    <Link key={challenge.id} to={`/student/visualizecollections/${this.props.match.params.idCollection}/${challenge.id}`}>
                                                         <Button size={"sm"} variant={"primary"}>
                                                             Ver escritos
                                                         </Button>
@@ -133,23 +128,6 @@ class VisualizeSingleCollection extends Component {
                                 )}
 
                             </li>
-                            <div className={"row-edit"}>
-                                <ul className={"container-column-list wrap"}>
-                                    <li className={"flex-item-profile"}>
-                                        <label className={"form-label"} htmlFor="idChallengeSelect">Añadir un desafío</label>
-                                    </li>
-                                    <li className={"flex-item-profile"}>
-                                        <select name="idChallengeSelect" id="idChallengeSelect" onChange={this.handleChangeChallengeSelect}>
-                                            <option selected value= "-1" >Elija un desafío</option>
-                                            {this.state.challengesNotInCollection.map(challenge => {
-                                                return (
-                                                    <option value={challenge.id}>{challenge.titulo}</option>
-                                                )
-                                            })}
-                                        </select>
-                                    </li>
-                                </ul>
-                            </div>
                         </ul>
                     </Card.Body>
                     </Card>

@@ -191,6 +191,18 @@ class StudentService {
         })
     }
 
+      /*Obtiene los escritos del estudiante en un grupo*/
+      getWritingsStudentCollection(idGroup, idChallenge) {
+        return axios.get("student/getWritingsStudentCollection", { params: { idGroup: idGroup, idChallenge: idChallenge } }, {
+            headers: { "Authorization": `Bearer ${authHeader()}` }
+        }).then(response => {
+            return response.data;
+        }).catch(error => {
+            console.log(error.message);
+            window.location.href = '/500';
+        })
+    }
+
     /*Obtiene los escritos de un equipo */
     getWritingsTeam(idTeam, idGroup) {
         return axios.get("student/getWritingsTeam", { params: { idTeam: idTeam, idGroup: idGroup } }, {
@@ -202,6 +214,18 @@ class StudentService {
             window.location.href = '/500';
         })
     }
+
+  /*Obtiene escritos colaborativos */
+  getWritingsTeamCollection(idGroup, idChallenge) {
+    return axios.get("student/getWritingsTeamCollection", { params: { idGroup: idGroup,idChallenge:idChallenge } }, {
+        headers: { "Authorization": `Bearer ${authHeader()}` }
+    }).then(response => {
+        return response.data;
+    }).catch(error => {
+        console.log(error.message);
+        window.location.href = '/500';
+    })
+}
 
     /* Obtiene todas las versiones de un escrito colaborativo */
     getVersionsfromWritingTeam(idWriting)
@@ -590,9 +614,9 @@ class StudentService {
 
     //----------------------------------COLLECTIONS-----------------------------------------------------//
         // Obtiene las colecciones de un profesor, pudiendo filtrar por nombre de grupo o nombre de colección
-        getCollections(idProfesor, filtroBusqueda)
+        getCollections(idEstudiante, filtroBusqueda)
         {
-            return axios.get("/teacher/getCollections", { params: { idProfesor: idProfesor, filtroBusqueda: filtroBusqueda } },
+            return axios.get("/student/getCollections", { params: { idEstudiante: idEstudiante, filtroBusqueda: filtroBusqueda } },
                 {
                     headers: { "Authorization": `Bearer ${authHeader()}` }
                 }).then(response => {
@@ -606,7 +630,7 @@ class StudentService {
         // Obtiene una colección
         getCollection(idCollection)
         {
-            return axios.get("/teacher/getCollection", { params: { idCollection: idCollection } },
+            return axios.get("/student/getCollection", { params: { idCollection: idCollection } },
                 {
                     headers: { "Authorization": `Bearer ${authHeader()}` }
                 }).then(response => {
@@ -620,7 +644,7 @@ class StudentService {
         // Obtiene los desafíos de una colección
         getChallengesFromCollection(idCollection)
         {
-            return axios.get("/teacher/getChallengesFromCollection", { params: { idCollection: idCollection } },
+            return axios.get("/student/getChallengesFromCollection", { params: { idCollection: idCollection } },
                 {
                     headers: { "Authorization": `Bearer ${authHeader()}` }
                 }).then(response => {

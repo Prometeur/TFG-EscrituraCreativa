@@ -9,7 +9,7 @@ class modelStudent {
     
     /*Obtiene los grupos del estudiante*/
     getGroups(student, callback) {
-        const sqlSelect = "SELECT grupoestudiante.idGrupo, grupoestudiante.idEstudiante, grupo.nombre, grupo.idProfesor FROM grupoestudiante INNER JOIN grupo ON grupoestudiante.idGrupo = grupo.id WHERE grupoestudiante.idEstudiante=? AND grupoestudiante.activo=?;";
+        const sqlSelect = "SELECT grupoestudiante.idGrupo, grupoestudiante.idEstudiante, grupo.id as idGrupo, grupo.nombre, grupo.idProfesor FROM grupoestudiante INNER JOIN grupo ON grupoestudiante.idGrupo = grupo.id WHERE grupoestudiante.idEstudiante=? AND grupoestudiante.activo=?;";
         this.pool.query(sqlSelect, [student, 1], (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
@@ -206,10 +206,38 @@ class modelStudent {
         });
     }
 
+      /*Obtiene todos los escritos individuales dado un grupo y un desafio segun su grupo*/
+      getWritingsStudentCollection(idGroup, idChallenge, callback) {
+        const sqlSelect = "SELECT c.id as idDesafio, c.titulo as nombreDesafio, u.id as idEstudiante, u.nombre as nombreEstudiante, u.apellidos as apellidosEstudiante, w.id as idEscrito, w.idGrupo, w.idEscritor, w.nombre as nombreEscrito,w.texto ,w.puntuacion,w.comentario,w.colaborativo,w.finalizado,w.fecha,w.activo FROM escrito as w INNER JOIN desafio as c ON w.idDesafio = c.id INNER JOIN usuario as u ON w.idEscritor=u.id where w.idGrupo= ? AND w.idDesafio=? ;";
+
+        this.pool.query(sqlSelect, [idGroup, idChallenge], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+            }
+        });
+    }
+
     /*Obtiene los escritos del equipo*/
     getWritingsTeam(idTeam, idGroup, callback) {
         const sqlSelect = "SELECT g.nombre as nombreGrupo,t.nombre as nombreEquipo, c.titulo as nombreDesafio,c.fechaFin, w.id,w.idGrupo,w.idDesafio,w.idEscritor,w.nombre as nombreEscrito,w.puntuacion,w.comentario,w.colaborativo,w.finalizado,w.fecha,w.activo FROM escrito as w INNER JOIN equipo as t ON w.idEscritor= t.id INNER JOIN desafio as c ON w.idDesafio= c.id INNER JOIN grupo as g ON  w.idGrupo=g.id where w.idEscritor= ? AND w.idGrupo=?;";
         this.pool.query(sqlSelect, [idTeam, idGroup], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+            }
+        });
+    }
+
+    /*Obtiene todos los escritos colaborativos dado un grupo y un desafio segun su grupo*/
+    getWritingsTeamCollection(idGroup, idChallenge, callback) {
+        const sqlSelect = "SELECT c.id as idDesafio, c.titulo as nombreDesafio, t.id as idEquipo, t.nombre as nombreEquipo, w.id as idEscrito, w.idGrupo, w.idEscritor, w.nombre as nombreEscrito,w.texto ,w.puntuacion,w.comentario,w.colaborativo,w.finalizado,w.fecha,w.activo FROM escrito as w INNER JOIN desafio as c ON w.idDesafio = c.id INNER JOIN equipo as t ON w.idEscritor=t.id where w.idGrupo= ? AND w.idDesafio=? ;";
+
+        this.pool.query(sqlSelect, [idGroup, idChallenge], (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }
@@ -635,12 +663,11 @@ class modelStudent {
      //-----------------------------------------COLLECTIONS-----------------------------------------//
 
     // Obtiene las colecciones de un profesor, pudiendo filtrar por nombre de grupo o nombre de colección
-    getCollections(idProfesor, filtroBusqueda, callback)
-    {
-        const sqlSelect = "SELECT c.id as idColeccion, c.nombre as nombreColeccion, g.nombre as nombreGrupo FROM coleccion c JOIN grupo g ON g.id=c.idGrupo WHERE c.idProfesor=? AND (c.nombre LIKE ? OR g.nombre LIKE ?) AND c.activo=?;";
+    getCollections(idEstudiante, filtroBusqueda, callback)
+    {   const sqlSelect = "SELECT c.id as idColeccion, c.nombre as nombreColeccion, g.id as idGrupo, g.nombre as nombreGrupo FROM coleccion c INNER JOIN grupo g ON g.id=c.idGrupo INNER JOIN grupoestudiante ge ON ge.idGrupo=g.id WHERE ge.idEstudiante=? AND (c.nombre LIKE ? OR g.nombre LIKE ?) AND c.activo=? AND ge.activo=?";
         const valores = ["%" + filtroBusqueda + "%"];
 
-        this.pool.query(sqlSelect, [idProfesor, valores, valores, 1], (err, result) => {
+        this.pool.query(sqlSelect, [idEstudiante, valores, valores, 1, 1], (err, result) => {
             if (err) {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }

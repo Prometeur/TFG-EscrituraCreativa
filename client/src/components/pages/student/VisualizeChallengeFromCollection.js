@@ -47,18 +47,18 @@ class VisualizeChallengeFromCollection extends Component {
                 if (response[0].colaborativo == 1)
                 {
                     // Obtenemos todos los escritos del desafío
-                    StudentService.getWritingsStudent(this.state.idGroup, this.props.match.params.idChallenge)
+                    StudentService.getWritingsStudentCollection(this.state.idGroup, this.props.match.params.idChallenge)
                     .then(response => {
-                        if (response.data.length > 0)
+                        if (response.length > 0)
                         {
-                            this.setState({ dataWritings: response.data, hayEscritos: true });
+                            this.setState({ dataWritings: response, hayEscritos: true });
                         }
                     })
                 }
                 else // el desafío es colaborativo
                 {
                     // Obtenemos todos los escritos del desafío
-                    StudentService.getWritingsTeam(this.state.idGroup, this.props.match.params.idChallenge)
+                    StudentService.getWritingsTeamCollection(this.state.idGroup, this.props.match.params.idChallenge)
                     .then(response => {
                         if (response.length > 0)
                         {
