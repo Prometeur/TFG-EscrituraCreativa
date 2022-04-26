@@ -64,7 +64,8 @@ class EditVersionfromWriting extends Component {
                 escrito: ''
             },
             modalInsertVersion: false,
-            maxIdVersion: -1
+            maxIdVersion: -1,
+            numMultimedia: -1,
         }
     }
 
@@ -168,19 +169,41 @@ class EditVersionfromWriting extends Component {
                      console.log(error.message);
                  });
             }
+
+            /* Devuelve la última versión de un escrito, es decir, el mayor id */
+            StudentService.getHighestidVersionfromWriting(this.props.match.params.idWriting)
+            .then(response => {
+                this.setState({ maxIdVersion: response[0].maxId });
+
+                // funcion para contar el nº de archivos multimedia en una versión de un escrito
+                StudentService.getNumMultimedia(this.props.match.params.idChallenge, this.state.form.idWriter, this.props.match.params.idVersion)
+                .then(response => {
+                    this.setState({ numMultimedia: response[0].numMultimedia });
+
+                    for(let i = 0; i < response[0].numMultimedia; ++i)
+                    {
+                        // comprobar en algún lado [o directamente llamar a updateIdVersion... desde eliminar] si se ha eliminado alguna imagen multimedia
+                        
+                        // actualiza el id de la version maxima del escrito en la multimedia
+                        StudentService.updateIdVersionFinMultimedia(this.state.form.idWriter, this.props.match.params.idChallenge, this.state.maxIdVersion + 1)
+                        .catch(error => {
+                            console.log(error.message);
+                        });
+                    }
+
+                }).catch(error => {
+                    console.log(error.message);
+                });
+
+            }).catch(error => {
+                console.log(error.message);
+            });
+            
             
         }).catch(error => {
             console.log(error.message);
         });
 
-
-        /* Devuelve la última versión de un escrito, es decir, el mayor id */
-        StudentService.getHighestidVersionfromWriting(this.props.match.params.idWriting)
-        .then(response => {
-            this.setState({ maxIdVersion: response[0].maxId });
-        }).catch(error => {
-            console.log(error.message);
-        });
     }
 
     
@@ -194,7 +217,7 @@ class EditVersionfromWriting extends Component {
             StudentService.editWriting(this.props.match.params.idWriting, this.props.match.params.idGroup, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.title, this.state.form.escrito, this.state.challenge.colaborativo)
             .then(response => {
                 if (this.state.imgCollection.length > 0) {
-                    StudentService.sendMultimedia(this.state.imgCollection, this.state.form.idWriter, this.props.match.params.idChallenge, this.state.challenge.colaborativo/*, this.state.maxIdVersion + 1*/)
+                    StudentService.sendMultimediaVersion(this.state.imgCollection, this.state.form.idWriter, this.props.match.params.idChallenge, this.state.challenge.colaborativo, this.state.maxIdVersion + 1)
                         .then(response => {
                             window.location.href = `/student/versionsWriting/${this.props.match.params.idGroup}/${this.props.match.params.idChallenge}/${this.props.match.params.idWriting}`;
                         }).catch(error => {
@@ -212,6 +235,13 @@ class EditVersionfromWriting extends Component {
         .catch(error => {
             console.log(error.message);
         });
+
+        // actualiza el id de la version maxima del escrito en la multimedia
+        StudentService.updateIdVersionFinMultimedia(this.state.form.idWriter, this.props.match.params.idChallenge, this.state.maxIdVersion + 1)
+        .catch(error => {
+            console.log(error.message);
+        });
+
     }
 
     onModalInsertVersion = (modal) => {
@@ -361,10 +391,12 @@ class EditVersionfromWriting extends Component {
                         <div className={"row-edit"}>
                             <div className={"section-title"}>
                                 <h2>Editar Escrito {this.showCollaborative()}</h2>
+                                {this.state.numMultimedia}
                             </div>
                         </div>
                         <div className={"row-edit"}>
                             <label className={"form-label"}>Detalles del desafío</label>
+                            {this.state.numMultimedia}
                         </div>
                         <hr />
                         <ul className={"flex-row"}>

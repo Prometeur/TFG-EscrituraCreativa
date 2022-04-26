@@ -406,6 +406,42 @@ function getMultimediaWriting(req, res) {
 }
 
 
+// obtiene el numero de multimedia que tiene la versión concreta de un escrito
+function getNumMultimedia(req, res)
+{
+    const idChallenge = req.query.idChallenge;
+    const idWriter = req.query.idWriter;
+    const idVersion = req.query.idVersion;
+
+    modelStudent.getNumMultimedia(idChallenge, idWriter, idVersion, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else {
+            res.send(result);
+        }
+    });
+}
+
+// actualiza el id de la version maxima del escrito en la multimedia
+function updateIdVersionFinMultimedia(req, res)
+{
+    const idWriter = req.body.idWriter;
+    const idChallenge = req.body.idChallenge;
+    const idVersionFin = req.body.idVersionFin;
+
+    modelStudent.updateIdVersionFinMultimedia(idWriter, idChallenge, idVersionFin, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else {
+            res.send(result);
+        }
+    });
+}
+
 /*Envia los ficheros multimedia del escrito del estudiante*/
 function sendMultimedia(req, res) {
     const idWriter = req.body.idWriter;
@@ -430,6 +466,40 @@ function sendMultimedia(req, res) {
         reqFiles.push([idWriter, idChallenge/*, idVersion*/, path])
     }
     modelStudent.sendMultimedia(reqFiles, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err);
+        }
+        else {
+            res.send(result);
+        }
+    });
+}
+
+
+/*Envia los ficheros multimedia del escrito del estudiante de la versión correspondiente*/
+function sendMultimediaVersion(req, res) {
+    const idWriter = req.body.idWriter;
+    const idChallenge = req.body.idChallenge;
+    const idVersion = req.body.idVersion;
+    const reqFiles = [];
+    var typeChallenge;
+
+    if (req.query.type == 1) {
+        typeChallenge = "users";
+    }
+    else if (req.query.type == 2) {
+        typeChallenge = "teams";
+    }
+    for (var i = 0; i < req.files.length; i++) {
+        var str = req.files[i].mimetype;
+        var type = str.split("/");
+        const dir = idWriter + "/" + idChallenge + "/"+ idVersion + "/" + type[0] + "/";
+        // let path = "http://localhost:3001/multimedia/" + typeChallenge +"/"+ dir + req.files[i].filename;
+        let path = "http://" + req.headers.host + "/multimedia/" + typeChallenge + "/" + dir + req.files[i].filename;
+        reqFiles.push([idWriter, idChallenge, idVersion, idVersion, path])
+    }
+    modelStudent.sendMultimediaVersion(reqFiles, function (err, result) {
         if (err) {
             res.status(500).send({ error: err.message });
             console.log(err);
@@ -869,7 +939,10 @@ module.exports = {
     getWritingsTeamCollection: getWritingsTeamCollection,
     //MultimediaWritings
     sendMultimedia: sendMultimedia,
+    sendMultimediaVersion: sendMultimediaVersion,
     getMultimediaWriting: getMultimediaWriting,
+    getNumMultimedia: getNumMultimedia,
+    updateIdVersionFinMultimedia: updateIdVersionFinMultimedia,
     deleteFile: deleteFile,
     //Team
     createTeam: createTeam,

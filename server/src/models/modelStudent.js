@@ -304,19 +304,19 @@ class modelStudent {
         });
     }
 
-    /* Obtiene el último escrito, es decir, el máximo id de escrito */
-    getHighestidWriting(callback) {
-        const sqlSelect = "SELECT MAX(id) as maxIdWriting from escrito;";
+    // /* Obtiene el último escrito, es decir, el máximo id de escrito */
+    // getHighestidWriting(callback) {
+    //     const sqlSelect = "SELECT MAX(id) as maxIdWriting from escrito;";
         
-        this.pool.query(sqlSelect, (err, result) => {
-            if (err) {
-                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
-            }
-            else {
-                callback(null, result);
-            }
-        });
-    }
+    //     this.pool.query(sqlSelect, (err, result) => {
+    //         if (err) {
+    //             callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+    //         }
+    //         else {
+    //             callback(null, result);
+    //         }
+    //     });
+    // }
 
     /*Edito el escrito del equipo del estudiante */
     editWritingTeam(idWriting, idGroup, idChallenge, idWriter, title, text, log, type, callback) {
@@ -345,19 +345,44 @@ class modelStudent {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }
             else {
-                console.log("RESULT: " + result);
                 callback(null, result);
             }
         });
     }
 
-    // getMultimediaVersion()
-    // {
-    //     for (let i = 0; i < 1; ++i)
-    //     {
+    // función para obtener los archivos multimedia de una versión
+    getMultimediaVersion()
+    {
 
-    //     }
-    // }
+    }
+
+    // obtiene el numero de multimedia que tiene la versión concreta de un escrito
+    getNumMultimedia(idChallenge, idWriter, idVersion, callback) {
+        const sqlSelect = "SELECT count(*) as numMultimedia FROM multimediaescrito where idEscritor= ? AND idDesafio=? AND idVersionIni<=? AND idVersionFin>=?";
+
+        this.pool.query(sqlSelect, [idWriter, idChallenge, idVersion, idVersion], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+            }
+        });
+    }
+
+    // actualiza el id de la version maxima del escrito en la multimedia
+    updateIdVersionFinMultimedia(idEscritor,idDesafio, idVersionFin, callback) // idMultimedia
+    {
+        const sqlUpdate = "UPDATE multimediaescrito SET idVersionFin = ? WHERE idEscritor=? AND idDesafio=?"; // id
+        this.pool.query(sqlUpdate, [idVersionFin, idEscritor, idDesafio], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+            }
+        });
+    }
 
     /*Envia los ficheros multimedia del escrito del estudiante*/
     sendMultimedia(reqFiles, callback) {
@@ -374,6 +399,22 @@ class modelStudent {
         });
     }
 
+    // /*Envia los ficheros multimedia del escrito del estudiante de la versión correspondiente*/
+    sendMultimediaVersion(reqFiles, callback)
+    {
+        const sqlInsert = "INSERT INTO multimediaescrito (idEscritor, idDesafio, idVersionIni, idVersionFin, ruta) VALUES ?";
+        
+        this.pool.query(sqlInsert, [reqFiles], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+            }
+        });
+    }
+
+
     /*Elimina el fichero multimedia del escrito*/
     deleteFile(idMultimedia, callback) {
         const sqlDelete = "DELETE FROM multimediaescrito WHERE id=?";
@@ -386,6 +427,12 @@ class modelStudent {
             }
         });
     }
+
+    // función para eliminar una versión de la multimedia
+    // deleteFileVersion()
+    // {
+
+    // }
 
     //-------------------------------------------------TEAMS------------------------------------------------------------------//
 
