@@ -1,0 +1,41 @@
+<script>
+    function toPdf() {
+        var pdf = new jsPDF('p', 'pt', 'letter');
+        source = $('#imprimir')[0];
+
+        specialElementHandlers = {
+            '#bypassme': function (element, renderer) {
+                return true
+            }
+        };
+        margins = {
+            top: 80,
+            bottom: 60,
+            left: 40,
+            width: 522
+        };
+
+        pdf.fromHTML(
+            source, 
+            margins.left, // x coord
+            margins.top, { // y coord
+                'width': margins.width, 
+                'elementHandlers': specialElementHandlers
+            },
+
+            function (dispose) {
+                pdf.save('text.pdf');
+            }, margins
+        );
+    }
+</script>
+
+<!--
+    IMPORTANTE  el npm añadido en la guia para que funcione
+    
+esto ponerlo en la vista 
+    <a href="javascript:pruebaDivAPdf()" class="button">Pasar a PDF</a>
+
+ y el campo que sea para imprimir meterle el id = imprimir
+
+-->
