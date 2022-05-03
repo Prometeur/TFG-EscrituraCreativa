@@ -1,0 +1,74 @@
+<script>
+    AJAX = {
+        getXmlDoc: function(){return ((window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP"))},
+
+        Get: function(url, callback){
+            var tDoc = this.getXmlDoc();
+
+            tDoc.open('GET', url, true);
+            tDoc.onreadystatechange = function(){
+                if (tDoc.readyState === XMLHttpRequest.DONE && tDoc.status === 200) callback(tDoc);
+            };
+
+            tDoc.send();
+        }
+    };
+</script>
+
+<script type = 'text/javascript'>
+    function startTimer(){
+        document.body.QQ = setInterval(function(){
+            AJAX.Get('EditWritingTeam.js', function(r){
+                var tR = eval('[' + r.response + ']')[0]; //(:= {"var1": "30"})
+
+                for(var k in tR){
+                 
+                    var tE = document.getElementById(k);
+                    if (tE) tE.value = tR[k];
+                }
+            })
+        }, 1000)
+    }
+</script>
+
+
+<!-- 
+Cargar en la vista para que inicie el contador para reiniciar el texto
+Es necesario crear variables que guarden el texto dentro de la vista para que  el contador reaccione {"var1": "30"}
+
+<head>
+    <meta http-equiv = 'refresh' content = '5'>
+</head>
+
+<body onload = 'startTimer()'>
+    <input type = 'text' id = 'var1' name = 'CycleR' />
+
+    <input type = 'text' value = ':="Datablock".counter:' />
+</body>
+
+
+
+<body> //esto necesario dentro de index.js
+    <iframe src = 'nombredelavista'></iframe>
+</body>
+-->
+
+
+
+
+
+<!-- se le llama al script en el propio render (no funcional)
+<script>
+    $("input[type='text']").on("change", function () { //funcion on change no fiable para texto plano
+        //connection para bbdd
+        //se guarda y se descomprime para todas las versiones
+        var tR = eval('[' + r.response + ']')[0]; //(:= {"var1": "30", "var2": "40"})
+
+        for(var k in tR){   
+            var tE = document.getElementById(k);
+            if (tE) tE.value = tR[k];
+        }
+    });
+</script>
+
+-->
