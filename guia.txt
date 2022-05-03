@@ -4,6 +4,9 @@ https://www.youtube.com/watch?v=3YrOOia3-mo&ab_channel=PedroTech
 
 https://www.youtube.com/watch?v=_S2GKnFpdtE&ab_channel=PedroTech
 
+//documentacion del modulo de pdf
+https://rawgit.com/MrRio/jsPDF/master/docs/index.html
+
 -crear carpetas client y server
 borrar dentro client/src
 	-app.test.js
