@@ -18,6 +18,7 @@ import Message from './components/pages/student/Message.js';
 import TeacherBoard from '../src/components/pages/teacher/TeacherBoard.js';
 import StudentBoard from '../src/components/pages/student/StudentBoard.js';
 import AdminBoard from '../src/components/pages/admin/AdminBoard';
+import Inicio from '../src/components/pages/user/Inicio';
 
 /**Estilos exportados*/
 import Navbar from 'react-bootstrap/Navbar';
@@ -111,6 +112,9 @@ class App extends Component {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                   <Nav className="mr-auto">
+                  {(
+                      <Nav.Link bsPrefix="nav-link" href="/inicio">Inicio</Nav.Link>
+                    )}
                     {showAdmin && (
                       <Nav.Link bsPrefix="nav-link" href="/admin/groups">Tablero</Nav.Link>
                     )}
@@ -139,6 +143,7 @@ class App extends Component {
               <Route path='/teacher' component={TeacherBoard} />
               <Route exact path="/student/messenger" component={Messenger} />
               <Route exact path="/student/message/:idMessage" component={Message} />
+              <Route exact path="/inicio" component={Inicio} />
               <Route path='/student' component={StudentBoard} />
               <Route exact path='/500' component={InternalEror} /> {/*Esta dirección sirve para el error 500 (interno del servidor).*/}
               <Route exact path='*' component={NoMatch} /> {/*Esta dirección sirve para el error 404.*/}
