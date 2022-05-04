@@ -64,6 +64,7 @@ class EditWriting extends Component {
     }
 
     componentDidMount() {
+        
 
         /*Obtiene el desafio seleccionado*/
         TeacherService.getChallenge(this.props.match.params.idChallenge)
@@ -412,8 +413,8 @@ class EditWriting extends Component {
                             <label className='form-label'>Comentarios</label>
                             <td>
                             <textarea
-                                className={"text-area-comment"}
-                                rows="10" cols="70" value={this.state.form.commentary}
+                               
+                                rows="5" cols="100" value={this.state.form.commentary}
                                 onChange={this.onChangeCommentary}
                                 disabled={this.disabledComponent()}
                             >

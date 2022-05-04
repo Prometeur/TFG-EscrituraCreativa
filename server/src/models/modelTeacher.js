@@ -360,7 +360,18 @@ class modelTeacher {
         });
     }
 
-
+    getComments(idWriting, callback) {
+        const sqlSelect = "SELECT * FROM comentarios as c where c.idtexto= ?;";
+        // const sqlSelect = "SELECT * FROM escrito where idEscritor= ? AND activo=?;";
+        this.pool.query(sqlSelect, [idWriting], (err, result) => {
+            if (err) {
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+            }
+        });
+    }
 
     /*Obtiene los datos de perfil del alumno*/
     acceptApplicant(idUser, callback) {
