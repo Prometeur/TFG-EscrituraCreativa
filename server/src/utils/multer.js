@@ -12,10 +12,10 @@ const storage = multer.diskStorage({
         var dir;
         if (req.query.type == 1) {
             //obtengo la ruta -> multimedia/idUser/idfolder/tipo
-            dir = prueba + "users" + "/" + req.query.id + "/" + req.query.idFolder + "/" + req.query.version + "/" + res[0];
+            dir = prueba + "users" + "/" + req.query.id + "/" + req.query.idFolder + "/" + res[0];
         }
         else if (req.query.type == 2) {
-            dir = prueba + "teams" + "/" + req.query.id + "/" + req.query.idFolder + "/" + req.query.version + "/" + res[0];
+            dir = prueba + "teams" + "/" + req.query.id + "/" + req.query.idFolder + "/" + res[0];
         }
         else if (req.query.type == 3) {
             dir = prueba + "users" + "/" + req.query.id;

@@ -97,17 +97,8 @@ router.post("/editWritingTeam", controller.editWritingTeam);
 /*Obtiene los ficheros multimedia del escrito del estudiante*/
 router.get("/getMultimediaWriting", controller.getMultimediaWriting);
 
-// obtiene el numero de multimedia que tiene la versión concreta de un escrito
-router.get("/getNumMultimedia", controller.getNumMultimedia);
-
-// actualiza el id de la version maxima del escrito en la multimedia
-router.post("/updateIdVersionFinMultimedia", controller.updateIdVersionFinMultimedia);
-
 /*Envia los ficheros multimedia del escrito del estudiante*/
 router.post("/sendMultimedia", uploader.array('imgCollection', 20), controller.sendMultimedia);
-
-/*Envia los ficheros multimedia del escrito del estudiante de la versión correspondiente*/
-router.post("/sendMultimediaVersion", uploader.array('imgCollection', 20), controller.sendMultimediaVersion);
 
 /*Elimina fichero multimedia del escrito*/
 router.post("/deleteFile", controller.deleteFile);

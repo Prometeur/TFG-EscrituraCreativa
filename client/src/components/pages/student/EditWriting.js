@@ -120,9 +120,12 @@ class EditWriting extends Component {
         /* Devuelve la última versión de un escrito, es decir, el mayor id */
         StudentService.getHighestidVersionfromWriting(this.props.match.params.idWriting)
         .then(response => {
-            // Siempre va a ser al menos 1, ya que el escrito se crea en otra vista, y ya se genera allí la primera versión
-            this.setState({ maxIdVersion: response[0].maxId });
-
+            if(response.length > 0){
+                this.setState({ maxIdVersion: response[0].maxId });
+            }
+            else{
+                this.setState({maxIdVersion: 0});
+            }
         /*Obtiene el desafio seleccionado*/
         StudentService.getChallenge(this.props.match.params.idChallenge)
             .then(response => {
@@ -177,18 +180,18 @@ class EditWriting extends Component {
             });
 
 
-        // /* Devuelve la última versión de un escrito, es decir, el mayor id */
-        // StudentService.getHighestidVersionfromWriting(this.props.match.params.idWriting)
-        // .then(response => {
-        //     if(response.length > 0){
-        //         this.setState({ maxIdVersion: response[0].maxId });
-        //     }
-        //     else{
-        //         this.setState({maxIdVersion: 0});
-        //     }
-        // }).catch(error => {
-        //     console.log(error.message);
-        // });
+        /* Devuelve la última versión de un escrito, es decir, el mayor id */
+        StudentService.getHighestidVersionfromWriting(this.props.match.params.idWriting)
+        .then(response => {
+            if(response.length > 0){
+                this.setState({ maxIdVersion: response[0].maxId });
+            }
+            else{
+                this.setState({maxIdVersion: 0});
+            }
+        }).catch(error => {
+            console.log(error.message);
+        });
 
         /*Obtiene el escrito */
         StudentService.getWriting(this.props.match.params.idWriting)

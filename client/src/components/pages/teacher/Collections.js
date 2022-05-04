@@ -150,6 +150,26 @@ class Collections extends Component {
             console.log(error.message);
             })
 
+            let new_dataCollection = this.state.dataCollection;
+            let last_pos = [];
+
+            last_pos = [5, this.state.nombreColeccion, this.state.nameGroupSelect];
+        // last_pos["idCollection"] = this.state.nombreColeccion;
+        // last_pos["nombreColeccion"] = this.state.nombreColeccion;
+        // last_pos["nombreGrupo"] = this.state.nombreColeccion;
+        //new_dataCollection.splice(new_dataCollection.length, 0, last_pos);
+        //new_dataCollection.push(this.state.nombreColeccion, 1, AuthUser.getCurrentUser().id, this.state.idGroupSelect);
+        //    new_dataCollection.splice(this.state.dataCollection.length - 1, 0, last_pos);
+
+        //   
+        //     new_dataCollection.map((collection, i) => {
+        //         if (new_dataCollection.length == 5)
+        //         {
+        //             new_dataCollection.splice(new_dataCollection.length, 0, last_pos);
+        //         }
+        //      });
+        //    this.setState({ dataCollection: new_dataCollection });
+
             window.location.replace(`/teacher/collections`); 
         }
         else {

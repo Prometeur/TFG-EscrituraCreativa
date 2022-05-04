@@ -324,26 +324,6 @@ class StudentService {
         })
     }
 
-    /*Envia los archivos multimedia del estudiante*/
-    sendMultimediaVersion(imgCollection, idWriter, idChallenge, type, idVersion) {
-        const form = new FormData();
-        for (const key of Object.keys(imgCollection)) {
-            form.append('imgCollection', imgCollection[key])
-        }
-        form.append("idWriter", idWriter);
-        form.append("idChallenge", idChallenge);
-        form.append("idVersion", idVersion);
-        
-        return axios.post("/student/sendMultimediaVersion", form, { params: { id: idWriter, idFolder: idChallenge, type: type, version: idVersion } }, {
-            headers: { "Authorization": `Bearer ${authHeader()}` }
-        }).then(response => {
-            return response.data;
-        }).catch(error => {
-            console.log(error.message);
-            window.location.href = '/500';
-        })
-    }
-
     /*Obtiene multimedia del escrito del estudiante */
     getMultimediaWriting(idChallenge, idWriter/*, idVersion*/) {
         return axios.get("/student/getMultimediaWriting", { params: { idChallenge: idChallenge, idWriter: idWriter, /*idVersion: idVersion*/} },
@@ -357,10 +337,15 @@ class StudentService {
             })
     }
 
-    // obtiene el numero de multimedia que tiene la versión concreta de un escrito
-    getNumMultimedia(idChallenge, idWriter, idVersion)
-    {
-        return axios.get("/student/getNumMultimedia", { params: { idChallenge: idChallenge, idWriter: idWriter, idVersion: idVersion } }, {
+    /*Edita los archivos multimedia del estudiante*/
+    editMultimedia(idMultimedia, idWriter, idChallenge, idVersion, path) {
+        const form = new FormData();
+        form.append("idMultimedia", idMultimedia);
+        form.append("idWriter", idWriter);
+        form.append("idChallenge", idChallenge);
+        form.append("idVersion", idVersion);
+        form.append("path", path);
+        return axios.post("/student/editMultimedia", form, {
             headers: { "Authorization": `Bearer ${authHeader()}` }
         }).then(response => {
             return response.data;
@@ -369,37 +354,6 @@ class StudentService {
             window.location.href = '/500';
         })
     }
-
-    // actualiza el id de la version maxima del escrito en la multimedia
-    updateIdVersionFinMultimedia(idEscritor,idDesafio, idVersionFin)
-    {
-        return axios.post("/student/updateIdVersionFinMultimedia", { idWriter: idEscritor, idChallenge: idDesafio, idVersionFin: idVersionFin }, {
-            headers: { "Authorization": `Bearer ${authHeader()}` }
-        }).then(response => {
-            return response.data;
-        }).catch(error => {
-            console.log(error.message);
-            window.location.href = '/500';
-        })
-    }
-
-    // /*Edita los archivos multimedia del estudiante*/
-    // editMultimedia(idMultimedia, idWriter, idChallenge, idVersion, path) {
-    //     const form = new FormData();
-    //     form.append("idMultimedia", idMultimedia);
-    //     form.append("idWriter", idWriter);
-    //     form.append("idChallenge", idChallenge);
-    //     form.append("idVersion", idVersion);
-    //     form.append("path", path);
-    //     return axios.post("/student/editMultimedia", form, {
-    //         headers: { "Authorization": `Bearer ${authHeader()}` }
-    //     }).then(response => {
-    //         return response.data;
-    //     }).catch(error => {
-    //         console.log(error.message);
-    //         window.location.href = '/500';
-    //     })
-    // }
 
     /*Elimina fichero multimedia del escrito */
     deleteMultimedia(idMultimedia, path) {
