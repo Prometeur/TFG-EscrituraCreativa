@@ -351,14 +351,6 @@ class modelStudent {
         });
     }
 
-    // getMultimediaVersion()
-    // {
-    //     for (let i = 0; i < 1; ++i)
-    //     {
-
-    //     }
-    // }
-
     /*Envia los ficheros multimedia del escrito del estudiante*/
     sendMultimedia(reqFiles, callback) {
         const sqlInsert = "INSERT INTO multimediaescrito (idEscritor,idDesafio , ruta) VALUES ?";

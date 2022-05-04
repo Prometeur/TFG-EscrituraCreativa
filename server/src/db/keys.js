@@ -11,16 +11,4 @@ module.exports = {
         password:'',
         database:'escrituracreativa'
     }
-    // database:{
-    //     host:'escrituracreativatfg.mariadb.database.azure.com',
-    //     user:'sysadmin@escrituracreativatfg',
-    //     password:'escritura_0',
-    //     database:'escrituracreativa',
-    //     port: 3306,
-    //     // ssl:null,
-    //     //ssl:{ca:fs.readFileSync({ca-cert filename})},
-    // }
-
 }
-
-

@@ -8,16 +8,6 @@ const mysql = require('mysql');//defino el modulo que voy a usar
 //traer el objeto database
 const {database} = require('./keys');
 
-// const http = require('http');
-// function onRequest(request, response) {
-//     console.log("Peticion Recibida.");
-//     response.writeHead(200, {"Content-Type": "text/html"});
-//     response.write("Hola Mundo");
-//     response.end();
-//   }
-// var server = http.createServer(onRequest);
-// server.listen(8080);
-
 //para usar la conexion usamos createPool en vez createConnection, pq es mas cercano a un nivel de produccion
 //createPool tiene varios hilos, cada uno va haciendo una tarea en secuencia
 const pool=mysql.createPool(database);
