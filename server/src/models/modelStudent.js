@@ -304,19 +304,6 @@ class modelStudent {
         });
     }
 
-    /* Obtiene el último escrito, es decir, el máximo id de escrito */
-    getHighestidWriting(callback) {
-        const sqlSelect = "SELECT MAX(id) as maxIdWriting from escrito;";
-        
-        this.pool.query(sqlSelect, (err, result) => {
-            if (err) {
-                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
-            }
-            else {
-                callback(null, result);
-            }
-        });
-    }
 
     /*Edito el escrito del equipo del estudiante */
     editWritingTeam(idWriting, idGroup, idChallenge, idWriter, title, text, log, type, callback) {
@@ -345,7 +332,6 @@ class modelStudent {
                 callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
             }
             else {
-                console.log("RESULT: " + result);
                 callback(null, result);
             }
         });
