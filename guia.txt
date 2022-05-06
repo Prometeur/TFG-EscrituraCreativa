@@ -4,6 +4,9 @@ https://www.youtube.com/watch?v=3YrOOia3-mo&ab_channel=PedroTech
 
 https://www.youtube.com/watch?v=_S2GKnFpdtE&ab_channel=PedroTech
 
+//documentacion del modulo de pdf
+https://rawgit.com/MrRio/jsPDF/master/docs/index.html
+
 -crear carpetas client y server
 borrar dentro client/src
 	-app.test.js
@@ -22,6 +25,7 @@ npx create-react-app .
 npm install react-router-dom//para poder crear las rutas 
 npm i axios
 npm i universal-cookie//guardar la sesion
+npm install jspdf --save //modulo para poder pasar a pdf
 npm start
 
 

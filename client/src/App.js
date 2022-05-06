@@ -5,6 +5,7 @@
 
 import './App.css';
 import React, { Component } from 'react';
+import { jsPDF } from 'jspdf';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import AuthService from './services/authenticity/auth-service.js';
 import Login from './components/pages/login/Login.js';

@@ -111,6 +111,8 @@ router.get("/getWritingsTeam",controller_teacher.getWritingsTeam);
 router.get("/getWriting",controller_teacher.getWriting);
 
 
+router.get("/getComments", controller_teacher.getComments);
+
 
 //----------------------------------------------MULTIMEDIA WRITING------------------------------------------------------------------//
 

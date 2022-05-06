@@ -6,6 +6,17 @@ class TeacherService {
     //-------------------------------------------------GROUP------------------------------------------------------------------//
 
     /*Obtiene los  grupos del profesor */
+    getComments(idWriting){
+        return axios.get("/teacher/getComments", { params: { idWriting: idWriting } },
+        {
+            headers: { "Authorization": `Bearer ${authHeader()}` }
+        }).then(response => {
+            return response;
+        }).catch(error => {
+            console.log(error.message);
+            window.location.href = '/500';
+        })
+     }
     getGroups(idTeacher) {
         return axios.post("/teacher/groups", { idTeacher: idTeacher }, {
             headers: { "Authorization": `Bearer ${authHeader()}` }

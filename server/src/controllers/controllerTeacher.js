@@ -613,9 +613,22 @@ function deleteCollection(req, res)
     });
 }
 
+function getComments(req,res){
+    const idWriting = req.query.idWriting;
 
+    modelTeacher.getComments(idWriting, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else {
+            res.send(result);
+        }
+    });
+}
 
 module.exports = {
+    getComments: getComments,
     getGroups: getGroups,
     getChallenges: getChallenges,
     getChallenge: getChallenge,
