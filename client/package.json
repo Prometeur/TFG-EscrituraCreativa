@@ -1,5 +1,4 @@
 {
-  "homepage": "https://prometeur.github.io/TFG-EscrituraCreativa",
   "name": "client",
   "version": "0.1.0",
   "private": true,
@@ -46,8 +45,6 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -70,7 +67,6 @@
   "devDependencies": {
     "@babel/helper-builder-react-jsx": "^7.12.13",
     "@babel/helper-define-map": "^7.13.12",
-    "css-loader": "^5.0.1",
-    "gh-pages": "^3.2.3"
+    "css-loader": "^5.0.1"
   }
 }
