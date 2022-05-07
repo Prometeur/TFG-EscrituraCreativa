@@ -1,0 +1,34 @@
+{
+  "files": {
+    "main.css": "/TFG-EscrituraCreativa/static/css/main.94165c4a.chunk.css",
+    "main.js": "/TFG-EscrituraCreativa/static/js/main.e40fdc41.chunk.js",
+    "main.js.map": "/TFG-EscrituraCreativa/static/js/main.e40fdc41.chunk.js.map",
+    "runtime-main.js": "/TFG-EscrituraCreativa/static/js/runtime-main.485e9a2e.js",
+    "runtime-main.js.map": "/TFG-EscrituraCreativa/static/js/runtime-main.485e9a2e.js.map",
+    "static/css/2.d05ef1bc.chunk.css": "/TFG-EscrituraCreativa/static/css/2.d05ef1bc.chunk.css",
+    "static/js/2.30846eef.chunk.js": "/TFG-EscrituraCreativa/static/js/2.30846eef.chunk.js",
+    "static/js/2.30846eef.chunk.js.map": "/TFG-EscrituraCreativa/static/js/2.30846eef.chunk.js.map",
+    "static/js/3.219045d9.chunk.js": "/TFG-EscrituraCreativa/static/js/3.219045d9.chunk.js",
+    "static/js/3.219045d9.chunk.js.map": "/TFG-EscrituraCreativa/static/js/3.219045d9.chunk.js.map",
+    "static/js/4.d9cdc5d2.chunk.js": "/TFG-EscrituraCreativa/static/js/4.d9cdc5d2.chunk.js",
+    "static/js/4.d9cdc5d2.chunk.js.map": "/TFG-EscrituraCreativa/static/js/4.d9cdc5d2.chunk.js.map",
+    "static/js/5.794d5593.chunk.js": "/TFG-EscrituraCreativa/static/js/5.794d5593.chunk.js",
+    "static/js/5.794d5593.chunk.js.map": "/TFG-EscrituraCreativa/static/js/5.794d5593.chunk.js.map",
+    "index.html": "/TFG-EscrituraCreativa/index.html",
+    "precache-manifest.4cddc5cdee414db1f9a4288cd1c8ffef.js": "/TFG-EscrituraCreativa/precache-manifest.4cddc5cdee414db1f9a4288cd1c8ffef.js",
+    "service-worker.js": "/TFG-EscrituraCreativa/service-worker.js",
+    "static/css/2.d05ef1bc.chunk.css.map": "/TFG-EscrituraCreativa/static/css/2.d05ef1bc.chunk.css.map",
+    "static/css/main.94165c4a.chunk.css.map": "/TFG-EscrituraCreativa/static/css/main.94165c4a.chunk.css.map",
+    "static/js/2.30846eef.chunk.js.LICENSE.txt": "/TFG-EscrituraCreativa/static/js/2.30846eef.chunk.js.LICENSE.txt",
+    "static/js/3.219045d9.chunk.js.LICENSE.txt": "/TFG-EscrituraCreativa/static/js/3.219045d9.chunk.js.LICENSE.txt",
+    "static/js/4.d9cdc5d2.chunk.js.LICENSE.txt": "/TFG-EscrituraCreativa/static/js/4.d9cdc5d2.chunk.js.LICENSE.txt",
+    "static/js/5.794d5593.chunk.js.LICENSE.txt": "/TFG-EscrituraCreativa/static/js/5.794d5593.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.485e9a2e.js",
+    "static/css/2.d05ef1bc.chunk.css",
+    "static/js/2.30846eef.chunk.js",
+    "static/css/main.94165c4a.chunk.css",
+    "static/js/main.e40fdc41.chunk.js"
+  ]
+}
