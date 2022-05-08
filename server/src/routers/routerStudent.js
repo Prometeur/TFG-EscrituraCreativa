@@ -83,6 +83,8 @@ router.post("/createWriting", controller.createWriting);
 /*Edito el escrito del estudiante */
 router.post("/editWriting", controller.editWriting);
 
+router.post("/finishWriting", controller.finishWriting);
+
 /*Añado una nueva versión de un escrito */
 router.post("/insertVersionfromWriting", controller.insertVersionfromWriting);
 

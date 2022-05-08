@@ -288,7 +288,18 @@ class modelStudent {
             }
         });
     }
-
+    finishWriting(idWriting, idGroup, idChallenge, idWriter, title, text, type, finalizado, callback) {
+        const sqlInsert = "UPDATE escrito SET idGrupo = ?,idDesafio = ?, idEscritor = ?, nombre=?,texto = ?, colaborativo = ?, finalizado = ? WHERE id=?";
+        this.pool.query(sqlInsert, [idGroup, idChallenge, idWriter, title, text, type, finalizado, idWriting], (err, result) => {
+            if (err) {
+                console.log("Error");
+                callback(new Error("----ERROR SQL----\n" + err.sql + "\n" + err.sqlMessage));
+            }
+            else {
+                callback(null, result);
+            }
+        });
+    }
     /*Añado una nueva versión de un escrito */
     insertVersionfromWriting(idWriting, idVersion, idChallenge, idWriter, title, text, type, callback)
     {

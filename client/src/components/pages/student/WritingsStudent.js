@@ -80,7 +80,7 @@ class WritingsStudent extends Component {
         var dateActual = new Date();
         var dateFin = new Date(writing.fechaFin)//fecha fin del desafio
         //si ya se paso la fecha del desafio, desactivar button
-        if (dateActual.getTime() > dateFin.getTime())
+        if (dateActual.getTime() > dateFin.getTime() || writing.finalizado == 1)
             return true;
         else
             return false;

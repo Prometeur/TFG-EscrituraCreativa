@@ -246,6 +246,31 @@ class EditWriting extends Component {
             StudentService.insertVersionfromWriting(this.props.match.params.idWriting, this.state.maxIdVersion + 1, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.title, this.state.form.escrito, this.state.challenge.colaborativo)
     
     }
+    finishWriting = () => {
+        this.onModalEditWriting(false)
+        /*Edita escrito del estudiante*/
+        StudentService.finishWriting(this.props.match.params.idWriting, this.props.match.params.idGroup, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.title, this.state.form.escrito, this.state.challenge.colaborativo)
+            .then(response => {
+                if (this.state.imgCollection.length > 0) {
+                    StudentService.sendMultimedia(this.state.imgCollection, this.state.form.idWriter, this.props.match.params.idChallenge, this.state.challenge.colaborativo/*, this.state.maxIdVersion + 1*/)
+                        .then(response => {
+                            window.location.href = '/student/writingsTabs';
+                        }).catch(error => {
+                            console.log(error.message);
+                        });
+                }
+                else {
+                    window.location.href = '/student/writingsTabs';
+                }
+            })
+            .catch(error => {
+                console.log(error.message);
+            });
+
+            StudentService.insertVersionfromWriting(this.props.match.params.idWriting, this.state.maxIdVersion + 1, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.title, this.state.form.escrito, this.state.challenge.colaborativo)
+    
+    }
+
 
     //Elimina el fichero multimedia del escrito
     deleteFile = (writing) => {
@@ -369,6 +394,11 @@ class EditWriting extends Component {
 onModalEditWriting = (modal) => {
         this.setState({
             modalEditWriting: modal,
+        });
+    };
+onModalFinishWriting = (modal) => {
+        this.setState({
+            modalFinishWriting: modal,
         });
     };
 
@@ -555,6 +585,9 @@ onModalEditWriting = (modal) => {
                             <div className="form-button">
                                 <Button onClick={() => window.location.href = `/student/versionsWriting/${this.props.match.params.idGroup}/${this.props.match.params.idChallenge}/${this.props.match.params.idWriting}`}>Acceder a versiones anteriores</Button>
                             </div>
+                            <div className="form-button">
+                                <Button text='enviar' onClick={() => this.onModalFinishWriting(true)} disabled={this.disabledButton()} > Finalizar  </Button>
+                            </div>
 
                         </div>
 
@@ -586,6 +619,19 @@ onModalEditWriting = (modal) => {
                     <Modal.Footer>
                         <Button onClick={() => this.editWriting()}>Aceptar</Button>
                         <Button variant="danger" onClick={() => this.onModalEditWriting(false)}>Cancelar</Button>
+                    </Modal.Footer>
+                </Modal>
+
+                <Modal show={this.state.modalFinishWriting}>
+                    <Modal.Header>
+                    </Modal.Header>
+                    <Modal.Body>
+                    <p> ¿Deseas guardar los cambios y finalizar?</p>
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <Button onClick={() => this.finishWriting()}>Aceptar</Button>
+                        <Button variant="danger" onClick={() => this.onModalFinishWriting(false)}>Cancelar</Button>
                     </Modal.Footer>
                 </Modal>
 

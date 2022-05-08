@@ -329,6 +329,25 @@ function editWriting(req, res) {
         }
     });
 }
+function finishWriting(req, res) {
+    const idWriting = req.body.idWriting;
+    const idGroup = req.body.idGroup;
+    const idChallenge = req.body.idChallenge;
+    const idWriter = req.body.idWriter;
+    const title = req.body.title;
+    const text = req.body.escrito;
+    const type = req.body.type;
+    const finalizado = '1';
+    modelStudent.finishWriting(idWriting, idGroup, idChallenge, idWriter, title, text, type, finalizado, function (err, result) {
+        if (err) {
+            res.status(500).send({ error: err.message });
+            console.log(err.message);
+        }
+        else {
+            res.send(result);
+        }
+    });
+}
 
 /*Añado una nueva versión de un escrito */
 function insertVersionfromWriting(req, res) {
@@ -851,6 +870,7 @@ module.exports = {
     //MultimediaChallenge
     getMultimediaChallenge: getMultimediaChallenge,
     //Writings
+    finishWriting: finishWriting,
     createWriting: createWriting,
     getWriting: getWriting,
     getVersionsfromWriting: getVersionsfromWriting,

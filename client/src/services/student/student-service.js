@@ -251,6 +251,16 @@ class StudentService {
             window.location.href = '/500';
         })
     }
+    finishWriting(idWriting, idGroup, idChallenge, idWriter, title, escrito, type) {
+        return axios.post("/student/finishWriting", { idWriting: idWriting, idGroup: idGroup, idChallenge: idChallenge, idWriter: idWriter, title: title, escrito: escrito, type: type }, {
+            headers: { "Authorization": `Bearer ${authHeader()}` }
+        }).then(response => {
+            return response.data;
+        }).catch(error => {
+            console.log(error.message);
+            window.location.href = '/500';
+        })
+    }
 
     /*Añado una nueva versión de un escrito */
     insertVersionfromWriting(idWriting, idVersion, idChallenge, idWriter, title, text, type)
