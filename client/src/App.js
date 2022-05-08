@@ -113,9 +113,9 @@ class App extends Component {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                   <Nav className="mr-auto">
-                  {(
-                      <Nav.Link bsPrefix="nav-link" href="/inicio">Inicio</Nav.Link>
-                    )}
+
+                    <Nav.Link bsPrefix="nav-link" href="/inicio">Inicio</Nav.Link>
+
                     {showAdmin && (
                       <Nav.Link bsPrefix="nav-link" href="/admin/groups">Tablero</Nav.Link>
                     )}
