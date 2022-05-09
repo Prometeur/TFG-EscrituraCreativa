@@ -519,7 +519,7 @@ class EditVersionfromWriting extends Component {
                                 <Button text='enviar' onClick={() => this.onModalInsertVersion(true)} > Guardar como escrito actual </Button>
                             </div>
                             <div className="form-button">
-                                <Button onClick={() => window.location.href = `/student/versionsWriting/${this.props.match.params.idGroup}/${this.props.match.params.idChallenge}/${this.props.match.params.idWriting}`}>Cancelar</Button>
+                                <Button variant="danger" onClick={() => window.location.href = `/student/versionsWriting/${this.props.match.params.idGroup}/${this.props.match.params.idChallenge}/${this.props.match.params.idWriting}`}>Cancelar</Button>
                             </div>
                         </div>
 

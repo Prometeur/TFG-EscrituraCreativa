@@ -579,7 +579,7 @@ onModalFinishWriting = (modal) => {
                                 <Button text='enviar' onClick={() => this.onModalEditWriting(true)} disabled={this.disabledButton()} > Guardar  </Button>
                             </div>
                             <div className="form-button">
-                                <Button onClick={() => window.location.href = '/student/writingsTabs'}>Cancelar</Button>
+                                <Button variant="danger" onClick={() => window.location.href = '/student/writingsTabs'}>Cancelar</Button>
                             </div>
 
                             <div className="form-button">
