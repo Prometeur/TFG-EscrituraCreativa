@@ -55,7 +55,7 @@ class Login extends Component {
     componentDidMount(){
 
        if(AuthService.getCurrentUser()){
-         this.props.history.push("/profile");
+         this.props.history.push("/inicio");
          window.location.reload();
        }
     }
