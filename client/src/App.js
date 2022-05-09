@@ -101,7 +101,7 @@ class App extends Component {
               <link rel="preconnect" href="https://fonts.gstatic.com"></link>
               <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Pontano+Sans&family=Dawning+of+a+New+Day&display=swap" rel="stylesheet"></link>
               <Navbar collapseOnSelect expand="lg" >
-                <Navbar.Brand href={"/profile"}>
+                <Navbar.Brand href={"/inicio"}>
                   <img
                       src="/puntapluma.png"
                       width="45"
