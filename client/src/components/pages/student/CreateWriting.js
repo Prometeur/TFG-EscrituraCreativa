@@ -154,8 +154,6 @@ class CreateWriting extends Component {
                                 console.log(error.message);
                             });
 
-                        StudentService.insertVersionfromWriting(this.state.maxIdWriting + 1, 1, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.title, this.state.form.escrito, this.state.challenge.colaborativo)
-                    
                     }
                 }
                 else {
