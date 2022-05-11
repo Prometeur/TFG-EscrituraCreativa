@@ -197,9 +197,11 @@ class TeamsGroup extends Component {
                                                         <tr key={team.idEquipo}>
                                                             <td>{team.nombreEquipo}</td>
                                                             <td>{team.nombreGrupo}</td>
+                                                            <td>
                                                             {dataTeamStudent.filter(teamStudent => teamStudent.idEquipo === team.idEquipo).map((item, index) =>
-                                                                <td> <div>{item.nombre} {item.apellidos} </div></td>
+                                                                <div>{item.nombre} {item.apellidos} </div>
                                                             )}
+                                                            </td>
                                                             <td >
                                                                 <img src="/send.png" alt=""/>
                                                                 <Button

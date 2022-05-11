@@ -55,7 +55,7 @@ class Login extends Component {
     componentDidMount(){
 
        if(AuthService.getCurrentUser()){
-         this.props.history.push("/profile");
+         this.props.history.push("/inicio");
          window.location.reload();
        }
     }
@@ -92,7 +92,7 @@ class Login extends Component {
     if (this.checkBtn.context._errors.length === 0) {
         AuthService.login(this.state.username, this.state.password)
         .then( ()=> {
-             window.location.href="/profile";
+             window.location.href="/inicio";
           })
         .catch(e => {
           console.log(e);

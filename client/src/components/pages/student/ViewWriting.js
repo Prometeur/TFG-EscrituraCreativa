@@ -337,7 +337,7 @@ class ViewWriting extends Component {
                             </div>
                             <div className={"row-edit"}>
                                 <div className="form-button">
-                                    <Button onClick={() => window.location.href = '/student'}>Volver</Button>
+                                    <Button onClick={() => window.location.href = '/student/writingsTabs'}>Volver</Button>
                                 </div>
                             </div>
                         </Card.Body>
