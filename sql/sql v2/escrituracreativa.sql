@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-04-2022 a las 10:48:40
+-- Tiempo de generación: 11-04-2022 a las 17:28:42
 -- Versión del servidor: 10.4.22-MariaDB
 -- Versión de PHP: 8.1.2
 
@@ -78,6 +78,17 @@ CREATE TABLE `coleccion` (
   `idGrupo` int(9) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Volcado de datos para la tabla `coleccion`
+--
+
+INSERT INTO `coleccion` (`id`, `nombre`, `activo`, `idProfesor`, `idGrupo`) VALUES
+(3, 'Siglo XXI', 1, 4, 3),
+(4, 'Análisis sintáctico', 1, 4, 4),
+(6, 'Siglo XVIII', 1, 4, 3),
+(7, 'Animales', 1, 4, 6),
+(8, 'Modernismo', 0, 4, 8);
+
 -- --------------------------------------------------------
 
 --
@@ -89,6 +100,16 @@ CREATE TABLE `colecciondesafio` (
   `idColeccion` int(9) NOT NULL,
   `idDesafio` int(9) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `colecciondesafio`
+--
+
+INSERT INTO `colecciondesafio` (`id`, `idColeccion`, `idDesafio`) VALUES
+(3, 3, 3),
+(4, 6, 3),
+(7, 4, 50),
+(8, 3, 345);
 
 -- --------------------------------------------------------
 
@@ -227,12 +248,12 @@ CREATE TABLE `escrito` (
 INSERT INTO `escrito` (`id`, `idGrupo`, `idDesafio`, `idEscritor`, `nombre`, `texto`, `registro`, `puntuacion`, `comentario`, `colaborativo`, `finalizado`, `fecha`, `activo`) VALUES
 (145, 3, 269, 72, 'Escrito8', '<p><em>El otro día conocí a una chica en una reunión que me presentaron unos amigos. La chica me contó que en su pueblo se estaba construyendo una mini-central eólica usando latas de refresco. La gente estaba muy contenta.</em></p>\n<p></p>\n', '', 6, 'Me parece muy buena historia quizás mejoraría algunas cosas como.....', 2, 0, '2021-04-27 09:42:50', 1),
 (146, 3, 270, 35, 'Escrito40', '<p><em>El otro día conocí a una chica en una reunión que me presentaron unos amigos. La chica me contó que en su pueblo se estaba construyendo una mini-central eólica usando latas de refresco. La gente estaba muy contenta.</em></p>\r\n<p></p>\r\n', '', 6, 'Me parece muy buena historia quizás mejoraría algunas cosas como.....', 2, 0, '2021-04-27 09:42:50', 1),
-(147, 1, 432, 22, '1', '<p>2</p>\n<p>2</p>\n', '', 0, '', 1, 0, '2022-02-21 19:28:49', 1),
+(147, 1, 432, 22, '1', '<p>2</p>\n', '', 0, '', 1, 0, '2022-02-21 19:28:49', 1),
 (151, 3, 3, 22, 'Prueba 4.4', '<p>4.4</p>\r\n\r\n', '', 0, '', 1, 0, '2022-02-27 19:13:27', 1),
-(152, 3, 345, 80, 'Prueba7.3', '<p>AACC</p>\n', '', 0, '', 2, 0, '2022-03-16 16:20:11', 1),
-(153, 3, 269, 80, 'T1', '<p>D1</p>\n', '', 0, '', 2, 0, '2022-03-18 10:02:23', 1),
+(152, 3, 345, 80, 'Prueba7.4', '<p>AB</p>\n', '', 0, '', 2, 0, '2022-03-16 16:20:11', 1),
+(153, 3, 269, 80, 'T2', '<p>AEIOU</p>\n', '', 0, '', 2, 0, '2022-03-18 10:02:23', 1),
 (154, 8, 441, 22, 'Escrito Mozart', '<p>Érase una vez ...</p>\n', '', 0, '', 1, 0, '2022-03-25 11:18:10', 1),
-(155, 1, 432, 22, '2.0', '<p>Este el 2º escrito para este desafío.</p>\n', '', 0, '', 1, 0, '2022-04-03 09:43:07', 1),
+(155, 1, 432, 22, '2.1', '<p>Este el 2º escrito para este desafío.</p>\n', '', 0, '', 1, 0, '2022-04-03 09:43:07', 1),
 (156, 3, 269, 80, 'Prueba 2.0', '<p>2.0</p>\n', '', 0, '', 2, 0, '2022-04-03 09:45:08', 1),
 (157, 3, 444, 22, 'EEEEEEEEEEE', '<p>EEEEEEEEEEEEE</p>\n', '', 0, '', 1, 0, '2022-04-03 11:01:05', 1);
 
@@ -378,6 +399,7 @@ CREATE TABLE `multimediaescrito` (
   `id` int(9) NOT NULL,
   `idEscritor` int(11) NOT NULL,
   `idDesafio` int(11) NOT NULL,
+  `idVersionEscrito` int(11) NOT NULL,
   `ruta` text CHARACTER SET utf8 DEFAULT NULL,
   `fecha` datetime NOT NULL DEFAULT current_timestamp(),
   `orden` int(11) NOT NULL
@@ -387,11 +409,14 @@ CREATE TABLE `multimediaescrito` (
 -- Volcado de datos para la tabla `multimediaescrito`
 --
 
-INSERT INTO `multimediaescrito` (`id`, `idEscritor`, `idDesafio`, `ruta`, `fecha`, `orden`) VALUES
-(131, 9, 269, 'http://localhost:3001/multimedia/users/9/269/image/alaska.jpg', '2021-04-27 09:37:04', 0),
-(134, 32, 269, 'http://localhost:3001/multimedia/teams/32/269/image/alaska.jpg', '2021-04-27 09:50:48', 0),
-(136, 33, 269, 'http://localhost:3001/multimedia/teams/33/269/audio/Daft Punk - Get Lucky.mp3', '2021-04-29 15:58:08', 0),
-(137, 72, 269, 'http://localhost:3001/multimedia/teams/72/269/image/alaska.jpg', '2021-05-07 23:58:18', 0);
+INSERT INTO `multimediaescrito` (`id`, `idEscritor`, `idDesafio`, `idVersionEscrito`, `ruta`, `fecha`, `orden`) VALUES
+(131, 9, 269, 1, 'http://localhost:3001/multimedia/users/9/269/image/alaska.jpg', '2021-04-27 09:37:04', 0),
+(134, 32, 269, 1, 'http://localhost:3001/multimedia/teams/32/269/image/alaska.jpg', '2021-04-27 09:50:48', 0),
+(136, 33, 269, 1, 'http://localhost:3001/multimedia/teams/33/269/audio/Daft Punk - Get Lucky.mp3', '2021-04-29 15:58:08', 0),
+(137, 72, 269, 1, 'http://localhost:3001/multimedia/teams/72/269/image/alaska.jpg', '2021-05-07 23:58:18', 0),
+(140, 22, 432, 10, 'http://localhost:3001/multimedia/users/22/432/image/add-white.png', '2022-04-11 11:04:19', 0),
+(141, 22, 3, 6, 'http://localhost:3001/multimedia/users/22/3/image/anadir-grupo.png', '2022-04-11 11:15:50', 0),
+(143, 80, 345, 7, 'http://localhost:3001/multimedia/teams/80/345/image/circuloVerde.png', '2022-04-11 12:46:48', 0);
 
 -- --------------------------------------------------------
 
@@ -462,6 +487,8 @@ INSERT INTO `versionescrito` (`idEscrito`, `idVersion`, `idDesafio`, `idEscritor
 (147, 2, 432, 22, 'Hola', 'Me llamo Juan', 1, '2022-02-21 19:28:49', 1),
 (151, 2, 3, 22, 'Prueba 4.2', '<p>12345678</p>\n', 1, '2022-02-27 20:14:59', 0),
 (152, 2, 345, 80, 'Prueba2', '<p>BBBB</p>\n', 2, '2022-03-19 11:46:40', 0),
+(153, 2, 269, 80, 'T2', '<p>AEIOU</p>\n', 2, '2022-04-11 13:49:39', 0),
+(155, 2, 432, 22, '2.1', '<p>Este el 2º escrito para este desafío.</p>\n', 1, '2022-04-11 13:56:10', 0),
 (147, 3, 432, 22, 'H', '3', 1, '2022-02-23 19:19:13', 1),
 (151, 3, 3, 22, 'Prueba 4.3', '<p>12</p>\n', 1, '2022-02-27 20:20:58', 0),
 (152, 3, 345, 80, 'Prueba3', '<p>AABB</p>\n<p></p>\n', 2, '2022-03-19 11:47:03', 0),
@@ -472,6 +499,7 @@ INSERT INTO `versionescrito` (`idEscrito`, `idVersion`, `idDesafio`, `idEscritor
 (151, 5, 3, 22, 'Prueba 4.4', '<p>4.4</p>\r\n\r\n', 1, '2022-04-03 10:01:15', 0),
 (152, 5, 345, 80, 'Prueba2', '<p>BBBB</p>\n', 2, '2022-03-19 12:19:12', 0),
 (147, 6, 432, 22, 'Hola J.A.', '<p>Me llamo Juan Antonio</p>\n', 1, '2022-03-17 19:12:06', 0),
+(151, 6, 3, 22, 'Prueba 4.4', '<p>4.4</p>\r\n\r\n', 1, '2022-04-11 11:15:50', 0),
 (152, 6, 345, 80, 'Prueba5', '<p>AABB</p>\n<p></p>\n', 2, '2022-03-19 12:21:23', 0),
 (147, 7, 432, 22, '1', '<p>4.4</p>\n<p>2</p>\n<p>4.4</p>\n<p>2</p>\n', 1, '2022-03-26 18:04:52', 0),
 (152, 7, 345, 80, 'Prueba6.2', '<p>AACC</p>\n', 2, '2022-03-19 12:33:03', 0),
@@ -479,7 +507,12 @@ INSERT INTO `versionescrito` (`idEscrito`, `idVersion`, `idDesafio`, `idEscritor
 (152, 8, 345, 80, 'Prueba7', '<p>DDDD</p>\n', 2, '2022-03-19 12:55:49', 0),
 (147, 9, 432, 22, '1', '<p>2</p>\n<p>2</p>\n', 1, '2022-04-04 17:17:11', 0),
 (152, 9, 345, 80, 'Prueba7.2', '<p>ABCD</p>\n', 2, '2022-03-19 13:13:20', 0),
-(152, 10, 345, 80, 'Prueba7.3', '<p>AACC</p>\n', 2, '2022-03-19 13:17:32', 0);
+(147, 10, 432, 22, '1', '<p>2</p>\n', 1, '2022-04-11 11:04:19', 0),
+(152, 11, 345, 80, 'Prueba7.3', '<p>AACC</p>\n', 2, '2022-04-11 12:46:48', 0),
+(152, 12, 345, 80, 'Prueba7.2', '<p>ABCD</p>\n', 2, '2022-04-11 13:35:33', 0),
+(152, 13, 345, 80, 'Prueba7.2', '<p>ABCD</p>\n', 2, '2022-04-11 13:39:41', 0),
+(152, 14, 345, 80, 'Prueba7.3', '<p>ABCDEFGH</p>\n', 2, '2022-04-11 13:44:03', 0),
+(152, 15, 345, 80, 'Prueba7.4', '<p>AB</p>\n', 2, '2022-04-11 13:48:22', 0);
 
 --
 -- Índices para tablas volcadas
@@ -619,13 +652,13 @@ ALTER TABLE `categoria`
 -- AUTO_INCREMENT de la tabla `coleccion`
 --
 ALTER TABLE `coleccion`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT de la tabla `colecciondesafio`
 --
 ALTER TABLE `colecciondesafio`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `desafio`
@@ -679,7 +712,7 @@ ALTER TABLE `multimediadesafio`
 -- AUTO_INCREMENT de la tabla `multimediaescrito`
 --
 ALTER TABLE `multimediaescrito`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=140;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=144;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
