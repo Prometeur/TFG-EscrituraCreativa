@@ -151,7 +151,7 @@ class SearchStudentRes extends Component {
         let header = <> </>;
         let tabla = <> </>;
         if (this.state.currentUserRole === "T") {
-            header = <div><label className={"form-label"}>Listado de estudiantes que quieren unirse a Creativa: </label></div>;
+            header = <div><label className={"form-label"}>Listado de estudiantes que quieren unirse a Creactiva: </label></div>;
             tabla = <ul className={"flex-items-row-start wrap"}  >
 
                 {this.state.filteredData.map((student) =>
@@ -232,7 +232,7 @@ class SearchStudentRes extends Component {
 
 
         if (this.state.currentUserRole === "A") {
-            header = <div><label className={"form-label"}>Listado de estudiantes que quieren unirse a Creativa: </label></div>;
+            header = <div><label className={"form-label"}>Listado de estudiantes que quieren unirse a Creactiva: </label></div>;
             tabla = <ul className={"flex-items-row-start wrap"}>
                 {this.state.filteredData.map((student) =>
                 (

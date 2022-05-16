@@ -108,7 +108,7 @@ class App extends Component {
                       height="45"
                       alt="React Bootstrap logo"
                   />
-                  Creativa
+                  Creactiva
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
@@ -163,7 +163,7 @@ class App extends Component {
                       height="45"
                       alt="React Bootstrap logo"
                   />
-                  Creativa
+                  Creactiva
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">

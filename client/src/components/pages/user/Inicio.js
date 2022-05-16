@@ -72,7 +72,7 @@ class Inicio extends Component {
             <Card className={"card-long"}>
                 <Card.Body>
                 <div className={"section-title"}>
-                    <h2>¿Qué es Creativa?</h2>
+                    <h2>¿Qué es Creactiva?</h2>
                 </div>
                 <div className='row-edit'>
                     <p>Es una aplicación para fomentar la escritura creativa de una manera didáctica a través de desafíos de distintas temáticas que propondrá el profesor.</p>

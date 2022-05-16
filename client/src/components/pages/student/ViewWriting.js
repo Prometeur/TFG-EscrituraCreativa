@@ -335,11 +335,7 @@ class ViewWriting extends Component {
                                 <label className='form-label'>Comentarios: </label>
                                 <td><textarea rows="10" cols="70" value={this.state.writing.comentario} readOnly={true} style={{ resize: "none", justifyContent: "center" }} ></textarea></td>
                             </div>
-                            <div className={"row-edit"}>
-                                <div className="form-button">
-                                    <Button onClick={() => window.location.href = '/student/writingsTabs'}>Volver</Button>
-                                </div>
-                            </div>
+
                         </Card.Body>
                     </Card>
                 </div>
