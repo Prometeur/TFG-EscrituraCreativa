@@ -253,6 +253,7 @@ class ViewWriting extends Component {
                         <Card.Body>
                             <div className={"row-edit"}>
                                 <div className={"section-title"}>
+                                    
                                     <h2>{this.showTypeChallenge()}</h2>
                                 </div>
                             </div>
@@ -335,6 +336,7 @@ class ViewWriting extends Component {
                                 <label className='form-label'>Comentarios: </label>
                                 <td><textarea rows="10" cols="70" value={this.state.writing.comentario} readOnly={true} style={{ resize: "none", justifyContent: "center" }} ></textarea></td>
                             </div>
+                            <button onclick="javascript:toPdf();" >Pasar a PDF</button>
 
                         </Card.Body>
                     </Card>

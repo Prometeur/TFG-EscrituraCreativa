@@ -323,6 +323,8 @@ class EditWriting extends Component {
                 </Card>
                 <Card className="card-long">
                     <Card.Body>
+                    <div id ="imprimir">
+
                     <div className={"row-edit"}>
                         <label className={"form-label"}>Escrito del estudiante</label>
                     </div>
@@ -357,6 +359,8 @@ class EditWriting extends Component {
                             readOnly={this.disabledComponent()}
                         />
                     </div>
+                    </div>
+
                     <div class="row-edit">
                         <ul className={"flex-row"}>
                             <li className={"flex-item-form"}>
@@ -406,6 +410,7 @@ class EditWriting extends Component {
                                     </select>
                                 </div>
                             </li>
+                            <button onclick="javascript:toPdf();" >Pasar a PDF</button>
                         </ul>
                     </div>
                     <div class="row-edit">

@@ -287,6 +287,7 @@ class EditWritingTeam extends Component {
                 <div className="container">
                     <label className='form-label'>Editar Escrito {this.showCollaborative()}</label>
                     <Card className="card-edit">
+                        
                         <Card.Body>
                             <div className="row-edit">
                                 <h2 > {this.state.challenge.titulo} </h2>
