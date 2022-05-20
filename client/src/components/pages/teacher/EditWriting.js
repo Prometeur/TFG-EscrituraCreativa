@@ -4,7 +4,9 @@
 */
 
 import React, { Component } from 'react';
+import { jsPDF } from 'jspdf'; 
 import { Link } from "react-router-dom";
+
 
 /*Importaciones del editor */
 import { Editor } from "react-draft-wysiwyg";
@@ -269,9 +271,17 @@ class EditWriting extends Component {
     render() {
         const { dataMediaChallenge } = this.state;
         const { dataMediaWriting } = this.state;
+        const createPDF = async () => {
+            const pdf = new jsPDF("portrait", "pt", "a4");
+            const data = await document.querySelector("#imprimir");
+            pdf.html(data).then(() => {
+              pdf.save("Escrito.pdf");
+            });
+          };
         // const { formErrors } = this.state;
         return (
         <div className="container">
+            
                 <Card className="card-long">
                     <Card.Body>
                     <div className={"row-edit"}>
@@ -324,41 +334,40 @@ class EditWriting extends Component {
                 <Card className="card-long">
                     <Card.Body>
                     <div id ="imprimir">
-
-                    <div className={"row-edit"}>
-                        <label className={"form-label"}>Escrito del estudiante</label>
-                    </div>
-                    <hr/>
-                    <div className="row-edit">
-                        <div className="form-inputs">
-                            <label className='form-label'>Título</label>
-                            <input
-                                className="form-input"
-                                type="text"
-                                name="title"
-                                placeholder="Escribe el título"
-                                value={this.state.form.title}
-                                onChange={this.onChangeWritingName}
-                                disabled={this.disabledComponent()}
+                        <div className={"row-edit"}>
+                            <label className={"form-label"}>Escrito del estudiante</label>
+                        </div>
+                        <hr/>
+                        <div className="row-edit">
+                            <div className="form-inputs">
+                                <label className='form-label'>Título</label>
+                                <input
+                                    className="form-input"
+                                    type="text"
+                                    name="title"
+                                    placeholder="Escribe el título"
+                                    value={this.state.form.title}
+                                    onChange={this.onChangeWritingName}
+                                    disabled={this.disabledComponent()}
+                                />
+                            </div>
+                        </div>
+                        <div className="row-edit">
+                            <label className='form-label' >Escrito</label>
+                            <Editor
+                                editorState={this.state.editorState}
+                                // toolbarClassName="toolbarClassName"
+                                // // wrapperClassName="demo-wrapper"
+                                // // editorClassName="border-edit"
+                                wrapperClassName="wrapperClassName1"
+                                editorClassName="editorClassName1"
+                                toolbarClassName="toolbarClassName1"
+                                onEditorStateChange={this.onEditorStateChange}
+                                onContentStateChange={this.onContentStateChange}
+                                onChange={this.editorChange}
+                                readOnly={this.disabledComponent()}
                             />
                         </div>
-                    </div>
-                    <div className="row-edit">
-                        <label className='form-label' >Escrito</label>
-                        <Editor
-                            editorState={this.state.editorState}
-                            // toolbarClassName="toolbarClassName"
-                            // // wrapperClassName="demo-wrapper"
-                            // // editorClassName="border-edit"
-                            wrapperClassName="wrapperClassName1"
-                            editorClassName="editorClassName1"
-                            toolbarClassName="toolbarClassName1"
-                            onEditorStateChange={this.onEditorStateChange}
-                            onContentStateChange={this.onContentStateChange}
-                            onChange={this.editorChange}
-                            readOnly={this.disabledComponent()}
-                        />
-                    </div>
                     </div>
 
                     <div class="row-edit">
@@ -410,7 +419,7 @@ class EditWriting extends Component {
                                     </select>
                                 </div>
                             </li>
-                            <button onclick="javascript:toPdf();" >Pasar a PDF</button>
+                            <button onClick={createPDF} type="button">Download</button>
                         </ul>
                     </div>
                     <div class="row-edit">
@@ -435,6 +444,7 @@ class EditWriting extends Component {
                             <Button onClick={() => window.location.href = '/teacher/groups'}>Cancelar</Button>
                         </div>
                     </div>
+                    
                     </Card.Body>
                 </Card>
 

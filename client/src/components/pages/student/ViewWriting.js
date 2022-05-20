@@ -4,6 +4,7 @@
 */
 
 import React, { Component } from 'react';
+import { jsPDF } from 'jspdf'; 
 import { Link } from "react-router-dom";
 
 /*Importaciones del editor */
@@ -245,6 +246,13 @@ class ViewWriting extends Component {
     render() {
         const { dataMediaChallenge } = this.state;
         const { dataMediaWriting } = this.state;
+        const createPDF = async () => {
+            const pdf = new jsPDF("portrait", "pt", "a4");
+            const data = await document.querySelector("#imprimir");
+            pdf.html(data).then(() => {
+              pdf.save("Escrito.pdf");
+            });
+          };
         // const { formErrors } = this.state;
         return (
             <>
@@ -293,23 +301,24 @@ class ViewWriting extends Component {
                                 </table>
                             </div>
                             <br/>
-                            <div className={"row-edit"}>
-                                <label className={"form-label"} htmlFor="">
-                                    Escrito
-                                </label>
-                            </div>
-                            <hr/>
-                            <div className="row-edit">
-                                <label className='form-label'>Titulo </label>
-                                <h5>{this.state.writing.nombre}</h5>
-                            </div>
-                            <div className="row-edit">
-                                <label className='form-label'>Descripción </label>
-                                <div className={"challenge-inputs"}>
-                                    <div dangerouslySetInnerHTML={{ __html: this.state.form.escrito }}></div>
+                            <div id ="imprimir">
+                                <div className={"row-edit"}>
+                                    <label className={"form-label"} htmlFor="">
+                                        Escrito
+                                    </label>
+                                </div>
+                                <hr/>
+                                <div className="row-edit">
+                                    <label className='form-label'>Titulo </label>
+                                    <h5>{this.state.writing.nombre}</h5>
+                                </div>
+                                <div className="row-edit">
+                                    <label className='form-label'>Descripción </label>
+                                    <div className={"challenge-inputs"}>
+                                        <div dangerouslySetInnerHTML={{ __html: this.state.form.escrito }}></div>
+                                    </div>
                                 </div>
                             </div>
-
 
                             <div class="row-edit">
                                 <label className='form-label'>Ficheros Multimedia: </label>

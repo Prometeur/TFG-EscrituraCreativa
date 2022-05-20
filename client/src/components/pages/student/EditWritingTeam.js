@@ -4,6 +4,8 @@
 */
 
 import React, { Component } from 'react';
+import { jsPDF } from 'jspdf'; 
+
 import { Link } from "react-router-dom";
 
 /*Importaciones del editor */
@@ -281,6 +283,13 @@ class EditWritingTeam extends Component {
     /*Dibuja la pagina */
     render() {
         const { dataMediaChallenge, dataMediaWriting } = this.state;
+        const createPDF = async () => {
+            const pdf = new jsPDF("portrait", "pt", "a4");
+            const data = await document.querySelector("#imprimir");
+            pdf.html(data).then(() => {
+              pdf.save("Escrito.pdf");
+            });
+          };
         // const { formErrors } = this.state;
         return (
             <>
@@ -317,6 +326,7 @@ class EditWritingTeam extends Component {
                                     </tbody>
                                 </table>
                             </div>
+                            <div id ="imprimir">
 
                             <div className="form-inputs">
                                 <label className='form-label'>Titulo</label>
@@ -345,7 +355,7 @@ class EditWritingTeam extends Component {
                                 />
                                 {/* <EditorText onEditorStateChange={this.onEditorStateChange} onContentStateChange={this.onContentStateChange}  onChange={this.editorChange} param={this.state.editorState}/> */}
                             </div>
-
+                        </div>
                             <div class="row-edit">
                                 <label className='form-label'>Puedes agregar un fichero multimedia si lo deseas (imagen,video o audio): </label>
                                 <div className="form">

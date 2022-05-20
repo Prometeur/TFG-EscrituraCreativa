@@ -3,6 +3,8 @@
 *  Description: Pagina de editar Escrito
 */
 import React, { Component, useState } from "react";
+import { jsPDF } from 'jspdf'; 
+
 import { Link } from "react-router-dom";
 
 /*Importaciones del editor */
@@ -418,6 +420,13 @@ onModalFinishWriting = (modal) => {
     render() {
         let contentState, editorState2;
         const { editorState, dataMediaChallenge, dataMediaWriting, formErrors, data, escritosNoCombinados, textoEscritoCombinado } = this.state;
+        const createPDF = async () => {
+            const pdf = new jsPDF("portrait", "pt", "a4");
+            const data = await document.querySelector("#imprimir");
+            pdf.html(data).then(() => {
+              pdf.save("Escrito.pdf");
+            });
+          };
         return (
             <div className="container">
                 <Card className="card-edit">
@@ -480,65 +489,67 @@ onModalFinishWriting = (modal) => {
                             <label className={"form-label"}>Espacio de escritura</label>
                         </div>
                         <hr />
-                        <div className={"row-edit"}>
-                            <div className="form-inputs">
-                                <label className='form-label'>Titulo</label>
-                                <div>
-                                    <input
-                                        className={formErrors.title.length > 0 ? "error" : "form-input"}
-                                        type="text"
-                                        name="title"
-                                        placeholder="Escribe el título"
-                                        value={this.state.form.title}
-                                        // onChange={this.handleChange}
-                                        onChange={this.onChangeWritingName}
-                                    />
-                                    {formErrors.title.length > 0 && (
-                                        <span className="alert-login">{formErrors.title}</span>
-                                    )}
+                        <div id ="imprimir">
+                            <div className={"row-edit"}>
+                                <div className="form-inputs">
+                                    <label className='form-label'>Titulo</label>
+                                    <div>
+                                        <input
+                                            className={formErrors.title.length > 0 ? "error" : "form-input"}
+                                            type="text"
+                                            name="title"
+                                            placeholder="Escribe el título"
+                                            value={this.state.form.title}
+                                            // onChange={this.handleChange}
+                                            onChange={this.onChangeWritingName}
+                                        />
+                                        {formErrors.title.length > 0 && (
+                                            <span className="alert-login">{formErrors.title}</span>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="row-edit">
-                            <label className='form-label' >Escribe aquí</label>
+                            <div className="row-edit">
+                                <label className='form-label' >Escribe aquí</label>
 
-                            <Editor
-                                
-                                editorState = {editorState}
-                                // toolbarClassName="toolbarClassName"
-                                // // wrapperClassName="demo-wrapper"
-                                // // editorClassName="border-edit"
-                                wrapperClassName="wrapperClassName1"
-                                editorClassName="editorClassName1"
-                                toolbarClassName="toolbarClassName1"
-                                onEditorStateChange={this.onEditorStateChange}
-                                onContentStateChange={this.onContentStateChange}
-                                // onChange={this.editorChange}
+                                <Editor
+                                    
+                                    editorState = {editorState}
+                                    // toolbarClassName="toolbarClassName"
+                                    // // wrapperClassName="demo-wrapper"
+                                    // // editorClassName="border-edit"
+                                    wrapperClassName="wrapperClassName1"
+                                    editorClassName="editorClassName1"
+                                    toolbarClassName="toolbarClassName1"
+                                    onEditorStateChange={this.onEditorStateChange}
+                                    onContentStateChange={this.onContentStateChange}
+                                    // onChange={this.editorChange}
 
-                                onChange={
-                                    (event, editor) => {
-                                        let formErrors = { ...this.state.formErrors };
-                                        if (!editorState.getCurrentContent().hasText()) {
-                                            formErrors.description = "Campo texto vacío";
-                                        }
-                                        else {
-                                            formErrors.description = "";
-                                        }
-                                        this.setState({
-                                            formErrors,
-                                            form: {
-                                                ...this.state.form,
-                                                escrito: draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))
+                                    onChange={
+                                        (event, editor) => {
+                                            let formErrors = { ...this.state.formErrors };
+                                            if (!editorState.getCurrentContent().hasText()) {
+                                                formErrors.description = "Campo texto vacío";
                                             }
-                                        });
+                                            else {
+                                                formErrors.description = "";
+                                            }
+                                            this.setState({
+                                                formErrors,
+                                                form: {
+                                                    ...this.state.form,
+                                                    escrito: draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))
+                                                }
+                                            });
+                                        }
                                     }
-                                }
-                                className={formErrors.description.length > 0 ? "error" : "form-control"}
-                            />
-                            {formErrors.description.length > 0 && (
-                                <span className="alert-login">{formErrors.description}</span>
-                            )}
+                                    className={formErrors.description.length > 0 ? "error" : "form-control"}
+                                />
+                                {formErrors.description.length > 0 && (
+                                    <span className="alert-login">{formErrors.description}</span>
+                                )}
 
+                            </div>
                         </div>
                         <br />
                         <div class="row-edit">
