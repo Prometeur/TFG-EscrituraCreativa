@@ -122,14 +122,11 @@ class EditWriting extends Component {
         /* Devuelve la última versión de un escrito, es decir, el mayor id */
         StudentService.getHighestidVersionfromWriting(this.props.match.params.idWriting)
         .then(response => {
-            if(response[0].maxId != null){
+            if(!isNaN(response[0].maxId)){
                 this.setState({ maxIdVersion: response[0].maxId });
             }
-            else{
-                this.setState({maxIdVersion: 0});
-            }
-        /*Obtiene el desafio seleccionado*/
-        StudentService.getChallenge(this.props.match.params.idChallenge)
+            /*Obtiene el desafio seleccionado*/
+            StudentService.getChallenge(this.props.match.params.idChallenge)
             .then(response => {
                 this.setState({ challenge: response[0] });
                 //Si es colaborativo
@@ -145,6 +142,12 @@ class EditWriting extends Component {
                                 }).catch(error => {
                                     console.log(error.message);
                                 });
+                            // Si este escrito no lo he editado nunca, es decir, solo lo he creado, le introduzco la versión nº 1
+                            if (this.state.maxIdVersion == null) {
+                                this.setState({ maxIdVersion: 1 });
+                                StudentService.insertVersionfromWriting(this.props.match.params.idWriting, 1, this.props.match.params.idChallenge, response[0].idEquipo, this.state.form.title, this.state.form.escrito, this.state.challenge.colaborativo)
+                            }
+
                         }).catch(error => {
                             console.log(error.message);
                         })
@@ -156,6 +159,11 @@ class EditWriting extends Component {
                             idWriter: AuthUser.getCurrentUser().id
                         }
                     });
+                    // Si este escrito no lo he editado nunca, es decir, solo lo he creado, le introduzco la versión nº 1
+                    if (this.state.maxIdVersion == null) {
+                        this.setState({ maxIdVersion: 1 });
+                        StudentService.insertVersionfromWriting(this.props.match.params.idWriting, 1, this.props.match.params.idChallenge, AuthUser.getCurrentUser().id, this.state.form.title, this.state.form.escrito, this.state.challenge.colaborativo)
+                    }
 
                     /*Obtiene multimedia del escrito del estudiante */
                     StudentService.getMultimediaWriting(this.props.match.params.idChallenge, AuthUser.getCurrentUser().id/*, this.state.maxIdVersion*/)
@@ -166,12 +174,6 @@ class EditWriting extends Component {
                         });
                 }
 
-                // Si este escrito no lo he editado nunca, es decir, solo lo he creado, le introduzco la versión nº 1
-                if (this.state.maxIdVersion != 0)
-                {
-                    StudentService.insertVersionfromWriting(this.props.match.params.idWriting, 1, this.props.match.params.idChallenge, this.state.form.idWriter, this.state.form.title, this.state.form.escrito, this.state.challenge.colaborativo)
-                }
-                
             }).catch(error => {
                 console.log(error.message);
             });
