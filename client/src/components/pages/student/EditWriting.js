@@ -607,6 +607,9 @@ onModalFinishWriting = (modal) => {
                             <div className="form-button">
                                 <Button text='enviar' onClick={() => this.onModalFinishWriting(true)} disabled={this.disabledButton()} > Finalizar  </Button>
                             </div>
+                            <div className="form-button">
+                                <button onClick={createPDF} type="button">Download</button>
+                            </div>
 
                         </div>
 
